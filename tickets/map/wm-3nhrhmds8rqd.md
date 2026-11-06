@@ -7,14 +7,14 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-06T15:06:49Z
+updated_at: 2026-11-06T15:45:47Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   phase: exploring
 ---
 ## Target
 
-Route a map to the right split: decide whether the map's next layer is child maps or tasks, then follow the matching reference (submap.md or task.md). The SKILL.md holds only the decision.
+Route a map to the right split: decide when to split and whether the map's next layer is child maps or tasks, then follow the matching reference (submap.md or task.md). The SKILL.md holds only the decision.
 
 Why: children come from splitting, and mixing child maps with tasks in one map blurs structure and execution.
 
@@ -31,6 +31,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - One skill with two references (submap.md, task.md); the router logic is one section of SKILL.md (user confirmed).
 - The parent skill routes to references and can be one sentence, following matt's grill-with-docs (user confirmed).
 - A map picks one child type: all child maps or all tasks; the structure freezes (user proposed).
+- Split timing belongs to the split skill. A map may split part of its children while fog remains; explore does not create children (user confirmed).
 
 ## Not yet specified
 
