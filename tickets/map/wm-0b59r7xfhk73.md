@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:25Z
-updated_at: 2026-11-06T12:44:22Z
+updated_at: 2026-11-06T15:00:15Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -24,7 +24,8 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 
 ## Children
 
-- (none yet; the function details are still fog)
+- [Explore skills: fog exploration](tickets/map/wm-8m5cckpf4tc2.md): triage fog and run the routes.
+- [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md): route to split-to-submap or split-to-task.
 
 ## Decisions so far
 
@@ -32,7 +33,7 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 
 ## Not yet specified
 
-- The function details of the map skill: when a node is a map rather than a task, what each of the six sections holds, hanging children and syncing the body index, graduating fog into children or clearing it, phase changes, and the acceptance check.
+- The function details of the map skill: when a node is a map rather than a task, what each of the six sections holds, hanging children and syncing the body index, phase changes, and the acceptance check.
 
 ## Out of scope
 

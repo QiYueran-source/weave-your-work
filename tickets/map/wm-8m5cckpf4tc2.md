@@ -7,8 +7,8 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T14:00:28Z
-parent: wm-qhd3twqjzhma
+updated_at: 2026-11-06T14:59:53Z
+parent: wm-0b59r7xfhk73
 custom_fields:
   phase: exploring
 ---
