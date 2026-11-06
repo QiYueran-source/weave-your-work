@@ -23,14 +23,18 @@ The first split divides the work by the question each category answers:
 
 The root map is an index. It lists the sub-maps, states the destination, and holds cross-category decisions. It does not restate decisions that live in a category map. The split follows function, not phase: the category maps are parallel branches of the destination. If one category must wait for another, that is a dependency edge, not a place in the tree.
 
-### Second split: the glossary
+### Second split: the execution skills
 
-The execution map settled the semantic model first: every target node is a map; a task is the finest target, stating an action and a verifiable result; parent-child is refinement; order is a dependency edge. With that model in place, two tasks were cut:
+The execution map settled the semantic model first: every target node is a map; a task is the finest target, stating an action and a verifiable result; parent-child is refinement; order is a dependency edge. With that model in place, four tasks were cut:
 
 - [Design the glossary skill](../../../tickets/task/wm-rq3exm0m5563.md) under the execution map.
+- [Design the map skill](../../../tickets/task/wm-0b59r7xfhk73.md) under the execution map.
+- [Design the task skill](../../../tickets/task/wm-87pgn0b75yy5.md) under the execution map.
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md) under the environment map.
 
-The test for task versus map: can you write a concrete action and a verifiable result now? If yes, a task; if not, a map. Both glossary tickets could, so neither got a map layer of its own.
+The test for task versus map: can you write a concrete action and a verifiable result now? If yes, a task; if not, a map. All four could, so none got a map layer of its own. The map and task skills each produce a SKILL.md and check it against a worked example under `weave-your-work/examples/`; the judgment that they are tickets rather than child maps is the same as for the glossary.
+
+The alternative that lost: keep all three skill designs inside the execution map's Decisions section. That kept the tree flat but left the work invisible as tickets, and the map could not name what each skill must deliver. Splitting also kept the map's destination honest: the category now holds three skills, not two.
 
 The glossary's same-name conflict rule could not be stated sharply. It stayed in the execution map's Not yet specified, then became a boundary on the design task ("deferred"), not a child. Fog does not have to become a ticket; it can become a stated exclusion.
 
@@ -60,7 +64,7 @@ The glossary work exposed an edge: the setup task installs and checks the pieces
 
 It is not a parent change. The setup task is a refinement of "setup initializes a project", not of "design the glossary skill". Moving it under the execution map would state a refinement that is not true.
 
-The edge was not wired in waymark when the tickets were published. Both tasks were created in the same commit (`398c566`) without a `dependencies` field. Their order is visible only in what they produce.
+The edge was not wired in waymark when the tickets were published. It is wired now: the setup task declares a dependency on the design task, so the setup work stays blocked until the design delivers its pieces.
 
 The lesson: when two tickets sit in different branches and one consumes the other's output, wire the edge in the same pass that creates them. Otherwise the frontier overstates what can start.
 
@@ -92,13 +96,21 @@ Its acceptance signal: on a fresh project after setup, the directory exists, the
 
 This task is also `delivery`.
 
+### The map and task design tasks
+
+[Design the map skill](../../../tickets/task/wm-0b59r7xfhk73.md) and [Design the task skill](../../../tickets/task/wm-87pgn0b75yy5.md) split the two skill designs that had been living in the execution map's Decisions section. Each is `delivery`: it produces a SKILL.md under `weave-your-work/` and checks its rules against an example in `weave-your-work/examples/` (`map-example.md` and `task-example.md`).
+
+The map task's acceptance signal: the rules live under `weave-your-work/map/`; a reader can rebuild the example map from the skill without asking; the body index and waymark parent relation agree after a child changes. Its boundaries: task design is a sibling ticket, and the example stays domain-agnostic.
+
+The task task's acceptance signal: the rules live under `weave-your-work/task/`; a reader can rebuild the example task from the skill; both a probe and a delivery task show their reversibility. Its boundaries: map design is a sibling ticket, and glossary conflicts are out of scope.
+
 ### Why tasks, not maps
 
-Each has one owner, a concrete action, and one acceptance signal. A map adds a layer only when something is left to refine. Here nothing was.
+Each of the four has one owner, a concrete action, and one acceptance signal. A map adds a layer only when something is left to refine. Here nothing was.
 
 ### What the tasks do not cover
 
-Neither task writes the skill set. The category maps are still exploring; the tasks cover the first executable piece, the glossary, and its setup step. The rest stays in the maps until it can be stated as an action.
+The four tickets cover the first executable pieces: the glossary skill, its setup step, and the map and task skills. The category maps are still exploring their remaining fog; the rest stays in the maps until it can be stated as an action.
 
 ## What changed during the run
 
@@ -107,11 +119,15 @@ Neither task writes the skill set. The category maps are still exploring; the ta
 - The tickets were converted to English.
 - The map template was fixed to six sections, with only `phase` as a custom field.
 - Rule 03 was added: settled details land in the owning ticket immediately.
+- The execution map's destination now names three skills: map, task, and glossary.
+- The map and task skill designs became tickets of their own, with worked examples under `weave-your-work/examples/`.
+- The category maps were hung under the root map (`fa46553`), closing the parent gap.
+- The setup task now depends on the design task, closing the unwired edge.
 - This rule and example were added on 2026-11-06.
 
 ## What this example does not show
 
-The conversation that produced the tickets is not recorded. Only settled decisions reached the tickets, so rejected answers that never made it into one are lost from the record. The example also notes two gaps instead of fixing them: the category maps have no `parent` field, and the glossary dependency edge is not wired in waymark.
+The conversation that produced the tickets is not recorded. Only settled decisions reached the tickets, so rejected answers that never made it into one are lost from the record. Two gaps were noted earlier and later closed: the category maps now carry a `parent` pointing at the root map, and the setup task declares its dependency on the design task.
 
 ## Pointers
 
@@ -121,4 +137,6 @@ The conversation that produced the tickets is not recorded. Only settled decisio
 - [Execution skills: map and task collaboration](../../../tickets/map/wm-qhd3twqjzhma.md)
 - [Communication skills: issue remote exchange](../../../tickets/map/wm-25b3q7mg88c7.md)
 - [Design the glossary skill](../../../tickets/task/wm-rq3exm0m5563.md)
+- [Design the map skill](../../../tickets/task/wm-0b59r7xfhk73.md)
+- [Design the task skill](../../../tickets/task/wm-87pgn0b75yy5.md)
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md)
