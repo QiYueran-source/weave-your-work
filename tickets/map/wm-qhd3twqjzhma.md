@@ -7,14 +7,14 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T14:22:01Z
+updated_at: 2026-11-06T14:22:06Z
 parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring
 ---
 ## Destination
 
-Design the map and task skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). Suits any domain. This is the core category.
+Design the map, task, glossary and explore skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). Suits any domain. This is the core category.
 
 ## Notes
 
