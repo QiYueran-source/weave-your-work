@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T11:43:42Z
+updated_at: 2026-11-06T11:46:03Z
 custom_fields:
   phase: exploring
 ---
@@ -35,6 +35,9 @@ Design the map and task skills: the complete collaboration chain from target map
 - map template: six sections, fixed. Target states the goal in one line plus Why in one or two lines; the target does not name a solution. Acceptance direction gives the observable state when writable and otherwise falls back to "all children done and no further children needed" plus a review point. Children is a human-readable mirror of waymark's parent relation; waymark is the source of truth and the body list is updated whenever a child is added or removed. Decisions so far holds one line per decision with its source; major decisions become ADRs linked from the list. Not yet specified holds fog that graduates into a child or is cleared. Out of scope holds every "not doing" item with a one-line reason; the boundaries of the goal live there too, so there is only one place for exclusions (user confirmed).
 - map frontmatter: no extra custom fields beyond phase. title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Glossary skill: an execution-category skill designed as a child ticket of this map. Source is one file per person under `.glossary/` (tracked by git); `.agents/docs/GLOSSARY.md` is a generated view, ignored by git. The MCP server regenerates on write and a git post-merge hook regenerates after a pull. Deliverables are SKILL.md, an MCP server (Node), hooks (Node), and a rules file, living in the skill directory and initialized by setup. MCP does exact matching only; semantic similarity is the agent's job (user confirmed).
+- Glossary identity: the operator from `.waymark/user.toml` names the file; git `user.name` is the fallback when no operator is set. The file is named after that identity (user confirmed).
+- Glossary MCP interface: `glossary_lookup(term)`, `glossary_list`, `glossary_write(term, definition, avoid)`, and `glossary_merge`. No tool takes another person's file path; the server resolves the current identity itself (user confirmed).
+- Glossary generated view: follows matt's GLOSSARY-FORMAT.md. Structure is `# {Context Name}`, a one or two sentence description, then `## Language`, each term as `**Term**:` followed by a tight one or two sentence definition and `_Avoid_:` for the aliases. Terms sit under subheadings when natural clusters emerge, otherwise in one alphabetical list. Two additions the merged view needs: a `_Source_:` line per term and a header saying the file is generated and must not be edited by hand. Conflict entries wait for the deferred conflict rule (user asked to follow matt's rules rather than guess).
 
 ## Not yet specified
 
