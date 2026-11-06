@@ -37,7 +37,7 @@ The relation between a parent target and a child target: the child is a more spe
 _Avoid_: breakdown (when it implies slicing once into executable pieces)
 
 **arrive (到达)**:
-The moment a fog item becomes a child node. It arrives as a task when one action and one verifiable result can be written and one person can finish and verify it in one go; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
+The moment a settled decision becomes a child node. It arrives as a task when one action and one verifiable result can be written and one person can finish and verify it in one go; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
 _Avoid_: graduation, breakdown, splitting (when they mean a fog item becoming a node rather than slicing work)
 
 **split (分裂)**:
