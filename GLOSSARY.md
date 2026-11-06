@@ -1,53 +1,53 @@
 # Work-weave Domain
 
-Work-weave 是面向通用团队协作的技能集，以 waymark 作为唯一 tracker，帮团队把目标、任务、认领、验收这一条链路走通。术语表记录本项目的核心概念；waymark 自身的领域词汇（owner、dependency、parent 等）以 waymark 项目的 GLOSSARY.md 为准，这里只记 work-weave 层新增或改动的概念。
+Work-weave is a skill set for general team collaboration. It uses waymark as the single tracker and carries goal, task, claim, and acceptance through one chain. This glossary records concepts specific to work-weave. Waymark's own vocabulary (owner, dependency, parent, and so on) is defined in the waymark project's GLOSSARY.md; only work-weave-level additions or changes are recorded here.
 
 ## Language
 
-**map（目标节点）**：
-一个目标节点，回答"我想要什么"。每个 map 声明目标、为什么值得、边界、验收方向，并挂一个或多个细化的目标（子 map 或 task）。根 map 是总目标，没有 parent；map 的孩子是更细化的目标。所有目标节点统一叫 map，不分层命名。
-_Avoid_: goal、plan、project、阶段、milestone（当暗示固定时间点时）
+**map (target node)**:
+A target node that answers "what I want". Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.
+_Avoid_: goal, plan, project, phase, milestone (when it implies a fixed point in time)
 
-**task（执行目标）**：
-目标树的最细一层，是细化到可以执行的目标：同时声明动作和它的可验证结果。回答"我要做什么"。
-_Avoid_: ticket（当含义宽于本项目的工作单元）、action item（当只指动作不含结果）
+**task (executable target)**:
+The finest level of the target tree: a target refined to the point of being executable. It declares both an action and its verifiable result. Answers "what I will do".
+_Avoid_: ticket (when the meaning is broader than this project's unit of work), action item (when it refers to an action without a result)
 
-**目标树（goal tree）**：
-根 map 到 task 的逐层细化结构。一个节点是一个目标（map），父子关系是"部分-整体"（细化），不是先后。树管结构，边管顺序。叶子（task）是细化链条的末端：从根（总目标）一路细化到可执行的目标，叶子之间是平行的细化分支，不是推进顺序；先后只由依赖边表达。
-_Avoid_: 甘特图、流程图、目标链
+**target tree (goal tree)**:
+The layered refinement from the root map to tasks. Every node is a target (a map); the parent-child relation is part-whole (refinement), not sequence. The tree carries structure, edges carry order. A leaf (task) is the end of the refinement chain: refined from the root to the point of execution. Leaves are parallel refinement branches, not a progression order; ordering is expressed only by dependency edges.
+_Avoid_: Gantt chart, flow chart, target chain
 
-**依赖边（dependency edge）**：
-挂在节点之间、表达"谁等谁完成"的关系。负责目标的先后顺序。顺序不是节点链，是边；增删一条边不动树结构。waymark 的 dependency 机制表达。
-_Avoid_: 阻塞（当指状态而非关系）、前置（当不指明方向）
+**dependency edge**:
+A relation between nodes expressing "who waits for whom to finish". It carries the ordering of targets. Order is not a chain of nodes but an edge; adding or removing an edge does not move the tree. Expressed by waymark's dependency mechanism.
+_Avoid_: blocked (when referring to a state rather than a relation), prerequisite (when the direction is not made explicit)
 
-**细化（refinement）**：
-父子目标之间的关系：子目标是父目标的更具体声明。与顺序无关。
-_Avoid_: 拆解（当暗示一次切碎成执行件时）
+**refinement**:
+The relation between a parent target and a child target: the child is a more specific statement of the parent. Unrelated to ordering.
+_Avoid_: breakdown (when it implies slicing once into executable pieces)
 
-**推进（advance）**：
-owner 对自己负责的 work item 做出的操作：改标题/正文/字段/状态、加删依赖、关闭、重开、归档、换 owner。只有 owner 能做。
-_Avoid_: 更新、修改（当不指明谁有权时）
+**advance**:
+An operation an owner performs on their own work item: changing title/body/fields/status, adding or removing dependencies, closing, reopening, archiving, transferring ownership. Only the owner can do it.
+_Avoid_: update, modify (when the actor is not specified)
 
-**认领（claim）**：
-把一张开放的任务变为有人正在推进的状态，用 waymark 的 start（open → in_progress）表达。一张票同时只有一个 in_progress。认领不等于改 owner：owner 是责任归属，认领是当前推进状态。
-_Avoid_: 指派（当暗示改 owner 时）、assign
+**claim**:
+Making an open task become something someone is advancing, expressed by waymark's start (open to in_progress). One item has at most one in_progress at a time. A claim is not a change of owner: the owner is the accountable party, the claim is the current advancing state.
+_Avoid_: assign (when it implies changing the owner)
 
-**交付型任务（delivery task）**：
-按已承诺的产出推进，失败是事故。执行前明确验收信号和可逆性。
-_Avoid_: 正式任务（当和探针对比时）
+**delivery task**:
+A task advanced against a committed output; failure is an incident. Acceptance signals and reversibility are made explicit before starting.
+_Avoid_: formal task (when contrasted with a probe)
 
-**探针型任务（probe task）**：
-用最小可逆动作换信息，失败是正常结果。回答"这个方向到底通不通"。
-_Avoid_: 探索（当指没有明确动作的模糊阶段时）
+**probe task**:
+A task that trades the smallest reversible action for information; failure is a normal result. Answers "does this direction actually work".
+_Avoid_: exploration (when referring to a vague phase without concrete actions)
 
-**可逆性（reversibility）**：
-一个任务做错之后的回退成本。单向门（one-way door）退不回来，动手前要格外确认；双向门（two-way door）可退，放心做。
-_Avoid_: 风险（当指概率而非回退成本时）
+**reversibility**:
+The cost of undoing a task after it went wrong. A one-way door cannot be undone, so confirmation is required before acting; a two-way door can be undone, so proceed.
+_Avoid_: risk (when referring to probability rather than undo cost)
 
-**验收信号（acceptance signal）**：
-事先写好的、可观察的判断标准，用来区分任务"已完成、未完成、无法判断"。由非执行者按信号检查。
-_Avoid_: 验收标准（当只指清单时）、definition of done
+**acceptance signal**:
+An observable criterion written before work starts, used to distinguish done, not done, and cannot judge yet. A map is accepted when all its child maps and tasks are complete and no further children are needed; signals get more specific toward the leaves.
+_Avoid_: acceptance criteria (when it is only a checklist), definition of done
 
-**前沿（frontier）**：
-所有未完成依赖的节点里，当前可以开工的集合。waymark 的 ready 查询给出。
-_Avoid_: 待办、next actions（当指个人清单时）
+**frontier**:
+The set of nodes with no unfinished dependencies that can be started now. Given by waymark's ready query.
+_Avoid_: todo, next actions (when referring to a personal list)
