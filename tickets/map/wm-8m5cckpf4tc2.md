@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T14:00:22Z
+updated_at: 2026-11-06T14:00:28Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -22,7 +22,7 @@ Why: a map can carry fog for a long time and never move. Explore is how fog arri
 
 ## Acceptance direction
 
-All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/explore/`, and a sample map with fog can be explored end to end, with each fog item either arrived as a child, cleared, or turned into a probe.
+All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/explore/`, and a sample map with fog can be explored end to end, with each fog item either arriving as a child, cleared, or turned into a probe.
 
 ## Notes
 
