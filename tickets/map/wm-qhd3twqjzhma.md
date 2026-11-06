@@ -7,19 +7,19 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T12:01:35Z
+updated_at: 2026-11-06T12:11:40Z
 parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring
 ---
 ## Destination
 
-Design the map and task skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). Suits any domain. This is the core category.
+Design the three execution-category skills: map, task, and glossary. The chain runs from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). Suits any domain. This is the core category.
 
 ## Notes
 
 - Category: execution. Answers "is the work advancing, who is accountable, where is it stuck".
-- Delivery location: map/ and task/ skill directories under weave-your-work/ (to be created); the glossary skill is a child ticket of this map.
+- Delivery location: map/, task/, and glossary/ skill directories under weave-your-work/ (to be created); examples live in weave-your-work/examples/.
 - Glossary: GLOSSARY.md (created; map/task/target tree/dependency edge/refinement/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
 - Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
 - Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
@@ -35,6 +35,7 @@ Design the map and task skills: the complete collaboration chain from target map
 - Acceptance: judged by a non-executor against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed (user confirmed; details to follow).
 - map template: six sections, fixed. Target states the goal in one line plus Why in one or two lines; the target does not name a solution. Acceptance direction gives the observable state when writable and otherwise falls back to "all children done and no further children needed" plus a review point. Children is a human-readable mirror of waymark's parent relation; waymark is the source of truth and the body list is updated whenever a child is added or removed. Decisions so far holds one line per decision with its source; major decisions become ADRs linked from the list. Not yet specified holds fog that graduates into a child or is cleared. Out of scope holds every "not doing" item with a one-line reason; the boundaries of the goal live there too, so there is only one place for exclusions (user confirmed).
 - map frontmatter: no extra custom fields beyond phase. title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
+- Skill split: map, task, and glossary are the three execution-category skills. Each design gets its own task ticket under this map, and worked examples live in weave-your-work/examples/ (user confirmed).
 - Glossary skill: an execution-category skill designed as a child ticket of this map. Source is one file per person under `.glossary/` (tracked by git); `.agents/docs/GLOSSARY.md` is a generated view, ignored by git. The MCP server regenerates on write and a git post-merge hook regenerates after a pull. Deliverables are SKILL.md, an MCP server (Node), hooks (Node), and a rules file, living in the skill directory and initialized by setup. MCP does exact matching only; semantic similarity is the agent's job (user confirmed).
 - Glossary identity: the operator from `.waymark/user.toml` names the file; git `user.name` is the fallback when no operator is set. The file is named after that identity (user confirmed).
 - Glossary MCP interface: `glossary_lookup(term)`, `glossary_list`, `glossary_write(term, definition, avoid)`, and `glossary_merge`. No tool takes another person's file path; the server resolves the current identity itself (user confirmed).

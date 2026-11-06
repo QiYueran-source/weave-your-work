@@ -1,4 +1,4 @@
-version = "1.3"
+version = "1.4"
 storage_root = "tickets"
 
 [categories.comment]
@@ -12,6 +12,10 @@ name = "Map"
 [categories.task]
 path = "tickets/task"
 name = "Task"
+
+[fields.outcome]
+type = "string"
+required = false
 
 [fields.phase]
 type = "string"
