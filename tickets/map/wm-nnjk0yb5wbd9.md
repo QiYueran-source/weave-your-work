@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-06T16:01:13Z
+updated_at: 2026-11-06T16:42:07Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -27,7 +27,7 @@ The reference is written into split's `submap.md`: the decision test, the rhythm
 ## Decisions so far
 
 - Submap is a reference inside the split skill, not a separate skill (user confirmed).
-- A map splits into submaps when one action and one verifiable result cannot be written, or when it has several independent directions that need their own owner or phase (user confirmed).
+- A map splits into submaps when one action and one verifiable result cannot be written, or when it has several independent directions that need their own owner (user confirmed).
 - With fog present, default to submap (user confirmed).
 
 ## Not yet specified
