@@ -17,11 +17,11 @@ A record synced back from an issue, carrying a discussion conclusion or decision
 _Avoid_: discussion (when referring to the remote conversation itself)
 
 **map (target node)**:
-A target node that answers "what I want". Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.
+A target node that answers "what I want": the expected outcome or requirement. Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. A map does not cover feasibility or implementation; those belong to tasks. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.
 _Avoid_: goal, plan, project, phase, milestone (when it implies a fixed point in time)
 
 **task (executable target)**:
-The finest level of the target tree: a target refined to the point of being executable. It declares both an action and its verifiable result. Answers "what I will do".
+The finest level of the target tree: a target refined to the point of being executable. It declares both an action and its verifiable result, and it carries implementation: feasibility, method, and effect. Answers "what I will do".
 _Avoid_: ticket (when the meaning is broader than this project's unit of work), action item (when it refers to an action without a result)
 
 **target tree (goal tree)**:
