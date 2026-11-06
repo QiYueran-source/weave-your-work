@@ -7,14 +7,14 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T13:48:02Z
+updated_at: 2026-11-06T13:49:33Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
 ---
 ## Target
 
-Design the explore skill: when a map has fog (its Not yet specified list), triage each item into one of five classes, turn judgment fog into assumptions about the goal or requirement, rank them by impact, route the chosen ones by where the answer lives, run the route with domain-neutral methods, and land the results back into the map.
+Design the explore skill: when a map has fog (its Not yet specified list), triage each item into one of five classes, turn judgment fog into goal or requirement assumptions, rank them by impact, route the chosen ones by where the answer lives, run the route with domain-neutral methods, and land the results back into the map.
 
 Explore clarifies goals and requirements (the destination). It does not test feasibility or implementation; those belong to tasks.
 
@@ -51,7 +51,7 @@ A requirement judgment fog under the map "raise click-through 10% this quarter":
 
 - Two routes: conversation when the answer lives in someone's head, a probe task when it lives in reality (user confirmed).
 - Fog classes: judgment fog goes through assumption-ization, impact ranking and the routes; fact fog is researched directly; decision fog is put to the owner; goal fog goes back to the Target section; action fog graduates straight into a child (user confirmed).
-- Only judgment fog becomes an assumption, and that assumption is about the goal or requirement, not about implementation. Ranking uses the impact the assumption being wrong has on the target, not uncertainty; uncertainty belongs to the task skill (user confirmed).
+- Only judgment fog becomes an assumption, written as a goal or requirement assumption plus the consequence if it is wrong. The assumption never covers the implementation path or its effects; those belong to the task skill. Ranking uses the impact of the assumption being wrong on the target, not uncertainty (user confirmed).
 - map states the expected outcome or requirement and does not cover feasibility or implementation; task carries implementation (user confirmed, recorded in GLOSSARY).
 - Domain-neutral only; product-specific validation tools excluded (user confirmed).
 - Answerer defaults to the owner; the owner's uncertainty is resolved through a remote issue first (user confirmed).
