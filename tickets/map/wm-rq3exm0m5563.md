@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T11:43:18Z
-updated_at: 2026-11-06T12:44:22Z
+updated_at: 2026-11-06T12:52:47Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -20,11 +20,11 @@ Why: a shared glossary with many editors conflicts on every change; per-person J
 
 ## Acceptance direction
 
-All child tasks are complete and no further child task is needed: the SKILL.md, the MCP server, the hooks, and the rules exist under `weave-your-work/glossary/`; one term written plus a simulated pull shows the term in the generated view; and SKILL.md covers the four moves borrowed from matt's domain-modeling.
+All child tasks are complete and no further child task is needed: the SKILL.md, the MCP server, the hooks, the rules, and the install step exist; one term written plus a simulated pull shows the term in the generated view; and SKILL.md covers the four moves borrowed from matt's domain-modeling.
 
 ## Children
 
-- (none yet; the pieces below are still fog)
+- [Initialize the glossary during setup](tickets/task/wm-5b50wr2dkaxw.md): the install step
 
 ## Decisions so far
 
@@ -32,7 +32,7 @@ All child tasks are complete and no further child task is needed: the SKILL.md, 
 - MCP tools: `glossary_lookup`, `glossary_list`, `glossary_write`, `glossary_merge`; no tool takes another person's file.
 - Source: `.glossary/<operator>.jsonl`, one term per line with `term`, `definition`, `avoid`, `group`, `created_at`, `updated_at`.
 - Generated view: `.agents/docs/GLOSSARY.md`, ignored, following matt's GLOSSARY-FORMAT.md plus a `_Source_` line per term.
-- Same-name conflict rules are deferred.
+- The install step belongs to this skill, not to setup's design (user confirmed).
 
 ## Not yet specified
 
@@ -42,5 +42,5 @@ All child tasks are complete and no further child task is needed: the SKILL.md, 
 
 ## Out of scope
 
-- Setup's installation work (environment map).
 - Same-name conflict rules (deferred).
+- Software-specific workflows.

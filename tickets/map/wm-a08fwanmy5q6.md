@@ -7,33 +7,31 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:08Z
-updated_at: 2026-11-06T12:01:35Z
+updated_at: 2026-11-06T12:52:47Z
 parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring
 ---
-## Destination
+## Target
 
-Design the setup skill: check dependency configuration, initialize the waymark project (config, categories, fields, user.toml), and initialize rules (AGENTS.md, GLOSSARY.md, and so on), so a team can run from zero. Borrows from setup-matt-pocock-skills and wizard.
+Design the environment-category skills. The first is the setup skill: check dependencies, initialize a waymark project, and lay down rules, so a team can run from zero.
+Why: without setup a new project has no tracker configuration, no rules, and no installed skills; every later step assumes it ran.
 
-## Notes
+## Acceptance direction
 
-- Category: environment. Answers "is the project ready, how do we initialize".
-- Trigger: user-invoked, once at project start, then on demand.
-- Delivery location: weave-your-work/setup/ (directory already created by the user).
-- Borrowed from: .inbox/skills setup-matt-pocock-skills (probe first, ask only genuinely branching choices, land answers at fixed paths), wizard (re-entrant, one step per screen).
+The setup skill map is accepted and its own children are done, or the environment category settles what else it needs.
+
+## Children
+
+- [Setup skill](tickets/map/wm-ygnttse5hd5k.md): dependency checks, project initialization, rules
 
 ## Decisions so far
 
-- setup scope: check dependency configuration, initialize the project, initialize rules (user confirmed).
-- Glossary initialization is a setup child ticket: create `.glossary/`, add the `.agents/docs/GLOSSARY.md` ignore entry, register the MCP server, install the git post-merge hook, copy `glossary-rules.md` into `.agents/rules/`, and add a system prompt to AGENTS.md pointing at the rules under `.agents/rules/`. Prefer instructions an AI executes over one script; mechanical pieces may be scripts. setup carries more duties than this (user confirmed).
+- Environment category holds the setup skill as a skill map (user confirmed).
 
 ## Not yet specified
 
-- Which dependencies to check (waymark binary, git, node, other toolchains).
-- Which configuration to initialize (config.toml categories/fields, user.toml operator/timezone).
-- What the rules files are (AGENTS.md, GLOSSARY.md, CLAUDE.md).
-- Run form: one-shot command or re-entrant script.
+- Whether the environment category holds more skills later.
 - How an initialized project enters the execution flow.
 
 ## Out of scope
