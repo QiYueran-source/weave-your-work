@@ -4,6 +4,18 @@ Work-weave is a skill set for general team collaboration. It uses waymark as the
 
 ## Language
 
+**ticket (local work item)**:
+A waymark document inside the repository, the carrier of local work state. Both map and task are tickets. Advancing, claiming, closing, and archiving all act on tickets.
+_Avoid_: issue (issues live on GitHub or Gitee, not in the repository)
+
+**issue (remote issue)**:
+A problem report on GitHub or Gitee, used for real-time team communication. It is not local state; a discussion's conclusion counts only after it is written back to a ticket.
+_Avoid_: ticket (a local work item), task
+
+**comment (synced record)**:
+A record synced back from an issue, carrying a discussion conclusion or decision. It uses waymark's comment category for now.
+_Avoid_: discussion (when referring to the remote conversation itself)
+
 **map (target node)**:
 A target node that answers "what I want". Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.
 _Avoid_: goal, plan, project, phase, milestone (when it implies a fixed point in time)
