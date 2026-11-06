@@ -129,7 +129,7 @@ The conversation that produced the tickets is not recorded. Only settled decisio
 - [Work-weave: general team collaboration skill set](../../../tickets/map/wm-wjwa9081hse1.md)
 - [Entry skills: ask-me routing and questioning](../../../tickets/map/wm-8wzzh4hp5evp.md)
 - [Environment skills: setup initialization and checks](../../../tickets/map/wm-a08fwanmy5q6.md)
-- [Execution skills: map and task collaboration](../../../tickets/map/wm-qhd3twqjzhma.md)
+- [Execution skills: map, task, and glossary](../../../tickets/map/wm-qhd3twqjzhma.md)
 - [Communication skills: issue remote exchange](../../../tickets/map/wm-25b3q7mg88c7.md)
 - [Glossary skill](../../../tickets/map/wm-rq3exm0m5563.md)
 - [Map skill](../../../tickets/map/wm-0b59r7xfhk73.md)

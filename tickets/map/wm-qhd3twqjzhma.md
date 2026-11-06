@@ -1,13 +1,13 @@
 ---
 schema: 1
 id: wm-qhd3twqjzhma
-title: 'Execution skills: map and task collaboration'
+title: 'Execution skills: map, task, and glossary'
 category: map
 status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T12:44:29Z
+updated_at: 2026-11-06T12:45:31Z
 parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring

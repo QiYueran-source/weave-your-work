@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-06T12:01:52Z
+updated_at: 2026-11-06T12:45:31Z
 custom_fields:
   phase: exploring
 ---
@@ -17,7 +17,7 @@ Form an installable skill set for general team collaboration under weave-your-wo
 
 ## Notes
 
-- Category split (decided): entry (ask-me), environment (setup), execution (map, task), communication (issue). Each category can hold several skills; this round opens one map per category.
+- Category split (decided): entry (ask-me), environment (setup), execution (map, task, glossary), communication (issue). Each category can hold several skills; this round opens one map per category, and each category's children are skill maps.
 - One map per category, listed under "Sub-maps". Design decisions live in each sub-map; this map is an index only and does not restate them.
 - Reference sources: matt skill set (.inbox/skills), reference skills (.inbox/skills-ref), design notes (.inbox/work-methods/).
 - Key findings (general-methods.md): name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts others can read; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
@@ -26,18 +26,18 @@ Form an installable skill set for general team collaboration under weave-your-wo
 
 - [Entry skills: ask-me routing and questioning](tickets/map/wm-8wzzh4hp5evp.md)
 - [Environment skills: setup initialization and checks](tickets/map/wm-a08fwanmy5q6.md)
-- [Execution skills: map and task collaboration](tickets/map/wm-qhd3twqjzhma.md)
+- [Execution skills: map, task, and glossary](tickets/map/wm-qhd3twqjzhma.md)
 - [Communication skills: issue remote exchange](tickets/map/wm-25b3q7mg88c7.md)
 
 ## Decisions so far
 
 - Delivery shape: a skill set under weave-your-work, one map per category (user confirmed).
 - Category split: entry/environment/execution/communication, one map per category (user confirmed).
+- Skill layer: a category's children are skill maps, and a skill's function details become tasks under its skill map (user confirmed).
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery and probe, with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by a non-executor against signals agreed in advance, distinguishing done/not done/cannot judge; details later (user confirmed direction).
 - ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).
-- The work-weave map is the single root of the project tree; the four category maps are its children (user confirmed).
 
 ## Not yet specified (cross-category coordination)
 
