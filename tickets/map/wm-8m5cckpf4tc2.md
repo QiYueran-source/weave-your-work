@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T13:01:39Z
+updated_at: 2026-11-06T13:01:50Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -20,13 +20,13 @@ Why: a map can carry fog for a long time and never move. Explore is how fog grad
 
 ## Acceptance direction
 
-All child tasks are complete and no further child task is needed: the SKILL.md exists under , and a sample map with fog can be explored end to end, with each fog item either graduated into a child, cleared, or turned into a probe.
+All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/explore/`, and a sample map with fog can be explored end to end, with each fog item either graduated into a child, cleared, or turned into a probe.
 
 ## Notes
 
 - Category: execution, a child map of the execution map.
 - Boundary (user confirmed): ask-me handles entry routing and the generic question protocol; explore handles fog triage, the two routes, and landing; map and task reference explore.
-- Triggers (user confirmed):  is the primary entry and runs explore when it meets fog;  is a separate entry; automatic invocation happens when a map is exploring and its fog is non-empty.
+- Triggers (user confirmed): `/map` is the primary entry and runs explore when it meets fog; `/explore` is a separate entry; automatic invocation happens when a map is exploring and its fog is non-empty.
 - Probe acceptance belongs to the task skill; explore depends on it and does not define it here (user confirmed).
 - Reference degree: domain-neutral methods only. A/B tests, fake-door tests, prototypes and other product-specific tools stay out.
 - Answerer: the owner by default. When the owner is unsure, resolve through a remote issue first; which issues to sync back is decided in the communication category.
@@ -43,7 +43,7 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 - Domain-neutral only; product-specific validation tools excluded (user confirmed).
 - Answerer defaults to the owner; the owner's uncertainty is resolved through a remote issue first (user confirmed).
 - explore references ask-me's question protocol; map and task reference explore (user confirmed).
-- Trigger:  runs explore when it meets fog;  is a separate entry; automatic invocation when a map is exploring with non-empty fog (user confirmed).
+- Trigger: `/map` runs explore when it meets fog; `/explore` is a separate entry; automatic invocation when a map is exploring with non-empty fog (user confirmed).
 - Probe acceptance: owned by the task skill; explore depends on it (user confirmed).
 
 ## Not yet specified
