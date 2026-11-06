@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:08Z
-updated_at: 2026-11-06T09:54:07Z
+updated_at: 2026-11-06T11:43:30Z
 custom_fields:
   phase: exploring
 ---
@@ -25,10 +25,11 @@ Design the setup skill: check dependency configuration, initialize the waymark p
 ## Decisions so far
 
 - setup scope: check dependency configuration, initialize the project, initialize rules (user confirmed).
+- Glossary initialization is a setup child ticket: create `.glossary/`, add the `.agents/docs/GLOSSARY.md` ignore entry, register the MCP server, install the git post-merge hook, copy `glossary-rules.md` into `.agents/rules/`, and add a system prompt to AGENTS.md pointing at the rules under `.agents/rules/`. Prefer instructions an AI executes over one script; mechanical pieces may be scripts. setup carries more duties than this (user confirmed).
 
 ## Not yet specified
 
-- Which dependencies to check (waymark binary, git, other toolchains).
+- Which dependencies to check (waymark binary, git, node, other toolchains).
 - Which configuration to initialize (config.toml categories/fields, user.toml operator/timezone).
 - What the rules files are (AGENTS.md, GLOSSARY.md, CLAUDE.md).
 - Run form: one-shot command or re-entrant script.
