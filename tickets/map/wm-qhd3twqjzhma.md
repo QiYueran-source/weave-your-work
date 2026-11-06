@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T11:12:31Z
+updated_at: 2026-11-06T11:15:16Z
 custom_fields:
   phase: exploring
 ---
@@ -22,6 +22,7 @@ Design the map and task skills: the complete collaboration chain from target map
 - Glossary: GLOSSARY.md (created; map/task/target tree/dependency edge/refinement/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
 - Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
 - Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
+- Work rule: settled details go into the owning ticket as soon as they are settled; see .agents/rules/03-record-in-tickets.md.
 
 ## Decisions so far
 
