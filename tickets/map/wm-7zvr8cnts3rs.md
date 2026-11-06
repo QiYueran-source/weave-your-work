@@ -7,8 +7,11 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:48:15Z
-updated_at: 2026-11-06T16:48:15Z
+updated_at: 2026-11-06T16:52:12Z
 parent: wm-qhd3twqjzhma
+soft_links:
+  - wm-25b3q7mg88c7
+  - wm-rq3exm0m5563
 ---
 ## Target
 
