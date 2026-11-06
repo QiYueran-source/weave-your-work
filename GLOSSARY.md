@@ -40,6 +40,14 @@ _Avoid_: breakdown (when it implies slicing once into executable pieces)
 The moment a fog item becomes a child node. It arrives as a task when one action and one verifiable result can be written and one person can finish and verify it in one go; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
 _Avoid_: graduation, breakdown, splitting (when they mean a fog item becoming a node rather than slicing work)
 
+**split (分裂)**:
+The act of turning one map's next layer into child maps or tasks. The split skill decides when to split and which type; it never resolves fog.
+_Avoid_: explore (exploring fog is not splitting), breakdown
+
+**explore (探索)**:
+The act of resolving a map's fog: turning an undecided item into a decision, a clearance, or something left for split. The explore skill never creates children.
+_Avoid_: split (splitting is not exploring), grill (an interview method, not the act itself)
+
 **advance**:
 An operation an owner performs on their own work item: changing title/body/fields/status, adding or removing dependencies, closing, reopening, archiving, transferring ownership. Only the owner can do it.
 _Avoid_: update, modify (when the actor is not specified)
