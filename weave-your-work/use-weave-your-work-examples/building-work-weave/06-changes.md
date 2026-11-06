@@ -7,7 +7,8 @@
 - Rule 03 was added: settled details land in the owning ticket immediately.
 - The execution map's destination now names three skills: map, task, and glossary.
 - The three skill designs were first cut as tasks, then moved to skill maps; the skill layer was missing at the first cut.
-- The map and task skill designs became skill maps of their own, with worked examples under `weave-your-work/examples/`.
+- The map and task skill designs became skill maps of their own, with worked examples under `weave-your-work/use-weave-your-work-examples/`.
 - The category maps were hung under the root map (`fa46553`), closing the parent gap.
 - The glossary install task moved under the glossary map, so its dependency on that map was removed (a child does not wait for its parent).
+- The examples moved into the `use-weave-your-work-examples` skill, split by section.
 - This rule and example were added on 2026-11-06.

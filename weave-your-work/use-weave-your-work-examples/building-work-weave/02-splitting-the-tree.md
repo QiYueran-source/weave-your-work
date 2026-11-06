@@ -13,11 +13,12 @@ The root map is an index. It lists the sub-maps, states the destination, and hol
 
 ### Second split: the execution skills
 
-The execution map settled the semantic model first: every target node is a map; a task is the finest target, stating an action and a verifiable result; parent-child is refinement; order is a dependency edge. With that model in place, three skill maps were cut under the execution map, a setup skill map under the environment map, and one task under the glossary map:
+The execution map settled the semantic model first: every target node is a map; a task is the finest target, stating an action and a verifiable result; parent-child is refinement; order is a dependency edge. With that model in place, four skill maps were cut under the execution map, a setup skill map under the environment map, and one task under the glossary map:
 
 - [Map skill](../../../tickets/map/wm-0b59r7xfhk73.md) under the execution map.
 - [Task skill](../../../tickets/map/wm-87pgn0b75yy5.md) under the execution map.
 - [Glossary skill](../../../tickets/map/wm-rq3exm0m5563.md) under the execution map.
+- [Explore skills: fog exploration](../../../tickets/map/wm-8m5cckpf4tc2.md) under the execution map.
 - [Setup skill](../../../tickets/map/wm-ygnttse5hd5k.md) under the environment map.
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md) under the glossary map.
 
