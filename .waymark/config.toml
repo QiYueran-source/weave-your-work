@@ -1,4 +1,4 @@
-version = "1.4"
+version = "1.5"
 storage_root = "tickets"
 
 [categories.comment]
@@ -18,6 +18,10 @@ type = "string"
 required = false
 
 [fields.phase]
+type = "string"
+required = false
+
+[fields.split_as]
 type = "string"
 required = false
 

@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T15:00:15Z
+updated_at: 2026-11-06T15:58:02Z
 parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring
@@ -42,7 +42,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Task types: delivery (failure is an incident) and probe (failure is a normal result), with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by a non-executor against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed (user confirmed; details to follow).
 - map template: six sections, fixed. Target states the goal in one line plus Why in one or two lines; the target does not name a solution. Acceptance direction gives the observable state when writable and otherwise falls back to "all children done and no further children needed" plus a review point. Children is a human-readable mirror of waymark's parent relation; waymark is the source of truth and the body list is updated whenever a child is added or removed. Decisions so far holds one line per decision with its source; major decisions become ADRs linked from the list. Not yet specified holds fog that arrives as a child or is cleared. Out of scope holds every "not doing" item with a one-line reason; the boundaries of the goal live there too, so there is only one place for exclusions (user confirmed).
-- map frontmatter: no extra custom fields beyond phase. title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
+- map frontmatter: phase plus `split_as` (submap / task, written at split time). title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Node outcomes: a node ends in one of three states. completed closes it as achieved. failed keeps the record: status closed plus the outcome field set to failed, and a replacement node opened as a sibling with a soft link between them. archived retires a node that was never done or whose direction proved wrong (user confirmed; outcome field declared).
 - Fog exploration: before choosing a route, turn each fog item into a testable assumption and rank assumptions by impact times risk; test high-impact, high-risk ones first. Then route by where the answer lives: in someone's head, use conversation; in reality, use a probe task. Conversation asks about past behaviour and specific examples, not opinions; a probe uses the smallest reversible action and measures behaviour, not opinions. Methods stay domain-neutral: no A/B tests or other product-specific tools (user confirmed direction).
 - Terminology sync: issue means a GitHub or Gitee issue; ticket means the local waymark document (map or task); comment means a record synced back from an issue, using waymark's comment category for now (user confirmed, recorded in GLOSSARY).
