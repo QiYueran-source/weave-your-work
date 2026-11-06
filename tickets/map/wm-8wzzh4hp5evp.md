@@ -7,7 +7,8 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:07Z
-updated_at: 2026-11-06T09:54:06Z
+updated_at: 2026-11-06T12:01:35Z
+parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring
 ---

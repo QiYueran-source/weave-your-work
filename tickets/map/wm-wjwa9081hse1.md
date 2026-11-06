@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-06T09:53:58Z
+updated_at: 2026-11-06T12:01:52Z
 custom_fields:
   phase: exploring
 ---
@@ -37,6 +37,7 @@ Form an installable skill set for general team collaboration under weave-your-wo
 - Task types: delivery and probe, with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by a non-executor against signals agreed in advance, distinguishing done/not done/cannot judge; details later (user confirmed direction).
 - ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).
+- The work-weave map is the single root of the project tree; the four category maps are its children (user confirmed).
 
 ## Not yet specified (cross-category coordination)
 
