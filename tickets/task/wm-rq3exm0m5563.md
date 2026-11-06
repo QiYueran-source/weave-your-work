@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T11:43:18Z
-updated_at: 2026-11-06T11:43:18Z
+updated_at: 2026-11-06T11:53:20Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   task_kind: delivery
@@ -17,9 +17,9 @@ custom_fields:
 Design the glossary skill and deliver four pieces:
 
 1. SKILL.md: how to settle a term (challenge conflicts, one name per concept, stress definitions with scenarios, write it once settled), how to merge and dedupe, and the term constraints.
-2. MCP server (Node): write a term into the current user's `.glossary/<user>.md`; before writing, do exact matching on the term name and avoid aliases, and do no semantic computation.
-3. Hooks (Node): after git post-merge, merge every person's file into `.agents/docs/GLOSSARY.md`, which stays ignored by git.
-4. Merge format and rules: the generated view's structure, source attribution, and provisional handling of same-name conflicts.
+2. MCP server (Node): write a term as one JSON line into the current user's `.glossary/<operator>.jsonl`; before writing, do exact matching on the term name and avoid aliases, and do no semantic computation.
+3. Hooks (Node): after git post-merge, merge every person's JSONL file into `.agents/docs/GLOSSARY.md`, which stays ignored by git. The view follows matt's GLOSSARY-FORMAT.md.
+4. Merge format and rules: each JSONL line is a term object with `term`, `definition`, `avoid`, `group` (optional, default empty), `created_at`, and `updated_at`; the generated markdown view sorts by term, carries a `_Source_` line, and holds conflict entries until the deferred conflict rule lands.
 
 ## Acceptance signal
 
@@ -30,4 +30,4 @@ Design the glossary skill and deliver four pieces:
 ## Boundaries
 
 - Same-name conflict rules are deferred.
-- Identity is git user.name or operator; pick one at implementation time.
+- Identity is the operator, with git user.name as fallback.

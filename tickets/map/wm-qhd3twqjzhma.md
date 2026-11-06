@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T11:46:03Z
+updated_at: 2026-11-06T11:53:27Z
 custom_fields:
   phase: exploring
 ---
@@ -37,6 +37,7 @@ Design the map and task skills: the complete collaboration chain from target map
 - Glossary skill: an execution-category skill designed as a child ticket of this map. Source is one file per person under `.glossary/` (tracked by git); `.agents/docs/GLOSSARY.md` is a generated view, ignored by git. The MCP server regenerates on write and a git post-merge hook regenerates after a pull. Deliverables are SKILL.md, an MCP server (Node), hooks (Node), and a rules file, living in the skill directory and initialized by setup. MCP does exact matching only; semantic similarity is the agent's job (user confirmed).
 - Glossary identity: the operator from `.waymark/user.toml` names the file; git `user.name` is the fallback when no operator is set. The file is named after that identity (user confirmed).
 - Glossary MCP interface: `glossary_lookup(term)`, `glossary_list`, `glossary_write(term, definition, avoid)`, and `glossary_merge`. No tool takes another person's file path; the server resolves the current identity itself (user confirmed).
+- Glossary source format: JSONL, one term object per line in `.glossary/<operator>.jsonl`. Fields are `term`, `definition`, `avoid` (array), `group` (optional, default empty), `created_at`, `updated_at`. The MCP server reads and rewrites the file; the generated markdown view is derived from it (user confirmed).
 - Glossary generated view: follows matt's GLOSSARY-FORMAT.md. Structure is `# {Context Name}`, a one or two sentence description, then `## Language`, each term as `**Term**:` followed by a tight one or two sentence definition and `_Avoid_:` for the aliases. Terms sit under subheadings when natural clusters emerge, otherwise in one alphabetical list. Two additions the merged view needs: a `_Source_:` line per term and a header saying the file is generated and must not be edited by hand. Conflict entries wait for the deferred conflict rule (user asked to follow matt's rules rather than guess).
 
 ## Not yet specified
