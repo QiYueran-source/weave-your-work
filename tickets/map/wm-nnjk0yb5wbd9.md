@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-06T17:00:49Z
+updated_at: 2026-11-06T17:10:26Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -28,10 +28,10 @@ The reference is written into split's `submap.md`: the decision test, the rhythm
 
 - Submap is a reference inside the split skill, not a separate skill (user confirmed).
 - A map splits into submaps when one action and one verifiable result cannot be written, or when it has several independent directions that need their own owner (user confirmed).
-- With fog present, default to submap (user confirmed).
-- The child map's body is minimal: Target and Not yet specified are required; acceptance direction defaults to all children done and no further children needed; other sections are optional (user confirmed).
+- With fog present, default to submap; split a task only when the remaining fog clearly cannot affect that part (user confirmed).
+- The child map's body is minimal: Target is required; write Not yet specified when there is fog, and skip it when a clear decision is already written; acceptance direction defaults to all children done and no further children needed; other sections are optional (user confirmed).
 - When splitting, analyse what is still unknown and write it into the child's Not yet specified (user confirmed).
-- Fill the child's Target and fog by grilling or exploring it, not by guessing (user confirmed).
+- Fill the child's Target and fog by grilling, not by guessing; explore resolves the fog after it is on the map (user confirmed).
 - Rhythm: one layer at a time, no preset count, stop when each child can state Target and fog (user confirmed).
 - Children sync: update the parent's body, set the waymark parent, run `waymark tree` to check both sides agree (user confirmed).
 
