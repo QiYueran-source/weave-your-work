@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T13:49:33Z
+updated_at: 2026-11-06T13:52:49Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -52,6 +52,8 @@ A requirement judgment fog under the map "raise click-through 10% this quarter":
 - Two routes: conversation when the answer lives in someone's head, a probe task when it lives in reality (user confirmed).
 - Fog classes: judgment fog goes through assumption-ization, impact ranking and the routes; fact fog is researched directly; decision fog is put to the owner; goal fog goes back to the Target section; action fog graduates straight into a child (user confirmed).
 - Only judgment fog becomes an assumption, written as a goal or requirement assumption plus the consequence if it is wrong. The assumption never covers the implementation path or its effects; those belong to the task skill. Ranking uses the impact of the assumption being wrong on the target, not uncertainty (user confirmed).
+- Conversation route: use it to make the destination explicit, meaning the goal, the requirement, the boundaries, and how targets relate. Past facts (what happened last time, existing data) are evidence for or against a destination assumption. Do not ask people to predict whether a plan will work or how much effect it will have; that is feasibility, owned by the task skill. The agent asks and records, never answers for the owner; when the owner cannot answer, resolve through a remote issue first (user confirmed).
+- Interface: explore reuses ask-me's question protocol for the conversation route; ask-me routes \"explore the fog\" requests to explore (user confirmed).
 - map states the expected outcome or requirement and does not cover feasibility or implementation; task carries implementation (user confirmed, recorded in GLOSSARY).
 - Domain-neutral only; product-specific validation tools excluded (user confirmed).
 - Answerer defaults to the owner; the owner's uncertainty is resolved through a remote issue first (user confirmed).
@@ -61,8 +63,7 @@ A requirement judgment fog under the map "raise click-through 10% this quarter":
 
 ## Not yet specified
 
-- The conversation route's concrete flow: what to ask and how to ask without product-specific framing.
-- explore's interface with ask-me: when does explore hand over to the question protocol.
+(none; fog cleared)
 
 ## Out of scope
 
