@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T13:52:49Z
+updated_at: 2026-11-06T14:00:22Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -18,11 +18,11 @@ Design the explore skill: when a map has fog (its Not yet specified list), triag
 
 Explore clarifies goals and requirements (the destination). It does not test feasibility or implementation; those belong to tasks.
 
-Why: a map can carry fog for a long time and never move. Explore is how fog graduates into children or gets cleared.
+Why: a map can carry fog for a long time and never move. Explore is how fog arrives as children or gets cleared.
 
 ## Acceptance direction
 
-All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/explore/`, and a sample map with fog can be explored end to end, with each fog item either graduated into a child, cleared, or turned into a probe.
+All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/explore/`, and a sample map with fog can be explored end to end, with each fog item either arrived as a child, cleared, or turned into a probe.
 
 ## Notes
 
@@ -50,7 +50,7 @@ A requirement judgment fog under the map "raise click-through 10% this quarter":
 ## Decisions so far
 
 - Two routes: conversation when the answer lives in someone's head, a probe task when it lives in reality (user confirmed).
-- Fog classes: judgment fog goes through assumption-ization, impact ranking and the routes; fact fog is researched directly; decision fog is put to the owner; goal fog goes back to the Target section; action fog graduates straight into a child (user confirmed).
+- Fog classes: judgment fog goes through assumption-ization, impact ranking and the routes; fact fog is researched directly; decision fog is put to the owner; goal fog goes back to the Target section; action fog arrives directly as a child (user confirmed).
 - Only judgment fog becomes an assumption, written as a goal or requirement assumption plus the consequence if it is wrong. The assumption never covers the implementation path or its effects; those belong to the task skill. Ranking uses the impact of the assumption being wrong on the target, not uncertainty (user confirmed).
 - Conversation route: use it to make the destination explicit, meaning the goal, the requirement, the boundaries, and how targets relate. Past facts (what happened last time, existing data) are evidence for or against a destination assumption. Do not ask people to predict whether a plan will work or how much effect it will have; that is feasibility, owned by the task skill. The agent asks and records, never answers for the owner; when the owner cannot answer, resolve through a remote issue first (user confirmed).
 - Interface: explore reuses ask-me's question protocol for the conversation route; ask-me routes \"explore the fog\" requests to explore (user confirmed).
@@ -59,7 +59,7 @@ A requirement judgment fog under the map "raise click-through 10% this quarter":
 - Answerer defaults to the owner; the owner's uncertainty is resolved through a remote issue first (user confirmed).
 - explore references ask-me's question protocol; map and task reference explore (user confirmed).
 - Trigger: `/map` runs explore when it meets fog; `/explore` is a separate entry; automatic invocation when a map is exploring with non-empty fog (user confirmed).
-- Landing: a graduated fog item is struck through, not deleted, and its child ticket is created; an irrelevant fog item is deleted; a decision goes to Decisions so far; a \"not doing\" item goes to Out of scope; a term goes to GLOSSARY; a major decision becomes an ADR (user confirmed).
+- Landing: a fog item that has arrived is struck through, not deleted, and its child ticket is created; an irrelevant fog item is deleted; a decision goes to Decisions so far; a \"not doing\" item goes to Out of scope; a term goes to GLOSSARY; a major decision becomes an ADR (user confirmed).
 
 ## Not yet specified
 
