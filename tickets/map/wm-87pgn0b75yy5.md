@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-06T12:44:22Z
+updated_at: 2026-11-06T14:44:57Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -16,6 +16,7 @@ custom_fields:
 ## Target
 
 Design the task skill so a team can turn a leaf of the target tree into a claimable, verifiable unit: write the task body, set its kind and reversibility, claim it with start, wire its dependencies, and close it against an acceptance signal.
+
 Why: task is the finest target and the only node that can be executed; without this skill a map never turns into work.
 
 ## Acceptance direction
@@ -24,15 +25,25 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 
 ## Children
 
-- (none yet; the function details are still fog)
+(none yet; the function details are still fog)
 
 ## Decisions so far
 
 - Inherits the execution map's decisions: ownership model, task kinds, reversibility marker, and acceptance direction.
+- Structure freeze: once a map starts splitting into tasks, its children are all tasks and the structure is frozen; a later change opens a sibling map (user proposed).
+- needs_human: a boolean field marks a task that must be done by a person, as opposed to a task an agent can finish alone (user proposed).
+- Task atomicity: a task cannot have child tasks. If a task is too big to finish in one go, it becomes a map (user proposed).
 
 ## Not yet specified
 
-- The function details of the task skill: the task body sections, when a task is delivery or probe, the reversibility value and what it changes, claiming with start, dependency wiring, who may advance, and closing.
+- The task body template: the sections for a delivery task and for a probe task.
+- The reversibility field: its values and what each value changes.
+- The needs_human notification: how the person is notified and which issue mechanism carries it.
+- Claiming: whether a claim equals start (open to in_progress), and who may advance a task.
+- Dependency wiring: how a waiting task declares its blockers.
+- Closing: how close and outcome work, and how a failed task keeps its record.
+- The small-addition rule under the structure freeze: whether a small extra task may be added after the freeze.
+- The Split criterion and the graduation rule as they apply to tasks (inherited from the execution map).
 
 ## Out of scope
 
