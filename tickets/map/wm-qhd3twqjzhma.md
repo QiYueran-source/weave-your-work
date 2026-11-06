@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T12:57:49Z
+updated_at: 2026-11-06T12:58:18Z
 parent: wm-wjwa9081hse1
 custom_fields:
   phase: exploring
@@ -19,7 +19,7 @@ Design the map and task skills: the complete collaboration chain from target map
 ## Notes
 
 - Category: execution. Answers "is the work advancing, who is accountable, where is it stuck".
-- Delivery location: map/ and task/ skill directories under weave-your-work/ (to be created), plus the explore skill.
+- Delivery location: map/, task/, explore/ and glossary/ skill directories under weave-your-work/ (to be created).
 - Glossary: GLOSSARY.md (created; ticket/issue/comment/map/task/target tree/dependency edge/refinement/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
 - Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
 - Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
@@ -27,7 +27,10 @@ Design the map and task skills: the complete collaboration chain from target map
 
 ## Children
 
+- [Map skill](tickets/map/wm-0b59r7xfhk73.md): the node that answers "what I want"; six-section body, children, phases, acceptance.
+- [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Explore skills: fog exploration](tickets/map/wm-8m5cckpf4tc2.md): turns fog items into testable assumptions, ranks them, and routes them by where the answer lives.
+- [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 
 ## Decisions so far
 
