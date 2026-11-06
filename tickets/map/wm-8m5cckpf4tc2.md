@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T13:01:50Z
+updated_at: 2026-11-06T13:25:23Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -39,7 +39,8 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 ## Decisions so far
 
 - Two routes: conversation when the answer lives in someone's head, a probe task when it lives in reality (user confirmed).
-- Pre-step: assumption-ize each fog item, rank by impact times uncertainty, test high-impact high-uncertainty ones first (user confirmed direction).
+- Fog classes: judgment fog goes through assumption-ization, impact ranking and the two routes; fact fog is researched directly; decision fog is put to the owner; goal fog goes back to the Target section; action fog graduates straight into a child (user confirmed).
+- Only judgment fog becomes an assumption. The ranking uses the impact the assumption being wrong has on the target, not uncertainty; uncertainty belongs to the task skill (user confirmed).
 - Domain-neutral only; product-specific validation tools excluded (user confirmed).
 - Answerer defaults to the owner; the owner's uncertainty is resolved through a remote issue first (user confirmed).
 - explore references ask-me's question protocol; map and task reference explore (user confirmed).
@@ -48,10 +49,9 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 
 ## Not yet specified
 
-- How to turn a fog item into a testable assumption, concretely, and whether a fog that cannot be written as an assumption should stay.
-- The general dimensions of the impact times uncertainty ranking, and whether ranking adds map fields or stays in body text.
+- The concrete form of a judgment assumption and where it lives in the map body.
 - The conversation route's concrete flow: what to ask and how to ask without product-specific framing.
-- The probe route's concrete flow: how to design a probe, what to write, how to judge the result (acceptance itself belongs to the task skill).
+- The probe route's concrete flow: how to design a probe and what it writes (acceptance itself belongs to the task skill).
 - Landing rules: when to write a decision, when to graduate fog into a child, when to clear it.
 - explore's interface with ask-me: when does explore hand over to the question protocol.
 - explore's outputs and how to verify the skill works.
