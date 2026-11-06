@@ -1,0 +1,22 @@
+version = "1.3"
+storage_root = "tickets"
+
+[categories.comment]
+path = "tickets/comment"
+name = "Comment"
+
+[categories.map]
+path = "tickets/map"
+name = "Map"
+
+[categories.task]
+path = "tickets/task"
+name = "Task"
+
+[fields.phase]
+type = "string"
+required = false
+
+[fields.task_kind]
+type = "string"
+required = false
