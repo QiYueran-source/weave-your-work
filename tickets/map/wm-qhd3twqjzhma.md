@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T16:41:35Z
+updated_at: 2026-11-06T16:48:19Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -28,6 +28,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - [Map skill](tickets/map/wm-0b59r7xfhk73.md): the node that answers "what I want"; six-section body, children, acceptance.
 - [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
+- [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
 
 ## Decisions so far
 
