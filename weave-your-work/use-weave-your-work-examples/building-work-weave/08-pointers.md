@@ -7,6 +7,8 @@
 - [Communication skills: issue remote exchange](../../../tickets/map/wm-25b3q7mg88c7.md)
 - [Setup skill](../../../tickets/map/wm-ygnttse5hd5k.md)
 - [Glossary skill](../../../tickets/map/wm-rq3exm0m5563.md)
+- [Explore skills: fog exploration](../../../tickets/map/wm-8m5cckpf4tc2.md)
+- [Define the exploration skill](../../../tickets/task/wm-dxz6qcg4aamx.md)
 - [Map skill](../../../tickets/map/wm-0b59r7xfhk73.md)
 - [Task skill](../../../tickets/map/wm-87pgn0b75yy5.md)
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md)

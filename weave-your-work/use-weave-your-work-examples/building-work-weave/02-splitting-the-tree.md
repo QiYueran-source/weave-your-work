@@ -24,7 +24,7 @@ The execution map settled the semantic model first: every target node is a map; 
 
 A skill is a target with several function details still in fog, so each skill gets a map layer of its own. The test for the layer below: a function detail that can be written as a concrete action and a verifiable result becomes a task under the skill map; until then it stays in that map's Not yet specified.
 
-The first cut put the three skill designs directly under the execution map as tasks. That was wrong: it skipped the skill layer and flattened "the skill" and "a function of the skill" into one line. The fix moved each design to a map and left the function details as fog. This is the judgment the example exists to keep: the same test applies at every layer, and the layer is chosen by what can be refined next, not by how important the thing sounds.
+The first cut put the three skill designs that existed then directly under the execution map as tasks. That was wrong: it skipped the skill layer and flattened "the skill" and "a function of the skill" into one line. The fix moved each design to a map and left the function details as fog. This is the judgment the example exists to keep: the same test applies at every layer, and the layer is chosen by what can be refined next, not by how important the thing sounds.
 
 ### What stayed out of the tree
 
@@ -34,6 +34,6 @@ The first cut put the three skill designs directly under the execution map as ta
 
 ### The tree has two records
 
-The map template says the Children list in a map body mirrors waymark's parent relation, and waymark is the source of truth. In this run the category maps, the three skill maps, and the setup task all carry `parent` in their frontmatter; the root map's Sub-maps list is the reading aid.
+The map template says the Children list in a map body mirrors waymark's parent relation, and waymark is the source of truth. In this run the category maps, the four skill maps, and the setup task all carry `parent` in their frontmatter; the root map's Sub-maps list is the reading aid.
 
 The lesson: write the parent relation when the child is created. A body mirror is a reading aid; it is not the tree.
