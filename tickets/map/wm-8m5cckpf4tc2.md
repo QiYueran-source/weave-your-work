@@ -7,14 +7,16 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:57:36Z
-updated_at: 2026-11-06T13:34:56Z
+updated_at: 2026-11-06T13:48:02Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
 ---
 ## Target
 
-Design the explore skill: when a map has fog (its Not yet specified list), triage each item into one of five classes, turn judgment fog into testable assumptions, rank them by impact, route the chosen ones by where the answer lives (conversation), run the route with domain-neutral methods, and land the results back into the map.
+Design the explore skill: when a map has fog (its Not yet specified list), triage each item into one of five classes, turn judgment fog into assumptions about the goal or requirement, rank them by impact, route the chosen ones by where the answer lives, run the route with domain-neutral methods, and land the results back into the map.
+
+Explore clarifies goals and requirements (the destination). It does not test feasibility or implementation; those belong to tasks.
 
 Why: a map can carry fog for a long time and never move. Explore is how fog graduates into children or gets cleared.
 
@@ -34,13 +36,12 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 
 ## Worked example
 
-A judgment fog: "Content strategy alone can contribute 5% click-through."
+A requirement judgment fog under the map "raise click-through 10% this quarter": "Users do not click because the entrance is hard to find, not because the content is unappealing."
 
-1. Assumption: we believe content strategy contributes 5%; if it only contributes 2%, the overall 10% target is out of reach.
-2. Impact: high, because being wrong means the target fails.
-3. Route: nobody knows until it runs, so the answer lives in reality and becomes a probe.
-4. Probe: change content for 10% of traffic for two weeks; success means click-through rises at least 5% on that slice.
-5. Landing: when the probe returns, write the verified or refuted assumption into Decisions so far. If it holds, open a child map for content strategy. If it fails, revise the target or open a new direction.
+1. Assumption: we believe the main cause is the entrance; if the cause is actually content, the rework direction is wrong.
+2. Impact: high, because a wrong direction puts the whole target at risk.
+3. Route: the answer lives partly in people's heads and partly in data. Ask what happened last time the entrance changed, check click tracking, then hand a probe task to the task skill if the evidence is weak.
+4. Landing: write the confirmed or refuted cause into Decisions so far. If confirmed, open a child map for the entrance rework. If refuted, change direction.
 
 ## Children
 
@@ -50,7 +51,8 @@ A judgment fog: "Content strategy alone can contribute 5% click-through."
 
 - Two routes: conversation when the answer lives in someone's head, a probe task when it lives in reality (user confirmed).
 - Fog classes: judgment fog goes through assumption-ization, impact ranking and the routes; fact fog is researched directly; decision fog is put to the owner; goal fog goes back to the Target section; action fog graduates straight into a child (user confirmed).
-- Only judgment fog becomes an assumption. The ranking uses the impact the assumption being wrong has on the target, not uncertainty; uncertainty belongs to the task skill (user confirmed).
+- Only judgment fog becomes an assumption, and that assumption is about the goal or requirement, not about implementation. Ranking uses the impact the assumption being wrong has on the target, not uncertainty; uncertainty belongs to the task skill (user confirmed).
+- map states the expected outcome or requirement and does not cover feasibility or implementation; task carries implementation (user confirmed, recorded in GLOSSARY).
 - Domain-neutral only; product-specific validation tools excluded (user confirmed).
 - Answerer defaults to the owner; the owner's uncertainty is resolved through a remote issue first (user confirmed).
 - explore references ask-me's question protocol; map and task reference explore (user confirmed).
@@ -61,10 +63,10 @@ A judgment fog: "Content strategy alone can contribute 5% click-through."
 
 - The conversation route's concrete flow: what to ask and how to ask without product-specific framing.
 - explore's interface with ask-me: when does explore hand over to the question protocol.
-- explore's outputs and how to verify the skill works.
 
 ## Out of scope
 
 - Product-specific validation toolkits (A/B tests, fake-door tests, prototypes).
 - Issue triage rules (communication category).
 - Probe design and acceptance (task skill).
+- Verification details (the Define the exploration skill task).
