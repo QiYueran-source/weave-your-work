@@ -9,8 +9,6 @@ creator: frank
 created_at: 2026-11-06T16:01:13Z
 updated_at: 2026-11-06T16:01:13Z
 parent: wm-3nhrhmds8rqd
-custom_fields:
-  phase: exploring
 ---
 ## Target
 

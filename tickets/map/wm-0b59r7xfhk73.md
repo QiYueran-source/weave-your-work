@@ -7,15 +7,14 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:25Z
-updated_at: 2026-11-06T15:00:15Z
+updated_at: 2026-11-06T16:41:35Z
 parent: wm-qhd3twqjzhma
 custom_fields:
-  phase: exploring
   task_kind: delivery
 ---
 ## Target
 
-Design the map skill so a team can turn a target into a tree: write the six-section map body, hang children, keep the body index in sync with waymark's parent relation, move a map through its phases, and accept it when every child is done and no further child is needed.
+Design the map skill so a team can turn a target into a tree: write the six-section map body, hang children, keep the body index in sync with waymark's parent relation, move a map through its status transitions, and accept it when every child is done and no further child is needed.
 Why: map is the node that answers "what I want"; without this skill the tree has no entry point.
 
 ## Acceptance direction
@@ -26,14 +25,18 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 
 - [Explore skills: fog exploration](tickets/map/wm-8m5cckpf4tc2.md): triage fog and run the routes.
 - [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md): route to split-to-submap or split-to-task.
+- [Review skill: accept a map](tickets/map/wm-64st47g6pcrj.md): accepting a map before close.
 
 ## Decisions so far
 
 - Inherits the execution map's decisions: the semantic model, the six-section map template, and the frontmatter choice.
+- `/map` is the single entry that routes to explore, split and review (user confirmed).
+- Status flow: a new map starts open; split starts it (open to in_progress) when it gets children; when every child is closed, `/map` runs review; review closes the map or leaves it in_progress (user confirmed).
+- A decision may be recorded directly in Decisions so far without fog; split then turns it into a child (user confirmed).
 
 ## Not yet specified
 
-- The function details of the map skill: when a node is a map rather than a task, what each of the six sections holds, hanging children and syncing the body index, phase changes, and the acceptance check.
+- The function details of the map skill: when a node is a map rather than a task, what each of the six sections holds, hanging children and syncing the body index, status transitions, and the acceptance check.
 
 ## Out of scope
 

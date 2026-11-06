@@ -9,8 +9,6 @@ creator: frank
 created_at: 2026-11-06T15:00:01Z
 updated_at: 2026-11-06T15:00:01Z
 parent: wm-3nhrhmds8rqd
-custom_fields:
-  phase: exploring
 archived_at: 2026-11-06T15:06:49Z
 archive_reason: Merged into the split skill as a reference (task.md), following the one-skill-many-references pattern
 ---

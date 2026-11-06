@@ -1,4 +1,4 @@
-version = "1.5"
+version = "1.6"
 storage_root = "tickets"
 
 [categories.comment]
@@ -14,10 +14,6 @@ path = "tickets/task"
 name = "Task"
 
 [fields.outcome]
-type = "string"
-required = false
-
-[fields.phase]
 type = "string"
 required = false
 

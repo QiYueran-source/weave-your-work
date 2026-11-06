@@ -10,7 +10,6 @@ created_at: 2026-11-06T11:43:18Z
 updated_at: 2026-11-06T12:52:47Z
 parent: wm-qhd3twqjzhma
 custom_fields:
-  phase: exploring
   task_kind: delivery
 ---
 ## Target

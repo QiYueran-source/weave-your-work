@@ -8,8 +8,6 @@ owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
 updated_at: 2026-11-06T12:45:31Z
-custom_fields:
-  phase: exploring
 ---
 ## Destination
 

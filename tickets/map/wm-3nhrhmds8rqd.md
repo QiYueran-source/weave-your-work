@@ -7,10 +7,8 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-06T16:01:43Z
+updated_at: 2026-11-06T16:31:16Z
 parent: wm-0b59r7xfhk73
-custom_fields:
-  phase: exploring
 ---
 ## Target
 
@@ -41,6 +39,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - The router question is the choice criterion: can one action and one verifiable result be written? Yes goes to `task.md`, no to `submap.md` (user confirmed).
 - The criterion lives once in SKILL.md; the two references do not restate it (user confirmed).
 - After a split, update the parent's Children section immediately, set the waymark parent, and run `waymark tree` to check both sides agree (default).
+- Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).
 
 ## Not yet specified
 

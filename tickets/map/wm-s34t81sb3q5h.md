@@ -8,8 +8,6 @@ owner: frank
 creator: frank
 created_at: 2026-11-05T06:53:41Z
 updated_at: 2026-11-05T15:12:34Z
-custom_fields:
-  phase: exploring
 archived_at: 2026-11-06T09:12:32Z
 archive_reason: 用户决定退役并重新设计：旧地图正文结构与 wayfinder 地图格式不一致，由新设计地图取代
 ---
