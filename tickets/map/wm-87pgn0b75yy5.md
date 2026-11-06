@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-06T14:44:57Z
+updated_at: 2026-11-06T15:02:27Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   phase: exploring
@@ -30,7 +30,6 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 ## Decisions so far
 
 - Inherits the execution map's decisions: ownership model, task kinds, reversibility marker, and acceptance direction.
-- Structure freeze: once a map starts splitting into tasks, its children are all tasks and the structure is frozen; a later change opens a sibling map (user proposed).
 - needs_human: a boolean field marks a task that must be done by a person, as opposed to a task an agent can finish alone (user proposed).
 - Task atomicity: a task cannot have child tasks. If a task is too big to finish in one go, it becomes a map (user proposed).
 
