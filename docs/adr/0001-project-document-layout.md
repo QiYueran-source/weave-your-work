@@ -4,4 +4,4 @@ The project keeps different kinds of durable material in separate top-level loca
 
 ## Consequences
 
-`GLOSSARY.md` is not the shared source file and must be regenerated from `glossary/*.jsonl`; the source files and log records are committed so the team can share and review them. Short evidence can remain in a ticket body, while longer evidence belongs in `weave-logs/` and is linked from the ticket.
+`GLOSSARY.md` is not the shared source file and must be regenerated from `glossary/*.jsonl`; the source files and log records are committed so the team can share and review them. Short evidence can remain in a ticket body, while longer evidence belongs in `weave-logs/` and is linked from the ticket. Weave logs are named `YYYY-MM-DD_operator_topic.md`; they are not tickets, are not processed by waymark, and do not enter the target tree.
