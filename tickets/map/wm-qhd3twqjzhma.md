@@ -26,6 +26,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 ## Children
 
 - [Map skill](tickets/map/wm-0b59r7xfhk73.md): the node that answers "what I want"; six-section body, children, acceptance.
+- [Map body format](tickets/map/wm-6c4f9e2a7b31.md): the reference that defines how each map section and entry is written.
 - [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 - [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
@@ -46,6 +47,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Fog exploration: before choosing a route, turn each fog item into a testable assumption and rank assumptions by impact times risk; test high-impact, high-risk ones first. Then route by where the answer lives: in someone's head, use conversation; in reality, use a probe task. Conversation asks about past behaviour and specific examples, not opinions; a probe uses the smallest reversible action and measures behaviour, not opinions. Methods stay domain-neutral: no A/B tests or other product-specific tools (user confirmed direction).
 - Terminology sync: issue means a GitHub or Gitee issue; ticket means the local waymark document (map or task); comment means a record synced back from an issue, using waymark's comment category for now (user confirmed, recorded in GLOSSARY).
 - explore boundary: ask-me handles entry routing and the generic question protocol; explore handles fog triage, the routes, and landing; map and task reference explore. The explore skill gets its own child map (user confirmed).
+- Map body format is a separate child map under this execution map. It defines how Target, Acceptance direction, Children, Decisions so far, Not yet specified, and Out of scope are written; the map workflow stays in the Map skill. Fog is defined as in-scope content in Not yet specified that is not yet specific enough to become a decision, child map, or task. A fog entry uses an assumption plus the consequence if the assumption is wrong; explore classifies, routes, and lands it (user confirmed).
 
 ## Not yet specified
 
