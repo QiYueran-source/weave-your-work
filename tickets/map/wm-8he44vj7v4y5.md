@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:50Z
-updated_at: 2026-11-07T09:42:12Z
+updated_at: 2026-11-07T09:44:38Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -30,8 +30,8 @@ All children are complete and no further child is needed.
 
 - This skill holds the core step list and gates; the other execution skills reference it (user confirmed).
 - It pauses between steps for a person to look (user confirmed).
-- It runs in the main agent's context, where a person can be asked (user confirmed).
-- The first version has no self-grill and no execution log. The executor collects the information it needs itself and reports what it could not settle (user confirmed, replacing the earlier grill-and-log direction).
+- It runs where a person can be asked, which a subagent cannot (user confirmed).
+- The first version has no self-grill and no execution log. The executor gathers the information it needs itself and reports what it could not settle (user confirmed, replacing the earlier grill-and-log direction).
 - Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence record says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept. When the Action does not say where the output goes and the choice affects other people, the executor stops instead of choosing (user confirmed).
 - A task waiting on a person keeps status `in_progress`. The wait is recorded as a comment carrying the issue link, and a `waiting_on` field names the person or the thing it waits on (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
@@ -40,7 +40,7 @@ All children are complete and no further child is needed.
 
 - The step list itself, and where each gate sits on it.
 - How a pause is presented and what the person sees at it.
-- Which gates the main agent runs that a subagent cannot.
+- How the executor reports what it could not settle, now that no log is written.
 - How a stopped task is handed back to its owner.
 
 ## Out of scope
