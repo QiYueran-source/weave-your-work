@@ -40,7 +40,7 @@ Order is carried by the tree, never by a link. A link records a relationship wor
 
 - `body.md`: the sections a body may hold, the order they appear in, and a whole ticket as waymark stores it.
 - `kind.md`: how to choose between a delivery and a probe task, which kind suits which stage, and what failure means for each.
-- `properties.md`: the three custom fields, the owner, placement under a map, and the link rules.
+- `properties.md`: the custom fields, including the ones written while the task runs, the owner, placement under a map, and the link rules.
 
 ## What this skill does not do
 

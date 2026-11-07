@@ -55,7 +55,7 @@ Optional, type: string. Leave it unset when the task waits on nobody.
 
 Waymark records one accountable person per item. The owner advances the task and decides whether it passes. It is not the person who happened to do the work: work can be handed to anyone, acceptance cannot.
 
-The owner is set when the ticket is created, with `waymark create --owner`, and changed with `waymark owner`. It is not one of the three custom fields above.
+The owner is set when the ticket is created, with `waymark create --owner`, and changed with `waymark owner`. It is not one of the custom fields above.
 
 ## Placement
 
