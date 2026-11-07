@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:50Z
-updated_at: 2026-11-07T10:21:08Z
+updated_at: 2026-11-07T10:29:00Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -24,7 +24,7 @@ All children are complete and no further child is needed.
 
 ## Children
 
-- [Write the execute-step-by-step skill](tickets/task/wm-hx3ef134akk9.md): not started; the design above it is not settled yet.
+- [Write the execute-step-by-step skill](tickets/task/wm-hx3ef134akk9.md): not started; the step list below is what it writes.
 
 ## Decisions so far
 
@@ -33,21 +33,22 @@ All children are complete and no further child is needed.
 - It pauses between steps for a person to look (user confirmed).
 - It runs where a person can be asked, which a subagent cannot (user confirmed).
 - The first version has no self-grill and no execution log. The executor gathers the information it needs itself and reports what it could not settle (user confirmed, replacing the earlier grill-and-log direction).
-- Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept (user confirmed).
+- Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and what the work left says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept (user confirmed).
 - A question the ticket leaves open that changes what the task promises is answered by the skill, not by taste: `execute-step-by-step` has a person at hand and stops to ask; `execute-all` cannot stop, decides, says what it decided in its report, and leaves the check to review. Where an output goes when the Action does not say is such a question (user confirmed).
 - The state a run leaves behind is the `Progress` section of the task body and the `waiting_on` field, as the `task-design` skill defines them. What they hold, their format, their constraints, and their timing live there and nowhere else; this skill names them and does not restate them (user confirmed).
 - A stopped run is picked up by reading the `Progress` section: an interrupt ends the run and working memory does not survive it, so the ticket is the only place the state can live (user confirmed).
 - A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and records the wait as a comment carrying the issue link (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
+- The step list, in order: read the ticket and the map above it; check that the task still holds; claim it and write `Progress`; run the gates; work one step and pause; read the `Acceptance signal` against the evidence; write what the work left and take `Progress` out; hand the task to `task-review` (user confirmed).
+- Pauses come after checking that the task holds, after each worked step, and after what the work left is written. Reading, claiming, and running the gates do not pause: they are preparation and there is nothing to look at yet.
+- A finished run reports three lines: what was done, how the `Acceptance signal` reads, and what is still unsettled. A run that stopped says which step it stopped at first.
+- A task that no longer holds goes back with `Progress` naming the step and the reason, `waiting_on` set to the owner, and the status left `in_progress`. The message names what the ticket would have to change to continue.
+- Batch selection is two layers: waymark's query takes the tasks owned by the operator, and the skill applies the semantic filters on top — a task waiting on a person, a task that no longer holds. The tool makes the coarse cut and the skill makes the judgement (user confirmed).
 
 ## Not yet specified
 
-- The step list, and where each gate sits on it.
-- How a pause is presented, and whether every step gets one.
-- What the evidence comment says, and whether it names who checked.
-- What the executor reports when it finishes, now that no log is written.
-- How a stopped task is handed back to its owner.
+- What the record of what the work produced is called, and whether the glossary's `comment` covers it.
 
 ## Out of scope
 
