@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:18:11Z
-updated_at: 2026-11-07T10:18:14Z
+updated_at: 2026-11-07T10:18:34Z
 parent: wm-8he44vj7v4y5
 custom_fields:
   needs_human: false
@@ -27,8 +27,8 @@ Write `weave-your-work/execute-step-by-step/SKILL.md`: the smallest execution un
 
 ## Progress
 
-Where it stands: the ticket is claimed and the skill file is not written yet.
-Next: write `SKILL.md` and commit it.
+Where it stands: the skill file is written and committed.
+Next: review it against the acceptance signal.
 
 ## Acceptance signal
 
