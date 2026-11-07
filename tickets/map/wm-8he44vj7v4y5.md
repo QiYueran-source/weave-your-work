@@ -33,7 +33,10 @@ All children are complete and no further child is needed.
 - It pauses between steps for a person to look (user confirmed).
 - It runs where a person can be asked, which a subagent cannot (user confirmed).
 - The first version has no self-grill and no execution log. The executor gathers the information it needs itself and reports what it could not settle (user confirmed, replacing the earlier grill-and-log direction).
-- Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept. When the Action does not say where the output goes and the choice affects other people, the executor stops instead of choosing (user confirmed).
+- Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept (user confirmed).
+- A question the ticket leaves open that changes what the task promises is answered by the skill, not by taste: `execute-step-by-step` has a person at hand and stops to ask; `execute-all` cannot stop, decides, says what it decided in its report, and leaves the check to review. Where an output goes when the Action does not say is such a question (user confirmed).
+- A task's in-progress state lives in a `Progress` section of its own body: where the work stands, what happens next, and who it waits on. Execution writes it and removes it before closing, so a closed ticket keeps only its promise. Its shape belongs to task design, whose map is reopened to add it (user confirmed).
+- A stopped run is picked up by reading that `Progress` section. An interrupt ends the run and working memory does not survive it, so the ticket is the only place the state can live (user confirmed).
 - A task waiting on a person keeps status `in_progress`. The wait is recorded as a comment carrying the issue link, and a `waiting_on` field names the person or the thing it waits on (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
@@ -41,7 +44,6 @@ All children are complete and no further child is needed.
 ## Not yet specified
 
 - The step list itself, and where each gate sits on it. Deferred by the user.
-- How a run resumes after an interrupt. The answer offered is the ticket alone: an interrupt ends the run, working memory does not survive it, and a task small enough to be one node can be picked up from its own body in one read.
 - How a pause is presented and what the person sees at it.
 - What the executor reports when it finishes, now that no log is written.
 - How a stopped task is handed back to its owner.
