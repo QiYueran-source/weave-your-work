@@ -69,4 +69,4 @@ No date fields. There is no start date and no deadline: the start is the moment 
 
 No dependency edges. The reason is the size rule in `body.md`: work that waits on a sibling is a slice, and a slice is not a result.
 
-Waymark's own front matter fields, including id, title, status, owner, parent, and dependencies, are documented by `waymark --help` and are not repeated here. The `dependencies` key exists in waymark; a task never sets it.
+Waymark's own front matter fields, including id, title, status, parent, and dependencies, are documented by `waymark --help` and are not repeated here. `owner` is the exception, because a task's owner is the person who accepts it and that is easy to mistake. The `dependencies` key exists in waymark; a task never sets it.
