@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:50:06Z
+updated_at: 2026-11-07T07:52:08Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -55,6 +55,8 @@ All children are complete and no further child is needed: the task design skill'
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
 - Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
+- The skill lives at `weave-your-work/task-design/` as a flat directory: `SKILL.md`, `body.md`, `kind.md`, and `properties.md`. Skills are siblings on disk even when one builds on another, so no nesting (user confirmed).
+- `task_kind` is frozen once written. Changing it means closing the task and opening a new one with the other kind, because the two kinds differ in section list and failure meaning (user confirmed).
 - Examples are written in a later pass and are not children of this map. The planned file names are `task-example-delivery.md` and `task-example-probe.md`; `SKILL.md` links them once they exist (user confirmed).
 
 ## Not yet specified

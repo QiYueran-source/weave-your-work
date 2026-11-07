@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T07:34:31Z
-updated_at: 2026-11-07T07:34:31Z
+updated_at: 2026-11-07T07:52:08Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
@@ -16,7 +16,7 @@ custom_fields:
 ---
 ## Action
 
-Write `weave-your-work/task/properties.md`: the meaning and writing rule for `task_kind`, `reversibility`, and `needs_human`, and who sets each. Point at `waymark --help` for waymark's own front matter fields instead of repeating them.
+Write `weave-your-work/task-design/properties.md`: the meaning and writing rule for `task_kind`, `reversibility`, and `needs_human`, and who sets each. State the accepted values and that `task_kind` is frozen once written. Point at `waymark --help` for waymark's own front matter fields instead of repeating them.
 
 ## Acceptance signal
 
