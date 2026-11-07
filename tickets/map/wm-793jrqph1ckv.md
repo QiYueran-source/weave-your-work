@@ -3,12 +3,11 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: closed
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T08:17:46Z
-closed_at: 2026-11-07T08:17:46Z
+updated_at: 2026-11-07T09:04:13Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -25,7 +24,8 @@ All children are complete and no further child is needed: the task design skill'
 - [Write the task body reference](tickets/task/wm-6sfjje8w0688.md): shared content rules plus the delivery and probe section lists.
 - [Write the task properties reference](tickets/task/wm-0sk8rrhz6gsv.md): task_kind, reversibility, and needs_human.
 - [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind, the stage it suits, and what failure means for each; it holds one write task.
-- [Check the task design skill against a fresh reader](tickets/task/wm-f5ddb0342bt1.md): read the four files cold and report what had to be guessed.
+- [Check the task design skill against a fresh reader](tickets/task/wm-yx9rckmhnkpm.md): read the four files cold, write a delivery and a probe task, and report what had to be guessed.
+- The earlier check [wm-f5ddb0342bt1](tickets/task/wm-f5ddb0342bt1.md) was closed without being run and is kept only as history.
 
 ## Decisions so far
 
@@ -55,8 +55,10 @@ All children are complete and no further child is needed: the task design skill'
 - Evidence for a human step is written back as a comment with a link to the evidence. A probe task also records the finding in `Result` (user confirmed).
 - Evidence for a human step follows the acceptance signal's rule: someone else can check it. This is the same observability requirement, not a separate rule.
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
-- Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
-- Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
+- A task carries no dependency edges. The tasks under one map are parallel branches, and where order is real either the work is one action with several steps or the map splits into child maps that carry the edge (user confirmed). This replaced an earlier decision that left dependency writing to `split-to-task` or the owner.
+- Task design adopts the vertical slice from `to-tickets` without its vocabulary: a task ends at a result that can be handed over whole, even when the action crosses several stages. A slice that finishes one stage and waits for a sibling is a step, not a task. The earlier decision against tracer-bullet slicing was reversed: the slicing idea applies to any work, only the engineering layer words do not (user confirmed).
+- A task hangs under exactly one map, so a task under a task is an error. A task may link to items outside its map for provenance or shared subject; a link never expresses order and does not affect readiness (user confirmed).
+- A task carries no date fields. The start is the moment the ticket is claimed, and a deadline would need an overdue check this layer does not have; a hard external date goes into Action or Boundaries (user confirmed).
 - The skill lives at `weave-your-work/task-design/` as a flat directory: `SKILL.md`, `body.md`, `kind.md`, and `properties.md`. Skills are siblings on disk even when one builds on another, so no nesting (user confirmed).
 - `task_kind` is frozen once written. Changing it means closing the task and opening a new one with the other kind, because the two kinds differ in section list and failure meaning (user confirmed).
 - Examples are written in a later pass and are not children of this map. The planned file names are `task-example-delivery.md` and `task-example-probe.md`; `SKILL.md` links them once they exist (user confirmed).
