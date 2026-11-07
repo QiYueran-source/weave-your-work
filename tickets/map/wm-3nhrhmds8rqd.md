@@ -30,14 +30,18 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - One skill with two references (submap.md, task.md); the router logic is one section of SKILL.md (user confirmed).
 - The parent skill routes to references and can be one sentence, following matt's grill-with-docs (user confirmed).
 - A map picks one child type: all child maps or all tasks; the structure freezes (user proposed).
+- The child-type choice is frozen for the map's lifetime: after the first split a map adds only children of that type; a direction that needs the other type opens a sibling map. `split_as` is written at the first split and does not flip (user confirmed).
 - Split timing belongs to the split skill. A map may split part of its children while fog remains; explore does not create children (user confirmed).
 - SKILL.md holds the three overall rules: the child type is uniform (all submaps or all tasks, never mixed), a map may split while fog remains, and the choice criterion is "can one action and one verifiable result be written" (user confirmed).
 - arrive is a sufficient condition, not a necessary one: fog that has resolved allows a split, but a part may split while other fog remains (user confirmed).
 - Split takes settled decisions, not fog: a clear target is written into Decisions so far first, then split; fog stays for explore (user confirmed).
+- The decision that triggers a split must itself be grilled first: what this layer will hold, which children it needs, and what is still unknown in each; split then writes the children (user confirmed).
+- A split decides only whether each part becomes a submap or a task; it does not resolve fog (user confirmed).
 - After a split, add same-type children while the map is open; once closed, reopen or open a sibling map; a direction change opens a sibling map (user confirmed).
 - A `split_as` field (submap / task) is written at split time to record the child type and support the structure freeze (user confirmed).
 - The router question is the choice criterion: can one action and one verifiable result be written? Yes goes to `task.md`, no to `submap.md` (user confirmed).
 - The criterion lives once in SKILL.md; the two references do not restate it (user confirmed).
+- Grill-before-split: the split skill calls grill to decide the details of a layer before it splits; split itself never guesses content (user confirmed).
 - After a split, update the parent's Children section immediately, set the waymark parent, and run `waymark tree` to check both sides agree (default).
 - Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).
 

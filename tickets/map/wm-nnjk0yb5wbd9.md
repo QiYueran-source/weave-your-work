@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-06T17:10:26Z
+updated_at: 2026-11-07T05:45:00Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -31,7 +31,11 @@ The reference is written into split's `submap.md`: the decision test, the rhythm
 - With fog present, default to submap; split a task only when the remaining fog clearly cannot affect that part (user confirmed).
 - The child map's body is minimal: Target is required; write Not yet specified when there is fog, and skip it when a clear decision is already written; acceptance direction defaults to all children done and no further children needed; other sections are optional (user confirmed).
 - When splitting, analyse what is still unknown and write it into the child's Not yet specified (user confirmed).
-- Fill the child's Target and fog by grilling, not by guessing; explore resolves the fog after it is on the map (user confirmed).
+- Grill before split: a layer is split only after grill discussed its details, so every child can state its Target and its fog; the child's content is grill-determined, not written by guessing at split time. Remaining fog stays on the child, and explore resolves it after the split (user confirmed).
+- Content and writing are separate: grill determines the content of each child (its Target and fog); the submap reference owns the writing spec — how each child map body is written, per the map body reference (user confirmed).
+- A child defaults to its parent's owner. Hanging a child under a parent owned by someone else is not supported; ownership is transferred explicitly before hanging (user confirmed).
+- A parent's children are all one type: all submaps or all tasks, never mixed under one parent (user confirmed).
+- The act of hanging a child under a parent is a distinct action of split; it is proposed to become a glossary term (user suggested).
 - Rhythm: one layer at a time, no preset count, stop when each child can state Target and fog (user confirmed).
 - Children sync: update the parent's body, set the waymark parent, run `waymark tree` to check both sides agree (user confirmed).
 
