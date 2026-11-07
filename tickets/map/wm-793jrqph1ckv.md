@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:46:08Z
+updated_at: 2026-11-07T07:46:27Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -49,7 +49,7 @@ All children are complete and no further child is needed: the task design skill'
 - `needs_human` is a separate boolean property, not a task kind. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed).
 - Human participation is marked inside the Action with the prefix `Person:` at the start of the step. No separate `Human step` section is added (user confirmed).
 - The field and the body must agree: when `needs_human` is true at least one Action step carries the `Person:` prefix, and when it is false no step does (user confirmed).
-- A task is accepted by its owner. Acceptance is not limited to a non-executor (user confirmed). The review map dropped the non-executor rule; the execution map and root map still carry the old wording and need correcting.
+- A task is accepted by its owner. Acceptance is not limited to a non-executor (user confirmed). The review, execution, and root maps now all say the owner judges acceptance.
 - Evidence for a human step is written back as a comment with a link to the evidence. A probe task also records the finding in `Result` (user confirmed).
 - Evidence for a human step follows the acceptance signal's rule: someone else can check it. This is the same observability requirement, not a separate rule.
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).

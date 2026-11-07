@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-06T16:48:19Z
+updated_at: 2026-11-07T07:46:26Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -41,7 +41,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - map functional goal: map answers "what I want", stating the goal, why it is worth doing, and acceptance direction, and hangs one or more tasks. task answers "what I will do", the finest level, declaring an action and its verifiable result (user confirmed).
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery (failure is an incident) and probe (failure is a normal result), with a reversibility marker; details reference skills-ref later (user confirmed).
-- Acceptance: judged by a non-executor against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed (user confirmed; details to follow).
+- Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed. The non-executor rule is dropped (user confirmed).
 - map template: six sections, fixed. Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Children is a simple list of links to existing map or task children; waymark is the source of truth and split updates the body list when it creates a child. Decisions so far records settled content in its concrete form with a source; longer evidence stays in weave-logs and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason (user confirmed).
 - map frontmatter: `split_as` (submap / task, written at split time). title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Node outcomes: a node ends in one of three states. completed closes it as achieved. failed keeps the record: status closed plus the outcome field set to failed, and a replacement node opened as a sibling with a soft link between them. archived retires a node that was never done or whose direction proved wrong (user confirmed; outcome field declared).

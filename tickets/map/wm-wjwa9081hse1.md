@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-06T12:45:31Z
+updated_at: 2026-11-07T07:46:23Z
 ---
 ## Destination
 
@@ -34,7 +34,7 @@ Form an installable skill set for general team collaboration under weave-your-wo
 - Skill layer: a category's children are skill maps, and a skill's function details become tasks under its skill map (user confirmed).
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery and probe, with a reversibility marker; details reference skills-ref later (user confirmed).
-- Acceptance: judged by a non-executor against signals agreed in advance, distinguishing done/not done/cannot judge; details later (user confirmed direction).
+- Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge. The non-executor rule is dropped (user confirmed).
 - ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).
 
 ## Not yet specified (cross-category coordination)
