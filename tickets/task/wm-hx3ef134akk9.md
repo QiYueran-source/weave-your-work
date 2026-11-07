@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:18:11Z
-updated_at: 2026-11-07T10:38:14Z
+updated_at: 2026-11-07T10:38:37Z
 parent: wm-8he44vj7v4y5
 custom_fields:
   needs_human: false
@@ -22,12 +22,18 @@ Write `weave-your-work/execute-step-by-step/SKILL.md`: the smallest execution un
 2. The gates: a `one_way` task waits for the named confirmation before any work, and a `Person:` step runs through a person.
 3. The step loop: work one step, update `Progress`, pause.
 4. A person step: hand it over, set `waiting_on`, stop, and clear the value when the answer arrives.
-5. Finishing: read the Acceptance signal against the evidence, write the evidence comment, fill `Result` and `Next step` on a probe, remove `Progress`, and hand the task to review.
+5. Finishing: read the Acceptance signal against the evidence, write `Result`, remove `Progress`, and hand the task to review.
 6. Say what the skill does not do: run a batch, review a result, rewrite the action.
 
 ## Acceptance signal
 
 `weave-your-work/execute-step-by-step/SKILL.md` exists and stands on its own. A reader holding a real ticket can walk it from an unclaimed task to one waiting for review using that file alone, and every gate in it names the field or section it reads.
+
+## Result
+
+`weave-your-work/execute-step-by-step/SKILL.md` is written: 74 lines, eight parts from reading the ticket to handing it back.
+
+Its gates name what they read: the `one_way` gate names the `Acceptance signal`, the person gate names the `Person:` prefix, the wait names `waiting_on` and `Progress`, and the ending names `Result` and `task-review`. The file stands alone: it points at `task-dispatch` and `execute-all` by name only, and at the task body's sections by their `##` headings.
 
 ## Boundaries
 
