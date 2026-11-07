@@ -3,11 +3,12 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T09:52:00Z
+updated_at: 2026-11-07T10:00:15Z
+closed_at: 2026-11-07T10:00:15Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -66,6 +67,8 @@ All children are complete and no further child is needed: the task design skill'
 
 - The repository root `GLOSSARY.md` stays the one place that fixes the words these skills use. It is authoring material and does not ship, so skill text that leans on a word defines it where it is used (user confirmed).
 - Skill text must stand on its own once installed. `npx skills add` copies the skill's own directory and nothing beside it, and it skips a symlink that points outside that directory, so a reference to a file elsewhere becomes a dead link. The entry dropped its pointer to the root glossary, and `properties.md` defines `owner` in place (user confirmed).
+
+- The older `task-example.md` under `use-weave-your-work-examples/` still teaches a shape this skill no longer allows: it has a `Verifiable result` section, puts kind and reversibility in the body instead of front matter, says `two-way door`, and says author. It is left as it is for now, and the worked examples for this skill wait for a later pass (user confirmed).
 
 ## Not yet specified
 
