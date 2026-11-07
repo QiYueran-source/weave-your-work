@@ -20,9 +20,8 @@ The four task execution skills are delivered under `weave-your-work/`, and one w
 
 ## Children
 
-- [Execute step by step skill](tickets/map/wm-8he44vj7v4y5.md): the smallest execution unit, paused between steps.
-- [Execute all skill](tickets/map/wm-qt4pdg7dd0xy.md): the same unit run in one pass, with no room to ask.
-- [Task dispatch skill](tickets/map/wm-h8yejt98fbeg.md): choose, claim, and run a batch, and interrupt for a person.
+- [Execute one task skill](tickets/map/wm-d5xq88m7g8p6.md): the smallest execution unit, run to the end unless something blocks it.
+- [Execute all skill](tickets/map/wm-qt4pdg7dd0xy.md): every task under a map run at once, with its dispatch rules beside it.
 - [Task review skill](tickets/map/wm-3kaftv6fzfx2.md): check a finished task against its own acceptance signal.
 
 ## Decisions so far
