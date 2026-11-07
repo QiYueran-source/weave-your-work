@@ -31,8 +31,8 @@ All child tasks are complete and no further child task is needed: the SKILL.md, 
 
 - Identity: operator first, git `user.name` fallback.
 - MCP tools: `glossary_lookup`, `glossary_list`, `glossary_write`, `glossary_merge`; no tool takes another person's file.
-- Source: `.glossary/<operator>.jsonl`, one term per line with `term`, `definition`, `avoid`, `group`, `created_at`, `updated_at`.
-- Generated view: `.agents/docs/GLOSSARY.md`, ignored, following matt's GLOSSARY-FORMAT.md plus a `_Source_` line per term.
+- Source: `glossary/<operator>.jsonl`, one term per line with `term`, `definition`, `avoid`, `group`, `created_at`, `updated_at`; these source files are committed and shared.
+- Generated view: root `GLOSSARY.md`, ignored and regenerated from `glossary/*.jsonl`, following matt's GLOSSARY-FORMAT.md plus a `_Source_` line per term.
 - The install step belongs to this skill, not to setup's design (user confirmed).
 
 ## Not yet specified

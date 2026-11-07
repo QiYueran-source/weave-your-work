@@ -18,6 +18,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 
 - Category: execution. Answers "is the work advancing, who is accountable, where is it stuck".
 - Delivery location: map/, task/, explore/ and glossary/ skill directories under weave-your-work/ (to be created).
+- Project layout: `tickets/` stores map and task work state; `glossary/` stores per-operator JSONL glossary sources; root `GLOSSARY.md` is the generated local view and is ignored; `weave-logs/` stores shared unstructured records; `docs/adr/` stores accepted architecture decisions; and `weave-your-work/` stores delivered skills and examples. See [ADR 0001](../../docs/adr/0001-project-document-layout.md).
 - Glossary: GLOSSARY.md (created; ticket/issue/comment/map/task/target tree/dependency edge/refinement/arrive/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
 - Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
 - Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
@@ -29,7 +30,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 - [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
-- [Log tickets](tickets/map/wm-31f6a2c9d840.md): design a separate ticket category for longer, unstructured records attached to maps or tasks.
+- [Weave log records](tickets/map/wm-31f6a2c9d840.md): design shared, unstructured records for longer research, discussion, evidence, and reasoning.
 
 ## Decisions so far
 

@@ -16,7 +16,7 @@ custom_fields:
 
 Add a glossary initialization step to setup, instructions first and scripts second:
 
-1. Create `.glossary/` and add the `.agents/docs/GLOSSARY.md` ignore entry.
+1. Create `glossary/` and add the root `GLOSSARY.md` ignore entry.
 2. Register the glossary MCP server in the current harness configuration.
 3. Install the git post-merge hook that calls the merge script.
 4. Copy `glossary-rules.md` into `.agents/rules/`.
@@ -24,7 +24,7 @@ Add a glossary initialization step to setup, instructions first and scripts seco
 
 ## Acceptance signal
 
-- On a fresh project after setup: `.glossary/` exists, the MCP server writes, the post-merge hook is installed, rules are in place, and AGENTS.md has the prompt.
+- On a fresh project after setup: `glossary/` exists, the MCP server writes a committed `glossary/<operator>.jsonl` source, the post-merge hook regenerates the ignored root `GLOSSARY.md`, rules are in place, and AGENTS.md has the prompt.
 - Steps are instructions an AI can follow; mechanical parts may be scripts.
 
 ## Boundaries
