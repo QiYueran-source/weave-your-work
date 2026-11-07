@@ -29,6 +29,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 - [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
+- [Log tickets](tickets/map/wm-31f6a2c9d840.md): design a separate ticket category for longer, unstructured records attached to maps or tasks.
 
 ## Decisions so far
 
