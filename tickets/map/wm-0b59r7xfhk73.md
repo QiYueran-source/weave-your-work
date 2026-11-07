@@ -25,6 +25,7 @@ All children are complete and no further children are needed: the SKILL.md exist
 
 - [Explore skills: clear a map's fog](tickets/map/wm-3084re0f48z3.md): clear a map's Not yet specified items until the section is empty.
 - [Map body format](tickets/map/wm-6c4f9e2a7b31.md): define how each map section and entry is written.
+- [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md): define the front matter fields, who writes them, and the dependency rules.
 - [Map operating procedure](tickets/map/wm-9d7e4c1a2b60.md): define the map workflow and hand-offs between skills.
 - [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md): route to split-to-submap or split-to-task.
 - [Review skill: accept a map](tickets/map/wm-3spf0jbvf9y9.md): accepting a map before close.
@@ -37,6 +38,7 @@ All children are complete and no further children are needed: the SKILL.md exist
 - A decision may be recorded directly in Decisions so far without fog; split then turns it into a child (user confirmed).
 - The map body format is designed in the separate Map body format child map. `body.md` defines the writing shape for all six sections; this Map skill keeps the workflow and references that file.
 - Current scope: the map skill covers the child-map lifecycle — write the six-section body per `body.md`, hang children, keep the body index in sync with the waymark parent relation, move a map through its status transitions, and accept it via review. The task paths (splitting tasks, task children, task-level acceptance) stay fog until the Task skill is settled. Source: user confirmation.
+- Front matter management is a reference of the map skill: a separate `frontmatter.md` alongside `body.md` and the operating procedure reference, designed in its own child map. Source: user confirmation.
 
 ## Not yet specified
 
