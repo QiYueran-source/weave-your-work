@@ -40,6 +40,7 @@ All children are complete and no further child is needed.
 ## Not yet specified
 
 - The step list itself, and where each gate sits on it. Deferred by the user.
+- How a run resumes after an interrupt. The answer offered is the ticket alone: an interrupt ends the run, working memory does not survive it, and a task small enough to be one node can be picked up from its own body in one read.
 - How a pause is presented and what the person sees at it.
 - What the executor reports when it finishes, now that no log is written.
 - How a stopped task is handed back to its owner.
