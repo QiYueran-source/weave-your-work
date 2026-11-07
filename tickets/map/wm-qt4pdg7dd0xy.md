@@ -3,11 +3,12 @@ schema: 1
 id: wm-qt4pdg7dd0xy
 title: Execute all skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:55Z
-updated_at: 2026-11-07T13:21:27Z
+updated_at: 2026-11-07T15:09:25Z
+closed_at: 2026-11-07T15:09:25Z
 parent: wm-avc7a31tae33
 ---
 ## Target

@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T13:21:25Z
-updated_at: 2026-11-07T15:07:52Z
-closed_at: 2026-11-07T15:07:52Z
+updated_at: 2026-11-07T15:09:22Z
+closed_at: 2026-11-07T15:09:22Z
 parent: wm-qt4pdg7dd0xy
 custom_fields:
   needs_human: false
@@ -34,6 +34,8 @@ A reader holding a map with several open tasks can choose the tickets, claim the
 - No review rules; those are `task-review`.
 - No change to the map body format.
 
+
+
 ## Result
 
 `weave-your-work/execute-all/` holds two files. `SKILL.md` covers which tasks run, claiming them all, sending, receiving a report, reviewing a large batch, interrupting, committing, how the run ends, and when not to use it. `dispatch.md` covers what a subagent receives, the cap of four with a freed slot refilled, what it may write, the five things it reports, the collision list, and what it must not do.
@@ -42,9 +44,11 @@ A reader holding a map with several open tasks can choose the tickets, claim the
 
 The walk over the task design map's batch of write tasks found two gaps, both fixed: the collision list did not cover a task that reads what another writes, which is the "check against a fresh reader" task, and the large-batch review had the main agent closing after a reviewer's verdict, which contradicts `task-review`.
 
+A second pass found the two files repeating each other: the five-item report list and the "no review, no close" rule appeared in both. Both now live only in `dispatch.md`, where the split puts them. The same pass added the rule that there is no worktree.
+
 ## Review
 
 passed
 
-- Goal: both files exist, and a dispatcher holding a map with several open tasks can choose, claim, dispatch, collect, commit, review, and end from them; the stop path names the freed slot, the released subagent, `Progress`, and `waiting_on`; and the end says nothing is written outside the tickets. The walk through the task design batch reached every step.
-- Convention: no step of `execute-one-task` and no rule of `task-review` is restated; both are named and left where they live. The only change outside the new directory is the one sentence in `execute-one-task` that hands the judgment to the batch.
+- Goal: both files exist, and a dispatcher holding a map with several open tasks can choose, claim, dispatch, collect, commit, review, and end from them; the stop path names the freed slot, the released subagent, `Progress`, and `waiting_on`; and the end says nothing is written outside the tickets.
+- Convention: no rule appears in both files. The report list and the write limits are read only in `dispatch.md`; the run, the commits, and the end only in `SKILL.md`. No step of `execute-one-task` and no rule of `task-review` is restated.

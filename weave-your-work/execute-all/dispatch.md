@@ -24,6 +24,8 @@ The waymark store takes one write lock at a time, for one read-modify-write wind
 
 It may not write another ticket, the map, `## Review`, or `outcome`, and it does not close the ticket. It does not commit.
 
+There is no branch and no worktree: every subagent works in the same checkout, which is why the collision list is read before dispatch.
+
 ## What it reports
 
 Five things, plainly:
@@ -55,5 +57,5 @@ A collision does not stop the batch: dispatch one of the pair, let it finish, th
 ## What a subagent must not do
 
 - Ask a person, wait on one, or interrupt. There is nobody to ask, and its run is over the moment it stops.
-- Decide to involve a person. That is the main agent's call, and only the main agent talks to one.
+- Decide whether to involve a person. That is the main agent's call.
 - Review its own work, or close its ticket.

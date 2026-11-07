@@ -25,11 +25,11 @@ Claim every chosen task with `waymark start` before any of them goes out. The cl
 
 `dispatch.md` holds the distribution: what a subagent receives, how many run at once, what it may write, and what it reports. Read it once before the first dispatch.
 
-A subagent runs `execute-one-task` and stops at `Result`. It does not review and does not close: the judgment belongs to the main agent.
+A subagent runs `execute-one-task` and stops at `Result`: the judgment belongs to the main agent.
 
 ## Receiving a report
 
-A report comes back with five things: whether the task finished, where it stopped and why, the files it touched, what it could not settle, and what the evidence shows.
+A report comes back with the five things `dispatch.md` names.
 
 When it finished:
 
