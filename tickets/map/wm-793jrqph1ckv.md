@@ -3,12 +3,11 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T10:14:49Z
-closed_at: 2026-11-07T10:14:49Z
+updated_at: 2026-11-07T10:34:18Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -17,7 +16,7 @@ Design the task design skill: define how an executable task is specified and mad
 
 ## Acceptance direction
 
-All children are complete and no further child is needed: the task design skill's entry routes to its three references, `body.md`, `kind.md`, and `properties.md` are written and agree with each other, and `body.md` defines the one section execution writes while a task is in progress.
+All children are complete and no further child is needed: the task design skill's entry routes to its three references, `body.md`, `kind.md`, and `properties.md` are written and agree with each other, and `body.md` defines the sections execution writes and what a task's outcome lives in.
 
 ## Children
 
@@ -28,10 +27,13 @@ All children are complete and no further child is needed: the task design skill'
 - [Check the task design skill against a fresh reader](tickets/task/wm-yx9rckmhnkpm.md): read the four files cold, write a delivery and a probe task, and report what had to be guessed.
 - [Write the Progress section into the task body reference](tickets/task/wm-2vphdebar7ph.md): the one section execution writes and closing removes.
 - [Declare waiting_on in the task properties reference](tickets/task/wm-ktjm55w7zwk3.md): the fourth task field, written while a task waits.
+- [Make Result the shared outcome section](tickets/task/wm-5am6jgx5jyvb.md): one place for what a task produced, for both kinds.
 - The earlier check [wm-f5ddb0342bt1](tickets/task/wm-f5ddb0342bt1.md) was closed without being run and is kept only as history.
 
 ## Decisions so far
 
+- `Result` is the one section where a task's outcome lives, for both kinds: a delivery records where the deliverable is and how to open it, and a probe records the finding and its verdict. The outcome is written on the ticket, not in a separate record (user confirmed).
+- Execution opens no separate records. What a person hands back, the wait, and the evidence all land on the task ticket: `Result` for what the work produced, `Progress` and `waiting_on` while it runs (user confirmed).
 - A task body carries one section that execution writes, not the designer: `Progress`, holding where the work stands so another run can pick the task up without asking anyone. It is written while the task is in progress and removed before the ticket closes, so a closed ticket keeps only what the task promised (user confirmed).
 - Task design owns three references: `body.md` for section content, `kind.md` for choosing the kind and its failure meaning, and `properties.md` for the custom fields (user confirmed).
 - Task design defines the task specification; it does not decide which tasks to create when splitting a map. The split skill decides whether and how work should split into tasks, then references task design when creating them (user confirmed).
@@ -74,7 +76,7 @@ All children are complete and no further child is needed: the task design skill'
 
 ## Not yet specified
 
-- What exactly `Progress` holds, and its name: the section is not written yet. The working answer is that the wait itself is the `waiting_on` field and `Progress` carries where the work stands and what happens next.
+(none; the design is settled and split into children)
 
 ## Out of scope
 
