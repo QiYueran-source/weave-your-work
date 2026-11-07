@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:52:08Z
+updated_at: 2026-11-07T07:52:18Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -23,7 +23,7 @@ All children are complete and no further child is needed: the task design skill'
 - [Write the task skill entry](tickets/task/wm-qamw233hhpe3.md): SKILL.md entry and routing.
 - [Write the task body reference](tickets/task/wm-6sfjje8w0688.md): shared content rules plus the delivery and probe section lists.
 - [Write the task properties reference](tickets/task/wm-0sk8rrhz6gsv.md): task_kind, reversibility, and needs_human.
-- [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind, the stage it suits, and what failure means for each.
+- [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind, the stage it suits, and what failure means for each; it holds one write task.
 
 ## Decisions so far
 
