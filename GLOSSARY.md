@@ -25,7 +25,7 @@ A target node that answers "what I want": the expected outcome or requirement. E
 _Avoid_: goal, plan, project, phase, milestone (when it implies a fixed point in time)
 
 **task (executable target)**:
-The finest level of the target tree: a target refined to the point of being executable. It declares both an action and its verifiable result, and it carries implementation: feasibility, method, and effect. Answers "what I will do".
+The finest level of the target tree: a target refined to the point of being executable. It declares one complete execution action and one clearly auditable standard, and it carries implementation: feasibility, method, and effect. Answers "what I will do".
 _Avoid_: ticket (when the meaning is broader than this project's unit of work), action item (when it refers to an action without a result)
 
 **target tree (goal tree)**:
@@ -41,12 +41,16 @@ The relation between a parent target and a child target: the child is a more spe
 _Avoid_: breakdown (when it implies slicing once into executable pieces)
 
 **arrive (到达)**:
-The moment a settled decision becomes a child node. It arrives as a task when one action and one verifiable result can be written and one person can finish and verify it in one go; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
+The moment a settled decision becomes a child node. It arrives as a task when one complete execution action and one clearly auditable standard can be written and one person can finish and verify it in one go; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
 _Avoid_: graduation, breakdown, splitting (when they mean a fog item becoming a node rather than slicing work)
 
 **split (分裂)**:
 The act of turning one map's next layer into child maps or tasks. The split skill decides when to split and which type; it never resolves fog.
 _Avoid_: explore (exploring fog is not splitting), breakdown
+
+**hang (挂)**:
+The act of opening a child ticket under a node. Hanging is done by split when it creates a child: the child gets its parent and the parent's Children list gains the link.
+_Avoid_: attach (when it implies linking, not creating), mount (when it implies a different tree)
 
 **explore (探索)**:
 The act of resolving a map's fog: turning an undecided item into a decision, a clearance, or something left for split. The explore skill never creates children.
