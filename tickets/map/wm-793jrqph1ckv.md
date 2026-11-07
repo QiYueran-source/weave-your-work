@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:38:48Z
+updated_at: 2026-11-07T07:41:50Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -16,17 +16,18 @@ Design the task design skill: define how an executable task is specified and mad
 
 ## Acceptance direction
 
-All children are complete and no further child is needed: `weave-your-work/task/SKILL.md` routes to its references, the references are written, and the delivery and probe examples can be rebuilt from them.
+All children are complete and no further child is needed: the task design skill's entry routes to its three references, the references are written, and the delivery and probe examples can be rebuilt from them.
 
 ## Children
 
 - [Write the task skill entry](tickets/task/wm-qamw233hhpe3.md): SKILL.md entry and routing.
 - [Write the task body reference](tickets/task/wm-6sfjje8w0688.md): shared content rules plus the delivery and probe section lists.
 - [Write the task properties reference](tickets/task/wm-0sk8rrhz6gsv.md): task_kind, reversibility, and needs_human.
+- [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind and what failure means for each.
 
 ## Decisions so far
 
-- The task design skill writes `body.md` and `properties.md`. `kinds.md` is dropped; the delivery and probe difference lives in `body.md` (user confirmed).
+- Task design owns three references: `body.md` for section content, `kind.md` for choosing the kind and its failure meaning, and `properties.md` for the custom fields (user confirmed).
 - Task design defines the task specification; it does not decide which tasks to create when splitting a map. `split-to-task` decides whether and how work should split into tasks, then references task design when creating them (user confirmed).
 - A task must be classified as delivery or probe using `task_kind` (user confirmed).
 - A task carries exactly one complete action: one goal, which may take several steps (user confirmed).
@@ -54,8 +55,7 @@ All children are complete and no further child is needed: `weave-your-work/task/
 
 ## Not yet specified
 
-- Whether a `kind.md` reference exists at the task skill level and what it holds.
-- Where the notification rule for a human-required step is recorded.
+(none; the design is settled and split into children)
 
 ## Out of scope
 
