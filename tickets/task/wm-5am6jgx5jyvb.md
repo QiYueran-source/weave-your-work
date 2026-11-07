@@ -3,11 +3,12 @@ schema: 1
 id: wm-5am6jgx5jyvb
 title: Make Result the shared outcome section
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:34:18Z
-updated_at: 2026-11-07T10:34:35Z
+updated_at: 2026-11-07T10:34:53Z
+closed_at: 2026-11-07T10:34:53Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false

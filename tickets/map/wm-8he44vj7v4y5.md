@@ -37,7 +37,7 @@ All children are complete and no further child is needed.
 - A question the ticket leaves open that changes what the task promises is answered by the skill, not by taste: `execute-step-by-step` has a person at hand and stops to ask; `execute-all` cannot stop, decides, says what it decided in its report, and leaves the check to review. Where an output goes when the Action does not say is such a question (user confirmed).
 - The state a run leaves behind is the `Progress` section of the task body and the `waiting_on` field, as the `task-design` skill defines them. What they hold, their format, their constraints, and their timing live there and nowhere else; this skill names them and does not restate them (user confirmed).
 - A stopped run is picked up by reading the `Progress` section: an interrupt ends the run and working memory does not survive it, so the ticket is the only place the state can live (user confirmed).
-- A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and records the wait as a comment carrying the issue link (user confirmed).
+- A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and says in `Progress` what it waits for, with the issue link (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
 - The step list, in order: read the ticket and the map above it; check that the task still holds; claim it and write `Progress`; run the gates; work one step and pause; read the `Acceptance signal` against the evidence; write what the work left and take `Progress` out; hand the task to `task-review` (user confirmed).
@@ -48,7 +48,7 @@ All children are complete and no further child is needed.
 
 ## Not yet specified
 
-- What the record of what the work produced is called, and whether the glossary's `comment` covers it.
+- Nothing open: the record is `Result`, as task design defines it.
 
 ## Out of scope
 
