@@ -3,11 +3,12 @@ schema: 1
 id: wm-ma7v0p1bqb52
 title: Bring the task skill entry in line with the settled rules
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:05:49Z
-updated_at: 2026-11-07T09:05:49Z
+updated_at: 2026-11-07T09:06:31Z
+closed_at: 2026-11-07T09:06:31Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
