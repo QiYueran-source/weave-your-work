@@ -1,6 +1,9 @@
 ---
 name: task-design
-description: "Write a task ticket, the finest node of a target tree: choose delivery or probe, state the action and its acceptance signal, set reversibility and needs_human, handle human steps, and know that a task carries no dependencies."
+description: >-
+  Write a task ticket, the finest node of a target tree: choose delivery or
+  probe, state the action and its acceptance signal, set reversibility and
+  needs_human, and mark the steps a person must do.
 ---
 
 # Task design

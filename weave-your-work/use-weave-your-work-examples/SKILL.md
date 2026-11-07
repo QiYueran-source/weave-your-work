@@ -1,6 +1,6 @@
 ---
 name: use-weave-your-work-examples
-description: Worked examples for weave-your-work, showing how a target tree is split, how fog arrives as child maps and tasks, and how dependencies are set.
+description: "Worked examples for weave-your-work: how a target tree is split, how fog arrives as child maps and tasks, and how dependencies are set."
 ---
 
 # Use weave-your-work examples
