@@ -1,6 +1,6 @@
 ---
 name: task-design
-description: Write a task ticket for a target tree leaf: choose delivery or probe, state the action and its acceptance signal, set reversibility and needs_human, and handle human steps.
+description: "Write a task ticket for a target tree leaf: choose delivery or probe, state the action and its acceptance signal, set reversibility and needs_human, and handle human steps."
 ---
 
 # Task design
