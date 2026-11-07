@@ -48,7 +48,7 @@ All children are complete and no further child is needed.
 
 ## Not yet specified
 
-- Nothing open: the record is `Result`, as task design defines it.
+(none; the step list and its endings are settled)
 
 ## Out of scope
 

@@ -3,11 +3,11 @@ schema: 1
 id: wm-hx3ef134akk9
 title: Write the execute-step-by-step skill
 category: task
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:18:11Z
-updated_at: 2026-11-07T10:21:00Z
+updated_at: 2026-11-07T10:38:14Z
 parent: wm-8he44vj7v4y5
 custom_fields:
   needs_human: false
