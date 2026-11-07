@@ -3,11 +3,12 @@ schema: 1
 id: wm-d5xq88m7g8p6
 title: Execute one task skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:46:51Z
-updated_at: 2026-11-07T10:49:41Z
+updated_at: 2026-11-07T10:54:10Z
+closed_at: 2026-11-07T10:54:10Z
 parent: wm-avc7a31tae33
 ---
 ## Target
