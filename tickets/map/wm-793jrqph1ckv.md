@@ -3,12 +3,11 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T10:00:38Z
-closed_at: 2026-11-07T10:00:15Z
+updated_at: 2026-11-07T10:06:58Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -17,7 +16,7 @@ Design the task design skill: define how an executable task is specified and mad
 
 ## Acceptance direction
 
-All children are complete and no further child is needed: the task design skill's entry routes to its three references, and `body.md`, `kind.md`, and `properties.md` are written and agree with each other.
+All children are complete and no further child is needed: the task design skill's entry routes to its three references, `body.md`, `kind.md`, and `properties.md` are written and agree with each other, and `body.md` defines the one section execution writes while a task is in progress.
 
 ## Children
 
@@ -26,10 +25,12 @@ All children are complete and no further child is needed: the task design skill'
 - [Write the task properties reference](tickets/task/wm-0sk8rrhz6gsv.md): task_kind, reversibility, and needs_human.
 - [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind, the stage it suits, and what failure means for each; it holds one write task.
 - [Check the task design skill against a fresh reader](tickets/task/wm-yx9rckmhnkpm.md): read the four files cold, write a delivery and a probe task, and report what had to be guessed.
+- [Write the Progress section into the task body reference](tickets/task/wm-2vphdebar7ph.md): the one section execution writes and closing removes.
 - The earlier check [wm-f5ddb0342bt1](tickets/task/wm-f5ddb0342bt1.md) was closed without being run and is kept only as history.
 
 ## Decisions so far
 
+- A task body carries one section that execution writes, not the designer: `Progress`, holding where the work stands so another run can pick the task up without asking anyone. It is written while the task is in progress and removed before the ticket closes, so a closed ticket keeps only what the task promised (user confirmed).
 - Task design owns three references: `body.md` for section content, `kind.md` for choosing the kind and its failure meaning, and `properties.md` for the custom fields (user confirmed).
 - Task design defines the task specification; it does not decide which tasks to create when splitting a map. The split skill decides whether and how work should split into tasks, then references task design when creating them (user confirmed).
 - A task must be classified as delivery or probe using `task_kind` (user confirmed).
@@ -71,7 +72,7 @@ All children are complete and no further child is needed: the task design skill'
 
 ## Not yet specified
 
-(none; the design is settled and split into children)
+- What exactly `Progress` holds, and its name: the section is not written yet.
 
 ## Out of scope
 

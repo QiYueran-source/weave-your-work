@@ -8,7 +8,6 @@ owner: frank
 creator: frank
 created_at: 2026-11-06T13:34:50Z
 updated_at: 2026-11-06T13:34:50Z
-parent: wm-8m5cckpf4tc2
 custom_fields:
   task_kind: delivery
 archived_at: 2026-11-07T04:35:07Z
