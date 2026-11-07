@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-07T16:03:39Z
+updated_at: 2026-11-07T16:21:59Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -43,7 +43,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - The criterion lives once in SKILL.md; the two references do not restate it (user confirmed).
 - Grill-before-split: the split skill calls grill to decide the details of a layer before it splits; split itself never guesses content (user confirmed).
 - The grill discussion covers each child's body sections — Target, Decisions so far, Out of scope, Not yet specified, and the Review point — and settles whether the child has fog; there is no default fog judgment (user confirmed).
-- grill produces only its own artifacts (discussion and weave logs); split's submap reference writes the child body against the map body reference. A child's Decisions so far and Out of scope hold only the child's own content, and a written child must not conflict with its parent or siblings (user confirmed).
+- grill produces only its own artifacts (discussion and testimonies); split's submap reference writes the child body against the map body reference. A child's Decisions so far and Out of scope hold only the child's own content, and a written child must not conflict with its parent or siblings (user confirmed).
 - A split proceeds in two steps: decide the child type (all submaps or all tasks) first, then decide how many children this layer gets. The count is decided up front, before writing, and the children are then written one by one (user confirmed).
 - After a split, update the parent's Children section immediately, set the waymark parent, and run `waymark tree` to check both sides agree (default).
 - Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).

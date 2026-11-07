@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-07T06:20:00Z
+updated_at: 2026-11-07T16:21:59Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -37,7 +37,7 @@ The reference is written into split's `submap.md`: the decision test, the rhythm
 - Whether a child has fog is decided by the grill discussion, not by a default; when the discussion leaves no fog, the child's Not yet specified is written as none (user confirmed).
 - When splitting, analyse what is still unknown and write it into the child's Not yet specified (user confirmed).
 - Grill before split: a layer is split only after grill discussed its details, so every child can state its Target and its fog; the child's content is grill-determined, not written by guessing at split time. Remaining fog stays on the child, and explore resolves it after the split (user confirmed).
-- Content and writing are separate: grill produces only its own artifacts (discussion and weave logs) and never writes the child body; split's submap reference writes the child body, formatted against the map body reference (user confirmed).
+- Content and writing are separate: grill produces only its own artifacts (discussion and testimonies) and never writes the child body; split's submap reference writes the child body, formatted against the map body reference (user confirmed).
 - A child's Decisions so far holds only the child's own settled content from the grill discussion; it does not copy the parent's decisions. When the child needs to reference a parent decision, it links it (user confirmed).
 - A child's Out of scope holds only what this child explicitly decided not to do during grill; it does not inherit the parent's Out of scope (user confirmed).
 - The grill discussion walks through all five sections of a child; a section with no content is simply left unwritten (user confirmed).

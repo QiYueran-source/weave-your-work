@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-07T07:46:26Z
+updated_at: 2026-11-07T16:21:59Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -18,7 +18,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 
 - Category: execution. Answers "is the work advancing, who is accountable, where is it stuck".
 - Delivery location: map/, task/, explore/ and glossary/ skill directories under weave-your-work/ (to be created).
-- Project layout: `tickets/` stores map and task work state; `glossary/` stores per-operator JSONL glossary sources; root `GLOSSARY.md` is the generated local view and is ignored; `weave-logs/` stores shared unstructured records; `docs/adr/` stores accepted architecture decisions; and `weave-your-work/` stores delivered skills and examples. See [ADR 0001](../../docs/adr/0001-project-document-layout.md).
+- Project layout: `tickets/` stores map and task work state; `glossary/` stores per-operator JSONL glossary sources; root `GLOSSARY.md` is the generated local view and is ignored; `testimony/` stores records of grill discussions; `docs/adr/` stores accepted architecture decisions; and `weave-your-work/` stores delivered skills and examples. See [ADR 0001](../../docs/adr/0001-project-document-layout.md).
 - Glossary: GLOSSARY.md (created; ticket/issue/comment/map/task/target tree/dependency edge/refinement/arrive/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
 - Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
 - Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
@@ -30,7 +30,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 - [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
-- [Weave log records](tickets/map/wm-31f6a2c9d840.md): design shared, unstructured records for longer research, discussion, evidence, and reasoning.
+- [Testimony records](tickets/map/wm-31f6a2c9d840.md): design the record of a grill discussion.
 
 ## Decisions so far
 
@@ -42,7 +42,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery (failure is an incident) and probe (failure is a normal result), with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed. The non-executor rule is dropped (user confirmed).
-- map template: six sections, fixed. Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Children is a simple list of links to existing map or task children; waymark is the source of truth and split updates the body list when it creates a child. Decisions so far records settled content in its concrete form with a source; longer evidence stays in weave-logs and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason (user confirmed).
+- map template: six sections, fixed. Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Children is a simple list of links to existing map or task children; waymark is the source of truth and split updates the body list when it creates a child. Decisions so far records settled content in its concrete form with a source; longer discussion history stays in a testimony and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason (user confirmed).
 - map frontmatter: `split_as` (submap / task, written at split time). title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Node outcomes: a node ends in one of three states. completed closes it as achieved. failed keeps the record: status closed plus the outcome field set to failed, and a replacement node opened as a sibling with a soft link between them. archived retires a node that was never done or whose direction proved wrong (user confirmed; outcome field declared).
 - Fog exploration: before choosing a route, turn each fog item into a testable assumption and rank assumptions by impact times risk; test high-impact, high-risk ones first. Then route by where the answer lives: in someone's head, use conversation; in reality, use a probe task. Conversation asks about past behaviour and specific examples, not opinions; a probe uses the smallest reversible action and measures behaviour, not opinions. Methods stay domain-neutral: no A/B tests or other product-specific tools (user confirmed direction).

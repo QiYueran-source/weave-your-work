@@ -16,9 +16,9 @@ _Avoid_: ticket (a local work item), task
 A record synced back from an issue, carrying a discussion conclusion or decision. It uses waymark's comment category for now.
 _Avoid_: discussion (when referring to the remote conversation itself)
 
-**weave log (依据记录)**:
-A shared, unstructured Markdown file under `weave-logs/` that records longer research, discussion, evidence, or reasoning supporting a map or task. It is not a ticket: it has no ticket frontmatter, is not processed by waymark, and does not enter the target tree, status, frontier, or acceptance. Tickets cite weave logs with relative Markdown links next to the relevant entry.
-_Avoid_: log ticket, evidence ticket, attachment (when it implies a ticket relation)
+**testimony (口供)**:
+The record of a grill: what a person said while a decision was being discussed — their answers, the ideas raised along the way, the alternatives that lost — written down as the discussion happens. It holds nothing else: research findings, what an agent did during a run, and a ticket's conclusions are not part of it. A testimony is not a ticket: it has no ticket frontmatter, is not processed by waymark, and does not enter the target tree, status, frontier, or acceptance. Tickets cite a testimony with a relative Markdown link next to the relevant entry.
+_Avoid_: log, weave log, evidence record, attachment (when it implies a ticket relation)
 
 **map (target node)**:
 A target node that answers "what I want": the expected outcome or requirement. Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. A map does not cover feasibility or implementation; those belong to tasks. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.

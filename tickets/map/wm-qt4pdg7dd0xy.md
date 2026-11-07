@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:55Z
-updated_at: 2026-11-07T15:09:25Z
+updated_at: 2026-11-07T16:21:59Z
 closed_at: 2026-11-07T15:09:25Z
 parent: wm-avc7a31tae33
 ---
@@ -44,7 +44,7 @@ All children are complete and no further child is needed.
 - An interrupt pauses only the task that hit the person, and the run ends with the list of what it waits on. A stop about the map's direction stops the batch (user confirmed).
 - The run ends with the work reviewed, not when the actions are done. A finished task is not complete until it has been checked (user confirmed).
 - A run writes nothing outside the tickets: the map stays a functional record of the target, and each task ticket carries what its run left — `Result`, `Review`, and `Progress` with `waiting_on` when it stops (user confirmed). This replaced the earlier decision that the main agent writes the batch outcome on the parent map.
-- A weave log is a record of a grill: information a person supplied while a decision was made. What an agent did during a run is not a log: it is already on the ticket, and copying it is overhead (user confirmed).
+- A testimony is a record of a grill: information a person supplied while a decision was made. What an agent did during a run is not a testimony: it is already on the ticket, and copying it is overhead (user confirmed).
 - A subagent that stops is released when it reports: nothing can end its wait inside it, and the answer arrives later, so the task is re-dispatched to a fresh subagent rather than resumed (user confirmed).
 - A stopped task gives up its slot to the next ticket in the queue, so one person's delay does not hold the batch (user confirmed).
 - The main agent commits, one task at a time as reports arrive, mostly the ticket files and also the local changes that belong to that task. The file list in the report is what gets staged, which is why the collision list is read before dispatch (user confirmed).
