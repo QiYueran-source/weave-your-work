@@ -144,4 +144,4 @@ Example:
 
 ## Keeping a body short
 
-A body with Action and Acceptance signal only is a valid task. Every other section exists to answer a question a reader would otherwise have to guess. Add the section when that question is real; leave it out when it is not.
+A body with Action and Acceptance signal only is a valid task, unless the work is `one_way`: that case always carries Failure recovery. Every other section answers a question a reader would otherwise have to guess. Add the section when that question is real; leave it out when it is not.
