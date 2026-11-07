@@ -40,15 +40,14 @@ All children are complete and no further child is needed.
 - A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and says in `Progress` what it waits for, with the issue link (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
-- The step list, in order: read the ticket and the map above it; check that the task still holds; claim it and write `Progress`; run the gates; work one step and pause; read the `Acceptance signal` against the evidence; write what the work left and take `Progress` out; hand the task to `task-review` (user confirmed).
-- Pauses come after checking that the task holds, after each worked step, and after what the work left is written. Reading, claiming, and running the gates do not pause: they are preparation and there is nothing to look at yet.
 - A finished run reports three lines: what was done, how the `Acceptance signal` reads, and what is still unsettled. A run that stopped says which step it stopped at first.
 - A task that no longer holds goes back with `Progress` naming the step and the reason, `waiting_on` set to the owner, and the status left `in_progress`. The message names what the ticket would have to change to continue.
 - Batch selection is two layers: waymark's query takes the tasks owned by the operator, and the skill applies the semantic filters on top — a task waiting on a person, a task that no longer holds. The tool makes the coarse cut and the skill makes the judgement (user confirmed).
 
 ## Not yet specified
 
-(none; the step list and its endings are settled)
+- The step list. Proposed and not settled: read the ticket and the map above it; check that the task still holds; claim it and write `Progress`; run the gates; work one step and pause; read the `Acceptance signal` against the evidence; write what the work left and take `Progress` out; hand the task to `task-review`.
+- Where the pauses sit. Proposed: after checking that the task holds, after each worked step, and after what the work left is written; no pause after reading, claiming, or running the gates.
 
 ## Out of scope
 
