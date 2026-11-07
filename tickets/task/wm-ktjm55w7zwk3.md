@@ -3,11 +3,12 @@ schema: 1
 id: wm-ktjm55w7zwk3
 title: Declare waiting_on in the task properties reference
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:07:45Z
-updated_at: 2026-11-07T10:11:46Z
+updated_at: 2026-11-07T10:14:40Z
+closed_at: 2026-11-07T10:14:40Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false

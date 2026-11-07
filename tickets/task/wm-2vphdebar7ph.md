@@ -3,11 +3,12 @@ schema: 1
 id: wm-2vphdebar7ph
 title: Write the Progress section into the task body reference
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:07:04Z
-updated_at: 2026-11-07T10:12:08Z
+updated_at: 2026-11-07T10:14:40Z
+closed_at: 2026-11-07T10:14:40Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
