@@ -6,7 +6,7 @@ A task body says what one action is, what it hands over, and how someone checks 
 
 Sections appear in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
 
-A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder like `None`.
+A section is written when it carries something. One with nothing to say is left out, never filled with filler such as `TBD`.
 
 ## The size rule
 
@@ -204,4 +204,4 @@ Produce the four-week click-through baseline so the next decision has a number t
 - No dashboard changes.
 ```
 
-The title names the result, not the activity. A probe uses the same shape with `task_kind: probe`, its own Acceptance signal, and Next step in place of Boundaries where both are present.
+The title names the result, not the activity. A probe uses the same shape with `task_kind: probe`, then Action, Acceptance signal, Next step, and Boundaries if it has one. Its `Result` is added later, by the owner, with `waymark body replace`.
