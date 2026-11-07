@@ -3,11 +3,12 @@ schema: 1
 id: wm-6sfjje8w0688
 title: Write the task body reference
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T07:34:28Z
-updated_at: 2026-11-07T07:52:08Z
+updated_at: 2026-11-07T08:17:43Z
+closed_at: 2026-11-07T08:17:43Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false

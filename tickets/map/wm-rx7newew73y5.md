@@ -3,11 +3,12 @@ schema: 1
 id: wm-rx7newew73y5
 title: Task kind reference
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T07:40:22Z
-updated_at: 2026-11-07T07:52:14Z
+updated_at: 2026-11-07T08:17:46Z
+closed_at: 2026-11-07T08:17:46Z
 parent: wm-793jrqph1ckv
 ---
 ## Target

@@ -3,11 +3,12 @@ schema: 1
 id: wm-pzymkc83t2e8
 title: Write the task kind reference
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T07:52:14Z
-updated_at: 2026-11-07T07:52:14Z
+updated_at: 2026-11-07T08:17:44Z
+closed_at: 2026-11-07T08:17:44Z
 parent: wm-rx7newew73y5
 custom_fields:
   needs_human: false
