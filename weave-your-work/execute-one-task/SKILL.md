@@ -42,6 +42,8 @@ Write `Result`: for a delivery, where the deliverable is, how to open it, and wh
 
 Then invoke `task-review`. It reads the same signal against the same evidence, writes `## Review`, and decides: close the ticket, send the task back with the gap named, or stop it on the owner. A task that comes back has only the named gap to fix.
 
+In a batch, the main agent reviews instead: stop at `Result`, report, and let `execute-all` carry the judgment.
+
 Report three lines: what the work produced, the verdict and the axis that decided it, and what happens next.
 
 ## When it stops
