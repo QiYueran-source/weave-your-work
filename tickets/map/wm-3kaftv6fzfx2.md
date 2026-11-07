@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:42:08Z
-updated_at: 2026-11-07T09:44:09Z
+updated_at: 2026-11-07T09:56:20Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -30,13 +30,15 @@ All children are complete and no further child is needed.
 
 - Review is part of execution, not a peer of the map review skill (user confirmed).
 - It is shaped like the map review: axes, verdicts, a report with sources (user confirmed).
-- The axes and verdicts are analysed later; this map holds that fog until then (user deferred).
+- A verdict that does not pass does not close the ticket (user confirmed). Only a passing verdict closes it.
+- Review splits into two kinds, one for a delivery task and one for a probe task (user confirmed). The split is designed later.
+- A probe whose finding is negative still reviews as a probe and still closes with `outcome` recorded; a negative finding is a result, not a failure (user confirmed).
+- The axes and the verdict names are analysed later; this map holds that fog until then (user deferred).
 
 ## Not yet specified
 
 - The axes: what the goal axis reads on a task, what the convention axis reads.
-- The verdicts, and what each one does to the ticket: close, return, grill, or close with `outcome=failed`.
-- What a completed probe with a negative finding counts as.
+- The four verdicts, and what each one leaves the ticket as.
 - Who runs the review, and whether the reviewer may be the executor.
 - How the review relates to the owner's acceptance: is the verdict the acceptance, or an input to it.
 - The report shape.
