@@ -39,7 +39,6 @@ All children are complete and no further child is needed.
 - A stopped run is picked up by reading the `Progress` section: an interrupt ends the run and working memory does not survive it, so the ticket is the only place the state can live (user confirmed).
 - A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and records the wait as a comment carrying the issue link (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
-- The run sets both places when it starts and updates them before it stops; closing clears them. That timing is this skill's; what goes in them is not (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
 
 ## Not yet specified

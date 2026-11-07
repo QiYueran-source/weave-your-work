@@ -29,7 +29,7 @@ All children are complete and no further child is needed.
 ## Decisions so far
 
 - A run takes every task under the chosen map whose owner is the operator. Status does not filter it: a task already `in_progress` is picked up again, because the operator owning it is what makes it theirs to advance (user confirmed, replacing the earlier open-and-unclaimed rule).
-- A task whose `waiting_on` names a person or a thing stays out of the automatic batch until that value is cleared; the owner may still name it explicitly. This is the one filter besides ownership, and it is not a status (user confirmed).
+- A task with a value in `waiting_on` stays out of the automatic batch until that value is cleared; the owner may still name it explicitly. This is the one filter besides ownership, and it is not a status (user confirmed).
 - The owner may name a subset instead of taking everything.
 - Dispatch claims every chosen task before sending any of them out, and caps how many run at once (default 4, user confirmed).
 - `needs_human` tasks are never sent to a subagent; the field cannot tell a whole-human task from a partly-human one, so the rule is uniform (user confirmed).
