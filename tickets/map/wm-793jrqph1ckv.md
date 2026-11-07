@@ -26,6 +26,7 @@ All children are complete and no further child is needed: the task design skill'
 - [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind, the stage it suits, and what failure means for each; it holds one write task.
 - [Check the task design skill against a fresh reader](tickets/task/wm-yx9rckmhnkpm.md): read the four files cold, write a delivery and a probe task, and report what had to be guessed.
 - [Write the Progress section into the task body reference](tickets/task/wm-2vphdebar7ph.md): the one section execution writes and closing removes.
+- [Declare waiting_on in the task properties reference](tickets/task/wm-ktjm55w7zwk3.md): the fourth task field, written while a task waits.
 - The earlier check [wm-f5ddb0342bt1](tickets/task/wm-f5ddb0342bt1.md) was closed without being run and is kept only as history.
 
 ## Decisions so far
@@ -72,7 +73,7 @@ All children are complete and no further child is needed: the task design skill'
 
 ## Not yet specified
 
-- What exactly `Progress` holds, and its name: the section is not written yet.
+- What exactly `Progress` holds, and its name: the section is not written yet. The working answer is that the wait itself is the `waiting_on` field and `Progress` carries where the work stands and what happens next.
 
 ## Out of scope
 

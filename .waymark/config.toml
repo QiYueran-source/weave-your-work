@@ -1,4 +1,4 @@
-version = "1.8"
+version = "1.9"
 storage_root = "tickets"
 
 [categories.comment]
@@ -30,5 +30,9 @@ type = "string"
 required = false
 
 [fields.task_kind]
+type = "string"
+required = false
+
+[fields.waiting_on]
 type = "string"
 required = false
