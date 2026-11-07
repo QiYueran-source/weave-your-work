@@ -37,9 +37,9 @@ All children are complete and no further child is needed.
 - A question the ticket leaves open that changes what the task promises is answered by the skill, not by taste: `execute-step-by-step` has a person at hand and stops to ask; `execute-all` cannot stop, decides, says what it decided in its report, and leaves the check to review. Where an output goes when the Action does not say is such a question (user confirmed).
 - The state a run leaves behind is the `Progress` section of the task body and the `waiting_on` field. What they hold, their format, their constraints, and their lifecycle are defined in task design and nowhere else; this skill only says when execution touches them (user confirmed).
 - A stopped run is picked up by reading the `Progress` section: an interrupt ends the run and working memory does not survive it, so the ticket is the only place the state can live (user confirmed).
-- A task waiting on a person keeps status `in_progress`. The wait is recorded as a comment carrying the issue link, and a `waiting_on` field names the person or the thing it waits on (user confirmed).
+- A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and records the wait as a comment carrying the issue link (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
-- When the run starts, before it stops, and before it closes, it updates those two places. That timing is this skill's; what goes in them is not (user confirmed).
+- The run sets both places when it starts and updates them before it stops; closing clears them. That timing is this skill's; what goes in them is not (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
 
 ## Not yet specified
