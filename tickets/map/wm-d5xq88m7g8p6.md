@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:46:51Z
-updated_at: 2026-11-07T10:46:51Z
+updated_at: 2026-11-07T10:49:41Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -31,10 +31,17 @@ All children are complete and no further child is needed.
 - It advances exactly one task and is the smallest execution unit; `execute-all` points at it rather than restating the steps (user confirmed).
 - It runs the task to the end. Work does not stop between steps; it stops only when something blocks it (user confirmed).
 - Its name is `execute-one-task`, after the unit it advances rather than the pauses it used to have (user confirmed).
-- There is no self-grill and no execution log. The executor gathers what it needs itself and reports what it could not settle (user confirmed).
+- The step list: read the ticket and the map above it; check that the task still holds; claim it; run the gates; work to the end; read the `Acceptance signal` against the evidence; write the outcome; hand the task on (user confirmed).
+- Five things block a run: the `one_way` confirmation has not landed, a `Person:` step needs a person, a question would change what the task promises, the task no longer holds, or the work lacks an input or a permission. The last one is a wait; a task that no longer holds is handed back (user confirmed).
+- It writes exactly two things into the task body, and no more: `Result` when the task finishes, `Progress` when it stops. Everything else in the body was written by the designer and is not touched (user confirmed).
+- `Progress` is written only when the run stops, as the record that lets the next run continue. A run that starts writes nothing (user confirmed).
+- `waiting_on` is set when the stop waits on a person, and cleared when the answer arrives (user confirmed).
+- The ticket body's sections are task design's. This skill names `Result` and `Progress` and does not restate their format (user confirmed).
+- The run says one line when it starts — where it begins and what the first step is — and then works (user confirmed).
+- Every ending reports: a finished run and a stopped run both say what happened. A run never ends silently (user confirmed).
+- There is no self-grill and no execution log. The executor gathers what it needs itself (user confirmed).
 - Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and `Result` says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept (user confirmed).
-- The state a run leaves behind is the `Progress` section of the task body and the `waiting_on` field, as the task design skill defines them. This skill names them and does not restate their format (user confirmed).
-- A stopped run is picked up by reading `Progress`: the ticket is the only place that state survives (user confirmed).
+- The state a run leaves behind is `Progress` and `waiting_on`, as task design defines them. A stopped run is picked up by reading `Progress` (user confirmed).
 - A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and says in `Progress` what it waits for, with the issue link (user confirmed).
 - A question that would change what the task promises blocks the run and goes to the owner. A question about how the work is done does not block it; the executor answers it and says so in `Result` (user confirmed).
 - When a task no longer holds, the executor hands it back to the owner: `Progress` names the reason, `waiting_on` names the owner, and the status stays `in_progress`. The executor does not rewrite the action and does not split the task (user confirmed).
@@ -42,10 +49,8 @@ All children are complete and no further child is needed.
 
 ## Not yet specified
 
-- The blocker list: which conditions stop a run.
-- The step list.
-- When `Progress` is written and updated.
-- Whether the run says one line at the start before working.
+- What the report says when the run finishes, and when it stops.
+- Who runs the review after a single task finishes.
 
 ## Out of scope
 
