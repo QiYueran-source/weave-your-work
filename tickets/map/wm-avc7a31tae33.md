@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:16Z
-updated_at: 2026-11-07T13:16:37Z
+updated_at: 2026-11-07T15:42:24Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -16,7 +16,7 @@ Design the task execution skills: define how an owner advances an executable tas
 
 ## Acceptance direction
 
-The four task execution skills are delivered under `weave-your-work/`, and one worked example shows a single task advanced, a batch dispatched, and a finished task reviewed.
+The three task execution skills are delivered under `weave-your-work/`, with `dispatch.md` inside `execute-all` rather than a skill of its own, and one worked example shows a single task advanced, a batch dispatched, and a finished task reviewed.
 
 ## Children
 
@@ -43,9 +43,9 @@ The four task execution skills are delivered under `weave-your-work/`, and one w
 
 ## Not yet specified
 
-- The step list, and where on it a pause belongs. Deferred by the user.
-- What the step skills point at in review and dispatch, and whether a step skill runs the review itself.
-- Which gates only a context that can talk to a person may run.
+- ~~The step list, and where on it a pause belongs.~~ Resolved: the shape is the sections of `execute-one-task`; a pause is one of its five blockers and writes `Progress` with `waiting_on`.
+- ~~What the step skills point at in review and dispatch, and whether a step skill runs the review itself.~~ Resolved: `execute-one-task` invokes `task-review` and the review closes; in a batch it stops at `Result` and the main agent reviews.
+- ~~Which gates only a context that can talk to a person may run.~~ Resolved: no gate needs one. A needed person is a wait recorded in `waiting_on`, and only the main agent talks to a person.
 - Where the worked example lives. Deferred by the user.
 
 ## Out of scope
