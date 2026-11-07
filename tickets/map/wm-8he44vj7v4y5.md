@@ -7,14 +7,14 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:50Z
-updated_at: 2026-11-07T09:44:38Z
+updated_at: 2026-11-07T09:49:48Z
 parent: wm-avc7a31tae33
 ---
 ## Target
 
 Design the step-by-step execution skill: the shared step list and gates that advance one task, pausing between steps so a person can look.
 
-Why: the steps and gates live in one place only; the other execution skills reference this one instead of restating them.
+Why: this is the smallest unit of execution, and the other execution skills reference it instead of restating it.
 
 ## Acceptance direction
 
@@ -28,19 +28,20 @@ All children are complete and no further child is needed.
 
 ## Decisions so far
 
-- This skill holds the core step list and gates; the other execution skills reference it (user confirmed).
+- This is the smallest execution unit: it advances exactly one task, and every other execution skill is built by pointing at it or by running it repeatedly (user confirmed).
+- It holds the step list and the gates, and `execute-all` references it (user confirmed).
 - It pauses between steps for a person to look (user confirmed).
 - It runs where a person can be asked, which a subagent cannot (user confirmed).
 - The first version has no self-grill and no execution log. The executor gathers the information it needs itself and reports what it could not settle (user confirmed, replacing the earlier grill-and-log direction).
-- Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence record says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept. When the Action does not say where the output goes and the choice affects other people, the executor stops instead of choosing (user confirmed).
+- Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept. When the Action does not say where the output goes and the choice affects other people, the executor stops instead of choosing (user confirmed).
 - A task waiting on a person keeps status `in_progress`. The wait is recorded as a comment carrying the issue link, and a `waiting_on` field names the person or the thing it waits on (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
 
 ## Not yet specified
 
-- The step list itself, and where each gate sits on it.
+- The step list itself, and where each gate sits on it. Deferred by the user.
 - How a pause is presented and what the person sees at it.
-- How the executor reports what it could not settle, now that no log is written.
+- What the executor reports when it finishes, now that no log is written.
 - How a stopped task is handed back to its owner.
 
 ## Out of scope
