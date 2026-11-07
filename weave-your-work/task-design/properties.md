@@ -39,6 +39,16 @@ Notifying a person and waiting for their answer belong to the task execution ski
 
 No date fields. There is no start date and no deadline: the start is the moment the ticket is claimed, which execution records, and a deadline needs a check on overdue work that this layer does not have. When the work itself is constrained by a date, that constraint belongs in Action or Boundaries, where a reader sees it.
 
+No dependency edges. The tasks under one map are parallel branches, so an edge between them would mean one waits for another. Work that waits on a sibling is a slice of a result, not a result; either it joins that sibling's action, or the map splits into child maps that carry the edge.
+
+## Placement and links
+
+A task hangs under exactly one map. Its `parent` is a map, never another task: a task cannot hold children, so a task under a task is an error. This one is machine checkable.
+
+A task may link to another item with `waymark link`. A link records a relationship worth following: this task's output was used elsewhere, or two items cover the same subject. A link never expresses order. It does not block, it does not make anything wait, and it does not shift readiness. Work that must run in sequence is two steps of one action, or two child maps carrying a dependency edge. When a link is used to mean "this waits for that", the reader is being told something the tracker does not enforce.
+
+The owner adds or removes a link when the relationship appears, through the waymark command, without asking anyone. A link is not written in the body; the body says what the work is, and a reader who needs the relationship follows the front matter.
+
 ## Waymark's own fields
 
 Waymark's front matter fields, including id, title, status, owner, parent, and dependencies, are documented by `waymark --help` and are not repeated here.
