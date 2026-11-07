@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Execute step by step
 
-Advance exactly one task and stop between steps so a person can look. This is the smallest unit of execution: the batch skill runs it over many tickets, and the one-pass skill runs it without the pauses.
+Advance exactly one task and stop between steps so a person can look. This is the smallest unit of execution: `task-dispatch` runs it over many tickets, and `execute-all` runs it without the pauses.
 
 ## Before the first step
 
@@ -62,7 +62,7 @@ Write the evidence as a comment: where the deliverable is, how to open it, and w
 
 Remove `Progress`. The run is over, and a closed ticket keeps only what the task promised.
 
-Hand the task to `task-review`. A passing verdict closes it. Anything else comes back here, and the fix is only what the review named.
+Hand the task to `task-review`. Only a passing verdict closes it. Anything else comes back here, and the fix is only what the review named.
 
 ## What this skill leaves behind
 
