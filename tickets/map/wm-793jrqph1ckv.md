@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:34:42Z
+updated_at: 2026-11-07T07:38:48Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -16,7 +16,7 @@ Design the task design skill: define how an executable task is specified and mad
 
 ## Acceptance direction
 
-All children are complete and no further child is needed: `weave-your-work/task/SKILL.md` routes to `body.md` and `properties.md`, both references are written, and the delivery and probe examples can be rebuilt from them.
+All children are complete and no further child is needed: `weave-your-work/task/SKILL.md` routes to its references, the references are written, and the delivery and probe examples can be rebuilt from them.
 
 ## Children
 
@@ -26,7 +26,7 @@ All children are complete and no further child is needed: `weave-your-work/task/
 
 ## Decisions so far
 
-- The task design skill has two references: `body.md` for task content and `properties.md` for task fields. `kinds.md` is dropped; the delivery and probe difference lives in `body.md` (user confirmed).
+- The task design skill writes `body.md` and `properties.md`. `kinds.md` is dropped; the delivery and probe difference lives in `body.md` (user confirmed).
 - Task design defines the task specification; it does not decide which tasks to create when splitting a map. `split-to-task` decides whether and how work should split into tasks, then references task design when creating them (user confirmed).
 - A task must be classified as delivery or probe using `task_kind` (user confirmed).
 - A task carries exactly one complete action: one goal, which may take several steps (user confirmed).
@@ -45,8 +45,8 @@ All children are complete and no further child is needed: `weave-your-work/task/
 - Every section in `body.md` is described with its purpose, its format, and a directly usable example, following the map body reference (user confirmed).
 - `properties.md` covers only `task_kind`, `reversibility`, and `needs_human`. Waymark's core fields are left to `waymark --help` instead of being repeated (user confirmed).
 - `reversibility` is declared in waymark as an optional string; `needs_human` is declared as an optional boolean. Accepted values live in `properties.md`, not in the config (user confirmed).
-- `needs_human` is a separate boolean property, not a task kind. AI handles the parts it can complete; work that requires a person is handed to a human. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed). Task execution defines how the handoff is blocked, notified, and resumed.
-- When `needs_human` is true, the Action identifies which steps require human participation. A step that is partly human and partly machine is written as a step and the human part is named there; there is no separate field for mixed steps (user confirmed).
+- `needs_human` is a separate boolean property, not a task kind. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed).
+- Human participation is marked directly inside the Action, step by step. No separate `Human step` section is added (user confirmed).
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
 - Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
@@ -54,7 +54,8 @@ All children are complete and no further child is needed: `weave-your-work/task/
 
 ## Not yet specified
 
-(none; the design is settled and split into write tasks)
+- Whether a `kind.md` reference exists at the task skill level and what it holds.
+- Where the notification rule for a human-required step is recorded.
 
 ## Out of scope
 
