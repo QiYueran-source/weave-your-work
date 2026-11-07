@@ -7,20 +7,18 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-07T07:40:27Z
+updated_at: 2026-11-07T09:45:30Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   task_kind: delivery
 ---
 ## Target
 
-Design the task skill system so a team can define a leaf of the target tree as a claimable, verifiable unit and advance it to an outcome.
-
-Why: task is the finest target and the only node that can be executed; without this skill a map never turns into work.
+Define the Task skill: how work is cut from a map into executable tasks, and how an owner carries one to its outcome.
 
 ## Acceptance direction
 
-All child maps are accepted and no further child maps are needed: task design defines how a task is written, task execution defines how it is advanced, and the split skill can create tasks from them.
+Two child maps are complete and closed, and the Task skill's entry points at them.
 
 ## Children
 
@@ -29,23 +27,16 @@ All child maps are accepted and no further child maps are needed: task design de
 
 ## Decisions so far
 
-- Inherits the execution map's decisions: ownership model, task kinds, reversibility marker, and acceptance direction.
-- needs_human: a boolean field marks a task that must be done by a person, as opposed to a task an agent can finish alone (user proposed).
-- Task atomicity: a task cannot have child tasks, and it leaves one result someone can name. Length is not the test: a task may run for days while it waits on a person or on data. Work with no result of its own is a step, not a task (user confirmed).
-- A task carries no dependency edges, and a task hangs under exactly one map. The tasks under one map are parallel branches. Where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into child maps that carry the edge (user confirmed).
-- A task may link to items outside its map for provenance or shared subject, and a link never expresses order: it does not block or affect readiness. The owner adds and removes links through the waymark command, and the body does not mirror them. A task whose parent is another task is an error (user confirmed).
-- Splitting follows the vertical slice: a task ends at a result that can be handed over whole, even when the action crosses several stages to reach it. A slice that finishes one stage and waits for a sibling is a step, not a task (user confirmed).
-- A task carries no date fields: no start date, no deadline. Starting is the claim, which execution records; a deadline needs an overdue check this layer does not have. A hard external date goes into Action or Boundaries (user confirmed).
-- The Task skill has two child skills, task design and task execution, following the Map skill structure (user confirmed).
-- Split-to-task decides whether and how work should split into tasks based on semantics; it does not design individual tasks. It references the task design skill when creating them (user confirmed).
-- Splitting follows semantic groupings, not a one-decision-to-one-task mapping, consistent with the submap rule (user confirmed).
-- The total Task skill keeps no references of its own. Its rules live in the two child skills: the content and kind rules in task design, the operating procedure in task execution (user confirmed).
+- The Task skill splits by actor into task design and task execution (user confirmed).
+- Tasks carry no dependency edges, only soft links. Ordering lives on maps (user confirmed).
+- The execution side splits further into four flat skills: `execute-step-by-step`, `execute-all`, `task-dispatch`, and `task-review` (user confirmed).
+- Execution posits no self-grill and no log in its first version; the executor gathers what it needs and reports what it could not settle (user confirmed).
 
 ## Not yet specified
 
-- The small-addition rule under the structure freeze: whether a small extra task may be added after the freeze.
+- Whether the Task skill's own entry document carries anything beyond routing into the two children.
 
 ## Out of scope
 
-- Map skill design (sibling map under the execution map).
-- Same-name glossary conflicts.
+- The Map skill, which owns target trees and ordering.
+- The grill and glossary skills, which own how decisions are recorded while they are made.
