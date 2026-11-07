@@ -28,7 +28,11 @@ The task skill's acceptance direction: all child tasks are done and no further c
 
 ### Why skill maps, not tasks
 
-A skill is not one action. The map skill has to settle creating a map, the six body sections, children sync, fog graduation, phases, and the acceptance check; the task skill has to settle the body, kinds, reversibility, claiming, dependencies, and closing. Those are several function details, so each skill is a target with fog, not an executable unit. The rule stays: a child becomes a task only when its action and verifiable result can be written now.
+A skill is not one action. The map skill has to settle creating a map, the six body sections, children sync, fog graduation, phases, and the acceptance check; the task skill has to settle task design and task execution. Those are distinct targets with their own function details, so each gets a map layer. The rule stays: a child becomes a task only when its action and verifiable result can be written now.
+
+### Splitting the Task skill map
+
+The Task skill map now has two children: [Task design skill](../../../tickets/map/wm-793jrqph1ckv.md) and [Task execution skill](../../../tickets/map/wm-avc7a31tae33.md). This follows the Map skill's pattern: a total skill map routes to focused child skills. Task design defines how to specify a task; task execution defines how an owner advances one. `split-to-task` decides whether and how work becomes tasks based on semantic groupings, then references task design when those task tickets are written. A decision does not have to match exactly one task, just as a decision does not have to match exactly one child map.
 
 ### What the skill maps do not cover
 

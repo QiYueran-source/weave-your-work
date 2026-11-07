@@ -7,41 +7,42 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-06T15:02:27Z
+updated_at: 2026-11-07T06:50:44Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   task_kind: delivery
 ---
 ## Target
 
-Design the task skill so a team can turn a leaf of the target tree into a claimable, verifiable unit: write the task body, set its kind and reversibility, claim it with start, wire its dependencies, and close it against an acceptance signal.
+Design the task skill system so a team can define a leaf of the target tree as a claimable, verifiable unit and advance it to an outcome.
 
 Why: task is the finest target and the only node that can be executed; without this skill a map never turns into work.
 
 ## Acceptance direction
 
-All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/task/`, the example task can be rebuilt from it, and both a probe and a delivery task are shown with their reversibility.
+All child maps are accepted and no further child maps are needed: the Task skill routes to the task design and task execution skills; task design defines task content, kinds, reversibility, and acceptance signals; task execution defines the lifecycle and outcome handling; examples demonstrate a delivery task and a probe task.
 
 ## Children
 
-(none yet; the function details are still fog)
+- [Task design skill](tickets/map/wm-793jrqph1ckv.md): define how tasks are specified and made verifiable.
+- [Task execution skill](tickets/map/wm-avc7a31tae33.md): define how an owner advances a task and records its outcome.
 
 ## Decisions so far
 
 - Inherits the execution map's decisions: ownership model, task kinds, reversibility marker, and acceptance direction.
 - needs_human: a boolean field marks a task that must be done by a person, as opposed to a task an agent can finish alone (user proposed).
 - Task atomicity: a task cannot have child tasks. If a task is too big to finish in one go, it becomes a map (user proposed).
+- The Task skill has a total entry point and two child skills: task design and task execution, following the Map skill structure (user confirmed).
+- Task design defines how each task is designed; task execution has a separate design map because its rules need further design (user confirmed).
+- split-to-task decides whether and how work should split into tasks based on semantics; it does not design individual tasks. It references the task design skill when creating them (user confirmed).
+- Splitting follows semantic groupings, not a one-decision-to-one-task mapping, consistent with the submap rule (user confirmed).
 
 ## Not yet specified
 
-- The task body template: the sections for a delivery task and for a probe task.
-- The reversibility field: its values and what each value changes.
+- Task design details: task body, kinds, reversibility, acceptance signals, and relevant fields.
+- Task execution lifecycle: claim, authority, dependencies, handover, closing, and outcomes.
 - The needs_human notification: how the person is notified and which issue mechanism carries it.
-- Claiming: whether a claim equals start (open to in_progress), and who may advance a task.
-- Dependency wiring: how a waiting task declares its blockers.
-- Closing: how close and outcome work, and how a failed task keeps its record.
 - The small-addition rule under the structure freeze: whether a small extra task may be added after the freeze.
-- The Split criterion and the graduation rule as they apply to tasks (inherited from the execution map).
 
 ## Out of scope
 
