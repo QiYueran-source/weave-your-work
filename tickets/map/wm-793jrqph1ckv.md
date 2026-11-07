@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:41:50Z
+updated_at: 2026-11-07T07:45:40Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -47,7 +47,11 @@ All children are complete and no further child is needed: the task design skill'
 - `properties.md` covers only `task_kind`, `reversibility`, and `needs_human`. Waymark's core fields are left to `waymark --help` instead of being repeated (user confirmed).
 - `reversibility` is declared in waymark as an optional string; `needs_human` is declared as an optional boolean. Accepted values live in `properties.md`, not in the config (user confirmed).
 - `needs_human` is a separate boolean property, not a task kind. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed).
-- Human participation is marked directly inside the Action, step by step. No separate `Human step` section is added (user confirmed).
+- Human participation is marked inside the Action with the prefix `Person:` at the start of the step. No separate `Human step` section is added (user confirmed).
+- The field and the body must agree: when `needs_human` is true at least one Action step carries the `Person:` prefix, and when it is false no step does (user confirmed).
+- A task is accepted by its owner. Acceptance is not limited to a non-executor (user confirmed).
+- Evidence for a human step is written back as a comment with a link to the evidence. A probe task also records the finding in `Result` (user confirmed).
+- Evidence must be checkable by someone else; the acceptance signal stays observable and falsifiable (user confirmed).
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
 - Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
