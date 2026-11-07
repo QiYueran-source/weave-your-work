@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:30:39Z
+updated_at: 2026-11-07T07:32:42Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -31,8 +31,9 @@ The task design skill and its references define how to write delivery and probe 
 - A probe task must state the hypothesis or question it verifies; the Action says what is checked and how (user confirmed).
 - `reversibility` stays a required front matter field with `one_way` and `two_way` values (user confirmed).
 - Failure recovery is required for a `one_way` task and optional for a `two_way` task. It states the consequence of failure and the remediation (user confirmed).
-- Probe body sections: Action, Acceptance signal, `Result`, and a separate section for the next step under each outcome (user confirmed). Boundaries is optional. Failure recovery is added only when the check could not be completed and a retry or abandonment needs recording.
-- `Result` records what the check found and whether the hypothesis holds. When the check was not completed, it says so and gives the reason (user confirmed).
+- Probe body sections: Action, Acceptance signal, `Result`, and `Next step`. Boundaries is optional. Failure recovery is added only when the check could not be completed and a retry or abandonment needs recording (user confirmed).
+- `Result` records what the check found and whether the hypothesis holds. It is written after the check by the task owner; when the check was not completed, it says so and gives the reason (user confirmed).
+- `Next step` is required for every probe task and covers both outcomes: what to do when the hypothesis holds and what to do when it does not (user confirmed).
 - A probe task is done when the check is complete; its acceptance signal distinguishes the possible verification results rather than requiring a particular one (user confirmed).
 - Unused sections are omitted entirely, not written as `none` (user confirmed).
 - Every section in `body.md` is described with its purpose, its format, and a directly usable example, following the map body reference (user confirmed).
@@ -42,12 +43,11 @@ The task design skill and its references define how to write delivery and probe 
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
 - Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
+- The example set has two files with parallel names: `task-example-delivery.md` and `task-example-probe.md`. The existing `task-example.md` becomes the delivery example and is rewritten to the new section list (user confirmed).
 
 ## Not yet specified
 
-- The name of the probe section that holds the next step under each outcome.
-- Whether that section is required for every probe task.
-- What a good example looks like for each section, and whether the example set needs a probe task alongside the existing delivery example.
+- How `needs_human` is written in the body when a step is partly human and partly machine.
 
 ## Out of scope
 
