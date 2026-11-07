@@ -7,7 +7,7 @@ description: "Write a task ticket, the finest node of a target tree: choose deli
 
 A task is the finest node of the target tree: one action that ends at a result someone can check. Use this skill when you are writing a task ticket, or when you need to know what a task must contain before it can be worked on.
 
-A task cannot have child tasks, and it hangs under exactly one map.
+A task cannot have children, and it hangs under exactly one map. That map is the thing the task refines; this skill takes the map as given.
 
 ## What a task must settle
 
@@ -15,10 +15,13 @@ A task cannot have child tasks, and it hangs under exactly one map.
 - What the action is, and what result it hands over.
 - What evidence shows the result is there.
 - How reversible the work is.
+- Whether a person is needed.
 
 ## The size rule
 
-A task ends at a result that can be handed over whole. The action may cross several stages to reach it: cleaning a dataset and then analysing it is one task when the analysis is what gets handed over. A slice that finishes one stage and waits on a sibling is a step, not a task.
+A task ends at a result that can be handed over whole and checked on its own. The action may cross several stages to reach it: cleaning a dataset and then analysing it is one task when the analysis is what gets handed over.
+
+The shape to avoid is a slice, one stage of a result finished before anything can be used. A slice needs a sibling, and that need is the sign it belongs inside the task that delivers the result.
 
 Length is not the test. A task may run for days while it waits on a person or on data.
 
@@ -26,15 +29,15 @@ Length is not the test. A task may run for days while it waits on a person or on
 
 - No child tasks.
 - No dependency edges. The tasks under one map are parallel; where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into child maps that carry the edge.
-- No dates. Starting is the claim, and a hard external date belongs in Action or Boundaries.
+- No dates as fields. A hard date that shapes the work goes in the opening sentence of Action.
 
-A task may link to items outside its map for provenance or a shared subject. A link never expresses order.
+Order is carried by the tree, never by a link. A link records a relationship worth following and nothing more, and it may point at any item, including a sibling in the same map.
 
 ## Where each answer lives
 
-- `body.md`: every section a task body may hold, with the format and an example for each.
+- `body.md`: the sections a body may hold, the order they appear in, and a whole ticket as waymark stores it.
 - `kind.md`: how to choose between a delivery and a probe task, which kind suits which stage, and what failure means for each.
-- `properties.md`: `task_kind`, `reversibility`, and `needs_human`, with accepted values and who writes each, plus the placement and link rules.
+- `properties.md`: the three custom fields, placement under a map, and the link rules.
 
 ## What this skill does not do
 
