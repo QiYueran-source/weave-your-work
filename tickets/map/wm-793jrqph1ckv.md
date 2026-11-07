@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:47:40Z
+updated_at: 2026-11-07T07:50:06Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -16,14 +16,14 @@ Design the task design skill: define how an executable task is specified and mad
 
 ## Acceptance direction
 
-All children are complete and no further child is needed: the task design skill's entry routes to its three references, the references are written, and the delivery and probe examples can be rebuilt from them.
+All children are complete and no further child is needed: the task design skill's entry routes to its three references, and `body.md`, `kind.md`, and `properties.md` are written and agree with each other.
 
 ## Children
 
 - [Write the task skill entry](tickets/task/wm-qamw233hhpe3.md): SKILL.md entry and routing.
 - [Write the task body reference](tickets/task/wm-6sfjje8w0688.md): shared content rules plus the delivery and probe section lists.
 - [Write the task properties reference](tickets/task/wm-0sk8rrhz6gsv.md): task_kind, reversibility, and needs_human.
-- [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind and what failure means for each.
+- [Task kind reference](tickets/map/wm-rx7newew73y5.md): choosing the kind, the stage it suits, and what failure means for each.
 
 ## Decisions so far
 
@@ -49,13 +49,13 @@ All children are complete and no further child is needed: the task design skill'
 - `needs_human` is a separate boolean property, not a task kind. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed).
 - Human participation is marked inside the Action with the prefix `Person:` at the start of the step. The prefix is always written in English, even when the task is written in another language. No separate `Human step` section is added (user confirmed).
 - The field and the body must agree: when `needs_human` is true at least one Action step carries the `Person:` prefix, and when it is false no step does (user confirmed).
-- A task is accepted by its owner. Acceptance is not limited to a non-executor (user confirmed). The review, execution, and root maps now all say the owner judges acceptance.
+- A task is accepted by its owner. Acceptance is not limited to a non-executor (user confirmed). The review, execution, and root maps all say the owner judges acceptance.
 - Evidence for a human step is written back as a comment with a link to the evidence. A probe task also records the finding in `Result` (user confirmed).
 - Evidence for a human step follows the acceptance signal's rule: someone else can check it. This is the same observability requirement, not a separate rule.
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
 - Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
-- The example set has two files with parallel names: `task-example-delivery.md` and `task-example-probe.md`. The existing `task-example.md` becomes the delivery example and is rewritten to the new section list (user confirmed).
+- Examples are written in a later pass and are not children of this map. The planned file names are `task-example-delivery.md` and `task-example-probe.md`; `SKILL.md` links them once they exist (user confirmed).
 
 ## Not yet specified
 
@@ -63,5 +63,6 @@ All children are complete and no further child is needed: the task design skill'
 
 ## Out of scope
 
+- Writing the delivery and probe examples.
 - Deciding which tasks to create when splitting a map.
 - Claiming, execution, dependency handling, and closing tasks.
