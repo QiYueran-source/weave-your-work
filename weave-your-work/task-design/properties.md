@@ -1,6 +1,6 @@
 # Task properties
 
-A task carries four custom fields in the waymark front matter, under `custom_fields`: `task_kind`, `reversibility`, `needs_human`, and `waiting_on`. The first two are required. The other two are optional, and `waiting_on` is written while the task runs rather than when it is designed. This file defines what each one means, the values it accepts, and who writes it. Body sections are in `body.md`; choosing the kind is in `kind.md`.
+A task carries five custom fields in the waymark front matter, under `custom_fields`: `task_kind`, `reversibility`, `needs_human`, `waiting_on`, and `outcome`. The first two are required. The other three are optional: `waiting_on` is written while the task runs, and `outcome` when it closes as a failed attempt. This file defines what each one means, the values it accepts, and who writes it. Body sections are in `body.md`; choosing the kind is in `kind.md`.
 
 Every front matter change goes through a waymark command, never a hand edit. A whole ticket is shown at the end of `body.md`.
 
@@ -50,6 +50,15 @@ Optional, type: string. Leave it unset when the task waits on nobody.
 - It names the person, or the thing, whose answer the task waits on. One value: what is being waited on now, not everything the task touched.
 - Who writes it: whoever advances the task. It is set when the task starts waiting and cleared when the answer arrives, not when the work resumes. Task design only declares the field.
 - A task with a value is still `in_progress`. It is not blocked and not closed: the field records a wait, not a state of its own.
+
+## outcome
+
+Optional, type: string. Leave it unset unless the task closed as a failed attempt.
+
+- The one accepted value is `failed`. It marks a ticket that closed because the work went the wrong way, not because it delivered: the action no longer served the map, and a replacement task takes its place.
+- Who writes it: whoever runs the review, at the close, and only with the verdict `wrong direction`. Execution never writes it, and a task that passed carries no `outcome`.
+- It mirrors the `Review` section and never contradicts it: the section says what the review found, the field makes a failed close findable in the front matter.
+- The field was first defined for maps and means the same thing on a task. This file is where it takes its task meaning.
 
 ## owner
 

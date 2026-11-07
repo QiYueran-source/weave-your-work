@@ -92,9 +92,9 @@ Example:
 
 A delivery task promises an output. Failure is an incident.
 
-Sections, in order: Action, Acceptance signal, Result, Failure recovery, Boundaries, and `Progress` while the work is running.
+Sections, in order: Action, Acceptance signal, Result, Review, Failure recovery, Boundaries, and `Progress` while the work is running.
 
-Action and Acceptance signal are required. Result is added when the work ends. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
+Action and Acceptance signal are required. Result is added when the work ends, and Review is added by the review before the ticket closes. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
 
 ### Failure recovery
 
@@ -118,9 +118,9 @@ The migration drops the old table, so a bad run loses September's rows.
 
 A probe task buys information. A negative result is a normal result.
 
-Sections, in order: Action, Acceptance signal, Result, Next step, Failure recovery, Boundaries, and `Progress` while the work is running.
+Sections, in order: Action, Acceptance signal, Result, Review, Next step, Failure recovery, Boundaries, and `Progress` while the work is running.
 
-Action, Acceptance signal and Next step are required. Result is added when the check ends. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
+Action, Acceptance signal and Next step are required. Result is added when the check ends, and Review is added by the review before the ticket closes. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
 
 ### Next step
 
@@ -139,7 +139,7 @@ Example:
 
 ## Sections written after creation
 
-A designer writes neither of these. They belong to whoever advances the task: `Result` records what the work produced, and `Progress` records where it stands.
+A designer writes none of these. They belong to whoever advances the task: `Result` records what the work produced, `Review` records what the review made of it, and `Progress` records where it stands.
 
 ### Result
 
@@ -173,6 +173,38 @@ All three reviewers answered. Two work from memory and one wants a checklist bef
 The answer is that reviewers split, and the sample is too small to say which is more common.
 ```
 
+### Review
+
+Purpose: record the verdict on the finished work and what each axis read, so a closed ticket shows how it was judged.
+
+Format:
+- Written before the ticket closes, with `waymark body replace`. It stays on the closed ticket, beside `Result`.
+- The first line is the verdict alone: `passed`, `needs changes`, `needs discussion`, or `wrong direction`.
+- Below it, one line per axis: the goal check and the convention check. Each line cites its source — the `Acceptance signal` line it was read against, or the `Boundaries` line or repo rule it broke.
+- A finding that cites nothing is not a finding: name the source or drop the line.
+
+Lifecycle: written once the work has ended and `Result` exists, and replaced, never appended, when a task is reviewed again. `passed` and `wrong direction` are written just before the close; `needs changes` and `needs discussion` leave the ticket open with this section on it, so the run that carries the fix reads what the last review named and changes only that. An open ticket then carries `Review` beside `Progress`; a closed ticket carries `Review` instead of it.
+
+Who writes it: whoever runs the review, never the designer. The executor writes `Result`; the review writes this section, even when one agent does both in turn.
+
+Example:
+
+```
+passed
+
+- Goal: `baseline-click-through.csv` holds four weekly rows and no week is missing, read as the `Acceptance signal` asks.
+- Convention: no `Boundaries` line was crossed, and the run wrote only `Result` and this section.
+```
+
+Example, a failed close:
+
+```
+wrong direction
+
+- Goal: the file answers a question the map no longer asks; the signal was written against the earlier target.
+- Convention: nothing was broken; the run stayed inside its boundaries.
+```
+
 ### Progress
 
 Purpose: say where the work stands, so a run that stopped can be picked up without asking anyone.
@@ -195,7 +227,7 @@ Next: check the file against the signal.
 
 ## Keeping a body short
 
-Action and Acceptance signal are the only sections every task needs. Every other section answers a question a reader would otherwise have to guess; write it when that question is real and leave it out when it is not. The exceptions are the ones named above: Failure recovery for `one_way` work, and Next step for a probe. `Result` and `Progress` are the two sections no designer writes: they belong to whoever advances the task.
+Action and Acceptance signal are the only sections every task needs. Every other section answers a question a reader would otherwise have to guess; write it when that question is real and leave it out when it is not. The exceptions are the ones named above: Failure recovery for `one_way` work, and Next step for a probe. `Result`, `Review`, and `Progress` are the three sections no designer writes: they belong to whoever advances the task.
 
 ## A whole ticket
 
@@ -234,9 +266,25 @@ Produce the four-week click-through baseline so the next decision has a number t
 
 `baseline-click-through.csv` is in the shared folder, four weekly rows, no week missing. The analytics owner confirmed the report definition; their answer is linked here.
 
+## Review
+
+passed
+
+- Goal: `baseline-click-through.csv` holds four weekly rows and no week is missing, read as the `Acceptance signal` asks.
+- Convention: no `Boundaries` line was crossed, and the run wrote only `Result` and this section.
+
 ## Boundaries
 
 - No dashboard changes.
 ```
 
-The title names the result, not the activity. A probe uses the same shape with `task_kind: probe`, then Action, Acceptance signal, Result, Next step, and Boundaries if it has one. Its `Result` is added later, when the check ends, with `waymark body replace`. The ticket above has already closed, which is why it carries neither `Progress` nor `waiting_on`.
+The title names the result, not the activity. A probe uses the same shape with `task_kind: probe`, then Action, Acceptance signal, Result, Review, Next step, and Boundaries if it has one. Its `Result` is added later, when the check ends, with `waymark body replace`. The ticket above has already closed, which is why it carries `Review` and neither `Progress` nor `waiting_on`.
+
+A task that closed as a failed attempt keeps the same shape and changes one field. Its `custom_fields` carry `outcome: failed`, and its `Review` reads `wrong direction`, like the failed-close example in the Review section above:
+
+```markdown
+custom_fields:
+  task_kind: delivery
+  reversibility: two_way
+  outcome: failed
+```

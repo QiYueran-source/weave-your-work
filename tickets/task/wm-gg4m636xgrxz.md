@@ -3,11 +3,12 @@ schema: 1
 id: wm-gg4m636xgrxz
 title: Add outcome and Review to the task references
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T12:39:27Z
-updated_at: 2026-11-07T12:39:27Z
+updated_at: 2026-11-07T12:53:34Z
+closed_at: 2026-11-07T12:53:34Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
@@ -32,3 +33,16 @@ Add the two things a review writes to the task design references.
 - No review procedure: how a review is run belongs to `task-review`.
 - No change to `task_kind`, `reversibility`, `needs_human`, or `waiting_on`.
 - Do not rewrite `Result`'s rules.
+
+## Result
+
+`properties.md` defines `outcome` as an optional string with one accepted value, `failed`, written by review at the close of a failed task, and says it means the same thing as it does on a map. `body.md` defines `## Review` under the sections written after creation, with its purpose, format, lifecycle, and writer, and both kinds' section lists now include it.
+
+The whole-ticket example carries `## Review` on a closed delivery task, and a block below it shows the same ticket with `outcome: failed`.
+
+## Review
+
+passed
+
+- Goal: `properties.md` defines `outcome` with its accepted value and writer, `body.md` defines `## Review` with purpose, format, lifecycle, and writer, both kinds' section lists carry it, and the examples show a closed task with `Review` and a failed close with `outcome: failed`.
+- Convention: only `properties.md` and `body.md` changed, no other section's rules were touched, and no review procedure leaked into task design.
