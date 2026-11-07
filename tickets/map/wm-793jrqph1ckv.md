@@ -3,11 +3,11 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:32:42Z
+updated_at: 2026-11-07T07:34:42Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -16,7 +16,13 @@ Design the task design skill: define how an executable task is specified and mad
 
 ## Acceptance direction
 
-The task design skill and its references define how to write delivery and probe tasks, including reversibility, acceptance signals, human-required work, and failure recovery; examples show both kinds.
+All children are complete and no further child is needed: `weave-your-work/task/SKILL.md` routes to `body.md` and `properties.md`, both references are written, and the delivery and probe examples can be rebuilt from them.
+
+## Children
+
+- [Write the task skill entry](tickets/task/wm-qamw233hhpe3.md): SKILL.md entry and routing.
+- [Write the task body reference](tickets/task/wm-6sfjje8w0688.md): shared content rules plus the delivery and probe section lists.
+- [Write the task properties reference](tickets/task/wm-0sk8rrhz6gsv.md): task_kind, reversibility, and needs_human.
 
 ## Decisions so far
 
@@ -38,8 +44,9 @@ The task design skill and its references define how to write delivery and probe 
 - Unused sections are omitted entirely, not written as `none` (user confirmed).
 - Every section in `body.md` is described with its purpose, its format, and a directly usable example, following the map body reference (user confirmed).
 - `properties.md` covers only `task_kind`, `reversibility`, and `needs_human`. Waymark's core fields are left to `waymark --help` instead of being repeated (user confirmed).
+- `reversibility` is declared in waymark as an optional string; `needs_human` is declared as an optional boolean. Accepted values live in `properties.md`, not in the config (user confirmed).
 - `needs_human` is a separate boolean property, not a task kind. AI handles the parts it can complete; work that requires a person is handed to a human. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed). Task execution defines how the handoff is blocked, notified, and resumed.
-- When `needs_human` is true, the action section identifies which steps require human participation (user confirmed).
+- When `needs_human` is true, the Action identifies which steps require human participation. A step that is partly human and partly machine is written as a step and the human part is named there; there is no separate field for mixed steps (user confirmed).
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
 - Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
@@ -47,7 +54,7 @@ The task design skill and its references define how to write delivery and probe 
 
 ## Not yet specified
 
-- How `needs_human` is written in the body when a step is partly human and partly machine.
+(none; the design is settled and split into write tasks)
 
 ## Out of scope
 

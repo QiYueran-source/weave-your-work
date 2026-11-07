@@ -1,4 +1,4 @@
-version = "1.6"
+version = "1.8"
 storage_root = "tickets"
 
 [categories.comment]
@@ -13,7 +13,15 @@ name = "Map"
 path = "tickets/task"
 name = "Task"
 
+[fields.needs_human]
+type = "boolean"
+required = false
+
 [fields.outcome]
+type = "string"
+required = false
+
+[fields.reversibility]
 type = "string"
 required = false
 
