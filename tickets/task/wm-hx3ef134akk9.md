@@ -3,11 +3,11 @@ schema: 1
 id: wm-hx3ef134akk9
 title: Write the execute-step-by-step skill
 category: task
-status: in_progress
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:18:11Z
-updated_at: 2026-11-07T10:38:37Z
+updated_at: 2026-11-07T10:39:58Z
 parent: wm-8he44vj7v4y5
 custom_fields:
   needs_human: false
@@ -28,12 +28,6 @@ Write `weave-your-work/execute-step-by-step/SKILL.md`: the smallest execution un
 ## Acceptance signal
 
 `weave-your-work/execute-step-by-step/SKILL.md` exists and stands on its own. A reader holding a real ticket can walk it from an unclaimed task to one waiting for review using that file alone, and every gate in it names the field or section it reads.
-
-## Result
-
-`weave-your-work/execute-step-by-step/SKILL.md` is written: 74 lines, eight parts from reading the ticket to handing it back.
-
-Its gates name what they read: the `one_way` gate names the `Acceptance signal`, the person gate names the `Person:` prefix, the wait names `waiting_on` and `Progress`, and the ending names `Result` and `task-review`. The file stands alone: it points at `task-dispatch` and `execute-all` by name only, and at the task body's sections by their `##` headings.
 
 ## Boundaries
 
