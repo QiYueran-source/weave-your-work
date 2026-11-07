@@ -1,3 +1,8 @@
+---
+name: task-design
+description: Write a task ticket for a target tree leaf: choose delivery or probe, state the action and its acceptance signal, set reversibility and needs_human, and handle human steps.
+---
+
 # Task design
 
 A task is the finest level of the target tree: one action with a result someone can check. Use this skill when you are writing a task ticket, or when you need to know what a task must contain before it can be worked on.
