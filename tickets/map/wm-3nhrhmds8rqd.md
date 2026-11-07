@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-06T17:10:26Z
+updated_at: 2026-11-07T05:50:00Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -29,7 +29,6 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 
 - One skill with two references (submap.md, task.md); the router logic is one section of SKILL.md (user confirmed).
 - The parent skill routes to references and can be one sentence, following matt's grill-with-docs (user confirmed).
-- A map picks one child type: all child maps or all tasks; the structure freezes (user proposed).
 - The child-type choice is frozen for the map's lifetime: after the first split a map adds only children of that type; a direction that needs the other type opens a sibling map. `split_as` is written at the first split and does not flip (user confirmed).
 - Split timing belongs to the split skill. A map may split part of its children while fog remains; explore does not create children (user confirmed).
 - SKILL.md holds the three overall rules: the child type is uniform (all submaps or all tasks, never mixed), a map may split while fog remains, and the choice criterion is "can one action and one verifiable result be written" (user confirmed).
