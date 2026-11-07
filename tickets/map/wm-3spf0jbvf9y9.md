@@ -12,17 +12,17 @@ parent: wm-0b59r7xfhk73
 ---
 ## Target
 
-Design the review skill: when a map reaches reviewing (all children complete), check the result against the acceptance direction and review point agreed before, and decide passed (closed), failed (closed + outcome=failed), or return to delivering or planned.
+Design the review skill: when a map reaches reviewing (all children complete), check the result against the acceptance direction and review point agreed before, and decide one of four verdicts: passed (closed), needs changes (return to delivering or planned), needs discussion (call grill), or wrong direction (failed, closed with outcome=failed and a replacement sibling).
 
 Why: a map closes only when a reviewer confirms it met its acceptance direction.
 
 ## Acceptance direction
 
-The skill exists under `weave-your-work/review/`: SKILL.md states who reviews, what signal is checked, and the three outcomes; a sample map is reviewed.
+The skill exists under `weave-your-work/review/`: SKILL.md states who reviews, how the acceptance direction is checked, and the four verdicts; a sample map is reviewed.
 
 All children are complete and no further children are needed.
 
-Review point: Check that the SKILL.md names who reviews, how the acceptance direction is checked, and the three outcomes, and that a sample map walks through a review.
+Review point: Check that the SKILL.md names who reviews, how the acceptance direction is checked, and the four verdicts, and that a sample map walks through a review.
 
 ## Children
 
