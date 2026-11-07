@@ -37,7 +37,7 @@ Work the `Action` in the order it gives when it is a numbered list, and in any o
 After each step:
 
 1. Update `Progress` in place.
-2. Stop and show what changed: the step that finished, the evidence as it stands, and the step that is next.
+2. Stop with one short message: what changed, and the step that is next.
 3. Continue when the person says so.
 
 `Progress` records state, not history: two lines, overwritten. What the work produced is a comment, and a probe's finding is `Result`.
@@ -58,7 +58,7 @@ A question that would change what the task promises is not: what counts as done,
 
 Read the `Acceptance signal` against the evidence. The signal is a standard, not a mood: it says what evidence shows the result is there, and the result either meets it or does not.
 
-Write the evidence as a comment: where the deliverable is, how to open it, and who checked it. On a probe, write `Result` and `Next step` into the body; `Next step` carries both outcomes.
+Write the evidence as a comment: where the deliverable is, and how to open it. On a probe, write `Result` and `Next step` into the body; `Next step` carries both outcomes.
 
 Remove `Progress`. The run is over, and a closed ticket keeps only what the task promised.
 
