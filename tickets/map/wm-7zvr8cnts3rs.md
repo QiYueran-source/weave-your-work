@@ -33,6 +33,7 @@ The SKILL.md exists under `weave-your-work/grill/`; a sample discussion produces
 - ask-me only routes; grill owns the discussion (user confirmed).
 - grill is both a low-level conversation ability called by explore/split/review and a standalone entry (user confirmed).
 - grill lands outcomes while discussing: map decisions, task creation, glossary terms, and ADRs (user confirmed, following matt's grill-with-docs).
+- grill references the weave-log records: a discussion lands in a weave log as it happens, so the reasoning behind each outcome is kept and the tickets stay scannable (user confirmed).
 
 ## Not yet specified
 
