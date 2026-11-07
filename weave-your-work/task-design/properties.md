@@ -35,6 +35,10 @@ The field and the body must agree. When the value is `true`, at least one Action
 
 Notifying a person and waiting for their answer belong to the task execution skill, not to this field.
 
+## What a task does not carry
+
+No date fields. There is no start date and no deadline: the start is the moment the ticket is claimed, which execution records, and a deadline needs a check on overdue work that this layer does not have. When the work itself is constrained by a date, that constraint belongs in Action or Boundaries, where a reader sees it.
+
 ## Waymark's own fields
 
 Waymark's front matter fields, including id, title, status, owner, parent, and dependencies, are documented by `waymark --help` and are not repeated here.
