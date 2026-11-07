@@ -7,43 +7,42 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:16Z
-updated_at: 2026-11-07T09:17:42Z
+updated_at: 2026-11-07T09:42:42Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
 
-Design the task execution skill: define how an owner advances an executable task from start through its outcome.
+Design the task execution skills: define how an owner advances an executable task from start through its outcome, how a batch of tasks is run, and how a finished task is reviewed.
 
 ## Acceptance direction
 
-The task execution skill and its references define the execution lifecycle, and an example shows a task being advanced and its outcome recorded.
+The four task execution skills are delivered under `weave-your-work/`, and one worked example shows a single task advanced, a batch dispatched, and a finished task reviewed.
+
+## Children
+
+- [Execute step by step skill](tickets/map/wm-8he44vj7v4y5.md): the shared step list and gates, paused between steps.
+- [Execute all skill](tickets/map/wm-qt4pdg7dd0xy.md): the same steps run in one pass, with no room to ask.
+- [Task dispatch skill](tickets/map/wm-h8yejt98fbeg.md): choose, claim, and run a batch, and interrupt for a person.
+- [Task review skill](tickets/map/wm-3kaftv6fzfx2.md): check a finished task against its own acceptance signal.
 
 ## Decisions so far
 
 - The task owner is responsible for execution and may assign work to other people (user confirmed).
 - AI handles the parts it can complete; work requiring a person is handed to a human (user confirmed).
 - A human-required step is notified through a GitHub issue; the issue mechanism is designed by the communication category (user confirmed).
-- The operating procedure for a task lives in this skill, not in the total Task skill (user confirmed).
-- A task waiting on a person keeps status `in_progress`. The wait is recorded as a comment carrying the issue link, and a `waiting_on` field names the person or the thing it waits on (user confirmed).
-- The skill is user-invoked, not model-invoked (user confirmed).
+- The operating procedure for a task lives under this map, not in the total Task skill (user confirmed).
+- The skills are user-invoked, not model-invoked (user confirmed).
+- This map delivers four sibling skills, each with its own child map, all flat so they can reference each other: `execute-step-by-step`, `execute-all`, `task-dispatch`, and `task-review` (user confirmed).
+- `execute-step-by-step` holds the step list and the gates. `execute-all` references it and states only what changes when the run never pauses; the other two reference it rather than restating it (user confirmed).
+- The first version has no self-grill and no execution log. The executor gathers the information it needs itself and reports what it could not settle, rather than writing a question-and-answer record as it goes (user confirmed, replacing the earlier grill-and-log direction).
 - When a task no longer holds, the executor stops and hands it back to the owner. The owner closes it and either reopens the work as a map or writes a new task. The executor does not rewrite the action and does not split the task (user confirmed).
-- Two skills, cut by who runs them: `task-execution` advances one task in any context and never asks a question or interrupts; `task-dispatch` runs a map's tasks and owns dispatch, review, interrupt, and resume (user confirmed).
-- `task-review` is a child skill under the task execution map, because review is part of execution, not a peer of it (user confirmed). Its axes and verdicts are analysed later.
-- Parallel work is not isolated by a git worktree: a task may act on an API or another system, where a branch isolates nothing and there is nothing to merge (user confirmed). The concrete isolation method is still open.
-- An interrupt pauses only the task that hit the person; the rest of the batch keeps running, and the run ends with the list of what it waits on. A stop that concerns the map's direction stops the batch (user confirmed).
-- `needs_human` tasks are never dispatched to a subagent, whether the whole task or only some steps need a person; the field cannot tell the two apart, so the rule is uniform. They run in a context that can interrupt (user confirmed).
-- A task carries no dependency edges, only soft links. That rule belongs to task design and is not changed here (user confirmed).
-- A batch defaults to every open, unclaimed task under the chosen map; the owner may name a subset. Dispatch claims all chosen tasks before sending any of them out, and caps how many run at once (default 4, user confirmed).
-- A subagent receives its ticket id, the parent map's Target and Acceptance direction, its log path, the procedure to load, and the rule file paths. It may write its own ticket body, its log, and its own outputs. It may not write front matter, other tickets, or the map; it does not commit and does not close. It reports whether it finished, where it stopped and on whom, the files it touched, evidence links, and any question it could not answer (user confirmed).
 
 ## Not yet specified
 
-- Whether the executor produces anything of its own beyond following the procedure: a checklist, a per-task plan, or nothing (open from the user's question).
-- How parallel tasks are kept apart when they touch the same object.
-- The shape of the task review: its axes, its verdicts, and how it relates to the owner's acceptance.
-- Which questions execution answers itself, which go back to the owner, and what the log records.
-- What interrupts a run, and how it resumes.
-- Whether `task-execution` also carries the dispatch procedure or `task-dispatch` is its own skill under the same map.
+- Which gates only a context that can talk to a person may run.
+- How a stopped task is handed back to its owner.
+- Whether the four skills share any file outside their own directories, and how a reference across sibling directories is written.
+- Where the worked example lives.
 
 ## Out of scope
 
