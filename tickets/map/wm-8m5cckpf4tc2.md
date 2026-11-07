@@ -9,6 +9,8 @@ creator: frank
 created_at: 2026-11-06T12:57:36Z
 updated_at: 2026-11-07T12:29:00Z
 parent: wm-0b59r7xfhk73
+archived_at: 2026-11-07T04:35:07Z
+archive_reason: 'Design restarted: explore''s only job is to clear fog; old design archived, new ticket opened'
 ---
 ## Target
 

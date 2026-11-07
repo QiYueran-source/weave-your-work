@@ -23,7 +23,7 @@ All children are complete and no further children are needed: the SKILL.md exist
 
 ## Children
 
-- [Explore skills: fog exploration](tickets/map/wm-8m5cckpf4tc2.md): triage fog and run the routes.
+- [Explore skills: clear a map's fog](tickets/map/wm-3084re0f48z3.md): clear a map's Not yet specified items until the section is empty.
 - [Map body format](tickets/map/wm-6c4f9e2a7b31.md): define how each map section and entry is written.
 - [Map operating procedure](tickets/map/wm-9d7e4c1a2b60.md): define the map workflow and hand-offs between skills.
 - [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md): route to split-to-submap or split-to-task.

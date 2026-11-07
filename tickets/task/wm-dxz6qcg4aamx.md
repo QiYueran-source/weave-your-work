@@ -11,6 +11,8 @@ updated_at: 2026-11-06T13:34:50Z
 parent: wm-8m5cckpf4tc2
 custom_fields:
   task_kind: delivery
+archived_at: 2026-11-07T04:35:07Z
+archive_reason: Old explore design task; explore restarted, will be replaced by a new task under the new explore ticket
 ---
 ## What to do
 
