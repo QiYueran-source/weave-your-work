@@ -31,9 +31,10 @@ All children are complete and no further child is needed.
 - Review is part of execution, not a peer of the map review skill (user confirmed).
 - It is shaped like the map review: axes, verdicts, a report with sources (user confirmed).
 - A verdict that does not pass does not close the ticket (user confirmed). Only a passing verdict closes it.
-- Review splits into two kinds, one for a delivery task and one for a probe task (user confirmed). The split is designed later.
+- Review splits into two kinds, one for a delivery task and one for a probe task. The split is designed here, not in the execution skills (user confirmed).
 - A probe whose finding is negative still reviews as a probe and still closes with `outcome` recorded; a negative finding is a result, not a failure (user confirmed).
 - The axes and the verdict names are analysed later; this map holds that fog until then (user deferred).
+- A verdict of needs changes goes back to an agent to fix, without asking a person, when the fix needs no person (user confirmed).
 
 ## Not yet specified
 

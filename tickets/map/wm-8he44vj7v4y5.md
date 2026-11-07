@@ -36,6 +36,7 @@ All children are complete and no further child is needed.
 - Products: the deliverable goes where the work naturally lands, a repository file is committed and an external one gets a link, and the evidence says where it is and how to open it. Intermediate artifacts stay out of the repository and are not kept. When the Action does not say where the output goes and the choice affects other people, the executor stops instead of choosing (user confirmed).
 - A task waiting on a person keeps status `in_progress`. The wait is recorded as a comment carrying the issue link, and a `waiting_on` field names the person or the thing it waits on (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
+- After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
 
 ## Not yet specified
 
