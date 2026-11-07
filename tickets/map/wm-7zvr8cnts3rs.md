@@ -32,14 +32,14 @@ The SKILL.md exists under `weave-your-work/grill/`; a sample discussion produces
 - grill is a peer skill under Execution, level with map/task/glossary (user confirmed).
 - ask-me only routes; grill owns the discussion (user confirmed).
 - grill is both a low-level conversation ability called by explore/split/review and a standalone entry (user confirmed).
-- grill lands outcomes while discussing: map decisions, task creation, glossary terms, and ADRs (user confirmed, following matt's grill-with-docs).
-- grill references the weave-log records: a discussion lands in a weave log as it happens, so the reasoning behind each outcome is kept and the tickets stay scannable (user confirmed).
+- grill lands three artifacts itself: glossary terms, weave logs, and ADRs, and it owns the landing rules for those three. Everything else — map decisions, split results, task creation — is landed by the skill that called grill: the caller references grill, receives its clear conclusions, terms, logs, and ADRs, and writes them into its own ticket (user confirmed, revising the earlier "grill lands map decisions and task creation" wording).
+- Discussion protocol: prefer the harness's built-in choice feature for questions with selectable options; when no choice feature exists, fall back to the grilling protocol (one round covers the whole frontier, numbered questions with recommended answers) (user confirmed).
+- Interface with explore: explore calls grill to discuss fog; grill returns clear conclusions plus the glossary, weave-log, and ADR artifacts; explore then lands the conclusions itself (user confirmed).
 
 ## Not yet specified
 
-- The discussion protocol: what to ask and in what order.
-- Where each outcome lands exactly (map body, new task, glossary, ADR).
-- Its interface with explore: grill produces fog, explore resolves it.
+- The exact landing rules grill owns for glossary, weave logs, and ADRs: when each artifact is written, in what form.
+- Its interface with split and review (explore's interface is settled: explore calls grill to discuss fog).
 
 ## Out of scope
 
