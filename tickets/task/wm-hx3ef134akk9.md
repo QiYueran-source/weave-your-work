@@ -13,6 +13,8 @@ custom_fields:
   needs_human: false
   reversibility: two_way
   task_kind: delivery
+archived_at: 2026-11-07T10:46:56Z
+archive_reason: The skill it wrote was taken out; the one-task shape replaced the step-by-step shape.
 ---
 ## Action
 

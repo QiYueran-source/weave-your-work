@@ -9,6 +9,8 @@ creator: frank
 created_at: 2026-11-07T09:42:01Z
 updated_at: 2026-11-07T09:45:48Z
 parent: wm-avc7a31tae33
+archived_at: 2026-11-07T10:46:56Z
+archive_reason: Dispatch content moves into execute-all as a reference file, not a sibling skill.
 ---
 ## Target
 

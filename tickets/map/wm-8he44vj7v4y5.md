@@ -9,6 +9,8 @@ creator: frank
 created_at: 2026-11-07T09:41:50Z
 updated_at: 2026-11-07T10:29:00Z
 parent: wm-avc7a31tae33
+archived_at: 2026-11-07T10:46:56Z
+archive_reason: Replaced by the Execute one task skill map; the pause model and the name are gone.
 ---
 ## Target
 
