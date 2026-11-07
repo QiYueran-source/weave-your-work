@@ -3,11 +3,12 @@ schema: 1
 id: wm-3kaftv6fzfx2
 title: Task review skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:42:08Z
-updated_at: 2026-11-07T12:52:29Z
+updated_at: 2026-11-07T12:59:57Z
+closed_at: 2026-11-07T12:59:57Z
 parent: wm-avc7a31tae33
 ---
 ## Target

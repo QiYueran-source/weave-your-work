@@ -3,11 +3,12 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T12:39:43Z
+updated_at: 2026-11-07T12:59:57Z
+closed_at: 2026-11-07T12:59:57Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target

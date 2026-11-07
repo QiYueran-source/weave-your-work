@@ -41,9 +41,9 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 **needs changes**: an axis names a gap an agent can close. The task goes back to the executor with the gap named, it changes only that, and the task is reviewed again.
 
-**needs discussion**: the signal, or the standard behind it, is unclear and only the owner can settle it. The run stops and the task waits on the owner; a run that cannot talk to a person returns this verdict to the one that can.
+**needs discussion**: the signal, or the standard behind it, is unclear and only the owner can settle it. The run stops and the task waits on whoever holds the answer: the owner, or the person the signal names. A run that cannot talk to a person returns this verdict to the one that can.
 
-**wrong direction**: the work cannot be judged against the signal because the task itself was wrong: the map no longer wants this, or the action never could produce the thing. The ticket closes as a failed attempt.
+**wrong direction**: the work cannot be judged against the signal because the task itself was wrong: the map no longer wants this, or the action never could produce the thing. The ticket closes as a failed attempt, and the owner opens the replacement task.
 
 ## What it writes
 
@@ -59,11 +59,13 @@ Nothing else. No comment ticket, no edit to `Result`, no rewrite of the `Action`
 
 `needs changes`: write `## Review`, leave the ticket open, hand it back naming only the gap.
 
-`needs discussion`: write `## Review`, write `Progress`, set `waiting_on` to the owner, leave the ticket open.
+`needs discussion`: write `## Review`, write `Progress`, set `waiting_on` to whoever holds the answer, leave the ticket open.
 
 ## The report
 
 Three lines, repeating what was just written: what the work produced, the verdict and the axis that decided it, and what happens next. Sources stay on the ticket.
+
+When the verdict leaves the ticket open, the run carries on as `execute-one-task` says: a fix for `needs changes`, a stop for `needs discussion`.
 
 A report that names something the ticket does not hold is a missing write, not a report.
 
