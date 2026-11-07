@@ -47,7 +47,7 @@ All children are complete and no further child is needed.
 - When a task no longer holds, the executor hands it back to the owner: `Progress` names the reason, `waiting_on` names the owner, and the status stays `in_progress`. The executor does not rewrite the action and does not split the task (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review named and sends it back; a fix that needs no person is made without asking anyone (user confirmed).
 - A finished run reports three lines: what was done, how the `Acceptance signal` reads, and what is still unsettled. A stopped run reports three lines: where it stopped, why, and who picks it up (user confirmed).
-- The last step invokes `task-review`. The review decides whether the ticket closes; the review's own rules are its business, so this skill only names the call (user confirmed).
+- The last step invokes `task-review`. A passing review closes the task; the review's own rules are its business, so this skill only names the call and the closing (user confirmed).
 
 ## Not yet specified
 

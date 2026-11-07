@@ -42,7 +42,7 @@ Write `Result`: for a delivery, where the deliverable is, how to open it, and wh
 
 Report three lines: what was done, how the `Acceptance signal` reads, and what is still unsettled.
 
-Then invoke `task-review`. It decides whether the ticket closes; anything short of a pass comes back here, and the fix is only what the review named.
+Then invoke `task-review`. A pass closes the ticket; anything short of a pass comes back here, and the fix is only what the review named.
 
 ## When it stops
 

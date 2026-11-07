@@ -3,11 +3,12 @@ schema: 1
 id: wm-aax1220r1a5x
 title: Write the execute-one-task skill
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:51:57Z
-updated_at: 2026-11-07T10:52:06Z
+updated_at: 2026-11-07T10:54:12Z
+closed_at: 2026-11-07T10:54:12Z
 parent: wm-d5xq88m7g8p6
 custom_fields:
   needs_human: false
