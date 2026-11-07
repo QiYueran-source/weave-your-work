@@ -29,6 +29,7 @@ All children are complete and no further child is needed.
 ## Decisions so far
 
 - This is the smallest execution unit: it advances exactly one task, and every other execution skill is built by pointing at it or by running it repeatedly (user confirmed).
+- It completes a whole task, not one step of a task. `execute-all` is the other shape: every task under a map run at once (user confirmed).
 - It holds the step list and the gates, and `execute-all` references it (user confirmed).
 - It pauses between steps for a person to look (user confirmed).
 - It runs where a person can be asked, which a subagent cannot (user confirmed).
@@ -46,6 +47,7 @@ All children are complete and no further child is needed.
 
 ## Not yet specified
 
+- Its name: `execute-step-by-step` describes the pauses, not the unit, and `execute-one-task` may read better.
 - The step list. Proposed and not settled: read the ticket and the map above it; check that the task still holds; claim it and write `Progress`; run the gates; work one step and pause; read the `Acceptance signal` against the evidence; write what the work left and take `Progress` out; hand the task to `task-review`.
 - Where the pauses sit. Proposed: after checking that the task holds, after each worked step, and after what the work left is written; no pause after reading, claiming, or running the gates.
 
