@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:50Z
-updated_at: 2026-11-07T09:49:48Z
+updated_at: 2026-11-07T10:20:10Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -24,7 +24,7 @@ All children are complete and no further child is needed.
 
 ## Children
 
-(none yet)
+- [Write the execute-step-by-step skill](tickets/task/wm-hx3ef134akk9.md): the step loop, the gates, and what a run leaves behind.
 
 ## Decisions so far
 
@@ -40,11 +40,11 @@ All children are complete and no further child is needed.
 - A task waiting on a person keeps status `in_progress`, sets `waiting_on`, and records the wait as a comment carrying the issue link (user confirmed).
 - When a task no longer holds, the executor stops and hands it back to the owner. The executor does not rewrite the action and does not split the task (user confirmed).
 - After review returns the task for changes, the executor fixes only what the review names, not the whole action again, and sends it back for review. A fix that needs no person is made by an agent without asking anyone (user confirmed).
+- A pause after a step is one short message: what changed, and what is next. It happens after every step, small ones included, because stopping is the point of this skill (user confirmed).
+- The evidence comment names where the deliverable is and how to open it. Who checked it belongs to the review, which writes the verdict, so the evidence never claims a check that has not happened (user confirmed).
 
 ## Not yet specified
 
-- The step list itself, and where each gate sits on it. Deferred by the user.
-- How a pause is presented and what the person sees at it.
 - What the executor reports when it finishes, now that no log is written.
 - How a stopped task is handed back to its owner.
 
