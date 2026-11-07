@@ -11,7 +11,7 @@ Required on every task. Accepted values: `delivery` and `probe`.
 
 Who writes it: the AI that runs `split-to-task`, judged when the ticket is created.
 
-The value is frozen once written. Changing it means closing the ticket and opening a new one with the other kind.
+The value is frozen once written. Changing it means closing the ticket and opening a new one with the other kind; `kind.md` says why.
 
 ## reversibility
 

@@ -28,4 +28,4 @@ The boundary is whether the map already has the answer the task needs. While the
 
 ## Once written, the kind stays
 
-The kind is frozen once it is written. If the work later needs the other kind, close the ticket and open a new one with the other kind. The kinds differ in the sections the body carries and in what failure means, so a body written for one does not serve the other. `properties.md` defines the `task_kind` field itself.
+The kind is frozen once it is written, because a body written for one kind does not serve the other: the sections differ, and so does the meaning of failure. `properties.md` states what changing the field requires.
