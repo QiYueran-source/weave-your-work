@@ -2,7 +2,13 @@
 
 A task body says what one action is, what it must leave behind, and how someone checks it. This file defines every section a task body may hold. Field-level rules live in `properties.md`; how to choose the kind lives in `kind.md`.
 
-A body carries one complete action: one goal. The goal may take several steps. Two goals in one body mean the work should have been split into two tasks.
+A body carries one complete action: one goal. The goal may take several steps.
+
+Two tests say whether the action is small enough. The action leaves one result you can name. That result does not wait on another task to be checkable. Work that fails either test still needs splitting: two goals become two tasks, and work that only makes sense after a sibling finishes belongs with that sibling, or in a map of its own.
+
+Length is not the test. A task may run for days while it waits on a person or on data.
+
+A task that only prepares ground for other tasks has no result of its own. Fold it into the task that uses the result, or state its open question as a probe.
 
 Sections are written when they carry something. A section with nothing to say is left out, not filled with `None`.
 
@@ -56,6 +62,7 @@ Format:
 - The evidence must be checkable by someone who did not produce it. The owner still decides whether it passes.
 - A delivery task states what a good output looks like.
 - A probe task states the possible results and which of them count as a complete check. A negative finding is a complete check.
+- The signal cites only what this task produces. A signal that has to cite a sibling task's output describes a slice of a larger result, not a task.
 
 Example, delivery:
 
