@@ -3,11 +3,11 @@ schema: 1
 id: wm-hx3ef134akk9
 title: Write the execute-step-by-step skill
 category: task
-status: in_progress
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:18:11Z
-updated_at: 2026-11-07T10:18:34Z
+updated_at: 2026-11-07T10:21:00Z
 parent: wm-8he44vj7v4y5
 custom_fields:
   needs_human: false
@@ -24,11 +24,6 @@ Write `weave-your-work/execute-step-by-step/SKILL.md`: the smallest execution un
 4. A person step: hand it over, set `waiting_on`, stop, and clear the value when the answer arrives.
 5. Finishing: read the Acceptance signal against the evidence, write the evidence comment, fill `Result` and `Next step` on a probe, remove `Progress`, and hand the task to review.
 6. Say what the skill does not do: run a batch, review a result, rewrite the action.
-
-## Progress
-
-Where it stands: the skill file is written and committed.
-Next: review it against the acceptance signal.
 
 ## Acceptance signal
 
