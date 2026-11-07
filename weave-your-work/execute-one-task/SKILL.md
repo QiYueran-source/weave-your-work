@@ -40,9 +40,9 @@ Read the `Acceptance signal` against the evidence. The signal is a standard, not
 
 Write `Result`: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` if an earlier stop left one.
 
-Report three lines: what was done, how the `Acceptance signal` reads, and what is still unsettled.
+Then invoke `task-review`. It reads the same signal against the same evidence, writes `## Review`, and decides: close the ticket, send the task back with the gap named, or stop it on the owner. A task that comes back has only the named gap to fix.
 
-Then invoke `task-review`. A pass closes the ticket; anything short of a pass comes back here, and the fix is only what the review named.
+Report three lines: what the work produced, the verdict and the axis that decided it, and what happens next.
 
 ## When it stops
 
@@ -58,7 +58,7 @@ Rewriting the `Action` and splitting the task are the owner's moves.
 
 ## What this skill writes
 
-Only `Result`, `Progress`, and `waiting_on`, plus the status it claims with. Every other section was written by the designer and stays as it is.
+Only `Result`, `Progress`, and `waiting_on`, plus the status it claims with. Every other section was written by the designer and stays as it is; `## Review` and `outcome` belong to the review that follows, not to this skill.
 
 ## What this skill does not do
 

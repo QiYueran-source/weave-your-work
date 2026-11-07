@@ -3,11 +3,12 @@ schema: 1
 id: wm-g85bmsr92nmm
 title: Write the task review skill
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T12:52:23Z
-updated_at: 2026-11-07T12:52:23Z
+updated_at: 2026-11-07T12:56:02Z
+closed_at: 2026-11-07T12:56:02Z
 parent: wm-3kaftv6fzfx2
 custom_fields:
   needs_human: false
@@ -32,3 +33,16 @@ Write `weave-your-work/task-review/`: the entry `SKILL.md` with `delivery.md` an
 - No map review; that is the map review skill.
 - No execution steps or gates; those are `execute-one-task`.
 - No task body format. `## Review` and `outcome` are defined in task design, and that change lands first as wm-gg4m636xgrxz.
+
+## Result
+
+`weave-your-work/task-review/` holds three files: `SKILL.md` for when the review runs, who may review, what it reads, the two axes, the four verdicts, what it writes, how it closes or hands the task on, and the report rule; `delivery.md` for how the goal axis reads a deliverable, the `one_way` confirmation, and the convention axis; `probe.md` for evidence completeness, a negative finding passing, and the convention axis.
+
+The walk over `wm-aax1220r1a5x` found three contradictions in `execute-one-task`, all fixed there: the finish report came before the review, so its verdict could not appear in it; the closing line said anything short of a pass comes back, which is false for `wrong direction` and `needs discussion`; and the write list did not say where `## Review` comes from.
+
+## Review
+
+passed
+
+- Goal: the three files exist, a reader can carry a finished task to one of the four verdicts, write `## Review` in the shape `body.md` defines, and report three lines; the walk on `wm-aax1220r1a5x` reached a verdict with no place left to guess.
+- Convention: no rule of task design or `execute-one-task` is restated; each is named and left where it lives. Only the three files were added, and the `execute-one-task` edits stop at what the review changes for it.
