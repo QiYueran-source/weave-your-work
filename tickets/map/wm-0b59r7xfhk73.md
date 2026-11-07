@@ -7,8 +7,14 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:25Z
-updated_at: 2026-11-06T16:41:35Z
+updated_at: 2026-11-07T05:24:17Z
 parent: wm-qhd3twqjzhma
+dependencies:
+  - wm-3084re0f48z3
+  - wm-3nhrhmds8rqd
+  - wm-64st47g6pcrj
+  - wm-6c4f9e2a7b31
+  - wm-9d7e4c1a2b60
 custom_fields:
   task_kind: delivery
 ---
