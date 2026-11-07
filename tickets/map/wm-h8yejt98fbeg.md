@@ -7,12 +7,12 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:42:01Z
-updated_at: 2026-11-07T09:42:12Z
+updated_at: 2026-11-07T09:44:43Z
 parent: wm-avc7a31tae33
 ---
 ## Target
 
-Design the dispatch skill: pick the tasks a run will advance, claim them, decide which may run at once, send them to subagents, collect the reports, and interrupt for a person when it is the main agent's call.
+Design the dispatch skill: pick the tasks a run will advance, claim them, decide which may run at once, send them out, collect the reports, and interrupt for a person when it is the main agent's call.
 
 Why: the step skills advance one task; without this skill a map's tasks never run together and nobody decides what may collide.
 
@@ -38,10 +38,11 @@ All children are complete and no further child is needed.
 
 ## Not yet specified
 
+- How the four skills reference each other, given the step skills do the referencing.
 - The collision list: which classes of thing it names.
 - What the report at the end of a run contains.
-- How a resumed run picks up after an interrupt.
-- Whether dispatch records its own decisions anywhere, given the first version keeps no execution log.
+- How a resumed run picks up after an interrupt, now that no execution log is written.
+- Whether dispatch records its decisions anywhere, now that there is no execution log.
 
 ## Out of scope
 
