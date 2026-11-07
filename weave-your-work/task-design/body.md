@@ -66,7 +66,7 @@ Format:
 Example, delivery:
 
 ```
-`baseline-click-through.csv` holds four weekly rows, one per week, with no week missing. A reader who did not build the file can see the four rows and the four dates without asking the author anything.
+`baseline-click-through.csv` holds four weekly rows, one per week, with no week missing. A reader who did not build the file can see the four rows and the four dates without asking the owner anything.
 ```
 
 Example, probe:
@@ -197,7 +197,7 @@ Produce the four-week click-through baseline so the next decision has a number t
 
 ## Acceptance signal
 
-`baseline-click-through.csv` holds four weekly rows, one per week, with no week missing, and the analytics owner's confirmation is linked in a comment. A reader who did not build the file sees both without asking the author anything.
+`baseline-click-through.csv` holds four weekly rows, one per week, with no week missing, and the analytics owner's confirmation is linked in a comment. A reader who did not build the file sees both without asking the owner anything.
 
 ## Boundaries
 

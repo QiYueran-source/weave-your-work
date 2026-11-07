@@ -36,6 +36,8 @@ Length is not the test. A task may run for days while it waits on a person or on
 
 Order is carried by the tree, never by a link. A link records a relationship worth following and nothing more, and it may point at any item, including a sibling in the same map.
 
+The words this skill uses are defined in `GLOSSARY.md` at the root: task, map, slice, step, incident, readiness, link, owner, acceptance signal, reversibility, delivery task, probe task.
+
 ## Where each answer lives
 
 - `body.md`: the sections a body may hold, the order they appear in, and a whole ticket as waymark stores it.

@@ -29,11 +29,11 @@ The finest level of the target tree: a target refined to the point of being exec
 _Avoid_: ticket (when the meaning is broader than this project's unit of work), action item (when it refers to an action without a result)
 
 **target tree (goal tree)**:
-The layered refinement from the root map to tasks. Every node is a target (a map); the parent-child relation is part-whole (refinement), not sequence. The tree carries structure, edges carry order. A leaf (task) is the end of the refinement chain: refined from the root to the point of execution. Leaves are parallel refinement branches, not a progression order; ordering is expressed only by dependency edges.
+The layered refinement from the root map to tasks. Every node is a target (a map); the parent-child relation is part-whole (refinement), not sequence. The tree carries structure, edges carry order. A leaf (task) is the end of the refinement chain: refined from the root to the point of execution. Leaves are parallel refinement branches, not a progression order; ordering is expressed only by dependency edges between maps, because a task carries none.
 _Avoid_: Gantt chart, flow chart, target chain
 
 **dependency edge**:
-A relation between nodes expressing "who waits for whom to finish". It carries the ordering of targets. Order is not a chain of nodes but an edge; adding or removing an edge does not move the tree. Expressed by waymark's dependency mechanism.
+A relation between maps expressing "who waits for whom to finish". It carries the ordering of targets. Order is not a chain of nodes but an edge; adding or removing an edge does not move the tree. Expressed by waymark's dependency mechanism. Tasks never carry one: the tasks under a single map run in parallel.
 _Avoid_: blocked (when referring to a state rather than a relation), prerequisite (when the direction is not made explicit)
 
 **refinement**:
@@ -41,7 +41,7 @@ The relation between a parent target and a child target: the child is a more spe
 _Avoid_: breakdown (when it implies slicing once into executable pieces)
 
 **arrive (到达)**:
-The moment a settled decision becomes a child node. It arrives as a task when one complete execution action and one clearly auditable standard can be written and one person can finish and verify it in one go; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
+The moment a settled decision becomes a child node. It arrives as a task when one action and one clearly auditable standard can be written and the action ends at a result that can be handed over and checked on its own; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
 _Avoid_: graduation, breakdown, splitting (when they mean a fog item becoming a node rather than slicing work)
 
 **split (分裂)**:
@@ -59,6 +59,10 @@ _Avoid_: split (splitting is not exploring), grill (an interview method, not the
 **advance**:
 An operation an owner performs on their own work item: changing title/body/fields/status, adding or removing dependencies, closing, reopening, archiving, transferring ownership. Only the owner can do it.
 _Avoid_: update, modify (when the actor is not specified)
+
+**owner**:
+The accountable party of a ticket: the person who advances it and decides whether it passes. Waymark records one owner per item. The owner of a task is the person who accepts it; a link is added by the owner; a person who merely did the work is not, by that fact, the owner.
+_Avoid_: author (when the accountable party is meant), assignee (a claim changes who is advancing, not who owns)
 
 **claim**:
 Making an open task become something someone is advancing, expressed by waymark's start (open to in_progress). One item has at most one in_progress at a time. A claim is not a change of owner: the owner is the accountable party, the claim is the current advancing state.
@@ -87,6 +91,26 @@ _Avoid_: todo, backlog, open question (when the content is already scoped to a m
 **frontier**:
 The set of nodes with no unfinished dependencies that can be started now. Given by waymark's ready query.
 _Avoid_: todo, next actions (when referring to a personal list)
+
+**slice (切片)**:
+One stage of a result, finished before anything downstream can use it. A slice needs a sibling to mean anything, which is how it is told apart from a task: a task ends at a result that can be handed over whole and checked on its own. Named as the shape to avoid when defining a task.
+_Avoid_: layer, phase (when describing work that has no result of its own)
+
+**step**:
+One numbered line inside a task's Action. A step is not a unit of work: it has no acceptance signal of its own and is never hung in the target tree. Distinct from a slice, which is a piece of work that looks like a task but cannot stand alone.
+_Avoid_: sub-task, action item
+
+**incident**:
+What a delivery task's failure is. The promised output is missing or falls short of its acceptance signal, so someone has to recover, and the cost is named in advance in the task's Failure recovery section. A probe's failure is not an incident: a negative finding is a normal result.
+_Avoid_: bug, error (when describing the contractual weight of a failed delivery)
+
+**readiness**:
+Whether an item can be started now. A map is ready when every map it waits on is closed; a task is ready when the map above it is ready and the task is open, because a task never waits on anything by itself. Waymark's ready and blocked queries report it.
+_Avoid_: priority, scheduling (readiness is about waiting, not about order of importance)
+
+**link (soft link)**:
+A symmetric association between two items, recorded by `waymark link`. It marks something worth following, such as a task whose output was used elsewhere or two items covering one subject. It never carries order: it does not block, does not make anything wait, and does not change readiness.
+_Avoid_: dependency (a link orders nothing), relation (when the ordering is meant)
 
 **front matter (frontmatter)**:
 The YAML header block of a ticket, carrying the structured fields (schema, id, title, category, status, owner, creator, created_at, updated_at, parent, dependencies, custom fields, and the retired-state archived_at and archive_reason) while the six map sections are body text. Ordering lives here: dependencies are front matter only, never mirrored in the body. Every front matter change goes through a waymark command, never a hand edit.
