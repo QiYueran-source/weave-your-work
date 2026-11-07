@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-07T06:00:00Z
+updated_at: 2026-11-07T06:10:00Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -28,8 +28,13 @@ The reference is written into split's `submap.md`: the decision test, the rhythm
 
 - Submap is a reference inside the split skill, not a separate skill (user confirmed).
 - A map splits into submaps when one complete execution action and one clearly auditable standard cannot be written, or when it has several independent directions that need their own owner (user confirmed).
-- With fog present, default to submap; split a task only when the remaining fog clearly cannot affect that part (user confirmed).
+- ~~With fog present, default to submap; split a task only when the remaining fog clearly cannot affect that part~~. Superseded: whether a part has fog at all is decided by the grill discussion, not by a default (see below).
 - The child map's body is minimal: Target is required; write Not yet specified when there is fog, and skip it when a clear decision is already written; acceptance direction defaults to all children done and no further children needed; other sections are optional (user confirmed).
+- A child's content comes from the parent's settled decisions and clarified Target directions. There is no strict one-to-one mapping between decisions and children: several decisions may feed one child, or one decision may feed several, as long as the child does not drift from the parent (user confirmed).
+- Grilling a child covers the sections of its body: Target, Decisions so far, Out of scope, Not yet specified, and the Review point under Acceptance direction. Each is discussed and settled before the child is written (user confirmed).
+- The number of children is not limited to the number of decisions; the count is whatever the grill discussion settles on, without a strict one-to-one limit (user confirmed).
+- A split does not require a non-empty Decisions so far: a map may split a single child that is a pure refinement of the parent (one leaf), as long as grill has clarified it (user confirmed).
+- Whether a child has fog is decided by the grill discussion, not by a default; when the discussion leaves no fog, the child's Not yet specified is written as none (user confirmed).
 - When splitting, analyse what is still unknown and write it into the child's Not yet specified (user confirmed).
 - Grill before split: a layer is split only after grill discussed its details, so every child can state its Target and its fog; the child's content is grill-determined, not written by guessing at split time. Remaining fog stays on the child, and explore resolves it after the split (user confirmed).
 - Content and writing are separate: grill determines the content of each child (its Target and fog); the submap reference owns the writing spec — how each child map body is written, per the map body reference (user confirmed).
