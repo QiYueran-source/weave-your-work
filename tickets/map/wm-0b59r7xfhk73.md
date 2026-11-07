@@ -24,6 +24,7 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 ## Children
 
 - [Explore skills: fog exploration](tickets/map/wm-8m5cckpf4tc2.md): triage fog and run the routes.
+- [Map body format](tickets/map/wm-6c4f9e2a7b31.md): define how each map section and entry is written.
 - [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md): route to split-to-submap or split-to-task.
 - [Review skill: accept a map](tickets/map/wm-64st47g6pcrj.md): accepting a map before close.
 
