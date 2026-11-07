@@ -87,3 +87,7 @@ _Avoid_: todo, backlog, open question (when the content is already scoped to a m
 **frontier**:
 The set of nodes with no unfinished dependencies that can be started now. Given by waymark's ready query.
 _Avoid_: todo, next actions (when referring to a personal list)
+
+**front matter (frontmatter)**:
+The YAML header block of a ticket, carrying the structured fields (schema, id, title, category, status, owner, creator, created_at, updated_at, parent, dependencies, custom fields, and the retired-state archived_at and archive_reason) while the six map sections are body text. Ordering lives here: dependencies are front matter only, never mirrored in the body. Every front matter change goes through a waymark command, never a hand edit.
+_Avoid_: header (when it means the body's heading), metadata block (when the actor is not specified)
