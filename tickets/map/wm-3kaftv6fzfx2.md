@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:42:08Z
-updated_at: 2026-11-07T09:42:12Z
+updated_at: 2026-11-07T09:44:09Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -30,17 +30,17 @@ All children are complete and no further child is needed.
 
 - Review is part of execution, not a peer of the map review skill (user confirmed).
 - It is shaped like the map review: axes, verdicts, a report with sources (user confirmed).
-- The axes and verdicts are analysed later; this map holds the fog until then (user deferred).
-- A review runs in a context that did not produce the work: dispatch sends a fresh subagent per finished task, and a single run reviews in its own context.
-- A person reviews when the acceptance signal names a person as the checker; there is no separate field.
+- The axes and verdicts are analysed later; this map holds that fog until then (user deferred).
 
 ## Not yet specified
 
 - The axes: what the goal axis reads on a task, what the convention axis reads.
 - The verdicts, and what each one does to the ticket: close, return, grill, or close with `outcome=failed`.
 - What a completed probe with a negative finding counts as.
+- Who runs the review, and whether the reviewer may be the executor.
 - How the review relates to the owner's acceptance: is the verdict the acceptance, or an input to it.
 - The report shape.
+- Whether a person reviews, and what triggers that.
 
 ## Out of scope
 
