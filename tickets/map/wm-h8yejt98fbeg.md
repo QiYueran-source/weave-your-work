@@ -28,7 +28,8 @@ All children are complete and no further child is needed.
 
 ## Decisions so far
 
-- One batch defaults to every open, unclaimed task under the chosen map; the owner may name a subset (user confirmed).
+- A run takes every task under the chosen map whose owner is the operator. Status does not filter it: a task already `in_progress` is picked up again, because the operator owning it is what makes it theirs to advance (user confirmed, replacing the earlier open-and-unclaimed rule).
+- The owner may name a subset instead of taking everything.
 - Dispatch claims every chosen task before sending any of them out, and caps how many run at once (default 4, user confirmed).
 - `needs_human` tasks are never sent to a subagent; the field cannot tell a whole-human task from a partly-human one, so the rule is uniform (user confirmed).
 - A task is not isolated by a git worktree, because it may act on an API or another system where a branch isolates nothing (user confirmed).
@@ -38,6 +39,7 @@ All children are complete and no further child is needed.
 
 ## Not yet specified
 
+- What keeps a task waiting on a person out of the next batch, now that status no longer filters.
 - How the four skills reference each other, given the step skills do the referencing.
 - What the report at the end of a run contains.
 - How a resumed run picks up after an interrupt, now that no execution log is written.
