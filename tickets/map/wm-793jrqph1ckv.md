@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T07:18:55Z
+updated_at: 2026-11-07T07:20:38Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -35,16 +35,19 @@ The task design skill and its references define how to write delivery and probe 
 - Delivery recovery describes what to do when the output is missing or unacceptable. Probe recovery describes the next step for both outcomes: the hypothesis holds or it does not (user confirmed).
 - Failure recovery and Reversibility answer different questions: reversibility describes whether the action can be undone; failure recovery describes what to do after failure (user confirmed).
 - Boundaries is written only when the task's scope is easy to misread or likely to grow (user confirmed).
+- For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
+- Task design does not require dependency declarations. Dependencies belong to execution order and are written to front matter by `split-to-task` or the owner when known (user confirmed).
 - Task design adopts the general checks that a task is independently executable and its acceptance signal is observable and falsifiable. It does not adopt `to-tickets`' engineering-specific tracer-bullet slicing rule.
 - The task reference must define the writing form for every section, as the map body reference does (user confirmed).
+- The body reference is organized by task kind: delivery and probe each get their own section list, instead of one shared list (user confirmed).
 
 ## Not yet specified
 
-- The exact section list of `body.md`, and whether an unused section is omitted or written as none.
-- How delivery and probe task definitions differ in `kinds.md` beyond output versus conclusion and their recovery paths.
-- How reversibility changes task design and what `one_way` requires before starting.
-- Whether the probe outcome paths belong under `Failure recovery` or a differently named section.
-- Whether task tickets need dependency declarations at design time; dependency behavior is designed under task execution.
+- The section list for a delivery task and for a probe task, and which sections the two kinds share.
+- Whether an unused section is omitted entirely or written as none.
+- The section name for a probe task's next step under each outcome.
+- How reversibility changes task design beyond the `one_way` confirmation requirement.
+- What `kinds.md` holds once `body.md` is organized by kind.
 
 ## Out of scope
 
