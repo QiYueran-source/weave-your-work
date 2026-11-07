@@ -16,6 +16,10 @@ _Avoid_: ticket (a local work item), task
 A record synced back from an issue, carrying a discussion conclusion or decision. It uses waymark's comment category for now.
 _Avoid_: discussion (when referring to the remote conversation itself)
 
+**weave log (依据记录)**:
+A shared, unstructured Markdown file under `weave-logs/` that records longer research, discussion, evidence, or reasoning supporting a map or task. It is not a ticket: it has no ticket frontmatter, is not processed by waymark, and does not enter the target tree, status, frontier, or acceptance. Tickets cite weave logs with relative Markdown links next to the relevant entry.
+_Avoid_: log ticket, evidence ticket, attachment (when it implies a ticket relation)
+
 **map (target node)**:
 A target node that answers "what I want": the expected outcome or requirement. Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. A map does not cover feasibility or implementation; those belong to tasks. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.
 _Avoid_: goal, plan, project, phase, milestone (when it implies a fixed point in time)
@@ -71,6 +75,10 @@ _Avoid_: risk (when referring to probability rather than undo cost)
 **acceptance signal**:
 An observable criterion written before work starts, used to distinguish done, not done, and cannot judge yet. A map is accepted when all its child maps and tasks are complete and no further children are needed; signals get more specific toward the leaves.
 _Avoid_: acceptance criteria (when it is only a checklist), definition of done
+
+**fog (未决内容)**:
+An entry in a map's Not yet specified section: in-scope content that is not yet specific enough to become a decision, child map, task, or out-of-scope item. Fog entry types include assumptions, facts to establish, decisions to make, and goals to clarify, and the list is open. A map owns the definition of fog; explore classifies, routes, and lands it.
+_Avoid_: todo, backlog, open question (when the content is already scoped to a map)
 
 **frontier**:
 The set of nodes with no unfinished dependencies that can be started now. Given by waymark's ready query.
