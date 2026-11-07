@@ -9,6 +9,8 @@ creator: frank
 created_at: 2026-11-06T16:31:11Z
 updated_at: 2026-11-06T16:31:11Z
 parent: wm-0b59r7xfhk73
+archived_at: 2026-11-07T05:34:36Z
+archive_reason: 'Design restarted: review is under redesign on a fresh ticket'
 ---
 ## Target
 
