@@ -12,7 +12,9 @@ parent: wm-avc7a31tae33
 ---
 ## Target
 
-Design the dispatch skill: pick the tasks a run will advance, claim them, decide which may run at once, send them out, collect the reports, and interrupt for a person when it is the main agent's call.
+This content lands as a reference inside `execute-all` rather than as a skill of its own, so read this map as the source: its decisions move into `execute-all/dispatch.md`.
+
+Design the dispatch content: pick the tasks a run will advance, claim them, decide which may run at once, send them out, collect the reports, and interrupt for a person when it is the main agent's call.
 
 Why: the step skills advance one task; without this skill a map's tasks never run together and nobody decides what may collide.
 

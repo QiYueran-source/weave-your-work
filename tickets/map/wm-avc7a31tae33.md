@@ -32,7 +32,9 @@ The four task execution skills are delivered under `weave-your-work/`, and one w
 - A human-required step is notified through a GitHub issue; the issue mechanism is designed by the communication category (user confirmed).
 - The operating procedure for a task lives under this map, not in the total Task skill (user confirmed).
 - The skills are user-invoked, not model-invoked (user confirmed).
-- This map delivers four sibling skills, each with its own child map, all flat so they can reference each other: `execute-step-by-step`, `execute-all`, `task-dispatch`, and `task-review` (user confirmed).
+- This map delivers three sibling skills: `execute-one-task`, `execute-all`, and `task-review`. `task-dispatch` is not a sibling: its content lands as a reference file inside `execute-all`, the way task design keeps `body.md` beside `SKILL.md` (user confirmed).
+- `execute-step-by-step` is renamed `execute-one-task`, because it advances one whole task rather than describing pauses (user confirmed).
+- While one task is being advanced, the run keeps going until the task is done. It stops only on a blocker (user confirmed).
 - `execute-step-by-step` is the smallest execution unit. It holds the step list and the gates; `execute-all` references it instead of restating the steps (user confirmed).
 - Every skill in the set is installed together, so a skill may point at another skill by name or by path and the reference resolves. A cross-skill reference is not a dead link, and no skill has to restate another's rules (user confirmed).
 - The two step skills do the referencing: they are the ones that name the other skills (user confirmed).
