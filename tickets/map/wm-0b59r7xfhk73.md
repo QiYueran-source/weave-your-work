@@ -33,6 +33,7 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 - `/map` is the single entry that routes to explore, split and review (user confirmed).
 - Status flow: a new map starts open; split starts it (open to in_progress) when it gets children; when every child is closed, `/map` runs review; review closes the map or leaves it in_progress (user confirmed).
 - A decision may be recorded directly in Decisions so far without fog; split then turns it into a child (user confirmed).
+- The map body format is designed in the separate Map body format child map. `body.md` defines the writing shape for all six sections; this Map skill keeps the workflow and references that file.
 
 ## Not yet specified
 
