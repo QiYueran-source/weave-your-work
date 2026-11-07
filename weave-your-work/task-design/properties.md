@@ -9,7 +9,7 @@ Required on every task. Accepted values: `delivery` and `probe`.
 - `delivery`: the task promises an output, and failure is an incident.
 - `probe`: the task buys information, and a negative result is a normal result.
 
-Who writes it: the AI that runs `split-to-task`, judged when the ticket is created.
+Who writes it: the AI running the split skill, judged when the ticket is created.
 
 The value is frozen once written. Changing it means closing the ticket and opening a new one with the other kind; `kind.md` says why.
 
@@ -29,7 +29,7 @@ Optional. Type: boolean. Leave it unset when the task needs no person.
 - `true`: the task contains work that only a person can do.
 - `false`: the task contains no such work.
 
-Who writes it: the AI that runs `split-to-task`, judged when the ticket is created.
+Who writes it: the AI running the split skill, judged when the ticket is created.
 
 The field and the body must agree. When the value is `true`, at least one Action step starts with `Person:`; when it is `false`, no step does. How that prefix is written is in `body.md`.
 

@@ -32,7 +32,7 @@ A skill is not one action. The map skill has to settle creating a map, the six b
 
 ### Splitting the Task skill map
 
-The Task skill map now has two children: [Task design skill](../../../tickets/map/wm-793jrqph1ckv.md) and [Task execution skill](../../../tickets/map/wm-avc7a31tae33.md). This follows the Map skill's pattern: a total skill map routes to focused child skills. Task design defines how to specify a task; task execution defines how an owner advances one. `split-to-task` decides whether and how work becomes tasks based on semantic groupings, then references task design when those task tickets are written. A decision does not have to match exactly one task, just as a decision does not have to match exactly one child map.
+The Task skill map now has two children: [Task design skill](../../../tickets/map/wm-793jrqph1ckv.md) and [Task execution skill](../../../tickets/map/wm-avc7a31tae33.md). This follows the Map skill's pattern: a total skill map routes to focused child skills. Task design defines how to specify a task; task execution defines how an owner advances one. the split skill (`weave-your-work/split/`) decides whether and how work becomes tasks based on semantic groupings, then references task design when those task tickets are written. A decision does not have to match exactly one task, just as a decision does not have to match exactly one child map.
 
 ### What the skill maps do not cover
 

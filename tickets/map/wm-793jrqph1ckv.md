@@ -30,7 +30,7 @@ All children are complete and no further child is needed: the task design skill'
 ## Decisions so far
 
 - Task design owns three references: `body.md` for section content, `kind.md` for choosing the kind and its failure meaning, and `properties.md` for the custom fields (user confirmed).
-- Task design defines the task specification; it does not decide which tasks to create when splitting a map. `split-to-task` decides whether and how work should split into tasks, then references task design when creating them (user confirmed).
+- Task design defines the task specification; it does not decide which tasks to create when splitting a map. The split skill decides whether and how work should split into tasks, then references task design when creating them (user confirmed).
 - A task must be classified as delivery or probe using `task_kind` (user confirmed).
 - A task carries exactly one complete action: one goal, which may take several steps (user confirmed).
 - Verifiable result is not a separate section. The action states the work, and the acceptance signal states how the result is checked (user confirmed).
@@ -48,14 +48,14 @@ All children are complete and no further child is needed: the task design skill'
 - Every section in `body.md` is described with its purpose, its format, and a directly usable example, following the map body reference (user confirmed).
 - `properties.md` covers only `task_kind`, `reversibility`, and `needs_human`. Waymark's core fields are left to `waymark --help` instead of being repeated (user confirmed).
 - `reversibility` is declared in waymark as an optional string; `needs_human` is declared as an optional boolean. Accepted values live in `properties.md`, not in the config (user confirmed).
-- `needs_human` is a separate boolean property, not a task kind. Whether to set it is judged by AI and handled by `split-to-task` when the task is created (user confirmed).
+- `needs_human` is a separate boolean property, not a task kind. Whether to set it is judged by AI and handled by the split skill when the task is created (user confirmed).
 - Human participation is marked inside the Action with the prefix `Person:` at the start of the step. The prefix is always written in English, even when the task is written in another language. No separate `Human step` section is added (user confirmed).
 - The field and the body must agree: when `needs_human` is true at least one Action step carries the `Person:` prefix, and when it is false no step does (user confirmed).
 - A task is accepted by its owner. Acceptance is not limited to a non-executor (user confirmed). The review, execution, and root maps all say the owner judges acceptance.
 - Evidence for a human step is written back as a comment with a link to the evidence. A probe task also records the finding in `Result` (user confirmed).
 - Evidence for a human step follows the acceptance signal's rule: someone else can check it. This is the same observability requirement, not a separate rule.
 - For `one_way`, task design requires the task to name who confirms and what they confirm. The actual block before starting is enforced by task execution (user confirmed).
-- A task carries no dependency edges. The tasks under one map are parallel branches, and where order is real either the work is one action with several steps or the map splits into child maps that carry the edge (user confirmed). This replaced an earlier decision that left dependency writing to `split-to-task` or the owner.
+- A task carries no dependency edges. The tasks under one map are parallel branches, and where order is real either the work is one action with several steps or the map splits into child maps that carry the edge (user confirmed). This replaced an earlier decision that left dependency writing to the split skill or the owner.
 - Task design adopts the vertical slice from `to-tickets` without its vocabulary: a task ends at a result that can be handed over whole, even when the action crosses several stages. A slice that finishes one stage and waits for a sibling is a step, not a task. The earlier decision against tracer-bullet slicing was reversed: the slicing idea applies to any work, only the engineering layer words do not (user confirmed).
 - A task hangs under exactly one map, so a task under a task is an error. A task may link to items outside its map for provenance or shared subject; a link never expresses order and does not affect readiness (user confirmed).
 - A task carries no date fields. The start is the moment the ticket is claimed, and a deadline would need an overdue check this layer does not have; a hard external date goes into Action or Boundaries (user confirmed).

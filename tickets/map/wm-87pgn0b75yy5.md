@@ -20,7 +20,7 @@ Why: task is the finest target and the only node that can be executed; without t
 
 ## Acceptance direction
 
-All child maps are accepted and no further child maps are needed: task design defines how a task is written, task execution defines how it is advanced, and `split-to-task` can create tasks from them.
+All child maps are accepted and no further child maps are needed: task design defines how a task is written, task execution defines how it is advanced, and the split skill can create tasks from them.
 
 ## Children
 
