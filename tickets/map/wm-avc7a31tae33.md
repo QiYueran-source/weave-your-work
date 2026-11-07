@@ -37,6 +37,7 @@ The four task execution skills are delivered under `weave-your-work/`, and one w
 - The two step skills do the referencing: they are the ones that name the other skills (user confirmed).
 - Execution keeps no per-step question-and-answer record. What it leaves is three things in three places: where the run stopped is in the task's own body, the evidence is a comment on the task, and how the batch went is a comment on the parent map written by the main agent (under discussion).
 - When a task no longer holds, the executor stops and hands it back to the owner. The owner closes it and either reopens the work as a map or writes a new task. The executor does not rewrite the action and does not split the task (user confirmed).
+- Two things this map needs from task design are now filed there: a `Progress` section in the task body for the state a run leaves behind, and a `waiting_on` field for a task that waits on a person. The task design map was reopened to hold them (user confirmed).
 
 ## Not yet specified
 
