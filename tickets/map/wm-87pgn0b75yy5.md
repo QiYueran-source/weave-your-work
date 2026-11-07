@@ -32,7 +32,8 @@ All child maps are accepted and no further child maps are needed: task design de
 - Inherits the execution map's decisions: ownership model, task kinds, reversibility marker, and acceptance direction.
 - needs_human: a boolean field marks a task that must be done by a person, as opposed to a task an agent can finish alone (user proposed).
 - Task atomicity: a task cannot have child tasks, and it leaves one result someone can name. Length is not the test: a task may run for days while it waits on a person or on data. Work with no result of its own is a step, not a task (user confirmed).
-- Tasks may carry dependency edges. Cleaning data before analysing it is two tasks with one waiting on the other; the wait is an edge, not a reason to merge them (user confirmed). Wiring edges belongs to split, which already checks whether an edge is needed when adding a child.
+- A task carries no dependency edges, and a task hangs under exactly one map. The tasks under one map are parallel branches. Where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into child maps that carry the edge (user confirmed).
+- Splitting follows the vertical slice: a task ends at a result that can be handed over whole, even when the action crosses several stages to reach it. A slice that finishes one stage and waits for a sibling is a step, not a task (user confirmed).
 - A task carries no date fields: no start date, no deadline. Starting is the claim, which execution records; a deadline needs an overdue check this layer does not have. A hard external date goes into Action or Boundaries (user confirmed).
 - The Task skill has two child skills, task design and task execution, following the Map skill structure (user confirmed).
 - Split-to-task decides whether and how work should split into tasks based on semantics; it does not design individual tasks. It references the task design skill when creating them (user confirmed).

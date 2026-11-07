@@ -49,7 +49,9 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 
 ## Not yet specified
 
-(none; fog cleared)
+- Whether a blocked map may split. A map waiting on another may still have parts that do not need the blocker's answer; the open question is whether those parts may be split now or must wait.
+- The submap side of vertical slicing: when work must run in sequence, what the child maps look like and where the edge is carried. The task side is settled in the task skill.
+- How a task relates to other maps. A task hangs under exactly one map but may link to another; what a link is used for, and what it does not mean (no ordering, no shared acceptance).
 
 ## Out of scope
 

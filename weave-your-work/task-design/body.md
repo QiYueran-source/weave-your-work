@@ -4,11 +4,11 @@ A task body says what one action is, what it must leave behind, and how someone 
 
 A body carries one complete action: one goal. The goal may take several steps.
 
-One test says whether the action is small enough: it leaves a result you can name, and the acceptance signal judges that result. The signal may treat another task's finished output as given input, but judging that output again is not part of this task.
+One test says whether the action is small enough: it ends at a result that can be handed over whole and checked on its own. The action may cross several stages to get there. Cleaning a dataset and then analysing it is one task when the analysis is what gets handed over, because a cleaned dataset nobody uses yet is a step, not a result.
 
-Order is not one of the tests. Two tasks may run in sequence with one waiting on the other; that wait is a dependency edge, not a reason to merge them.
+The opposite shape is a slice of a later result: all the cleaning, or all the schema work, finished before anything can be used. A slice like that waits on a sibling, and that wait is the sign it should have been a step inside the task that delivers the result.
 
-Preparing ground is allowed when the preparation leaves a result of its own. Clean the dataset, then analyse it: two tasks, one waiting on the other, each with its own checkable output. What is not a task is a step with no result of its own, whose only purpose is to move another task along; that belongs inside the task it serves, or as a probe if it is really a question.
+A task carries no dependency edges. The tasks under one map are parallel branches, and order inside a map is expressed by nothing. When two pieces of work must run in sequence, either they are one action with several steps, or the map splits into child maps that carry the edge.
 
 Length is not a test. A task may run for days while it waits on a person or on data.
 
@@ -64,7 +64,6 @@ Format:
 - The evidence must be checkable by someone who did not produce it. The owner still decides whether it passes.
 - A delivery task states what a good output looks like.
 - A probe task states the possible results and which of them count as a complete check. A negative finding is a complete check.
-- The signal judges what this task produces. It may treat another task's closed output as given input; it must not judge that output again.
 
 Example, delivery:
 
