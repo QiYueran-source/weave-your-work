@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-07T06:20:00Z
+updated_at: 2026-11-07T16:03:39Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -23,6 +23,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 ## Children
 
 - [Submap reference: how to split into child maps](tickets/map/wm-nnjk0yb5wbd9.md): the design map for split's `submap.md` reference.
+- [Task reference: how to split a map into tasks](tickets/map/wm-bfqvr54kz3h4.md): the design map for split's `task.md` reference.
 - The two references live inside the skill directory as `submap.md` and `task.md`.
 
 ## Decisions so far
