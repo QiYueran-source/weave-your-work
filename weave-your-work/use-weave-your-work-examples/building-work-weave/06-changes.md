@@ -11,4 +11,5 @@
 - The category maps were hung under the root map (`fa46553`), closing the parent gap.
 - The glossary install task moved under the glossary map, so its dependency on that map was removed (a child does not wait for its parent).
 - The examples moved into the `use-weave-your-work-examples` skill, split by section.
+- Rule 05 was added: a skill's `description` is quoted, because an unquoted colon fails the installer's YAML parse.
 - This rule and example were added on 2026-11-06.
