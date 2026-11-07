@@ -35,6 +35,9 @@ The SKILL.md exists under `weave-your-work/grill/`; a sample discussion produces
 - grill lands three artifacts itself: glossary terms, weave logs, and ADRs, and it owns the landing rules for those three. Everything else — map decisions, split results, task creation — is landed by the skill that called grill: the caller references grill, receives its clear conclusions, terms, logs, and ADRs, and writes them into its own ticket (user confirmed, revising the earlier "grill lands map decisions and task creation" wording).
 - Discussion protocol: prefer the harness's built-in choice feature for questions with selectable options; when no choice feature exists, fall back to the grilling protocol (one round covers the whole frontier, numbered questions with recommended answers) (user confirmed).
 - Interface with explore: explore calls grill to discuss fog; grill returns clear conclusions plus the glossary, weave-log, and ADR artifacts; explore then lands the conclusions itself (user confirmed).
+- Glossary landing: a term is written to GLOSSARY.md the moment it resolves during the discussion, one term at a time, not batched (user confirmed).
+- Weave-log landing: every grill step lands a log entry in real time, and the log content is edited as the discussion progresses; other tickets cite the log only after the grill closes (user confirmed).
+- ADR landing: an ADR is written only when the decision is hard to reverse, surprising without context, and a real trade-off — all three; otherwise the decision goes to the caller's Decisions so far (user confirmed).
 
 ## Not yet specified
 
