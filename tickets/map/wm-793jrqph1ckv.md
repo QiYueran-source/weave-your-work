@@ -3,12 +3,11 @@ schema: 1
 id: wm-793jrqph1ckv
 title: Task design skill
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T10:34:54Z
-closed_at: 2026-11-07T10:34:54Z
+updated_at: 2026-11-07T12:39:43Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -29,6 +28,7 @@ All children are complete and no further child is needed: the task design skill'
 - [Write the Progress section into the task body reference](tickets/task/wm-2vphdebar7ph.md): the one section execution writes and closing removes.
 - [Declare waiting_on in the task properties reference](tickets/task/wm-ktjm55w7zwk3.md): the fourth task field, written while a task waits.
 - [Make Result the shared outcome section](tickets/task/wm-5am6jgx5jyvb.md): one place for what a task produced, for both kinds.
+- [Add outcome and Review to the task references](tickets/task/wm-gg4m636xgrxz.md): the section and the field a review writes on a closed ticket.
 - The earlier check [wm-f5ddb0342bt1](tickets/task/wm-f5ddb0342bt1.md) was closed without being run and is kept only as history.
 
 ## Decisions so far
@@ -75,9 +75,11 @@ All children are complete and no further child is needed: the task design skill'
 - Skill text must stand on its own once installed. `npx skills add` copies the skill's own directory and nothing beside it, and it skips a symlink that points outside that directory, so a reference to a file elsewhere becomes a dead link. The entry dropped its pointer to the root glossary, and `properties.md` defines `owner` in place (user confirmed).
 - The older `task-example.md` under `use-weave-your-work-examples/` still teaches a shape this skill no longer allows: it has a `Verifiable result` section, puts kind and reversibility in the body instead of front matter, says `two-way door`, and says author. It is left as it is for now, and the worked examples for this skill wait for a later pass (user confirmed).
 
+- Review writes two things on a task ticket, and both belong to this skill's references: `## Review`, a section holding the verdict and one line per axis with its source, written before the close and kept on the closed ticket; and `outcome=failed`, set only when the verdict is `wrong direction`. `outcome` therefore joins the task properties even though it was first defined for maps: an optional string whose one accepted value is `failed`. Source: user confirmation, recorded in [Task review skill](tickets/map/wm-3kaftv6fzfx2.md).
+
 ## Not yet specified
 
-(none; the design is settled and split into children)
+(none; the design is settled, and the reference update is filed as a child)
 
 ## Out of scope
 
