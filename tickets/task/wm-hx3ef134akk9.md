@@ -8,7 +8,6 @@ owner: frank
 creator: frank
 created_at: 2026-11-07T10:18:11Z
 updated_at: 2026-11-07T10:39:58Z
-parent: wm-8he44vj7v4y5
 custom_fields:
   needs_human: false
   reversibility: two_way
