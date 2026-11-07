@@ -3,11 +3,12 @@ schema: 1
 id: wm-yx9rckmhnkpm
 title: Check the task design skill against a fresh reader
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:04:13Z
-updated_at: 2026-11-07T09:04:19Z
+updated_at: 2026-11-07T09:18:34Z
+closed_at: 2026-11-07T09:18:34Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
