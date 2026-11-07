@@ -36,16 +36,14 @@ Length is not the test. A task may run for days while it waits on a person or on
 
 Order is carried by the tree, never by a link. A link records a relationship worth following and nothing more, and it may point at any item, including a sibling in the same map.
 
-The words this skill uses are defined in `GLOSSARY.md` at the root: task, map, slice, step, incident, readiness, link, owner, acceptance signal, reversibility, delivery task, probe task.
-
 ## Where each answer lives
 
 - `body.md`: the sections a body may hold, the order they appear in, and a whole ticket as waymark stores it.
 - `kind.md`: how to choose between a delivery and a probe task, which kind suits which stage, and what failure means for each.
-- `properties.md`: the three custom fields, placement under a map, and the link rules.
+- `properties.md`: the three custom fields, the owner, placement under a map, and the link rules.
 
 ## What this skill does not do
 
-Splitting a map into tasks belongs to the split skill (`weave-your-work/split/`), which decides whether a piece of work becomes a task and how many tasks a layer gets; it then writes the ticket according to these references.
+Splitting a map into tasks belongs to the split skill, which decides whether a piece of work becomes a task and how many tasks a layer gets; it then writes the ticket according to these references.
 
 Advancing a task, claiming it, notifying a person, and closing it belong to the task execution skill.

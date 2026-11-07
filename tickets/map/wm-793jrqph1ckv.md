@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:08Z
-updated_at: 2026-11-07T09:04:13Z
+updated_at: 2026-11-07T09:52:00Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -63,6 +63,9 @@ All children are complete and no further child is needed: the task design skill'
 - The skill lives at `weave-your-work/task-design/` as a flat directory: `SKILL.md`, `body.md`, `kind.md`, and `properties.md`. Skills are siblings on disk even when one builds on another, so no nesting (user confirmed).
 - `task_kind` is frozen once written. Changing it means closing the task and opening a new one with the other kind, because the two kinds differ in section list and failure meaning (user confirmed).
 - Examples are written in a later pass and are not children of this map. The planned file names are `task-example-delivery.md` and `task-example-probe.md`; `SKILL.md` links them once they exist (user confirmed).
+
+- The repository root `GLOSSARY.md` stays the one place that fixes the words these skills use. It is authoring material and does not ship, so skill text that leans on a word defines it where it is used (user confirmed).
+- Skill text must stand on its own once installed. `npx skills add` copies the skill's own directory and nothing beside it, and it skips a symlink that points outside that directory, so a reference to a file elsewhere becomes a dead link. The entry dropped its pointer to the root glossary, and `properties.md` defines `owner` in place (user confirmed).
 
 ## Not yet specified
 

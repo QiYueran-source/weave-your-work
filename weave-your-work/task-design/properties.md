@@ -43,6 +43,12 @@ The field and the body must agree. When the value is `true`, at least one Action
 
 Notifying a person and waiting for their answer belong to the task execution skill, not to this field.
 
+## owner
+
+Waymark records one accountable person per item. The owner advances the task and decides whether it passes. It is not the person who happened to do the work: work can be handed to anyone, acceptance cannot.
+
+The owner is set when the ticket is created, with `waymark create --owner`, and changed with `waymark owner`. It is not one of the three custom fields above.
+
 ## Placement
 
 A task hangs under exactly one map. Its `parent` is a map, never another task: a task cannot hold children, so a task under a task is an error. This one is machine checkable.
@@ -51,7 +57,7 @@ A task hangs under exactly one map. Its `parent` is a map, never another task: a
 
 A task may link to any other item with `waymark link`, including a sibling in the same map. A link records something worth following: this task's output was used elsewhere, two items cover the same subject, or one replaced another.
 
-A link never expresses order. It does not block, does not make anything wait, and does not change readiness. Work that must run in sequence is two steps of one action, or two child maps carrying a dependency edge. A link used to mean "this waits for that" tells the reader something the tracker does not enforce.
+A link never expresses order. It does not block, does not make anything wait, and does not change whether the work can start. Work that must run in sequence is two steps of one action, or two child maps carrying a dependency edge. A link used to mean "this waits for that" tells the reader something the tracker does not enforce.
 
 A link between siblings in one map is the case to check hardest. Siblings rarely have a reason to be associated except sequence, so a sibling link that exists only because one has to happen after the other is order in disguise, and the work was split wrongly.
 
