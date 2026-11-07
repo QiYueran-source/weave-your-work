@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:42:08Z
-updated_at: 2026-11-07T09:56:20Z
+updated_at: 2026-11-07T12:52:29Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -24,7 +24,7 @@ All children are complete and no further child is needed.
 
 ## Children
 
-(none yet)
+- [Write the task review skill](tickets/task/wm-g85bmsr92nmm.md): the entry and the two references beside it.
 
 ## Decisions so far
 
@@ -44,6 +44,9 @@ All children are complete and no further child is needed.
 - Task design changes with this: `properties.md` gains `outcome` (optional string, the one accepted value `failed`, written by review when a task closes as failed) and `body.md` gains `## Review` in the sections written after creation (user confirmed).
 - The owner stays the standing acceptant, and a passing review closes the ticket on the spot, so a run never waits for the owner to be present; the owner may reopen (follows from the confirmed rule that a passing verdict closes the ticket, and from task design's rule that the owner accepts; not put to the user as its own question).
 
+- The report repeats what the run just wrote and adds nothing (user confirmed). A stop repeats `Progress` and `waiting_on`; a finish repeats the first line of `Result` and the verdict, then says what happens next. Sources stay on the ticket. A report that names something the ticket does not hold is a missing write, not a report.
+- The two paths share one shape: write the ticket, then repeat it as three lines. What differs is what gets written. A stop writes a state that a later run overwrites and the close deletes; a finish writes records that stay. On the finish path two writes land: the executor's `Result` and the reviewer's `## Review` (and `outcome=failed` when the task closed as a wrong direction). When the reviewer is the executor, one agent writes both in turn (user confirmed).
+
 ## Not yet specified
 
 - ~~The axes: what the goal axis reads on a task, what the convention axis reads.~~ Resolved: the goal axis reads the `Acceptance signal`, the convention axis reads `Boundaries` and the repo rules (see Decisions so far).
@@ -51,7 +54,9 @@ All children are complete and no further child is needed.
 - ~~The four verdicts, and what each one leaves the ticket as.~~ Resolved: passed, needs changes, needs discussion, wrong direction (see Decisions so far).
 - ~~Where the verdict and its findings are recorded on the task ticket, and what `outcome` means for a task.~~ Resolved: a `## Review` section for the record and `outcome=failed` for a failed close (see Decisions so far).
 - ~~How the review relates to the owner's acceptance.~~ Resolved: the owner is the standing acceptant and a pass closes on the spot (see Decisions so far).
-- The report shape: the map review's is a conclusion, the per-axis findings with their sources, what is done well, and the verdict; what a task review keeps of it is not settled.
+- ~~The report shape: the map review's is a conclusion, the per-axis findings with their sources, what is done well, and the verdict; what a task review keeps of it.~~ Resolved: the report is a three-line repeat of the ticket, and the sources stay on the ticket (see Decisions so far).
+
+(none; the design is settled and the work is filed as a child)
 
 ## Out of scope
 
