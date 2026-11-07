@@ -19,7 +19,7 @@ Why: map is the node that answers "what I want"; without this skill the tree has
 
 ## Acceptance direction
 
-All child tasks are complete and no further child task is needed: the SKILL.md exists under `weave-your-work/map/`, the example map can be rebuilt from it, and the body index and waymark parent relation agree after a child changes.
+All children are complete and no further children are needed: the SKILL.md exists under `weave-your-work/map/`, the example map can be rebuilt from it, and the body index and waymark parent relation agree after a child changes.
 
 ## Children
 
@@ -36,6 +36,7 @@ All child tasks are complete and no further child task is needed: the SKILL.md e
 - Status flow: a new map starts open; split starts it (open to in_progress) when it gets children; when every child is closed, `/map` runs review; review closes the map or leaves it in_progress (user confirmed).
 - A decision may be recorded directly in Decisions so far without fog; split then turns it into a child (user confirmed).
 - The map body format is designed in the separate Map body format child map. `body.md` defines the writing shape for all six sections; this Map skill keeps the workflow and references that file.
+- Current scope: the map skill covers the child-map lifecycle — write the six-section body per `body.md`, hang children, keep the body index in sync with the waymark parent relation, move a map through its status transitions, and accept it via review. The task paths (splitting tasks, task children, task-level acceptance) stay fog until the Task skill is settled. Source: user confirmation.
 
 ## Not yet specified
 
