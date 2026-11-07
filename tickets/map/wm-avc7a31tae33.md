@@ -34,6 +34,7 @@ The four task execution skills are delivered under `weave-your-work/`, and one w
 - The skills are user-invoked, not model-invoked (user confirmed).
 - This map delivers four sibling skills, each with its own child map, all flat so they can reference each other: `execute-step-by-step`, `execute-all`, `task-dispatch`, and `task-review` (user confirmed).
 - `execute-step-by-step` is the smallest execution unit. It holds the step list and the gates; `execute-all` references it instead of restating the steps (user confirmed).
+- Every skill in the set is installed together, so a skill may point at another skill by name or by path and the reference resolves. A cross-skill reference is not a dead link, and no skill has to restate another's rules (user confirmed).
 - The two step skills do the referencing: they are the ones that name the other skills (user confirmed).
 - Execution keeps no per-step question-and-answer record. What it leaves is three things in three places: where the run stopped is in the task's own body, the evidence is a comment on the task, and how the batch went is a comment on the parent map written by the main agent (under discussion).
 - When a task no longer holds, the executor stops and hands it back to the owner. The owner closes it and either reopens the work as a map or writes a new task. The executor does not rewrite the action and does not split the task (user confirmed).
