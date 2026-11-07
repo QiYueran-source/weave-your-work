@@ -35,12 +35,16 @@ All children are complete and no further child is needed.
 - A probe whose finding is negative still reviews as a probe and still closes with `outcome` recorded; a negative finding is a result, not a failure (user confirmed).
 - The axes and the verdict names are analysed later; this map holds that fog until then (user deferred).
 - A verdict of needs changes goes back to an agent to fix, without asking a person, when the fix needs no person (user confirmed).
+- The skill is `task-review/SKILL.md` with two references beside it, `delivery.md` and `probe.md`, one per kind, laid out flat like task-design's references. The entry holds what both kinds share: when the review runs, who may review, what it reads, the two axes, the four verdicts, what it writes, and how the work is handed on. Each reference holds only what the kinds do differently (user confirmed).
+- Anyone may review, including the agent that did the work; a run that finishes a task reviews it before it ends, so a task never waits on a separate reviewer (user confirmed).
+- The review reads along two axes, independently and reported separately. The goal axis reads the task's `Acceptance signal`: the evidence is there, and someone who did not do the work can read it by the method the signal names. The convention axis reads `Boundaries` and this repo's rules, plus whether the run wrote only what it may write. Every finding cites its source. Neither axis judges taste or implementation style unless the ticket put that in the signal (user confirmed).
 
 ## Not yet specified
 
-- The axes: what the goal axis reads on a task, what the convention axis reads.
-- The four verdicts, and what each one leaves the ticket as.
-- Who runs the review, and whether the reviewer may be the executor.
+- ~~The axes: what the goal axis reads on a task, what the convention axis reads.~~ Resolved: the goal axis reads the `Acceptance signal`, the convention axis reads `Boundaries` and the repo rules (see Decisions so far).
+- ~~Who runs the review, and whether the reviewer may be the executor.~~ Resolved: anyone, including the executor (see Decisions so far).
+- The four verdicts, and what each one leaves the ticket as. The map review's four are now known — passed, needs changes, needs discussion, wrong direction — and this map's acceptance direction says the task's verdicts line up with them; the alignment is being settled.
+- Where the verdict and its findings are recorded on the task ticket, and what `outcome` means for a task. `outcome` is declared in `.waymark/config.toml` and defined only in the map front matter map as `failed`, written by review when a node closes as failed; task design never mentions it.
 - How the review relates to the owner's acceptance: is the verdict the acceptance, or an input to it.
 - The report shape.
 - Whether a person reviews, and what triggers that.
