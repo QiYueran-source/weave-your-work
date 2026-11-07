@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:03:36Z
-updated_at: 2026-11-07T16:19:42Z
+updated_at: 2026-11-07T16:19:58Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -24,7 +24,7 @@ All children are complete and no further child is needed.
 
 ## Children
 
-(none yet)
+- [Write the task reference for the split skill](tickets/task/wm-tzpgke8n6cxd.md): the judgment half, written against task design.
 
 ## Decisions so far
 
