@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:16Z
-updated_at: 2026-11-07T09:56:54Z
+updated_at: 2026-11-07T13:16:37Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
@@ -37,7 +37,7 @@ The four task execution skills are delivered under `weave-your-work/`, and one w
 - `execute-step-by-step` is the smallest execution unit. It holds the step list and the gates; `execute-all` references it instead of restating the steps (user confirmed).
 - Every skill in the set is installed together, so a skill may point at another skill by name or by path and the reference resolves. A cross-skill reference is not a dead link, and no skill has to restate another's rules (user confirmed).
 - The two step skills do the referencing: they are the ones that name the other skills (user confirmed).
-- Execution keeps no per-step question-and-answer record. What a run leaves lives on the task ticket: `Progress` while it runs and `Result` when it ends. How a batch went is written on the parent map by the main agent (user confirmed).
+- Execution keeps no per-step question-and-answer record. What a run leaves lives on the task ticket: `Progress` while it runs, `Result` when it ends, `Review` once it is judged. How a batch went is written nowhere else: the map stays a functional record of the target, and the tickets carry what the run left (user confirmed). This replaced an earlier decision that the main agent writes the batch outcome on the parent map.
 - When a task no longer holds, the executor stops and hands it back to the owner. The owner closes it and either reopens the work as a map or writes a new task. The executor does not rewrite the action and does not split the task (user confirmed).
 - Two things this map needs from task design are now filed there: a `Progress` section in the task body for the state a run leaves behind, and a `waiting_on` field for a task that waits on a person. The task design map was reopened to hold them (user confirmed).
 
