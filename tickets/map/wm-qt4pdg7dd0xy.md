@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:55Z
-updated_at: 2026-11-07T09:42:12Z
+updated_at: 2026-11-07T09:49:54Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -18,7 +18,7 @@ Why: this is the shape a subagent can run, so it has to fit in one pass.
 
 ## Acceptance direction
 
-`weave-your-work/execute-all/` exists, it references the step list in `execute-step-by-step` and adds only the differences, and a task can be run end to end from it.
+`weave-your-work/execute-all/` exists, it points at `execute-step-by-step` and adds only the differences, and a task can be run end to end from it.
 
 All children are complete and no further child is needed.
 
@@ -28,9 +28,10 @@ All children are complete and no further child is needed.
 
 ## Decisions so far
 
+- It references `execute-step-by-step` rather than restating the steps; the smallest unit already exists and this skill is the same unit run without stopping (user confirmed).
 - This skill is the shape a subagent runs: one pass, no questions, no interrupt (user confirmed).
-- It holds no steps of its own. It references `execute-step-by-step` and states only what changes when the run never pauses (user confirmed).
 - It collects what it needs before starting, because it cannot ask for more once it has begun (user confirmed).
+- The run ends with the work reviewed, not when the action is done. A finished task is not complete until it has been checked (user confirmed).
 - It reports back what it could not settle; the main agent decides whether to re-dispatch, interrupt, or hand the task back (user confirmed).
 
 ## Not yet specified
