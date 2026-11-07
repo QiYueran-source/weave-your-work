@@ -1,6 +1,6 @@
 # Task properties
 
-A task carries three custom fields in the waymark front matter, under `custom_fields`: `task_kind`, `reversibility`, and `needs_human`. The first two are required; the third is optional. This file defines what each one means, the values it accepts, and who writes it. Body sections are in `body.md`; choosing the kind is in `kind.md`.
+A task carries four custom fields in the waymark front matter, under `custom_fields`: `task_kind`, `reversibility`, `needs_human`, and `waiting_on`. The first two are required. The other two are optional, and `waiting_on` is written while the task runs rather than when it is designed. This file defines what each one means, the values it accepts, and who writes it. Body sections are in `body.md`; choosing the kind is in `kind.md`.
 
 Every front matter change goes through a waymark command, never a hand edit. A whole ticket is shown at the end of `body.md`.
 
@@ -41,7 +41,15 @@ Who writes it: whoever writes the ticket, before work starts.
 
 The field and the body must agree. When the value is `true`, at least one Action step carries the `Person:` prefix; when it is `false`, no step does. Every person step carries the prefix either way, as `body.md` requires.
 
-Notifying a person and waiting for their answer belong to the task execution skill, not to this field.
+Notifying a person belongs to the task execution skill. When the task then waits on that person's answer, the wait is recorded in `waiting_on`.
+
+## waiting_on
+
+Optional, type: string. Leave it unset when the task waits on nobody.
+
+- It names the person, or the thing, whose answer the task waits on. One value: what is being waited on now, not everything the task touched.
+- Who writes it: whoever advances the task. It is set when the task starts waiting and cleared when the answer arrives, not when the work resumes. Task design only declares the field.
+- A task with a value is still `in_progress`. It is not blocked and not closed: the field records a wait, not a state of its own.
 
 ## owner
 

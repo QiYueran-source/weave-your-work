@@ -92,7 +92,7 @@ Example:
 
 A delivery task promises an output. Failure is an incident.
 
-Sections, in order: Action, Acceptance signal, Failure recovery, Boundaries.
+Sections, in order: Action, Acceptance signal, Failure recovery, Boundaries, and `Progress` while the work is running.
 
 Action and Acceptance signal are required. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
 
@@ -118,7 +118,7 @@ The migration drops the old table, so a bad run loses September's rows.
 
 A probe task buys information. A negative result is a normal result.
 
-Sections, in order: Action, Acceptance signal, Result, Next step, Failure recovery, Boundaries.
+Sections, in order: Action, Acceptance signal, Result, Next step, Failure recovery, Boundaries, and `Progress` while the work is running.
 
 Action, Acceptance signal and Next step are required. Result is added after the check. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
 
@@ -127,7 +127,7 @@ Action, Acceptance signal and Next step are required. Result is added after the 
 Purpose: record what the check found.
 
 Format:
-- Written after the check, by the task owner, before the ticket is closed. Add it with `waymark body replace`; it is the one section that appears after creation.
+- Written after the check, by the task owner, before the ticket is closed. Add it with `waymark body replace`; it is one of the two sections that appear after creation, the other being `Progress`.
 - State the finding first, then the verdict. For a hypothesis, say whether it holds. For a question, state the answer.
 - When the check could not be completed, say so and give the reason. A failed attempt is recorded here, not in Failure recovery.
 
@@ -162,9 +162,31 @@ Example:
 - If it does not hold: drop the checklist and spend the effort on the comment-length limit instead.
 ```
 
+## The section execution writes
+
+### Progress
+
+Purpose: say where the work stands, so a run that stopped can be picked up without asking anyone.
+
+Format:
+- Two short lines. The first says where the work stands; the second says what happens next.
+- Overwritten in place, never appended: it records the state, not the history of what was done.
+- It holds no evidence. What the work produced is written as a comment, and a probe's finding goes in `Result`.
+
+Lifecycle: set when the work starts, updated whenever the state changes, and removed before the ticket closes. A closed ticket has no `Progress` section, so a reader of one sees only what the task promised and what it found.
+
+Who writes it: whoever advances the task, never the designer. Nothing writes it when the ticket is created.
+
+Example:
+
+```
+Where it stands: the four weeks are pulled and saved as `baseline-click-through.csv`.
+Next: check the file against the signal.
+```
+
 ## Keeping a body short
 
-Action and Acceptance signal are the only sections every task needs. Every other section answers a question a reader would otherwise have to guess; write it when that question is real and leave it out when it is not. The exceptions are the ones named above: Failure recovery for `one_way` work, and Next step for a probe.
+Action and Acceptance signal are the only sections every task needs. Every other section answers a question a reader would otherwise have to guess; write it when that question is real and leave it out when it is not. The exceptions are the ones named above: Failure recovery for `one_way` work, and Next step for a probe. `Progress` is the one section no designer writes: it belongs to whoever advances the task.
 
 ## A whole ticket
 
@@ -204,4 +226,4 @@ Produce the four-week click-through baseline so the next decision has a number t
 - No dashboard changes.
 ```
 
-The title names the result, not the activity. A probe uses the same shape with `task_kind: probe`, then Action, Acceptance signal, Next step, and Boundaries if it has one. Its `Result` is added later, by the owner, with `waymark body replace`.
+The title names the result, not the activity. A probe uses the same shape with `task_kind: probe`, then Action, Acceptance signal, Next step, and Boundaries if it has one. Its `Result` is added later, by the owner, with `waymark body replace`. The ticket above has already closed, which is why it carries neither `Progress` nor `waiting_on`.
