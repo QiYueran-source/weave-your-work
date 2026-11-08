@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-08T12:45:30Z
-closed_at: 2026-11-08T12:45:30Z
+updated_at: 2026-11-08T12:54:50Z
+closed_at: 2026-11-08T12:54:50Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: submap
@@ -27,15 +27,15 @@ Define the Task skill: how work is cut from a map into executable tasks, how an 
 
 Superseded on 2026-11-08: the Task skill gains a total entry, so the map has three child maps and the entry is part of its acceptance. The old reasoning lost because the family now has four skills, `ask-me` is not built, and a named entry is how a person finds the family.
 
-Four child maps are complete and closed.
+Five child maps are complete and closed.
 
 All children are complete and no further children are needed.
 
 The entry exists at `weave-your-work/task/SKILL.md` and routes to `task-design`, `execute-one-task`, `execute-all`, and `task-review`.
 
-Review point: the four child maps are closed, and a reader who opens `task/SKILL.md` alone can tell which skill owns their question.
+Review point: the five child maps are closed, and a reader who opens `task/SKILL.md` alone can tell which skill owns their question.
 
-Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and review rules. Fixed in [Task skill conflict fixes](tickets/map/wm-zkrds7y5at8v.md); the findings left open are recorded there and in the chemistry example. (user confirmed the batch model on 2026-11-08)
+Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and review rules. Fixed in [Task skill conflict fixes](tickets/map/wm-zkrds7y5at8v.md) and [Task skill review fixes](tickets/map/wm-nx5547pvnxpj.md); the chemistry walk's findings are now closed or recorded as rejected. (user confirmed the batch model on 2026-11-08)
 
 ## Decisions so far
 
@@ -61,7 +61,7 @@ Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and revi
 
 ## Not yet specified
 
-- The open findings from the chemistry walk (order wording, cross-owner review, required-section checks, `needs_human`/`Person:` check, incomplete-probe verdict, `Next step` confirmation, `Progress` lifecycle, child-map wording).
+- (none; the chemistry walk's findings are closed or recorded as rejected.)
 
 - Align `map/frontmatter.md` and the batch skills with the acceptance-gate model recorded in `GLOSSARY.md`.
 - Whether `execute-all` selects tasks owned by the chosen map's owner or by the local operator.

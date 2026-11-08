@@ -39,18 +39,12 @@ The check is a backstop. The executor stops on a non-empty `waiting_on`, and the
 
 ## What the review does not read
 
-`task-review` reads `Action`, `Acceptance signal`, `Boundaries`, `Result`, and `waiting_on`. It does not name `Failure recovery` or `Next step`, even though `task-design` makes the first required for `one_way` work and the second required for a probe. A ticket missing either can still pass, because the review never checks for it.
+`task-review` reads `Action`, `Acceptance signal`, `Boundaries`, `Result`, and `waiting_on`. It does not name `Failure recovery` or `Next step`; those checks now live in `split/task.md`, `update/need-execute.md`, and the `execute-one-task` preflight. A ticket that reaches the review should already carry them.
 
-The same gap covers the field and the body. `properties.md` says `needs_human: true` requires at least one `Person:` step, and `false` requires none. The review's convention axis checks `Boundaries` and writes, not that agreement. A task can carry `needs_human: true` with no person step and still pass.
+The same split covers the field and the body. `properties.md` says `needs_human: true` requires at least one `Person:` step, and `false` requires none. The writer and the execute preflight check that agreement; the review does not.
 
 ## Who may review
 
-`task-review` says anyone may review, and a reviewer who is not the owner acts with the owner's authority. `map/frontmatter.md` says one owner per item and only the owner advances it. Waymark itself warns but allows the write:
+`task-review` now allows only the owner to write `## Review` and close. That matches `map/frontmatter.md`, which says only the owner advances the ticket. A non-owner who has findings reports them to the owner; `execute-one-task` stops at `Result` when the run is not the owner's.
 
-```
-$ waymark start wm-s1yn3reqwq15
-set wm-s1yn3reqwq15 open -> in_progress
-  OWNER_MISMATCH: operator frank is not the owner alice of wm-s1yn3reqwq15
-```
-
-The warning is not a refusal. A non-owner reviewer can close the ticket. The two rules need one answer: either the reviewer is a delegate and the ownership rule has an exception, or only the owner reviews.
+The earlier rule let anyone review and close, and waymark only warned about the owner mismatch. That is gone: the permission is now the same on both sides.

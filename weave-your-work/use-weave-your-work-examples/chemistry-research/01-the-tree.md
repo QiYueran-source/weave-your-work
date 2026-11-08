@@ -11,7 +11,7 @@ The root's `split_as` is `submap`. The two children are stages with their own ta
 
 The screen and the pilot are sibling maps under the root. They are not a parent and child. The pilot waits on the screen, so the wait is a dependency edge from the pilot map to the screen map. The tree still shows both as refinements of the root; the edge carries the order.
 
-That shape keeps the wait on the map layer, where dependency edges live. A task carries no dependency edge, because the tasks under one map are parallel; a staged lab workflow is not. The task rules say the map splits into "child maps that carry the edge"; this scenario reads that as sibling maps under the root. Putting the two stages under one map as two tasks would either invent a dependency the task layer forbids or start the pilot too early.
+That shape keeps the wait on the map layer, where dependency edges live. A task carries no dependency edge, because the tasks under one map are parallel; a staged lab workflow is not. The task rules now say the sequence becomes sibling maps under the same parent, with the edge between them. Putting the two stages under one map as two tasks would either invent a dependency the task layer forbids or start the pilot too early.
 
 ## The tasks
 

@@ -10,17 +10,18 @@ The criterion that sent the layer here lives in `SKILL.md`. This file applies it
 
 Read the parent map's `Acceptance direction` line by line. Every line has to be produced by some task in this layer. A line that nothing produces is either a missing task or a direction the map no longer means; decide which before writing anything.
 
-## The five gates
+## The six gates
 
-Every task passes all five. A gate that fails sends the part back to grill, because a missing answer here is a missing discussion, not a writing problem.
+Every task passes all six. A gate that fails sends the part back to grill or task design, because a missing answer or a malformed ticket is not a writing problem.
 
 1. **One action, one standard.** The action ends at a result that can be handed over whole, and the standard reads that result. When either half is missing, the part is not ready.
 2. **Evidence someone else can read.** The acceptance signal names a file, a page, a number, an answer — something a reader who did not do the work can open. "Done properly" names nothing.
 3. **Who does it.** The action marks every step a person has to perform, and `needs_human` agrees with what the action says.
 4. **What breaks if it goes wrong.** The answer sets `reversibility`: work that cannot be undone is `one_way` and carries `Failure recovery`.
 5. **Whether the output can be named.** Yes is a delivery. No is a probe: a question to answer, with both `Next step` lines written before it runs.
+6. **Whether the ticket is writable.** The body carries the sections its kind requires: `Action` and `Acceptance signal`, plus `Failure recovery` for `one_way` and `Next step` for a probe. `needs_human` agrees with the `Person:` steps. The parent is a map, and the ticket carries no `dependencies` block.
 
-Gates 3, 4, and 5 each decide a field, which is why a layer settles them before the ticket exists rather than during the work.
+Gates 3, 4, 5, and 6 each decide a field, which is why a layer settles them before the ticket exists rather than during the work.
 
 ## The plan
 

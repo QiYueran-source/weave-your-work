@@ -16,6 +16,8 @@ If the ticket is `closed`, stop. A closed task is changed through `update`, not 
 
 If `parent` is not a map, or the ticket carries a `dependencies` block, stop and hand the ticket back. Waymark accepts both and `validate` does not flag them; the task layer does not.
 
+Check the body against its kind: `Action` and `Acceptance signal` are there; `Failure recovery` is there for `one_way`; `Next step` is there for a probe; `needs_human` agrees with the `Person:` steps. A missing section or a mismatch is a design defect: stop and hand the ticket back. The executor does not write the missing section.
+
 If `waiting_on` is set, stop. The owner clears it after handling the answer; the run does not guess that the answer arrived.
 
 If `## Review` says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, the ticket should already be closed; stop.
@@ -50,7 +52,7 @@ Read the `Acceptance signal` against the evidence. The signal is a standard, not
 
 Write `Result`: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` if an earlier stop left one.
 
-Then invoke `task-review`. It reads the same signal against the same evidence, writes `## Review`, and decides: close the ticket, send the task back with the gap named, or stop it on the owner. A task that comes back has only the named gap to fix.
+Then invoke `task-review` when the run is the owner's. A run that is not the owner's stops at `Result` and reports; the owner reviews and closes. The review reads the same signal against the same evidence, writes `## Review`, and decides: close the ticket, send the task back with the gap named, or stop it on the owner. A task that comes back has only the named gap to fix.
 
 In a batch, the main agent reviews instead: stop at `Result`, report, and let `execute-all` carry the judgment.
 
@@ -64,7 +66,7 @@ Report three lines: where it stopped, why, and who picks it up.
 
 ## When the task no longer holds
 
-Write `Result` with the reason: the action no longer serves the map, or the task cannot be done as written. Keep `Progress` if the run stopped, and set `waiting_on` to the owner. Then invoke `task-review`; its `wrong direction` verdict closes the task as a failed attempt, and its `needs discussion` verdict waits on the owner. Do not leave the ticket open without a review.
+Write `Result` with the reason: the action no longer serves the map, or the task cannot be done as written. Keep `Progress` if the run stopped, and set `waiting_on` to the owner. Then invoke `task-review` when the run is the owner's; otherwise stop at `Result` and hand it to the owner. The review's `wrong direction` verdict closes the task as a failed attempt, and its `needs discussion` verdict waits on the owner. Do not leave the ticket open without a review.
 
 Rewriting the `Action`, splitting the task, and changing a task that is already closed are the owner's moves. The last one has its own rules: `update`.
 

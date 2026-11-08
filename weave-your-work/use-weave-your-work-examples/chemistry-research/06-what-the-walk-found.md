@@ -16,23 +16,20 @@ The walk produced 19 numbered findings. The analysis added two more: the table/p
 - **#16 The batch's write permission is wider than the run's.** `dispatch.md` now lists `Result`, `Progress`, `waiting_on`, and the claim.
 - **#18 The example task is stale.** [task-example.md](../task-example.md) is rewritten in the current shape.
 - **#19 A hand-back has no route to a failed close.** `execute-one-task` writes `Result` and invokes `task-review`; the review closes it as `wrong direction` or waits on the owner.
-- **The table/probe pair.** It is a split error: a task that reads another task's output is one action with several steps, or two child maps with an edge. `waiting_on` is for a person, not for a task's output. `split/task.md` now says this.
+- **The table/probe pair.** It is a split error: a task that reads another task's output is one action with several steps, or two sibling maps with an edge. `waiting_on` is for a person, not for a task's output. `split/task.md` now says this.
 - **The operator/owner conflict.** `execute-all` selects tasks owned by the chosen map's owner, not by the local operator.
+- **#5 Order is carried by the tree.** `task-design/SKILL.md` now says dependency edges between maps carry order; a link carries none.
+- **#6 Only the owner advances, but anyone may review.** `task-review` now allows only the owner to write `## Review` and close; a non-owner reports findings to the owner. `execute-one-task` stops at `Result` when the run is not the owner's.
+- **#8 Required sections are not reviewed.** `split/task.md` has a sixth gate, `update/need-execute.md` checks the ticket before execution, and `execute-one-task` checks the required sections in its preflight.
+- **#9 `needs_human` and `Person:` are not checked.** The same three places check the field/body agreement.
+- **#10 The incomplete-probe branch has no verdict.** `probe.md` now says `needs changes` when the executor can gather the missing evidence, `needs discussion` when only the owner can decide to retry, narrow, or stop.
+- **#11 `Next step` confirmation is not checked.** `body.md` puts the map owner's confirmation in `Result`; `probe.md` checks it and returns `needs discussion` when it is missing.
+- **#13 `Progress` starts when the work starts, or only when it stops.** `body.md` now makes `Progress` a stop marker: written when a run stops, overwritten on a state change, removed before the close.
+- **#17 "Child maps" for a sequence.** `task-design/SKILL.md` and `body.md` now say sibling maps under the same parent, with the edge between them.
 
 ## Rejected
 
 - **#2 A batch does not check the parent map.** The first fix was a recursive `startable` check that walked every ancestor. It was rejected: it would re-block closed descendants when a distant ancestor later waits, and waymark has no inherited state to read. The replacement is the execution-time input check: list the task's inputs and the parent's unfinished dependencies, and stop only when the task uses a blocker's output. A blocked map does not freeze its subtree. `GLOSSARY.md` and `map/frontmatter.md` now say the edge gates acceptance, not the subtree.
-
-## Still open
-
-- **#5 Order is carried by the tree.** `task-design/SKILL.md` still says order is carried by the tree; the glossary says edges carry order. The sentence needs the same fix as the map reference.
-- **#6 Only the owner advances, but anyone may review.** The cross-owner exception is still not written.
-- **#8 Required sections are not reviewed.** `Failure recovery` and `Next step` are still not checked by any gate.
-- **#9 `needs_human` and `Person:` are not checked.** The field/body agreement is still only a design rule.
-- **#10 The incomplete-probe branch has no verdict.** `probe.md` still does not say whether an incomplete check is `needs changes` or `needs discussion`.
-- **#11 `Next step` confirmation is not checked.** No skill reads the map owner's confirmation.
-- **#13 `Progress` starts when the work starts, or only when it stops.** `body.md` still says start; `execute-one-task` writes it only on a stop.
-- **#17 "Child maps" for a sequence.** `task-design/SKILL.md` and `body.md` still use that wording.
 
 ## What held
 

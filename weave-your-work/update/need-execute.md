@@ -29,9 +29,10 @@ The child map in the `submap` row is a real map with its own Target and Acceptan
 1. Write the new decision and acceptance on the map that will reopen.
 2. Reopen the map. A closed map takes no child; an open split map needs no reopen.
 3. Read `split_as` and hang the child according to the shape above. The child map's body is written by `submap.md`; the task's body by `task-design`.
-4. Read the task's `reversibility`, `needs_human`, and the impact scan from `SKILL.md`. Decide whether to execute now.
-5. If the gate allows, load `execute-one-task`, then `task-review`. Close the task.
-6. Review the reopened map against the new content and close it.
+4. Check the ticket is writable: the body carries the sections its kind requires, `needs_human` agrees with the `Person:` steps, the parent is a map, and there is no `dependencies` block. A failure stops here and goes back to the owner; do not execute a malformed ticket.
+5. Read the task's `reversibility`, `needs_human`, and the impact scan from `SKILL.md`. Decide whether to execute now.
+6. If the gate allows, load `execute-one-task`, then the owner's `task-review`. Close the task.
+7. Review the reopened map against the new content and close it.
 
 The task closes before the map that reopened. The reopened map's acceptance counts the child; closing the map first leaves a closed map with unfinished work under it.
 

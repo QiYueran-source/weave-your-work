@@ -7,7 +7,7 @@ description: Check a finished task against the acceptance signal written before 
 
 A task is not done because its executor says so. The review reads what the work left behind against the signal written before the work started, and records one verdict.
 
-This skill is model-invocable because `execute-one-task` invokes it at the end of a run. The execution skills beside it are user-invoked.
+This skill is model-invocable because `execute-one-task` invokes it at the end of the owner's run. The execution skills beside it are user-invoked.
 
 ## When it runs
 
@@ -15,9 +15,9 @@ A run has finished the work and written `Result`. The review runs before the tic
 
 ## Who reviews
 
-Anyone, including the agent that did the work. A run that has just finished a task reviews it in the same run, so a task never waits for a separate reviewer.
+The owner reviews and closes. The owner may be the agent that did the work when that agent runs the owner's task; a non-owner does not write `## Review` or close the ticket. A non-owner who has findings reports them to the owner.
 
-The owner is the standing acceptant. A passing review closes the ticket on the spot, and the owner may reopen it. A reviewer who is not the owner acts with that authority, not instead of it.
+The owner is the standing acceptant. A passing review closes the ticket on the spot, and the owner may reopen it.
 
 ## What it reads
 
@@ -81,4 +81,5 @@ If the `Acceptance signal` cannot be read as a standard at all, because it names
 
 - Do the work or fix it. `needs changes` goes back to `execute-one-task`.
 - Review a map. That is the map review skill.
+- Review design completeness. The sections and field/body agreement are checked where the ticket is written and in the execute preflight.
 - Define the `## Review` shape or the `outcome` field. Task design owns both.

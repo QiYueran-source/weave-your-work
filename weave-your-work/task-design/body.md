@@ -16,7 +16,7 @@ The shape to avoid is a slice: one stage of a result, finished before anything c
 
 Length is not the test. A task may run for days while it waits on a person or on data.
 
-A task carries no dependency edges, for the reason above: work that waits on a sibling is a slice. Where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into child maps that carry the edge.
+A task carries no dependency edges, for the reason above: work that waits on a sibling is a slice. Where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into sibling maps under the same parent, with the edge between them.
 
 ## Shared sections
 
@@ -92,7 +92,7 @@ Example:
 
 A delivery task promises an output. Failure is an incident.
 
-Sections, in order: Action, Acceptance signal, Result, Review, Failure recovery, Boundaries, and `Progress` while the work is running.
+Sections, in order: Action, Acceptance signal, Result, Review, Failure recovery, Boundaries, and `Progress` when a run stops.
 
 Action and Acceptance signal are required. Result is added when the work ends, and Review is added by the review before the ticket closes. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
 
@@ -118,7 +118,7 @@ The migration drops the old table, so a bad run loses September's rows.
 
 A probe task buys information. A negative result is a normal result.
 
-Sections, in order: Action, Acceptance signal, Result, Review, Next step, Failure recovery, Boundaries, and `Progress` while the work is running.
+Sections, in order: Action, Acceptance signal, Result, Review, Next step, Failure recovery, Boundaries, and `Progress` when a run stops.
 
 Action, Acceptance signal and Next step are required. Result is added when the check ends, and Review is added by the review before the ticket closes. Failure recovery is required when `reversibility` is `one_way` and optional when it is `two_way`. Boundaries is optional.
 
@@ -126,7 +126,7 @@ Action, Acceptance signal and Next step are required. Result is added when the c
 
 Purpose: say what the map does with the answer.
 
-Format: two lines, one for each outcome of a completed check. Both are required, because a probe that ends without either outcome leaves the map where it started. Write them when the task is designed, and have the map's owner confirm them when the answer lands.
+Format: two lines, one for each outcome of a completed check. Both are required, because a probe that ends without either outcome leaves the map where it started. Write them when the task is designed, and have the map's owner confirm them when the answer lands. A completed probe's `Result` records that confirmation.
 
 When the check could not be completed, replace the two lines with what happens to the work instead: whether it is retried, and by whom.
 
@@ -148,7 +148,7 @@ Purpose: record what the task produced or found.
 Format:
 - Written when the work ends, before the ticket closes, with `waymark body replace`. It stays on the closed ticket: this is what the ticket handed over.
 - A delivery task says where the deliverable is, how to open it, and carries what a person handed back, with a link to it.
-- A probe task states the finding first, then the verdict: for a hypothesis, whether it holds; for a question, the answer.
+- A probe task states the finding first, then the verdict: for a hypothesis, whether it holds; for a question, the answer. A completed probe also records the map owner's confirmation of both `Next step` lines.
 - When the work could not be finished, say so and give the reason. A failed attempt is recorded here, not in Failure recovery.
 
 Example, delivery:
@@ -214,7 +214,7 @@ Format:
 - Overwritten in place, never appended: it records the state, not the history of what was done.
 - It holds no evidence. What the work produced or found goes in `Result`.
 
-Lifecycle: set when the work starts, updated whenever the state changes, and removed before the ticket closes. A closed ticket has no `Progress` section, so a reader of one sees only what the task promised and what it found.
+Lifecycle: written when a run stops, overwritten when the state changes, and removed before the ticket closes. A closed ticket has no `Progress` section, so a reader of one sees only what the task promised and what it found. A run that does not stop has no `Progress`; the `in_progress` status is enough while it works.
 
 Who writes it: whoever advances the task, never the designer. Nothing writes it when the ticket is created.
 

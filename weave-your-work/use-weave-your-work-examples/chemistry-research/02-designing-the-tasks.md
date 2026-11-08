@@ -34,4 +34,4 @@ The design held when the tickets were written. The probe's two `Person:` steps a
 ## What the walk changed
 
 - The `properties` reference first said the three optional fields were `waiting_on`, `outcome`, and `needs_human`, then called `needs_human` "the only optional one". The walk found the contradiction; the file now separates the field written at creation from the two written during the run.
-- The `body` reference says `Progress` is set when the work starts. `execute-one-task` does not write it at the start; it writes it only when the run stops. The closed protocol and table carry no `Progress`, and nothing in the review noticed. Since a closed ticket has no `Progress` either way, the two rules do not produce a visible contradiction, but a reader cannot tell which one to follow while the work is running. This one is still open.
+- The `body` reference says `Progress` is set when the work starts. `execute-one-task` does not write it at the start; it writes it only when the run stops. The walk found the contradiction. `body.md` now writes `Progress` only when a run stops; a normal run has none, and the `in_progress` status is enough while it works.

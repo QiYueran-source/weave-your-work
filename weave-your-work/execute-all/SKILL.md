@@ -41,9 +41,9 @@ When it stopped: the ticket keeps `Progress` and `waiting_on`, the subagent is r
 
 ## Reviewing a large batch
 
-When the batch is too big to hold, split the finished tasks across a few reviewer subagents, each reviewing several. Give each reviewer the ticket ids and tell it to load `task-review`; every reviewer judges by the same rules.
+When the batch is too big to hold, split the finished tasks across a few reviewer subagents, each reviewing several. Give each reviewer the ticket ids and tell it to read `task-review`; every reviewer judges by the same axes and reports its verdict and evidence.
 
-A reviewer does what `task-review` says: it writes `## Review`, and a passing task closes there. The main agent hears the verdict and takes the next step, which is a fresh subagent for the named gap, or a wait when a person holds the answer.
+A reviewer does not write `## Review` or close. The main agent is the run's owner; it writes the review, and a passing task closes there. It then takes the next step, which is a fresh subagent for the named gap, or a wait when a person holds the answer.
 
 ## Interrupting
 
