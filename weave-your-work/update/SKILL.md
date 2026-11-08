@@ -73,7 +73,9 @@ The scan is not depth-limited. From the node being changed, follow:
 
 All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep. For many nodes at once, `waymark --json list` returns `children`, `dependents`, and `blocked_by` per item — not `parent` and not `soft_links` — so a sweep of soft links still needs one `show` per candidate.
 
-Bodies are the other half. `waymark search "<text>"` matches titles, front matter, and bodies, which finds the examples, the testimony, and the other tickets that quote the node. `waymark tree --root <id>` gives the shape below the node when the children list is long enough that reading ids one at a time is useless.
+Bodies are the other half, and there are two kinds of them. `waymark search "<text>"` matches titles, front matter, and ticket bodies, which finds the other tickets that quote the node. It searches the ticket store and nothing else — the skill files, the examples, the testimony, and the tests are ordinary Markdown on disk, so those need `grep -rn` over the repository. Run both; a node named only in an example is the reference no ticket-side query will show.
+
+`waymark tree --root <id>` gives the shape below the node when the children list is long enough that reading ids one at a time is useless.
 
 Each one is read for one question: does this relation still mean what it meant? A child that refined the old content may not refine the new. A dependent waiting on a completed node may be waiting on something that no longer exists. A passage in an example quoting the old text now quotes something retracted.
 
@@ -98,7 +100,7 @@ That is not a loophole, it is the shape of the tool: there is no command that re
 
 Before: `--dry-run`. Every waymark command that writes a ticket takes it, down to `title set` and `owner transfer`, and it either reports the change or says `would be unchanged`. For `archive` and `link`, read the affected list and write down, for each ticket in it, whose it is and which relation disappears. The human output names the relation (`removes dependencies`, `removes soft_links`); the JSON `affected` array carries only ids and paths. `no inbound relationships to remove` means nothing outside the node will be touched.
 
-The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the tickets the run owns is the step nothing automates.
+The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the tickets the run owns is the step nothing automates, and comparing two owner names is all it takes: every ticket records `owner`, `waymark --json show <id>` prints it, and the run's own tickets are the ones carrying the run's name.
 
 After: one issue per affected owner. The issue carries three things, and an issue missing any of them is noise:
 

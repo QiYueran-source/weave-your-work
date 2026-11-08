@@ -10,7 +10,7 @@ A ticket body is written to be read as it stands. A change that rewrites it invi
 
 So a change marks itself:
 
-- **Editorial** — spelling, a broken link, a sentence that reads badly. Replace the text. The meaning is identical, so there is nothing to reconstruct.
+- **Editorial** — spelling, a sentence that reads badly, a link whose target moved but whose label still says the right thing. Replace the text. The meaning is identical, so there is nothing to reconstruct.
 - **Substantive** — the answer changed, a decision was reversed, a scope narrowed. Keep the old text with a strike-through and put the replacement after it, or a `Superseded on <date>: <reason>` line below it when the old text is long enough that striking it hurts readability.
 
 The test is not "how much text changed". It is: could someone who read the old version have acted differently because of it? If yes, the old text stays visible.
@@ -85,7 +85,16 @@ This is the disposition with an order to it, because waymark refuses every write
 
 **1. Decide the children first.** Each child gets one of the three outcomes above. A child that is still valid must be re-hung on the replacement, and re-hanging can only happen once the replacement exists — so this step is decided here and written in step 4.
 
-**2. Write the replacement.** `waymark create --parent <the old node's parent>`. The body opens by naming what it replaces: `Replaces <old id>, retired on <date> because <reason>.` Run it with `--dry-run` first; `create` supports it like every other ticket-writing command.
+**2. Write the replacement.** A `create` needs three flags before it runs — `--category`, `--title`, and `--owner` — and takes `--parent` for the hang:
+
+```
+waymark create --category <same as the old node> \
+  --title "<the old title, or the sharper one>" \
+  --owner <you> --parent <the old node's parent> \
+  --body-file <path> --dry-run
+```
+
+The body opens by naming what it replaces: `Replaces <old id>, retired on <date> because <reason>.` Read the dry-run's `would create`, then run it again without the flag.
 
 The parent decides whether the hang is allowed, not who owns it, and waymark enforces none of this — `create --parent` will happily hang a child under a closed map owned by a stranger. The rule to follow: an open parent is a plain hang; a closed parent is not, whatever its owner. Ask the owner to reopen it, and meanwhile build the replacement as an isolated node with no parent, carrying `Intended parent: <id>, waiting on <issue link>` in its own body. `parent set` happens when they reopen. Skipping the wait leaves a closed map that quietly has unfinished work under it.
 
@@ -128,7 +137,7 @@ Clearing also erases the old position from the ticket, which is why a *move* is 
 
 - The changed body, via `waymark body replace`.
 - `status` via `waymark reopen`, and back to closed through review, when the verdict no longer holds.
-- For a task, `## Review`, replaced by the review skill; for a map, nothing, because a map body carries no verdict.
+- For a task, `## Review`, replaced by the review skill. For a map, no verdict section exists to replace: a passing review shows only in the status, and a `needs changes` one is written into `Decisions so far` as the gap to close.
 - `archived_at` and `archive_reason`, by `waymark archive`.
 - The replacement's body opens by naming the node it replaces.
 
