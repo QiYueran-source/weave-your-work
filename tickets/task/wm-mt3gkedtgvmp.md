@@ -7,12 +7,13 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T11:04:26Z
+updated_at: 2026-11-08T11:06:18Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: true
   reversibility: two_way
   task_kind: delivery
+  waiting_on: 'frank: Gitee token and both scratch repositories'
 ---
 ## Action
 
