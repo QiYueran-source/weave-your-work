@@ -3,11 +3,12 @@ schema: 1
 id: wm-9sfmaphskg0c
 title: 'Update skill: change a closed map or task'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T09:14:51Z
+updated_at: 2026-11-08T09:16:16Z
+closed_at: 2026-11-08T09:16:16Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -60,6 +61,13 @@ Review point: Check that the skill states the two boundary tests, the three disp
 
 - Whether update adds a dependency edge to the communication map. The issue it files is the communication category's to design; update names what the issue must carry and points there. An edge between the two maps would say the update work waits on the issue work, which is false today — the skill can file issues by hand.
 - The seven-step retire-and-replace order is written into `content.md` from waymark's constraints, not from a worked run. No retired-and-replaced node exists in this repository yet; the first real one is the test of that order.
+
+## Built
+
+- `weave-your-work/update/SKILL.md`: the trigger, the two tests, the three dispositions, the impact scan, the decision/write boundary, and the dry-run-then-notify routine.
+- `weave-your-work/update/content.md`: the first two dispositions in detail, the retire-and-replace order, and a whole short run.
+- `weave-your-work/update/move.md`: the move, its two tests, which of the three tickets reopen, and why it records nothing.
+- The Map operating procedure and the execution map point at the skill; the glossary defines update and move.
 
 ## Out of scope
 
