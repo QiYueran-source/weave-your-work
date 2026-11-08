@@ -33,8 +33,12 @@ The layered refinement from the root map to tasks. Every node is a target (a map
 _Avoid_: Gantt chart, flow chart, target chain
 
 **dependency edge**:
-A relation between maps expressing "who waits for whom to finish". It carries the ordering of targets. Order is not a chain of nodes but an edge; adding or removing an edge does not move the tree. Expressed by waymark's dependency mechanism. Tasks never carry one: the tasks under a single map run in parallel.
-_Avoid_: blocked (when referring to a state rather than a relation), prerequisite (when the direction is not made explicit)
+A relation between maps expressing "who waits for whom to finish". It carries the ordering of targets. Order is not a chain of nodes but an edge; adding or removing an edge does not move the tree. Expressed by waymark's dependency mechanism. Tasks never carry one: the tasks under a single map run in parallel. The edge gates the waiting map's acceptance, not every task under it; an executor checks whether a task actually uses the blocker's output.
+_Avoid_: prerequisite (when the direction is not made explicit)
+
+**blocked**:
+A map whose own dependency edge is unfinished. The edge gates the map's acceptance; it does not automatically freeze every task under the map. A task stops when it needs the blocker's output, and records the wait in `waiting_on`. Waymark reports the per-item state.
+_Avoid_: blocked (for a task waiting on a person or thing; that is `waiting_on`)
 
 **refinement**:
 The relation between a parent target and a child target: the child is a more specific statement of the parent. Unrelated to ordering.
@@ -113,7 +117,7 @@ What a delivery task's failure is. The promised output is missing or falls short
 _Avoid_: bug, error (when describing the contractual weight of a failed delivery)
 
 **readiness**:
-Whether an item can be started now. A map is ready when every map it waits on is closed; a task is ready when the map above it is ready and the task is open, because a task never waits on anything by itself. Waymark's ready and blocked queries report it.
+Whether an item can be started now. A map is ready when every map it waits on is closed. A task is ready when its ticket is open and the executor finds no unfinished dependency whose output the task uses; a blocked map above it does not by itself freeze the task. Waymark's ready query reports only the item's own edges, not that judgment.
 _Avoid_: priority, scheduling (readiness is about waiting, not about order of importance)
 
 **link (soft link)**:

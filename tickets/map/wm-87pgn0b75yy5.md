@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-08T12:29:35Z
+updated_at: 2026-11-08T12:30:13Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: submap
@@ -53,6 +53,7 @@ Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and revi
 
 ## Not yet specified
 
+- Align `map/frontmatter.md` and the batch skills with the acceptance-gate model recorded in `GLOSSARY.md`.
 - Batch handling of a task whose input is produced by a task outside the batch.
 - Whether `execute-all` selects tasks owned by the chosen map's owner or by the local operator.
 - The wording of the `Result` line that records why a task started while an ancestor waits.
