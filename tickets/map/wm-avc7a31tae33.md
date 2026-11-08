@@ -3,11 +3,12 @@ schema: 1
 id: wm-avc7a31tae33
 title: Task execution skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:16Z
-updated_at: 2026-11-08T10:31:06Z
+updated_at: 2026-11-08T10:31:24Z
+closed_at: 2026-11-08T10:31:24Z
 parent: wm-87pgn0b75yy5
 ---
 ## Target
