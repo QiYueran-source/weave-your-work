@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-08T12:30:13Z
+updated_at: 2026-11-08T12:32:57Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: submap
@@ -51,8 +51,12 @@ Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and revi
 - A task that starts while an ancestor waits records that judgment in `Result`. (agent decision, revisable)
 - `waiting_on` is handled explicitly: a run stops on a non-empty value, and the value is cleared once the wait is handled, before the task is selected again. (user confirmed on 2026-11-08)
 
+- `waiting_on` is cleared by the owner after the wait is handled; a `needs_human` task stops at its `Person:` step and the owner releases it by clearing the field. (user confirmed on 2026-11-08)
+- `execute-all` selects tasks owned by the chosen map's owner, not by the local operator. (user confirmed on 2026-11-08)
+
 ## Not yet specified
 
+- Whether the table/probe pair in the chemistry scenario is a mis-split: the table reads the probe's output, while tasks under one map are supposed to be parallel. If it is, the fix belongs in task design, not in a batch input rule.
 - Align `map/frontmatter.md` and the batch skills with the acceptance-gate model recorded in `GLOSSARY.md`.
 - Batch handling of a task whose input is produced by a task outside the batch.
 - Whether `execute-all` selects tasks owned by the chosen map's owner or by the local operator.
