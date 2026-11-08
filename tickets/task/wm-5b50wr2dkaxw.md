@@ -22,6 +22,14 @@ Add a glossary initialization step to setup, instructions first and scripts seco
 4. Copy `glossary-rules.md` into `.agents/rules/`.
 5. Add a system prompt to AGENTS.md that points the agent at the rules under `.agents/rules/`.
 
+## Plan
+
+The install step is owned by this branch: `setup.md` explains the steps; `bundle/install.sh` does the mechanical parts. The script creates `glossary/`, adds the `GLOSSARY.md` ignore entry, runs `npm install`, installs the post-merge hook from the template (refusing an existing hook), copies `glossary-rules.md` to `.agents/rules/`, and appends the AGENTS.md prompt. MCP registration stays an instruction because the harness config is environment-specific.
+
+Test in a temp waymark project: run the script, write a term, merge, run the hook, and check the view. The MCP write is the server's existing path, tested before; the fresh-project install test covers the CLI and the hook.
+
+Awaiting user confirmation before writing `setup.md`, `install.sh`, and the `SKILL.md` pointer.
+
 ## Acceptance signal
 
 - On a fresh project after setup: `glossary/` exists, the MCP server writes a committed `glossary/<operator>.jsonl` source, the post-merge hook regenerates the ignored root `GLOSSARY.md`, rules are in place, and AGENTS.md has the prompt.
