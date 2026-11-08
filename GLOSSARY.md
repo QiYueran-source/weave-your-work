@@ -49,8 +49,8 @@ The act of turning one map's next layer into child maps or tasks. The split skil
 _Avoid_: explore (exploring fog is not splitting), breakdown
 
 **hang (挂)**:
-The act of opening a child ticket under a node. Hanging is done by split when it creates a child: the child gets its parent and the parent's Children list gains the link.
-_Avoid_: attach (when it implies linking, not creating), mount (when it implies a different tree)
+The act of opening a child ticket under a node. Hanging is done by split when it creates a child: the child records its parent in its own front matter, and nothing is written on the parent ticket. The tree reads the parent field; a map body carries no children list.
+_Avoid_: attach (when it implies linking, not creating), mount (when it implies a different tree), add to Children (there is no such list)
 
 **explore (探索)**:
 The act of resolving a map's fog: turning an undecided item into a decision, a clearance, or something left for split. The explore skill never creates children.
@@ -117,5 +117,5 @@ A symmetric association between two items, recorded by `waymark link`. It marks 
 _Avoid_: dependency (a link orders nothing), relation (when the ordering is meant)
 
 **front matter (frontmatter)**:
-The YAML header block of a ticket, carrying the structured fields (schema, id, title, category, status, owner, creator, created_at, updated_at, parent, dependencies, custom fields, and the retired-state archived_at and archive_reason) while the six map sections are body text. Ordering lives here: dependencies are front matter only, never mirrored in the body. Every front matter change goes through a waymark command, never a hand edit.
+The YAML header block of a ticket, carrying the structured fields (schema, id, title, category, status, owner, creator, created_at, updated_at, parent, dependencies, custom fields, and the retired-state archived_at and archive_reason) while the five map sections are body text. Ordering lives here: dependencies are front matter only, never mirrored in the body. Every front matter change goes through a waymark command, never a hand edit.
 _Avoid_: header (when it means the body's heading), metadata block (when the actor is not specified)

@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-07T16:21:59Z
+updated_at: 2026-11-08T07:39:05Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -19,10 +19,6 @@ Why: `submap.md` is a reference inside the split skill, not a separate skill, bu
 ## Acceptance direction
 
 The reference is written into split's `submap.md`: the decision test, the rhythm, and the child map body are all stated, and a sample map is split into child maps.
-
-## Children
-
-(none yet)
 
 ## Decisions so far
 
@@ -46,7 +42,7 @@ The reference is written into split's `submap.md`: the decision test, the rhythm
 - A parent's children are all one type: all submaps or all tasks, never mixed under one parent (user confirmed).
 - Hanging is the act of opening a child ticket under a node; it is a distinct action of split and is defined in the glossary (user confirmed).
 - Rhythm: split in two steps — first decide the child type (submap or task), then decide how many children this layer gets. The count is decided at the start, before writing, and the children are then written one by one. The count comes out of the grill discussion that precedes the split (user confirmed).
-- Children sync: update the parent's body, set the waymark parent, run `waymark tree` to check both sides agree (user confirmed).
+- Recording a split: set the waymark parent on each new child and run `waymark tree --root <map>` to read back the shape. The map body keeps no index, so there is nothing to update on the parent and a foreign owner's ticket is never opened (user confirmed).
 
 ## Not yet specified
 

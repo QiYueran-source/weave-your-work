@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:53:00Z
-updated_at: 2026-11-07T06:26:59Z
+updated_at: 2026-11-08T07:39:05Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -24,15 +24,11 @@ All children are complete and no further children are needed.
 
 Review point: Check that the reference covers the custom fields with their writers, the dependency direction and timing rules, and the violation list; and that a sample map's front matter can be read and updated from it.
 
-## Children
-
-(none yet; the reference is not split into tasks until the task skill is settled)
-
 ## Decisions so far
 
 - Front matter management is a reference of the map skill: a separate `frontmatter.md` alongside `body.md` (content rules) and the operating procedure reference (workflow rules). It is designed in its own child map. Source: user confirmation.
 - The reference lists map front matter fields only; task front matter (task_kind, reversibility) belongs to the task skill. Dependency rules are node-agnostic and are written here as the shared rule; the task skill references them. Source: user confirmation.
-- The owner is the only one who writes a map's front matter (advance): status, custom fields, dependencies, owner transfer. Skills write only their own fields at their landings: split writes split_as, parent, and Children; review writes closed and outcome; archive writes archived_at and archive_reason. Source: user confirmation.
+- The owner is the only one who writes a map's front matter (advance): status, custom fields, dependencies, owner transfer. Skills write only their own fields at their landings: split writes split_as and parent on the child it creates; review writes closed and outcome; archive writes archived_at and archive_reason. No skill edits another owner's body to record a relation. Source: user confirmation.
 - Dependency rules: parent-child is a natural dependency and gets no explicit edge (a parent's acceptance waits for its children; a child never waits for its parent, which would be a loop). An explicit edge is used for sibling or cross-branch waits: dependencies live only in front matter (the body never mirrors them), and after wiring run `waymark dep tree`, `waymark ready`, and `waymark blocked` to verify. Source: user confirmation.
 - Dependency direction: a node A may depend on a node B only when B can be implemented without A — the blocked node must be independently implementable. The operating procedure may wait on task details because a task is implemented without the procedure; the reverse is invalid, and that is why a finer node never waits on the map that abstracts it. Source: user confirmation.
 - Dependency timing: an edge is added after the discussion is settled — grill the relation first, wire the edge last. A completed blocker keeps its edge as history; the owner removes an edge when the wait no longer holds. Source: user confirmation (timing); the history-and-removal practice follows the earlier recommendation.

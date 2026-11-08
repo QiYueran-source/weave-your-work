@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:03:36Z
-updated_at: 2026-11-07T16:21:59Z
+updated_at: 2026-11-08T07:39:05Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -22,17 +22,13 @@ The reference is written into split's `task.md`: the test, the body it writes, t
 
 All children are complete and no further child is needed.
 
-## Children
-
-- [Write the task reference for the split skill](tickets/task/wm-tzpgke8n6cxd.md): the judgment half, written against task design.
-
 ## Decisions so far
 
 - The reference lives inside the split skill as `task.md`, not as a skill of its own (inherited from [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md)).
 - The task side is settled: [Task design skill](tickets/map/wm-793jrqph1ckv.md) and [Task execution skill](tickets/map/wm-avc7a31tae33.md) are closed, so this reference points at them instead of restating them (inherited).
 - The choice criterion lives once in the split skill's `SKILL.md`; this reference applies it and does not restate it (inherited).
 - A child defaults to its parent's owner (inherited from the submap reference design).
-- A split writes the child ticket itself: the body, the fields, and the parent relation, then updates the parent's `Children` and checks both sides with `waymark tree` (inherited from the split skill's decisions).
+- A split writes the child ticket itself: the body, the fields, and the parent relation, then reads the shape back with `waymark tree` (inherited from the split skill's decisions).
 - The reference covers the judgment, not the writing: how to decide the layer splits into tasks, how many, and what each task must pass before it is written. How a body is written belongs to task design, which the reference names instead of restating (user confirmed).
 - Split writes each task's body itself, because a task is a leaf and nothing later comes along to write its action. The reference only says to write it against task design's `body.md`, `kind.md`, and `properties.md` (user confirmed).
 - Split never writes `Result`, `Progress`, `Review`, `waiting_on`, or `outcome`: those belong to the run and the review (user confirmed).
@@ -41,7 +37,7 @@ All children are complete and no further child is needed.
 
 - The split plan — how many tasks this layer makes and one line for each — is written on this map, not in a testimony (user confirmed). One bullet in `Decisions so far` carries it, because the count and each task's scope are what the grill settled. No new section is opened for it: the result of the split is `Children`, and anything still unwritten is the decided list minus what `Children` and `waymark tree` already show. Source: user confirmation that the plan lives on the map; the section choice is this file's, and a section of its own can be added later if a split ever spans sessions.
 - The fields split sets at creation are `task_kind`, `reversibility`, `needs_human` written explicitly, `owner` defaulting to the parent map's, and `parent` given on `waymark create`. What each field accepts and who may write it stays in task design's `properties.md`, which the reference names instead of restating (user confirmed).
-- Split writes all the task tickets first, then updates the parent's `Children` once, then checks both sides with `waymark tree`. A half-finished split leaves `Children` clean, and any ticket whose parent is not listed shows up in that check (user confirmed).
+- Split writes all the task tickets first, then reads the shape back with `waymark tree --root <map>`. A half-finished split leaves no body edit behind, and any ticket whose parent is wrong shows up in that check (user confirmed).
 
 ## Not yet specified
 

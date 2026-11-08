@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-07T16:21:59Z
+updated_at: 2026-11-08T07:38:59Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -20,14 +20,9 @@ Why: children come from splitting, and mixing child maps with tasks in one map b
 
 The skill exists under `weave-your-work/split/`: SKILL.md states the decision question and points at one of the two references, and each reference covers one split.
 
-## Children
-
-- [Submap reference: how to split into child maps](tickets/map/wm-nnjk0yb5wbd9.md): the design map for split's `submap.md` reference.
-- [Task reference: how to split a map into tasks](tickets/map/wm-bfqvr54kz3h4.md): the design map for split's `task.md` reference.
-- The two references live inside the skill directory as `submap.md` and `task.md`.
-
 ## Decisions so far
 
+- The split skill's two references live inside the skill directory as `submap.md` and `task.md`.
 - One skill with two references (submap.md, task.md); the router logic is one section of SKILL.md (user confirmed).
 - The parent skill routes to references and can be one sentence, following matt's grill-with-docs (user confirmed).
 - The child-type choice is frozen for the map's lifetime: after the first split a map adds only children of that type; a direction that needs the other type opens a sibling map. `split_as` is written at the first split and does not flip (user confirmed).
@@ -45,7 +40,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - The grill discussion covers each child's body sections — Target, Decisions so far, Out of scope, Not yet specified, and the Review point — and settles whether the child has fog; there is no default fog judgment (user confirmed).
 - grill produces only its own artifacts (discussion and testimonies); split's submap reference writes the child body against the map body reference. A child's Decisions so far and Out of scope hold only the child's own content, and a written child must not conflict with its parent or siblings (user confirmed).
 - A split proceeds in two steps: decide the child type (all submaps or all tasks) first, then decide how many children this layer gets. The count is decided up front, before writing, and the children are then written one by one (user confirmed).
-- After a split, update the parent's Children section immediately, set the waymark parent, and run `waymark tree` to check both sides agree (default).
+- After a split, set the child's waymark parent. The body has no Children index to update, so `waymark create --parent <map>` is the whole recording step; run `waymark tree --root <map>` to read back the shape (default).
 - Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).
 
 ## Not yet specified

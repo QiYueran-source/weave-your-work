@@ -7,19 +7,19 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:25Z
-updated_at: 2026-11-07T05:25:26Z
+updated_at: 2026-11-08T07:37:44Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   task_kind: delivery
 ---
 ## Target
 
-Design the map skill so a team can turn a target into a tree: write the six-section map body, hang children, keep the body index in sync with waymark's parent relation, move a map through its status transitions, and accept it when every child is done and no further child is needed.
+Design the map skill so a team can turn a target into a tree: write the five-section map body, hang children, move a map through its status transitions, and accept it when every child is done and no further child is needed.
 Why: map is the node that answers "what I want"; without this skill the tree has no entry point.
 
 ## Acceptance direction
 
-All children are complete and no further children are needed: the SKILL.md exists under `weave-your-work/map/`, the example map can be rebuilt from it, and the body index and waymark parent relation agree after a child changes.
+All children are complete and no further children are needed: the SKILL.md exists under `weave-your-work/map/`, an example map can be rebuilt from it, and `waymark tree` shows the same structure the example describes.
 
 ## Children
 
@@ -32,17 +32,17 @@ All children are complete and no further children are needed: the SKILL.md exist
 
 ## Decisions so far
 
-- Inherits the execution map's decisions: the semantic model, the six-section map template, and the frontmatter choice.
+- Inherits the execution map's decisions: the semantic model, the five-section map template, and the frontmatter choice.
 - `/map` is the single entry that routes to explore, split and review (user confirmed).
 - Status flow: a new map starts open; split starts it (open to in_progress) when it gets children; when every child is closed, `/map` runs review; review closes the map or leaves it in_progress (user confirmed).
 - A decision may be recorded directly in Decisions so far without fog; split then turns it into a child (user confirmed).
-- The map body format is designed in the separate Map body format child map. `body.md` defines the writing shape for all six sections; this Map skill keeps the workflow and references that file.
-- Current scope: the map skill covers the child-map lifecycle — write the six-section body per `body.md`, hang children, keep the body index in sync with the waymark parent relation, move a map through its status transitions, and accept it via review. The task paths (splitting tasks, task children, task-level acceptance) stay fog until the Task skill is settled. Source: user confirmation.
+- The map body format is designed in the separate Map body format child map. `body.md` defines the writing shape for all five sections; this Map skill keeps the workflow and references that file.
+- Current scope: the map skill covers the child-map lifecycle — write the five-section body per `body.md`, hang children, move a map through its status transitions, and accept it via review. The body keeps no children index; structure is read from waymark's parent field. The task paths (splitting tasks, task children, task-level acceptance) stay fog until the Task skill is settled. Source: user confirmation.
 - Front matter management is a reference of the map skill: a separate `frontmatter.md` alongside `body.md` and the operating procedure reference, designed in its own child map. Source: user confirmation.
 
 ## Not yet specified
 
-- The function details of the map skill: when a node is a map rather than a task, what each of the six sections holds, hanging children and syncing the body index, status transitions, and the acceptance check.
+- The function details of the map skill: when a node is a map rather than a task, what each of the five sections holds, hanging children, status transitions, and the acceptance check.
 
 ## Out of scope
 

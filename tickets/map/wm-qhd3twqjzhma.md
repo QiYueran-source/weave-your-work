@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-08T06:50:54Z
+updated_at: 2026-11-08T07:37:25Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -26,7 +26,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 
 ## Children
 
-- [Map skill](tickets/map/wm-0b59r7xfhk73.md): the node that answers "what I want"; six-section body, children, acceptance.
+- [Map skill](tickets/map/wm-0b59r7xfhk73.md): the node that answers "what I want"; five-section body, children, acceptance.
 - [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 - [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
@@ -43,13 +43,13 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery (failure is an incident) and probe (failure is a normal result), with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed. The non-executor rule is dropped (user confirmed).
-- map template: six sections, fixed. Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Children is a simple list of links to existing map or task children; waymark is the source of truth and split updates the body list when it creates a child. Decisions so far records settled content in its concrete form with a source; longer discussion history stays in a testimony and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason (user confirmed).
+- map template: five sections, fixed. Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Decisions so far records settled content in its concrete form with a source; longer discussion history stays in a testimony and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason. The body carries no Children section: waymark's parent field is the only copy of the structure, read with `waymark tree --root <id>`, so a foreign owner never has to edit another person's ticket to record a relation (user confirmed).
 - map frontmatter: `split_as` (submap / task, written at split time). title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Node outcomes: a node ends in one of three states. completed closes it as achieved. failed keeps the record: status closed plus the outcome field set to failed, and a replacement node opened as a sibling with a soft link between them. archived retires a node that was never done or whose direction proved wrong (user confirmed; outcome field declared).
 - Fog exploration: before choosing a route, turn each fog item into a testable assumption and rank assumptions by impact times risk; test high-impact, high-risk ones first. Then route by where the answer lives: in someone's head, use conversation; in reality, use a probe task. Conversation asks about past behaviour and specific examples, not opinions; a probe uses the smallest reversible action and measures behaviour, not opinions. Methods stay domain-neutral: no A/B tests or other product-specific tools (user confirmed direction).
 - Terminology sync: issue means a GitHub or Gitee issue; ticket means the local waymark document (map or task); comment means a record synced back from an issue, using waymark's comment category for now (user confirmed, recorded in GLOSSARY).
 - explore boundary: ask-me handles entry routing and the generic question protocol; explore handles fog triage, the routes, and landing; map and task reference explore. The explore skill gets its own child map (user confirmed).
-- Map body format is a separate child map under this execution map. It defines how Target, Acceptance direction, Children, Decisions so far, Not yet specified, and Out of scope are written; the map workflow stays in the Map skill. Fog is defined as in-scope content in Not yet specified that is not yet specific enough to become a decision, child map, task, or out-of-scope item. Fog entries use extensible types: assumptions carry If wrong, and facts, decisions, and goals carry Why it matters; explore classifies, routes, and lands them (user confirmed).
+- Map body format is a separate child map under this execution map. It defines how Target, Acceptance direction, Decisions so far, Not yet specified, and Out of scope are written; the map workflow stays in the Map skill. Fog is defined as in-scope content in Not yet specified that is not yet specific enough to become a decision, child map, task, or out-of-scope item. Fog entries use extensible types: assumptions carry If wrong, and facts, decisions, and goals carry Why it matters; explore classifies, routes, and lands them (user confirmed).
 
 ## Not yet specified
 
