@@ -12,6 +12,8 @@ An open ticket is yours to shape. A closed one, or a map that has already split,
 
 Update is that operation. It is a branch of advance — the owner's write — narrowed to nodes that are already relied on. Every update is an advance; not every advance is an update.
 
+A **run** means one pass through this skill, made by one owner, over one node and whatever the scan reaches from it. Every rule below that says "the run owns" or "the run's tickets" means that owner's tickets and no one else's.
+
 ## When it runs
 
 The trigger is the node's state, not the size of the change.
@@ -88,7 +90,7 @@ Two different limits, and only the first is absolute.
 - `waymark link add` and `link remove` write both tickets, because a soft link is stored on both.
 - `waymark archive` rewrites every ticket pointing at the archived node, removing inbound dependencies and soft links from files it does not own.
 
-Both are allowed to run. Both are announced afterwards.
+Both are allowed to run. Both are announced afterwards, in the issue the next section describes.
 
 That is not a loophole, it is the shape of the tool: there is no command that removes one end of a symmetric relation, and no command that retires a depended-on node without clearing the edges that pointed at it. Refusing to run them would mean a node others depend on can never be retired at all.
 
@@ -96,7 +98,7 @@ That is not a loophole, it is the shape of the tool: there is no command that re
 
 Before: `--dry-run`. Every waymark command that writes a ticket takes it, down to `title set` and `owner transfer`, and it either reports the change or says `would be unchanged`. For `archive` and `link`, read the affected list and write down, for each ticket in it, whose it is and which relation disappears. The human output names the relation (`removes dependencies`, `removes soft_links`); the JSON `affected` array carries only ids and paths. `no inbound relationships to remove` means nothing outside the node will be touched.
 
-The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the run's own tickets is the step nothing automates.
+The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the tickets the run owns is the step nothing automates.
 
 After: one issue per affected owner. The issue carries three things, and an issue missing any of them is noise:
 
