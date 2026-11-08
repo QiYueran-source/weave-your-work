@@ -4,3 +4,5 @@ GLOSSARY.md
 node_modules/
 
 pending/
+
+__pycache__/
