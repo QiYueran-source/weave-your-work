@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:07:04Z
-updated_at: 2026-11-07T10:14:40Z
-closed_at: 2026-11-07T10:14:40Z
+updated_at: 2026-11-08T13:18:08Z
+closed_at: 2026-11-08T13:18:08Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
@@ -31,6 +31,10 @@ Add one section to `body.md` so a task in progress says where the work stands.
 `body.md` defines `Progress` with a purpose, a format, an example, its constraints, and its lifecycle including when it is written, all in one place. A reader who opens only that file sees where the section sits in the order, what it may and may not hold, when it is written, and what a reader of a closed ticket sees without it.
 
 No other skill restates the format, the constraints, or the timing; they refer to the section by name.
+
+## Result
+
+Superseded on 2026-11-08: `Progress` is now a stop marker. It is written when a run stops, not when work starts. The current rule is in `task-design/body.md`.
 
 ## Boundaries
 

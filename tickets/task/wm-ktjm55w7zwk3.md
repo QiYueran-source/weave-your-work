@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T10:07:45Z
-updated_at: 2026-11-07T10:14:40Z
-closed_at: 2026-11-07T10:14:40Z
+updated_at: 2026-11-08T13:18:08Z
+closed_at: 2026-11-08T13:18:08Z
 parent: wm-793jrqph1ckv
 custom_fields:
   needs_human: false
@@ -28,6 +28,10 @@ Give the `waiting_on` field its one definition, in `properties.md`.
 ## Acceptance signal
 
 `properties.md` lists `waiting_on`, marks it optional and string, and a reader can tell from that file alone what goes in it, who writes it, and when it is set and cleared. Nothing else in the file or in `body.md` says any of that again.
+
+## Result
+
+Superseded on 2026-11-08: `waiting_on` now names a person only. A task waiting on another task or map is a split error, not a wait. The current rule is in `task-design/properties.md`.
 
 ## Boundaries
 

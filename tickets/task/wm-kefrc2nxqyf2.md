@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T13:21:25Z
-updated_at: 2026-11-07T15:09:22Z
-closed_at: 2026-11-07T15:09:22Z
+updated_at: 2026-11-08T13:18:09Z
+closed_at: 2026-11-08T13:18:09Z
 parent: wm-qt4pdg7dd0xy
 custom_fields:
   needs_human: false
@@ -45,6 +45,8 @@ A reader holding a map with several open tasks can choose the tickets, claim the
 The walk over the task design map's batch of write tasks found two gaps, both fixed: the collision list did not cover a task that reads what another writes, which is the "check against a fresh reader" task, and the large-batch review had the main agent closing after a reviewer's verdict, which contradicts `task-review`.
 
 A second pass found the two files repeating each other: the five-item report list and the "no review, no close" rule appeared in both. Both now live only in `dispatch.md`, where the split puts them. The same pass added the rule that there is no worktree.
+
+Superseded on 2026-11-08: `execute-all` now selects only `open` and `in_progress` tasks owned by the chosen map's owner, not by the operator; `waiting_on` names a person only. The current rule is in `execute-all/SKILL.md`.
 
 ## Review
 
