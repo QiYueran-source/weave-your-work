@@ -82,7 +82,11 @@ A line on the ticket saying "moved from X" would be a second copy of something g
 
 ## A move is not a category change
 
-`parent set` moves a node between maps. Turning a task into a map, or a map into a task, is a different operation: the body format, the required sections, and the review rules all differ, and no waymark command changes a category. That is a retire-and-replace — see `content.md`.
+`parent set` moves a node between maps. Turning a task into a map, or a map into a task, is a different operation: the body format, the required sections, and the review rules all differ.
+
+Waymark has a command for it — `waymark move <id> <category>` — and it does less than it looks. Verified in waymark 0.1.2: it rewrites the category field and moves the file to the other directory, and leaves the body exactly as it was. A task body in a map file is not a map; the five sections a map needs are absent, and `waymark validate` reports nothing, because it checks front matter and the graph, not whether a body matches its category. The tool will not stop you.
+
+So change the category only when you are rewriting the body anyway, which means it is a retire-and-replace — see `content.md`. A node whose category changed and whose body did not is a ticket that lies about what it is.
 
 The same goes for changing what a node is for. If N is moving because it now answers a different question, that is not a move at all; that is the third disposition with a new parent.
 
