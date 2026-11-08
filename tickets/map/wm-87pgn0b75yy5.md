@@ -3,12 +3,11 @@ schema: 1
 id: wm-87pgn0b75yy5
 title: Task skill
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-08T11:10:16Z
-closed_at: 2026-11-08T11:10:16Z
+updated_at: 2026-11-08T12:29:35Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: submap
@@ -35,6 +34,8 @@ The entry exists at `weave-your-work/task/SKILL.md` and routes to `task-design`,
 
 Review point: the three child maps are closed, and a reader who opens `task/SKILL.md` alone can tell which skill owns their question.
 
+Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and review rules. The map is accepted again when those rules are fixed and the walk's findings are either fixed or recorded as out of scope. (agent decision, pending user confirmation)
+
 ## Decisions so far
 
 - The Task skill splits by actor into task design and task execution (user confirmed).
@@ -45,8 +46,16 @@ Review point: the three child maps are closed, and a reader who opens `task/SKIL
 - The entry is user-invoked, like the two execute skills, because it is the name a person types, not a router a model loads. (agent decision, revisable)
 - The entry names `update` for changing a closed task and `split` for deciding whether work is a task or a child map. It restates neither. (agent decision, revisable)
 - The entry is designed in [Task skill entry](tickets/map/wm-aya8m15vkvkj.md), which hangs [Write the task skill entry](tickets/task/wm-vatw4s6pj8df.md) under it. (agent decision, revisable)
+- Batch selection: only `open` and `in_progress` tasks are candidates; a closed task is never claimed. (user confirmed on 2026-11-08)
+- A dependency edge gates the map's acceptance, not its whole subtree. There is no recursive `startable` check: before work, the executor lists the task's inputs and the parent map's unfinished dependencies, and stops only when the task actually uses a blocker's output. (user confirmed on 2026-11-08)
+- A task that starts while an ancestor waits records that judgment in `Result`. (agent decision, revisable)
+- `waiting_on` is handled explicitly: a run stops on a non-empty value, and the value is cleared once the wait is handled, before the task is selected again. (user confirmed on 2026-11-08)
 
 ## Not yet specified
+
+- Batch handling of a task whose input is produced by a task outside the batch.
+- Whether `execute-all` selects tasks owned by the chosen map's owner or by the local operator.
+- The wording of the `Result` line that records why a task started while an ancestor waits.
 
 - ~~Whether the Task skill's own entry document carries anything beyond routing into the two children.~~ Resolved on 2026-11-08: nothing. The answer is that there is no such document; routing is what `ask-me` and the skills' own names do.
   Resolved again on 2026-11-08: the entry exists, and its scope is settled in [Task skill entry](tickets/map/wm-aya8m15vkvkj.md).
