@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T15:04:16Z
+updated_at: 2026-11-08T15:38:34Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: true
@@ -24,7 +24,7 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 3. `gitee.md`: the reads; the writes marked deferred.
 4. `smee-setup.md`: the channel, the webhook, the secret, the smee client, the listener, the session rule, and the catch-up.
 5. The Node bundle `bundle/`: the smee client, the webhook receiver, the frontmatter parse, the `to` routing through `.waymark/handles.toml`, and the append to `[pending].path`.
-6. In this repository: `.waymark/handles.toml` gains `[pending].path`; `.gitignore` gains `pending/`; `.agents/rules/06-pending-communications.md` is added.
+6. In this repository: `.waymark/handles.toml` gains `[pending].path`; `.gitignore` gains `pending/`; the rule template is `bundle/rules/06-pending-communications.md`, and its installed copy is `.agents/rules/06-pending-communications.md`.
 7. Verify the listener locally with a sample payload.
 8. Person: create the smee channel, add the webhook, store the secret, and file a test communicate issue; watch the queue.
 9. Install with `npx skills add`; no link outside the directory.
@@ -43,5 +43,5 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 
 ## Progress
 
-Where it stands: the skill files, the Node listener in `bundle/`, the handles config, the gitignore entry, and the session rule are written; the listener passed a local test (a valid signature queues, a bad signature returns 401, a non-communicate issue is skipped); the live smee and GitHub path waits on the owner's channel and webhook.
+Where it stands: the skill files, the Node listener in `bundle/`, the handles config, the gitignore entry, and the session rule template are written; the listener passed a local test (a valid signature queues, a bad signature returns 401, a non-communicate issue is skipped); the live smee and GitHub path waits on the owner's channel and webhook.
 Next: the owner sets up smee and the webhook, files a test communicate issue, and reviews the skill.

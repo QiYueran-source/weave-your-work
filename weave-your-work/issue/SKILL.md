@@ -86,7 +86,7 @@ The `to` handles are used twice: in the frontmatter for the listener, and as `@h
 
 ## Listen and the queue
 
-The listener is part of this skill. `smee-setup.md` covers the channel, the webhook, the secret, the Node listener in `bundle/`, and the session rule.
+The listener is part of this skill. `smee-setup.md` covers the channel, the webhook, the secret, the Node listener in `bundle/`, and the session rule template in `bundle/rules/`.
 
 The listener parses the frontmatter and appends one line per `to` to the pending queue:
 
@@ -151,3 +151,4 @@ Three lines: what was filed or read, what changed on the ticket, and what is sti
 - `gitee.md`: the reads; the writes are marked deferred.
 - `smee-setup.md`: the channel, the webhook, the secret, the listener service, and the session rule.
 - `bundle/listener.mjs`: the webhook receiver that parses the frontmatter and appends to the queue.
+- `bundle/rules/`: the session rule template that the setup skill installs into `.agents/rules/`.

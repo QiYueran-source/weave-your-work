@@ -97,7 +97,7 @@ The path is resolved from `.waymark/`, so the default is `<repo>/pending/pending
 
 ## 6. The session rule
 
-`.agents/rules/06-pending-communications.md`:
+The rule template is `bundle/rules/06-pending-communications.md`. The setup skill reads `bundle/rules/*` and copies each file into `.agents/rules/`; the copy in this repository is the installed instance. The template says:
 
 ```markdown
 # Read Pending Communications at Session Start
@@ -107,7 +107,7 @@ The path is resolved from `.waymark/`, so the default is `<repo>/pending/pending
 3. Do not act on an entry until the person asks.
 ```
 
-The setup skill installs this rule; the copy in this repository is the sample. The rule is what turns the queue into a session-opening line without a harness hook.
+The rule is what turns the queue into a session-opening line without a harness hook.
 
 ## 7. The catch-up
 
