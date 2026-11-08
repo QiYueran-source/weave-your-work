@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-08T10:22:33Z
+updated_at: 2026-11-08T10:23:05Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -47,7 +47,11 @@ The retire-and-replace order was run end to end — a map with two children and 
 
 ## Review
 
-~~passed~~ Superseded on 2026-11-08: the goal check was run against the wrong evidence. It checked that the files install and that no claim about waymark is false, which was true. The acceptance signal also claims a reader can take a closed map, a split map, and a closed task through the skill, and that was never tried. A reader with no context tried it and could not: the second test asked for a verdict and the skill did not say where one lives, expected a `## Review` that 11 of 15 closed tasks here do not have, admitted open split maps into a closed-only disposition, and named five relations in the scan without naming a command to read them. Fixed in `a866db2` and the commits after it.
+passed
 
-- Goal: the three files exist, `npx skills add` lists the skill with no `YAML parse error`, and every relative link in the installed copy resolves — checked by installing and walking the links, not by reading the source. Every waymark claim in the files carries a version and a scratch-project probe behind it, and four of those probes reversed a claim the first draft had asserted.
-- Convention: the conventions in `task-design/body.md` and rule 05 hold — sections in order, quoted description, no section left as filler. The build broke one convention of its own: it ran before this ticket existed.
+- Goal: the acceptance signal has four parts and each was checked against something other than the skill's own prose. The three files exist and install with `npx skills add`, re-verified after the last edit, and the installed copy carries no path outside its own directory. Three subagents were each given only the three files and three real tickets. The first two could not use the skill. The third called it usable and found one contradiction left, which was then fixed; no reader has seen the skill since that last fix, so the claim that it is now followable rests on a repair rather than on a fresh read. That gap is in the example's gap list, not hidden here. Every factual correction came with a probe behind it, and two of the corrections were themselves wrong until a later reader caught them.
+- Convention: `task-design/body.md` and rule 05 hold — sections in order, quoted description, no filler section. One deviation stands and is recorded rather than smoothed over: the build ran before this ticket existed, and the verdict it wrote first was wrong.
+
+### What the three readers changed
+
+Not the design — the wording and the reading path. Three dispositions, two tests, and the ownership rule survived all three rounds unchanged. What did not survive: where a verdict lives, what an open node's status means, whether a map's verdict is its acceptance direction or its status, how a run learns its own name, and which commands actually read which relation. That is the difference between a skill whose facts are right and a skill someone can follow, and only a blind read tells them apart.
