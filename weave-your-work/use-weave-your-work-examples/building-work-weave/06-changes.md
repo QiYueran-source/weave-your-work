@@ -14,3 +14,4 @@
 - Rule 05 was added: a skill's `description` is quoted, because an unquoted colon fails the installer's YAML parse.
 - This rule and example were added on 2026-11-06.
 - The update skill was built on 2026-11-08 from its design map; a move turned out to be one `parent set`, not a retire-and-rebuild, and a cross-owner archive now proceeds and tells the owner instead of stopping.
+- The Task skill gained a total entry on 2026-11-08. Its map had closed with no entry, on the argument that a routing file adds nothing; the family now has four skills and `ask-me` is not built, so the entry is the one name a person can start from. The entry map is [Task skill entry](../../../tickets/map/wm-aya8m15vkvkj.md), and its writing task is [Write the task skill entry](../../../tickets/task/wm-vatw4s6pj8df.md).

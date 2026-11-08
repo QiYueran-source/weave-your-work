@@ -34,6 +34,8 @@ A skill is not one action. The map skill has to settle creating a map, the five 
 
 The Task skill map now has two children: [Task design skill](../../../tickets/map/wm-793jrqph1ckv.md) and [Task execution skill](../../../tickets/map/wm-avc7a31tae33.md). This follows the Map skill's pattern: a total skill map routes to focused child skills. Task design defines how to specify a task; task execution defines how an owner advances one. the split skill (`weave-your-work/split/`) decides whether and how work becomes tasks based on semantic groupings, then references task design when those task tickets are written. A decision does not have to match exactly one task, just as a decision does not have to match exactly one child map.
 
+Later, on 2026-11-08, the map gained a third child, [Task skill entry](../../../tickets/map/wm-aya8m15vkvkj.md), when the total entry was added. [What changed during the run](06-changes.md) records why the earlier no-entry decision was reversed.
+
 ### What the skill maps do not cover
 
 The four skill maps cover the skill-level targets; the setup ticket covers the first executable piece. The function details stay in each skill map's Not yet specified until they can be written as tasks. The execution map's category-level questions (phases, claiming, acceptance details, git collaboration) stay in its own fog.

@@ -11,4 +11,6 @@
 - [Fog-explore skill: clear a map's fog](../../../tickets/map/wm-3084re0f48z3.md)
 - [Map skill](../../../tickets/map/wm-0b59r7xfhk73.md)
 - [Task skill](../../../tickets/map/wm-87pgn0b75yy5.md)
+- [Task skill entry](../../../tickets/map/wm-aya8m15vkvkj.md)
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md)
+- [Write the task skill entry](../../../tickets/task/wm-vatw4s6pj8df.md)
