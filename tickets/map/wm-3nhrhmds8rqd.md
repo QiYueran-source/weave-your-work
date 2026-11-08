@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-08T10:54:00Z
+updated_at: 2026-11-08T11:16:06Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   split_as: submap
@@ -45,13 +45,16 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - After a split, set the child's waymark parent. The body has no Children index to update, so `waymark create --parent <map>` is the whole recording step; run `waymark tree --root <map>` to read back the shape (default).
 - Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).
 - Hanging under someone else's map: works directly when that map is open, needs an issue and a wait when it is closed, and the child waits as an isolated node in the meantime.
-- A map's own entry document is refined into a child map of its own, with the writing task under that map. Split's entry is [Split skill entry](tickets/map/wm-p8wyd7jkmkhb.md); its write task moved there from this map, which had briefly held two child maps and one task. Source: user confirmation. The rules live in [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and split points there instead of restating them (user confirmed).
+- A map's own entry document is refined into a child map of its own, with the writing task under that map. Split's entry is [Split skill entry](tickets/map/wm-p8wyd7jkmkhb.md); its write task moved there from this map, which had briefly held two child maps and one task. Source: user confirmation.
+- A blocked map may still split. The dependency edge stays on the map it was written on, and the children it creates inherit nothing: the wait belongs to the map, not to the parts. Copying the edge to each child would turn one wait into several and leave them behind when the wait ends. Source: user confirmation.
+- Vertical slicing produces two child maps and one dependency edge between them, with the later child carrying the edge. Putting the stages inside one node would hide the wait inside an action that cannot be judged as a whole. Source: user confirmation.
+- `split` names grill as the step that settles a layer before it is split. Grill is not built yet; naming it is the whole relation, and split does not carry an edge to it. A placeholder name does not block a skill that is already written. Source: user confirmation. The rules live in [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and split points there instead of restating them (user confirmed).
 
 ## Not yet specified
 
 - ~~Decision to make: where a map's own entry document comes from when the map has already split into child maps.~~ Resolved on 2026-11-08: the entry gets a child map of its own, with the writing task under it, so the layer keeps one child type. See [Split skill entry](tickets/map/wm-p8wyd7jkmkhb.md) and the decision below.
-- Whether a blocked map may split. A map waiting on another may still have parts that do not need the blocker's answer; the open question is whether those parts may be split now or must wait.
-- The submap side of vertical slicing: when work must run in sequence, what the child maps look like and where the edge is carried. The task side is settled in the task skill.
+- ~~Whether a blocked map may split.~~ Resolved on 2026-11-08: it may. The edge stays on the map and the children inherit nothing (see Decisions so far).
+- ~~The submap side of vertical slicing: when work must run in sequence, what the child maps look like and where the edge is carried.~~ Resolved on 2026-11-08: two child maps, and the later one carries the edge to the earlier one (see Decisions so far).
 - How a task relates to other maps. A task hangs under exactly one map but may link to another; what a link is used for, and what it does not mean (no ordering, no shared acceptance).
 
 ## Out of scope

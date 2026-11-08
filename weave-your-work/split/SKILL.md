@@ -20,6 +20,8 @@ When grill has settled the layer: what it holds, which children it needs, and wh
 
 A split never clears fog and never invents a child's content. When the discussion cannot support a child's `Target`, or the evidence a task's acceptance signal would name, the part goes back to grill.
 
+A map that is waiting on another node may still split. The wait stays on the map it was written on, and the children inherit nothing: it belongs to the map, not to the parts.
+
 ## The freeze
 
 A map's children are all one type. The map's first split writes `split_as` on the map — `submap` or `task` — and every later child is that type. A direction that needs the other type opens a sibling map instead.
@@ -36,7 +38,7 @@ Two decisions, then writing.
 
 Decide the count before anything is written. It is the one thing a later child cannot repair, because a layer written one child at a time grows a child per idea.
 
-## What a split writes
+## What a split touches
 
 The children, and nothing else. Each child records its own `parent` in its own front matter, and `waymark tree --root <map>` reads the shape back.
 

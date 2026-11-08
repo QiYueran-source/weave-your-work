@@ -28,7 +28,7 @@ Write the count and one line per task into the parent map's `Decisions so far`, 
 
 The count comes from the grill discussion, not from the number of decisions. One decision may become three tasks, and three decisions may become one.
 
-## What the split writes
+## What goes into each task
 
 Each task's whole body, against task design. A task is a leaf: nothing later comes along to write its `Action` or its acceptance signal, so the split writes them, or the task never has them.
 

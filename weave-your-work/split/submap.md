@@ -26,6 +26,16 @@ What a child does not carry:
 
 A child that would conflict with its parent or with a sibling is not written as it stands: the conflict is merged, adjusted, or taken back to the owner before the ticket exists.
 
+## When the parts must run in order
+
+Sometimes the layer is a sequence: the second part cannot start until the first is done. That is still two child maps, and the order is one dependency edge:
+
+```
+waymark dependency add <second child> <first child>
+```
+
+The edge goes on the later child and is the only place the order is recorded. Neither body numbers the stages or mentions the other child: an order written into prose disappears the moment someone reorders the work. The edge is added after the discussion settles the sequence, not before.
+
 ## Writing them
 
 At the map's first split, record the child type on the map itself:
