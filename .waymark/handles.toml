@@ -3,3 +3,8 @@
 # before it mentions or assigns it.
 [handles.github]
 frank = "QiYueran-source"
+
+# The listener writes queued communicate issues here. The path is resolved
+# from this file's directory; the directory is local state and gitignored.
+[pending]
+path = "../pending/pending-communications.md"
