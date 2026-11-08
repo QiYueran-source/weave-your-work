@@ -7,9 +7,11 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T10:23:54Z
-closed_at: 2026-11-08T10:23:54Z
+updated_at: 2026-11-08T11:47:59Z
+closed_at: 2026-11-08T11:47:29Z
 parent: wm-qhd3twqjzhma
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -55,7 +57,11 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - Archiving a subtree in order to move it destroys the record it was meant to keep. A child left pointing at an archived parent makes `waymark validate` report DANGLING_REFERENCE, so each child's parent field is cleared before its parent is archived — clearing it erases the old position from the ticket. The move trace ends up in git either way, so the archive path buys nothing it promised. (verified in waymark 0.1.2)
 - The retire order is unforgiving in one place: archiving a child that still points at its parent is not caught at the time, and once the parent is archived `validate` reports DANGLING_REFERENCE at the child — but the child is archived too, so `parent clear` is rejected and there is no unarchive command. The only repair is editing the archived file by hand to drop the `parent:` line. Clearing the child's parent *before* archiving anything is what keeps the run recoverable. (verified in waymark 0.1.2)
 - Rebuilding also resets what the nodes assert: `waymark create` always produces an open node, so a closed task rebuilt under a new parent comes back open and its recorded review does not carry over. A relocation that preserves status has to be a `parent set`. (verified in waymark 0.1.2)
-- The skill has two references, following split's shape: `content.md` for changing a node's content and `move.md` for relocating a subtree. SKILL.md keeps what both share — the two boundary tests, the ownership stop, the impact scan, and the reopen rule — and routes to one of them. (user proposed; accepted)
+- ~~The skill has two references, following split's shape: `content.md` for changing a node's content and `move.md` for relocating a subtree. SKILL.md keeps what both share — the two boundary tests, the ownership stop, the impact scan, and the reopen rule — and routes to one of them.~~ Superseded on 2026-11-08: three references. `need-execute.md` covers a change that needs execution; `SKILL.md` and `content.md` point to it. (user confirmed)
+- A change to a map that needs execution is hung as a child of the reopened map, not written into the delivered file. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace. `need-execute.md` carries the shape, the order, and the execution gate. (user confirmed)
+- The child's shape follows the map's `split_as`: a `submap` map gets a small child map first, with `split_as: task`, then the task under it; a `task` map gets the task directly. A `task` map that needs order or a grouping of tasks stops instead of taking a child map. (user confirmed)
+- The update run executes the task it wrote when it is `two_way`, `needs_human: false`, inside the run's ownership, and does not rewrite the map's `Target` or `Acceptance direction`, or the task's `Action` or `Acceptance signal`, without the owner's confirmation. Any other case stops after the task is written and records the wait. (user confirmed)
+- The reference is `weave-your-work/update/need-execute.md`. It states the shape table, the order, and the execution gate; it points at `split`, `task-design`, `execute-one-task`, and `task-review` and does not restate their rules. (user confirmed)
 - A move writes no record field anywhere. `waymark parent set` leaves the old parent in the git diff of the moved node, and `waymark git history --item <id>` prints it; a line saying "moved from X" would be a second copy of something git already holds. (user confirmed)
 - `update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident. (agent decision, revisable)
 - The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`. (verified by installing and checking every relative link in the copy)
@@ -69,6 +75,7 @@ Nothing. The two items that lived here were settled during the build and moved i
 - `weave-your-work/update/SKILL.md`: the trigger, the two tests, the three dispositions, the impact scan, the decision/write boundary, and the dry-run-then-notify routine.
 - `weave-your-work/update/content.md`: all three dispositions in detail, the retire-and-replace order, and a whole short run.
 - `weave-your-work/update/move.md`: the move, its two tests, which of the three tickets reopen, and why it records nothing.
+- `weave-your-work/update/need-execute.md`: a change that needs execution — the child shape by `split_as`, the order, and the gate; `SKILL.md` and `content.md` point to it.
 - The Map operating procedure and the execution map point at the skill; the glossary defines update and move.
 - Three blind reads, by subagents given only the three files and three real tickets, each found something a check of the skill's facts could not: that the second test pointed at a verdict the skill never located, a `## Review` section that most closed tasks here do not have, an open split map routed into a closed-only disposition, a scan with relations and no way to read them, a `create` command that is not runnable as written, and `waymark search` mistaken for a repository-wide grep. The build ticket carries the record; the fixes are `a866db2` onward.
 - **A sequencing fault in this build:** the skill was written and this map closed before its build ticket existed. The ticket was reopened to hang [Write the update skill](tickets/task/wm-4dytqnmy4s47.md) and close it again. The artifacts are unaffected; the record of who wrote what, and when, was made after the fact.

@@ -14,3 +14,4 @@
 - [Task skill entry](../../../tickets/map/wm-aya8m15vkvkj.md)
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md)
 - [Write the task skill entry](../../../tickets/task/wm-vatw4s6pj8df.md)
+- [Write the need-execute reference](../../../tickets/task/wm-v9t392x7bxe2.md)

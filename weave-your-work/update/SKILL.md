@@ -63,6 +63,12 @@ The third exists because a node that answers a different question is not the sam
 
 `outcome=failed` is not used for any of this. Failure is a verdict on an attempt; retirement is a verdict on a subject. A node that was completed and then made obsolete by an upstream change is archived with a reason, not marked failed.
 
+## When the change needs execution
+
+On a map, a change that needs new work is not written into the delivered file by this run. Reopen the map and hang the work as a child. When the map's `split_as` is `submap`, hang a child map first, then the task under it; when it is `task`, hang the task directly. Write the task, then decide whether to execute it now. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
+
+`need-execute.md` carries the shape, the order, and the gate.
+
 ## The impact scan
 
 The scan is not depth-limited. From the node being changed, follow:
@@ -124,8 +130,9 @@ Archive gets its own commit for this reason. A cross-owner edit buried in a comm
 
 - `content.md`: all three dispositions in detail — what counts as substantive, the shape of a struck-through change, the reopen loop and the ancestors it reaches, what happens to children when the content moves under them, and the seven steps of retire-and-replace in the order waymark forces.
 - `move.md`: relocating a subtree under another parent, which changes no content and still changes what the tree means — the one write it takes, which of the three tickets reopen, and why it records nothing.
+- `need-execute.md`: a change that needs execution — the child shape by `split_as`, the order of the writes, and the gate that decides whether the run executes the task now or stops.
 
-Most updates are one of these, not both. When the content changes and the position is wrong too, the move is not a second operation: the third disposition already builds a replacement, and it is built under the parent that should hold it. `move.md` is for the node whose content is right and whose place is not.
+Most updates use one of these, not several. When the content changes and the position is wrong too, the move is not a second operation: the third disposition already builds a replacement, and it is built under the parent that should hold it. `move.md` is for the node whose content is right and whose place is not.
 
 ## Reporting
 
@@ -135,5 +142,6 @@ Three lines: what changed and which test decided it, what was written and what w
 
 - Change a node that is still open and unsplit. That is plain advance, and the owner does it without a scan.
 - Decide whether a map should split, or a task should exist. That is the split skill, and it runs before this one.
+- Carry the task it writes. That is `execute-one-task`, with `task-review` for the verdict.
 - Design the issue it files. The shape of an issue belongs to the communication category; this skill names what the issue must carry and points there.
 - Judge a review. The reopen in the second disposition hands the node back to the review skill, with the changed text as the thing being reviewed.

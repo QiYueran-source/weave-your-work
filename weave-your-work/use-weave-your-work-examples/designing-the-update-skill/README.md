@@ -1,8 +1,8 @@
 # Designing the update skill
 
-The second worked example: how one design map turned into a skill with three files. It is recorded from the tickets and commits of 2026-11-07 and 2026-11-08, and it is shorter than [Building work-weave](../building-work-weave/README.md) not because less happened but because more of it was reversals.
+The second worked example: how one design map turned into a skill with four files. It is recorded from the tickets and commits of 2026-11-07 and 2026-11-08, and it is shorter than [Building work-weave](../building-work-weave/README.md) not because less happened but because more of it was reversals.
 
-The ticket that holds the design is [Update skill: change a closed map or task](../../../tickets/map/wm-9sfmaphskg0c.md); the skill it produced is `weave-your-work/update/`.
+The ticket that holds the design is [Update skill: change a closed map or task](../../../tickets/map/wm-9sfmaphskg0c.md); the skill it produced is `weave-your-work/update/`. The fourth file, `need-execute.md`, was added after this example's design closed; its build ticket is [Write the need-execute reference](../../../tickets/task/wm-v9t392x7bxe2.md).
 
 ## Order
 
