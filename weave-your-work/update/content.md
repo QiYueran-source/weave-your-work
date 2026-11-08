@@ -35,11 +35,11 @@ Do not delete the old text and do not keep both without marking them. A reader w
 
 ## The reopen loop
 
-A closed node carries a verdict. When the change makes that verdict false, the verdict has to be taken back before anything else happens, because status is the only signal the tree reads: `ready`, `blocked`, and the parent's readiness all key off it, and a closed node whose acceptance no longer holds quietly misleads every one of them.
+A closed node carries a verdict. When the change makes that verdict false, the verdict has to be taken back before anything else happens, because a closed ticket is read as "done" by everything above it: a map is accepted when its children are complete, so a child left closed on a false verdict makes its parent's claim false too.
 
 ```
-waymark status set <id> open
 waymark body replace <id> --body-file <path>
+waymark reopen <id>
 ```
 
 Then the node goes through review again, against the new text, by the same rules as the first time. The review skill replaces the `## Review` section rather than appending to it. When it passes, the node closes again.
@@ -47,7 +47,9 @@ Then the node goes through review again, against the new text, by the same rules
 Two things to keep straight:
 
 - **The old review is not deleted.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on.
-- **The node reopens even when the change is small.** Size is not the test. If the verdict still holds after the change, the node does not reopen at all — that is the first disposition, and the status never moves.
+- **Reopening is decided by the verdict, never by the size of the edit.** A one-line change that makes the acceptance false reopens the node; a long clarifying paragraph that leaves it true does not. That is the first disposition, and the status never moves.
+
+Writing the changed body before reopening also means the reopen lands on a ticket that already says what it now claims. Reopening first leaves a short window where the tree says "not done" and the ticket still describes the old promise.
 
 A reopened node is not automatically claimed by the run that reopened it. It goes back into the tree as work, and whoever picks it up advances it as usual.
 
