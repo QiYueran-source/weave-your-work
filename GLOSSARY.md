@@ -61,8 +61,12 @@ An operation an owner performs on their own work item: changing title/body/field
 _Avoid_: modify (when the actor is not specified)
 
 **update**:
-The branch of advance that changes the content of a node other nodes already rely on: a closed node carrying a review verdict, or a map carrying children. An update carries the consequences of the change — the children that refined the old content, the dependents that waited on it, and the review verdict judged against it — and the node reopens when the recorded acceptance no longer holds.
-_Avoid_: advance (when such a node's content is meant), edit (when the consequences are meant)
+The branch of advance that changes a node other nodes already rely on: its content on a closed node or an already-split map, or its position in the tree. Two tests decide what happens — does it still answer the same question, and does the recorded acceptance still hold — and they sort the change into one of three dispositions: edit in place, strike the old text and reopen, or retire and replace. An update carries the consequences: the children that refined the old content, the dependents that waited on it, and the verdict judged against it.
+_Avoid_: advance (when such a node's content is meant), edit (when the consequences are meant), move (a move is one kind of update, not a synonym)
+
+**move (迁移)**:
+Relocating a subtree under another parent without changing its content. Written by `waymark parent set` on the moved node alone; every descendant follows and the old parent's ticket is not touched. The moved node keeps its status; the two parents reopen only when their own acceptance no longer holds. Distinct from retire-and-replace, which is for a node whose subject changed.
+_Avoid_: migrate (when the means is a rebuild), re-parent (of a whole subtree — only the top node is written)
 
 **owner**:
 The accountable party of a ticket: the person who advances it and decides whether it passes. Waymark records one owner per item. The owner of a task is the person who accepts it; a link is added by the owner; a person who merely did the work is not, by that fact, the owner.

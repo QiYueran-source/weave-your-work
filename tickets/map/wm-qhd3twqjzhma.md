@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-08T07:37:25Z
+updated_at: 2026-11-08T09:16:01Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -34,6 +34,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery (failure is an incident) and probe (failure is a normal result), with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed. The non-executor rule is dropped (user confirmed).
+- update skill: changing the content of a node other nodes already rely on is its own operation, not a plain advance. It has two tests (same subject? verdict still holds?), three dispositions (edit in place, strike and reopen, retire and replace), and a move that is one `parent set`. Built at `weave-your-work/update/`; the rules live in [Update skill: change a closed map or task](tickets/map/wm-9sfmaphskg0c.md) (user confirmed).
 - map template: five sections, fixed. Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Decisions so far records settled content in its concrete form with a source; longer discussion history stays in a testimony and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason. The body carries no Children section: waymark's parent field is the only copy of the structure, read with `waymark tree --root <id>`, so a foreign owner never has to edit another person's ticket to record a relation (user confirmed).
 - map frontmatter: `split_as` (submap / task, written at split time). title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Node outcomes: a node ends in one of three states. completed closes it as achieved. failed keeps the record: status closed plus the outcome field set to failed, and a replacement node opened as a sibling with a soft link between them. archived retires a node that was never done or whose direction proved wrong (user confirmed; outcome field declared).
