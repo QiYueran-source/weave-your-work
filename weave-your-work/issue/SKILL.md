@@ -44,7 +44,7 @@ The caller names the recipient. Finding who was affected is the caller's work �
 3. What happened or what is asked: one paragraph a reader who has not seen the ticket can follow.
 4. What the recipient must decide or do, and how to reply: answer in the thread; change the ticket when it is theirs.
 
-A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. Write the body in the language the recipient reads.
+A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. An unknown handle is filed the same way — the name in the body, no mention, and a word outside the thread. Write the body in the language the recipient reads.
 
 The caller's contract sets the content:
 
@@ -70,7 +70,7 @@ An archive hand-over, filled in:
 
 - Know the platform and the repository; `github.md` and `gitee.md` say how. The checkout's `origin` names the repository; a checkout with several remotes needs the person to name the one that holds the issue.
 - Search for an open issue whose title already carries the ticket id. If one exists, reply there; a second thread splits the answer. A closed thread carrying the id is the record of an earlier event: a new ask gets a new issue, linked to the closed one when the history matters.
-- If the repository is public, read the draft to the run's owner and get a yes. The yes belongs to whoever speaks for the repository, not to the recipient, because the publication is the repository's; when the run's owner is the executor, they give it themselves. A public issue outlives the ticket. Keep tokens, secrets, local paths, and other people's data out of the body.
+- If the repository is public, read the draft to the run's owner and get a yes. The yes belongs to whoever speaks for the repository. When the run does not own it, that is its owner — often the recipient; when the run's owner does, they give it themselves. A public issue outlives the ticket. Keep tokens, secrets, local paths, and other people's data out of the body.
 
 **After.** Record the issue URL where the wait lives:
 
@@ -103,7 +103,8 @@ An answer is a decision when it changes a ticket's text, status, or relations, o
 
 - a map: a `Decisions so far` entry in its concrete form, with the issue URL as the source; the fog entry it settles is struck through;
 - a task: the affected section — `Action`, `Acceptance signal`, or `Boundaries` — with the URL where the change is explained; a person's answer goes in `Result`, as the task body requires;
-- a relation: the owner runs the waymark command, and the URL goes in the ticket that records the change — the child's `Intended parent` line, a task's `Progress` or `Result`, or the map's `Decisions so far`.
+- a relation: the owner runs the waymark command, and the URL goes in the ticket that records the change — the child's `Intended parent` line, a task's `Progress` or `Result`, or the map's `Decisions so far`;
+- a status: the owner runs `waymark reopen` or `waymark close`, and the closing comment records the change.
 
 Both endings are changes. An acceptance runs `parent set`: the child's `Intended parent` line comes off, because the parent field now records the relation, and the closing comment keeps the pointer. A refusal runs no command: the `waiting on` half comes off the line, because the wait is over even though the intent was not granted, and the closing comment records the refusal.
 
@@ -129,7 +130,7 @@ Three lines: what was filed or read, what changed on the ticket, and what is sti
 
 - Triage, labels, assignment, or a queue. It moves a message between two people; it does not sort incoming work.
 - Create a ticket from an issue. An accepted proposal goes through split.
-- Poll, sync, or mirror. The thread is read when a run looks at it.
+- Poll, sync, or mirror. A wait is picked up by a person or a run that looks at the thread; nothing here watches it.
 - Write a ticket the run does not own.
 - Edit or delete another person's comment.
 
