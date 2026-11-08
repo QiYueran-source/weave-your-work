@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T08:35:49Z
+updated_at: 2026-11-08T08:36:42Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -49,9 +49,9 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - The order of writes for the retire-and-replace path, including the steps that must happen before archiving because an archived ticket rejects every write.
 - Whether update is model-invocable or user-invoked only.
 - Which of the moved node and its two parents reopen on a move. The rule proposed earlier follows the work: the moved node keeps its status, the old parent reopens when its Target no longer holds without it, and the new parent reopens only when an unfinished subtree arrives under a closed map.
-- Whether a relocation happens in place or by archiving the original subtree and rebuilding it at the destination. Archiving keeps a readable record of the old shape, but it costs: an archived ticket rejects every write, archiving removes inbound dependencies and soft links from other people's tickets, and rebuilt nodes get new ids, which breaks the references they carried (this repository holds 21 id mentions across 10 ticket bodies and 6 example files).
+- Whether a relocation happens in place or by archiving the original subtree and rebuilding it at the destination. (user proposed archiving the original, so the old shape stays readable in the archive instead of being recorded in extra text.) The measured costs of that path: an archived ticket rejects every write, so nothing can be fixed after the fact; archiving a node removes inbound dependencies and soft links from other people's tickets, which is itself a cross-owner write; a map cannot be archived while any child is still active, so the subtree goes bottom-up; and rebuilt nodes get new ids, breaking the references they carried — this repository holds 21 id mentions across 10 ticket bodies and 6 example files. A plain `waymark parent set` leaves the old parent in the moved node's git diff, which `git log -p --follow` prints, so the trace costs nothing. (verified in waymark 0.1.0)
 - Whether update can move a node that is open and not yet split. The trigger for content changes is "closed node or split map", but relocating applies in any state, so `move.md` either widens SKILL.md's entry condition or is reachable only for closed and split nodes.
-- What "relate the isolated preparation tree to the target node" means while an issue is open. `waymark link add` writes both tickets, which is the write the rule exists to prevent, so the only non-invasive relation is a line in the child's own body.
+- What "relate the isolated preparation tree to the target node" means while an issue is open. `waymark link add` writes both tickets, which is the write the rule exists to prevent, so the only non-invasive relation is a line in the child's own body. The same question applies to soft links in general: a link is symmetric, so it is not a second copy that can drift (one command writes both ends), but it does touch a foreign file and can collide with its owner's edits. Children was removed for redundancy; links are a different case and need their own ruling.
 - The hand-over issue itself is designed in the communication category; whether update adds a dependency edge to that map is undecided.
 
 ## Out of scope
