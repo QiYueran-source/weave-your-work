@@ -1,8 +1,8 @@
 # Content
 
-Change what a closed map or task says, without making it a different node. `SKILL.md` carries the two tests, the three dispositions, and the ownership limits; this file is what the first two dispositions look like when they are carried out.
+Change what a closed map or task says, without making it a different node. `SKILL.md` carries the two tests, where a verdict lives, the three dispositions, and the ownership limits; this file is what each disposition looks like when it is carried out.
 
-The third — retire and replace — is at the end of this file, because it is the one that ends in archive and the one whose write order matters.
+The first two — edit in place, and strike and reopen — come first, because they are the common case. Retire and replace is at the end: it is the one that ends in archive and the one whose write order matters.
 
 ## Where the change goes
 
