@@ -90,7 +90,7 @@ An answer is a decision when it changes a ticket's text, status, or relations, o
 - a task: the affected section — `Action`, `Acceptance signal`, or `Boundaries` — with the URL where the change is explained; a person's answer goes in `Result`, as the task body requires;
 - a relation: the owner runs the waymark command, and the URL goes in the ticket that records the change — the child's `Intended parent` line, a task's `Progress` or `Result`, or the map's `Decisions so far`.
 
-A refusal that ends a wait is a change too: the child's `waiting on` line comes off its body, and the closing comment records the refusal. A wait that ends without a command still changes what the ticket says.
+Both endings are changes. An acceptance runs `parent set`: the child's `Intended parent` line comes off, because the parent field now records the relation, and the closing comment keeps the pointer. A refusal runs no command: the `waiting on` half comes off the line, because the wait is over even though the intent was not granted, and the closing comment records the refusal.
 
 A run that is not the owner stops at the issue. It replies, and it records on its own ticket what it is waiting for; it does not write the foreign ticket.
 
