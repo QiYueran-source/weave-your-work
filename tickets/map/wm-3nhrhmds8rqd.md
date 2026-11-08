@@ -7,8 +7,10 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-08T10:49:58Z
+updated_at: 2026-11-08T10:54:00Z
 parent: wm-0b59r7xfhk73
+custom_fields:
+  split_as: submap
 ---
 ## Target
 
@@ -42,12 +44,12 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - A split proceeds in two steps: decide the child type (all submaps or all tasks) first, then decide how many children this layer gets. The count is decided up front, before writing, and the children are then written one by one (user confirmed).
 - After a split, set the child's waymark parent. The body has no Children index to update, so `waymark create --parent <map>` is the whole recording step; run `waymark tree --root <map>` to read back the shape (default).
 - Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).
-- Hanging under someone else's map: works directly when that map is open, needs an issue and a wait when it is closed, and the child waits as an isolated node in the meantime. The rules live in [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and split points there instead of restating them (user confirmed).
+- Hanging under someone else's map: works directly when that map is open, needs an issue and a wait when it is closed, and the child waits as an isolated node in the meantime.
+- A map's own entry document is refined into a child map of its own, with the writing task under that map. Split's entry is [Split skill entry](tickets/map/wm-p8wyd7jkmkhb.md); its write task moved there from this map, which had briefly held two child maps and one task. Source: user confirmation. The rules live in [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and split points there instead of restating them (user confirmed).
 
 ## Not yet specified
 
-- Decision to make: where a map's own entry document comes from when the map has already split into child maps. `wm-w87msnqhda40` wrote split's `SKILL.md` from a task hanging under this map, which now holds two child maps and one task, and the freeze says a map's children are all one type.
-  Why it matters: either the freeze covers only the children a map refines into, and a map may carry a task that delivers its own file beside them, or those tasks need a different home, and the Map skill's own `SKILL.md` currently has none.
+- ~~Decision to make: where a map's own entry document comes from when the map has already split into child maps.~~ Resolved on 2026-11-08: the entry gets a child map of its own, with the writing task under it, so the layer keeps one child type. See [Split skill entry](tickets/map/wm-p8wyd7jkmkhb.md) and the decision below.
 - Whether a blocked map may split. A map waiting on another may still have parts that do not need the blocker's answer; the open question is whether those parts may be split now or must wait.
 - The submap side of vertical slicing: when work must run in sequence, what the child maps look like and where the edge is carried. The task side is settled in the task skill.
 - How a task relates to other maps. A task hangs under exactly one map but may link to another; what a link is used for, and what it does not mean (no ordering, no shared acceptance).
