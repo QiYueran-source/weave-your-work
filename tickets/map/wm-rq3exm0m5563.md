@@ -23,10 +23,6 @@ Why: a shared glossary with many editors conflicts on every change; per-person J
 
 All child tasks are complete and no further child task is needed: the SKILL.md, the MCP server, the hooks, the rules, and the install step exist; one term written plus a simulated pull shows the term in the generated view; and SKILL.md covers the four moves borrowed from matt's domain-modeling.
 
-## Children
-
-- [Initialize the glossary during setup](tickets/task/wm-5b50wr2dkaxw.md): the install step
-
 ## Decisions so far
 
 - Identity: operator first, git `user.name` fallback.

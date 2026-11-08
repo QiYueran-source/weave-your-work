@@ -22,13 +22,13 @@ Its acceptance signal: on a fresh project after setup, the directory exists, the
 
 [Map skill](../../../tickets/map/wm-0b59r7xfhk73.md) and [Task skill](../../../tickets/map/wm-87pgn0b75yy5.md) split the two skill designs that had been living in the execution map's Decisions section. Each is a map with its function details still in fog, and each checks its rules against an example in `weave-your-work/use-weave-your-work-examples/` (`map-example.md` and `task-example.md`).
 
-The map skill's acceptance direction: all child tasks are done and no further child task is needed; the rules live under `weave-your-work/map/`; a reader can rebuild the example map from the skill without asking; the body index and waymark parent relation agree after a child changes. Its out of scope: task skill design and software-specific workflows.
+The map skill's acceptance direction: all child tasks are done and no further child task is needed; the rules live under `weave-your-work/map/`; a reader can rebuild the example map from the skill without asking; `waymark tree` shows the structure the example describes. Its out of scope: task skill design and software-specific workflows.
 
 The task skill's acceptance direction: all child tasks are done and no further child task is needed; the rules live under `weave-your-work/task/`; a reader can rebuild the example task from the skill; both a probe and a delivery task show their reversibility. Its out of scope: map skill design and glossary conflicts.
 
 ### Why skill maps, not tasks
 
-A skill is not one action. The map skill has to settle creating a map, the six body sections, children sync, fog graduation, phases, and the acceptance check; the task skill has to settle task design and task execution. Those are distinct targets with their own function details, so each gets a map layer. The rule stays: a child becomes a task only when its action and verifiable result can be written now.
+A skill is not one action. The map skill has to settle creating a map, the five body sections, fog graduation, phases, and the acceptance check; the task skill has to settle task design and task execution. Those are distinct targets with their own function details, so each gets a map layer. The rule stays: a child becomes a task only when its action and verifiable result can be written now.
 
 ### Splitting the Task skill map
 

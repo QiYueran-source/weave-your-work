@@ -24,10 +24,6 @@ All children are complete and no further children are needed.
 
 Review point: Check that the SKILL.md names who reviews, how the acceptance direction is checked, and the four verdicts, and that a sample map walks through a review.
 
-## Children
-
-(none yet; the design restarts here)
-
 ## Decisions so far
 
 - Review owns reviewing to closed or return; the map skill owns delivering to reviewing (user confirmed).

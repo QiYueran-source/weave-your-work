@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T07:01:09Z
+updated_at: 2026-11-08T07:45:14Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -18,15 +18,11 @@ Why: waymark lets any closed node be rewritten with no cascade and no warning, w
 
 ## Acceptance direction
 
-The skill exists under `weave-your-work/update/`; a reader can take one closed map, one split map, and one closed task through it, and after each run the node's status, its review record, its parent's Children list, and its dependency edges agree with the change.
+The skill exists under `weave-your-work/update/`; a reader can take one closed map, one split map, and one closed task through it, and after each run the node's status, its review record, and its dependency edges agree with the change.
 
 All children are complete and no further children are needed.
 
 Review point: Check that the skill states the two boundary tests, the three dispositions, the ownership stop rule, and the order that ends in archive.
-
-## Children
-
-(none yet)
 
 ## Decisions so far
 
@@ -40,12 +36,14 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - The impact scan is not depth-limited: follow children, the parent, dependency edges in both directions, soft links, and references in bodies, examples, and testimony. (user confirmed)
 - The write boundary is ownership: the operator edits the tree it owns and stops at any node owned by someone else. That node is handed over by opening an issue, never by editing it. (user confirmed)
 - The boundary is two tests in order: does the node still answer the same question, and does the recorded acceptance still hold? Same subject and verdict holds → edit in place, status unchanged. Same subject and verdict fails → strike the old text with `Superseded on <date>: <reason>`, reopen, review again, close. Different subject → archive the old ticket, open a parallel new one, and repoint the parent's Children. (user confirmed)
-- A foreign-owned node stops that branch, not the whole run: the operator finishes the tree it owns and hands the rest over. A branch cannot continue when the foreign node is the parent whose Children list must change. (user confirmed)
+- A foreign-owned node stops that branch, not the whole run: the operator finishes the tree it owns and hands the rest over. (user confirmed)
+- ~~A branch cannot continue when the foreign node is the parent whose Children list must change.~~ Superseded on 2026-11-08: the map body no longer carries a Children list, so recording a parent relation writes only the child. A foreign parent stops the branch only when its own content must change — its Target, its acceptance, or its status. (user confirmed)
 - Hand-over to another owner is an issue. The issue's shape and count belong to the communication category; update only names the hand-over and records the link. (user confirmed)
+- Update never hangs a child under a foreign map without consent: the rules for a foreign parent — hang directly when it is open, open an issue and wait when it is closed, and prepare the child as an isolated node meanwhile — belong to [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and update points there instead of restating them. (user confirmed)
+- Two waymark writes cross ownership and update must call them out rather than perform them quietly: `link add` / `link remove` writes both tickets, and `archive` removes inbound dependencies and soft links from every ticket pointing at the archived node. Retiring a node that others depend on is a write to their tickets. (verified in waymark 0.1.0)
 
 ## Not yet specified
 
-- Whether update triggers only on closed nodes or also on a map that is split and still open.
 - The order of writes for the retire-and-replace path, including the steps that must happen before archiving because an archived ticket rejects every write.
 - Whether update is model-invocable or user-invoked only.
 - Whether moving a subtree to another parent is a second mode of update, a separate skill, or part of the map procedure; which of the moved node and its two parents reopen; and where the move is recorded.

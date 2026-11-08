@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-08T07:38:59Z
+updated_at: 2026-11-08T07:45:23Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -42,6 +42,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - A split proceeds in two steps: decide the child type (all submaps or all tasks) first, then decide how many children this layer gets. The count is decided up front, before writing, and the children are then written one by one (user confirmed).
 - After a split, set the child's waymark parent. The body has no Children index to update, so `waymark create --parent <map>` is the whole recording step; run `waymark tree --root <map>` to read back the shape (default).
 - Before adding a child, check conflict with sibling nodes, conflict with other nodes under the same map, and whether a dependency edge is needed; on conflict merge, adjust or ask the owner (user confirmed).
+- Hanging under someone else's map: works directly when that map is open, needs an issue and a wait when it is closed, and the child waits as an isolated node in the meantime. The rules live in [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and split points there instead of restating them (user confirmed).
 
 ## Not yet specified
 

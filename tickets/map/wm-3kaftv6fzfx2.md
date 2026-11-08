@@ -23,10 +23,6 @@ Why: a task is not done because its executor says so; something has to check the
 
 All children are complete and no further child is needed.
 
-## Children
-
-- [Write the task review skill](tickets/task/wm-g85bmsr92nmm.md): the entry and the two references beside it.
-
 ## Decisions so far
 
 - Review is part of execution, not a peer of the map review skill (user confirmed).

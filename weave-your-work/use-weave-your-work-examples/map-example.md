@@ -6,16 +6,11 @@ Lift the product click-through rate by 10% this quarter.
 Why: click-through is the current growth bottleneck; every downstream metric depends on it.
 Boundaries: no paid acquisition, no new product lines.
 
+The work splits into four branches: user and data research, entry redesign, content and recommendation, and verification. Each is a child map.
+
 ## Acceptance direction
 
 The quarter ends with click-through at least 10% above the baseline, shown by the weekly dashboard.
-
-## Children
-
-- User and data research (map)
-- Entry redesign (map)
-- Content and recommendation (map)
-- Verification (map)
 
 ## Decisions so far
 

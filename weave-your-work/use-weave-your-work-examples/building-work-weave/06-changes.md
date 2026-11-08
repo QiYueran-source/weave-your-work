@@ -3,7 +3,7 @@
 - The old map was retired and re-charted in the fixed map format.
 - "Goal" was dropped; every target node is a map.
 - The tickets were converted to English.
-- The map template was fixed to six sections, with only `phase` as a custom field.
+- The map template was fixed to six sections, with only `phase` as a custom field. The `Children` section was dropped on 2026-11-08, leaving five; structure lives only in waymark's parent field.
 - Rule 03 was added: settled details land in the owning ticket immediately.
 - The execution map's destination now names four skills: map, task, glossary, and explore.
 - The three skill designs were first cut as tasks, then moved to skill maps; the skill layer was missing at the first cut.

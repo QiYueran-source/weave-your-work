@@ -18,12 +18,6 @@ Design the task execution skills: define how an owner advances an executable tas
 
 The three task execution skills are delivered under `weave-your-work/`, with `dispatch.md` inside `execute-all` rather than a skill of its own, and one worked example shows a single task advanced, a batch dispatched, and a finished task reviewed.
 
-## Children
-
-- [Execute one task skill](tickets/map/wm-d5xq88m7g8p6.md): the smallest execution unit, run to the end unless something blocks it.
-- [Execute all skill](tickets/map/wm-qt4pdg7dd0xy.md): every task under a map run at once, with its dispatch rules beside it.
-- [Task review skill](tickets/map/wm-3kaftv6fzfx2.md): check a finished task against its own acceptance signal.
-
 ## Decisions so far
 
 - The task owner is responsible for execution and may assign work to other people (user confirmed).

@@ -21,15 +21,6 @@ Why: map is the node that answers "what I want"; without this skill the tree has
 
 All children are complete and no further children are needed: the SKILL.md exists under `weave-your-work/map/`, an example map can be rebuilt from it, and `waymark tree` shows the same structure the example describes.
 
-## Children
-
-- [Explore skills: clear a map's fog](tickets/map/wm-3084re0f48z3.md): clear a map's Not yet specified items until the section is empty.
-- [Map body format](tickets/map/wm-6c4f9e2a7b31.md): define how each map section and entry is written.
-- [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md): define the front matter fields, who writes them, and the dependency rules.
-- [Map operating procedure](tickets/map/wm-9d7e4c1a2b60.md): define the map workflow and hand-offs between skills.
-- [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md): route to the submap reference or the task reference.
-- [Review skill: accept a map](tickets/map/wm-3spf0jbvf9y9.md): accepting a map before close.
-
 ## Decisions so far
 
 - Inherits the execution map's decisions: the semantic model, the five-section map template, and the frontmatter choice.

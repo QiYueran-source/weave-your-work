@@ -23,10 +23,6 @@ Why: new ideas and open questions do not arrive as fog; without a discussion ski
 
 The SKILL.md exists under `weave-your-work/grill/`; a sample discussion produces at least one landed term and one landed testimony, and an ADR when a decision passes the three gates.
 
-## Children
-
-(none yet)
-
 ## Decisions so far
 
 - grill is a peer skill under Execution, level with map/task/glossary (user confirmed).

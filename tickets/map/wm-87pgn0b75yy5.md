@@ -20,11 +20,6 @@ Define the Task skill: how work is cut from a map into executable tasks, and how
 
 Two child maps are complete and closed, and the Task skill's entry points at them.
 
-## Children
-
-- [Task design skill](tickets/map/wm-793jrqph1ckv.md): define how tasks are specified and made verifiable.
-- [Task execution skill](tickets/map/wm-avc7a31tae33.md): define how an owner advances a task and records its outcome.
-
 ## Decisions so far
 
 - The Task skill splits by actor into task design and task execution (user confirmed).

@@ -19,10 +19,6 @@ Why: without setup a new project has no tracker configuration, no rules, and no 
 
 All child tasks are complete and no further child task is needed: a fresh project runs setup end to end, the installed pieces work, and the rules are discoverable from AGENTS.md.
 
-## Children
-
-- (none yet; the steps are still fog)
-
 ## Decisions so far
 
 - setup scope: check dependency configuration, initialize the project, initialize rules (user confirmed).

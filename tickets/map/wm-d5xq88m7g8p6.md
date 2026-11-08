@@ -23,10 +23,6 @@ Why: this is the smallest unit of execution. `execute-all` runs it once per task
 
 All children are complete and no further child is needed.
 
-## Children
-
-(none yet)
-
 ## Decisions so far
 
 - It advances exactly one task and is the smallest execution unit; `execute-all` points at it rather than restating the steps (user confirmed).

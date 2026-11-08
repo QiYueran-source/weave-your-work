@@ -23,10 +23,6 @@ Why: a map's tasks are parallel branches, so the normal way to advance a map is 
 
 All children are complete and no further child is needed.
 
-## Children
-
-- [Write the execute-all skill](tickets/task/wm-kefrc2nxqyf2.md): the run and the distribution beside it.
-
 ## Decisions so far
 
 - This skill runs every task under a map at once; `execute-one-task` is the other shape, one whole task (user confirmed).

@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:19:54Z
-updated_at: 2026-11-07T16:19:54Z
+updated_at: 2026-11-08T07:46:36Z
 parent: wm-bfqvr54kz3h4
 custom_fields:
   needs_human: false
@@ -22,7 +22,7 @@ Write `weave-your-work/split/task.md`: the judgment half of splitting a map into
 2. Write the five gates every task passes before it is written: one action and one auditable standard; evidence a non-participant can read; who does it and whether `needs_human` agrees; what breaks if it goes wrong and therefore `reversibility`; and whether the output can be named, which decides `task_kind`. A gate that fails sends the part back to grill.
 3. Say where the plan lives: one bullet in the map's `Decisions so far` with the count and one line per task, before any ticket is written.
 4. Say what the split writes: each task's whole body against task design, the fields `task_kind`, `reversibility`, `needs_human`, `owner`, and `parent`; never `Result`, `Progress`, `Review`, `waiting_on`, or `outcome`.
-5. Say how the tickets are hung: all written first with `waymark create --parent`, then the parent's `Children` updated once, then `waymark tree`.
+5. Say how the tickets are hung: all written first with `waymark create --parent`, then the shape read back with `waymark tree --root <map>`. There is no parent-body update, so a half-finished split leaves nothing behind on the map.
 6. Walk a real layer: take the nine write tasks of the task design map and run each through the five gates, reporting which gate would have stopped it.
 
 ## Acceptance signal

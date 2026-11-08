@@ -19,10 +19,6 @@ Why: without setup a new project has no tracker configuration, no rules, and no 
 
 The setup skill map is accepted and its own children are done, or the environment category settles what else it needs.
 
-## Children
-
-- [Setup skill](tickets/map/wm-ygnttse5hd5k.md): dependency checks, project initialization, rules
-
 ## Decisions so far
 
 - Environment category holds the setup skill as a skill map (user confirmed).

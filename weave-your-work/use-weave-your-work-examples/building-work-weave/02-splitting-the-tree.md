@@ -32,8 +32,8 @@ The first cut put the three skill designs that existed then directly under the e
 - The root map kept cross-category coordination in its own Not yet specified: how ask-me routes to execution and communication, which map owns the glossary, installation and distribution, acceptance scenarios, and later members of each category.
 - Fog is not a first draft of the task list. A patch graduates only when its question can be stated sharply; until then it stays prose.
 
-### The tree has two records
+### The tree has one record
 
-The map template says the Children list in a map body mirrors waymark's parent relation, and waymark is the source of truth. In this run the category maps, the four skill maps, and the setup task all carry `parent` in their frontmatter; the root map's Sub-maps list is the reading aid.
+The map template used to give the body a Children list that mirrored waymark's parent relation, which already made the body a second copy. That list was removed on 2026-11-08: a body edit on a parent meant for someone else's ticket, and two records of one fact drift.
 
-The lesson: write the parent relation when the child is created. A body mirror is a reading aid; it is not the tree.
+The lesson: write the parent relation when the child is created, and read the shape back with `waymark tree --root <id>`. Nothing in a body repeats it.

@@ -24,15 +24,6 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
 - Reference degree: take domain-neutral methods only. Product-specific tools such as A/B tests, fake-door tests, prototypes, and Wizard of Oz stay out of the general skill; abstract them to "smallest reversible action" and "measure behavior, not opinions".
 
-## Children
-
-- [Map skill](tickets/map/wm-0b59r7xfhk73.md): the node that answers "what I want"; five-section body, children, acceptance.
-- [Task skill](tickets/map/wm-87pgn0b75yy5.md): the leaf that becomes claimable and verifiable.
-- [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
-- [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
-- [Testimony records](tickets/map/wm-31f6a2c9d840.md): design the record of a grill discussion.
-- [Update skill: change a closed map or task](tickets/map/wm-9sfmaphskg0c.md): change a closed node's content and carry its consequences.
-
 ## Decisions so far
 
 - Semantic model: the target tree refines layer by layer; every node is a target and parent-child is refinement, not sequence; ordering is expressed by dependency edges, not node chains. The tree carries structure, edges carry order. A leaf (task) is the end of the refinement chain: refined from the root to the point of execution; leaves are parallel refinement branches, not a progression order; ordering comes only from dependency edges (user confirmed, recorded in GLOSSARY).
