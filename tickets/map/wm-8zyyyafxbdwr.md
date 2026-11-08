@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:53:00Z
-updated_at: 2026-11-08T09:07:25Z
+updated_at: 2026-11-08T09:07:29Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -42,7 +42,7 @@ Review point: Check that the reference covers the custom fields with their write
 
   A closed node asserts a verdict — its acceptance said every child is complete — so a child appearing under it falsifies that verdict without the owner ever agreeing. (user confirmed)
 - While the issue is open, the child is not blocked: create it as an isolated node with no parent, record `Intended parent: <id>, waiting on <issue link>` in its own body, and do the real work there. `parent set` happens when the owner reopens. Everything in the preparation is a write to the operator's own ticket. (user confirmed)
-- The preparation does not use a soft link. `waymark link add` is symmetric and writes both tickets, so linking to a closed foreign map is exactly the write this rule exists to prevent; the intent lives in the child's body instead. (verified in waymark 0.1.0)
+- The preparation does not use a soft link, and the reason is narrower than it looks. `waymark link add` writes both tickets, so the link would be a write to a foreign file before that owner has agreed to anything; the intent lives in the child's body instead. This does not contradict the archive ruling above: archiving a depended-on node has no alternative, while waiting on a parent has one. (verified in waymark 0.1.0)
 - The owner is the only one who writes a map's front matter (advance): status, custom fields, dependencies, owner transfer. Skills write only their own fields at their landings: split writes split_as and parent on the child it creates; review writes closed and outcome; archive writes archived_at and archive_reason. No skill edits another owner's body to record a relation. The two exceptions are waymark commands that write both ends by construction — `link add` / `link remove` and `archive`'s inbound cleanup — and a skill that reaches one of them across ownership announces it in the hand-over issue first. Source: user confirmation.
 - Dependency rules: parent-child is a natural dependency and gets no explicit edge (a parent's acceptance waits for its children; a child never waits for its parent, which would be a loop). An explicit edge is used for sibling or cross-branch waits: dependencies live only in front matter (the body never mirrors them), and after wiring run `waymark dep tree`, `waymark ready`, and `waymark blocked` to verify. Source: user confirmation.
 - Dependency direction: a node A may depend on a node B only when B can be implemented without A — the blocked node must be independently implementable. The operating procedure may wait on task details because a task is implemented without the procedure; the reverse is invalid, and that is why a finer node never waits on the map that abstracts it. Source: user confirmation.
