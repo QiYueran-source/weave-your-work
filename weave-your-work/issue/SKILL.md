@@ -44,7 +44,7 @@ The caller names the recipient. Finding who was affected is the caller's work â€
 3. What happened or what is asked: one paragraph a reader who has not seen the ticket can follow.
 4. What the recipient must decide or do, and how to reply: answer in the thread; change the ticket when it is theirs.
 
-A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. Write the body in the language the recipient reads.
+A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. Write the body in the language the recipient reads.
 
 The caller's contract sets the content:
 
@@ -69,12 +69,12 @@ An archive hand-over, filled in:
 **Before.**
 
 - Know the platform and the repository; `github.md` and `gitee.md` say how. The checkout's `origin` names the repository; a checkout with several remotes needs the person to name the one that holds the issue.
-- Search for an open issue whose title already carries the ticket id. If one exists, reply there; a second thread splits the answer.
-- If the repository is public, read the draft to the run's owner and get a yes. The yes belongs to whoever speaks for the repository, not to the recipient, because the publication is the repository's. A public issue outlives the ticket. Keep tokens, secrets, local paths, and other people's data out of the body.
+- Search for an open issue whose title already carries the ticket id. If one exists, reply there; a second thread splits the answer. A closed thread carrying the id is the record of an earlier event: a new ask gets a new issue, linked to the closed one when the history matters.
+- If the repository is public, read the draft to the run's owner and get a yes. The yes belongs to whoever speaks for the repository, not to the recipient, because the publication is the repository's; when the run's owner is the executor, they give it themselves. A public issue outlives the ticket. Keep tokens, secrets, local paths, and other people's data out of the body.
 
 **After.** Record the issue URL where the wait lives:
 
-- a task waiting on a person: `waiting_on` names the person, `Progress` carries the URL;
+- a task waiting on a person: `waiting_on` names the person, `Progress` carries the URL. `waiting_on` is the task's optional field; the run advancing the task sets it with `waymark field update`. When the answer lands, `Result` carries it with the link, and `Progress` goes at the close;
 - a map waiting on a decision: the question goes in `Not yet specified` with the URL, and moves to `Decisions so far` when it is settled;
 - a child waiting on a foreign parent: its body carries `Intended parent: <id>, waiting on <issue URL>`;
 - a notification filed after a local change, such as an archive that removed a foreign edge: the URL goes on the live ticket that continues the change â€” the replacement node after a retire-and-replace, or the map or task that made the change. An archived ticket rejects body edits, so it cannot hold the receipt. A retire-and-replace names the replacement; an archive with no replacement has nothing to tell the dependents, and the caller does not file. When every live ticket that continues the change is owned by someone else, the run writes no receipt: the issue and its closing comment carry the pointer, and the run reports the URL.

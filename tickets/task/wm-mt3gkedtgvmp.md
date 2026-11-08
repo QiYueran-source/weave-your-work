@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T11:10:23Z
+updated_at: 2026-11-08T11:11:21Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: true
@@ -43,5 +43,5 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 ## Progress
 
-Where it stands: GitHub's five actions are verified end to end; one blind read walked the archive case and the four boundary gaps it found are fixed; Gitee's write path waits on a token and a test repository.
+Where it stands: GitHub's five actions are verified end to end; two blind reads walked the archive and human-step cases and the eight boundary gaps they found are fixed; Gitee's write path waits on a token and a test repository.
 Next: run Gitee's create, comment, and close, record both platforms' outputs in `Result`, then close the task and the map.
