@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T11:43:18Z
-updated_at: 2026-11-08T10:45:03Z
+updated_at: 2026-11-08T11:24:11Z
 parent: wm-7zvr8cnts3rs
 ---
 ## Target
@@ -26,12 +26,19 @@ All child tasks are complete and no further child task is needed: the SKILL.md, 
 - Source: `glossary/<operator>.jsonl`, one term per line with `term`, `definition`, `avoid`, `group`, `created_at`, `updated_at`; these source files are committed and shared.
 - Generated view: root `GLOSSARY.md`, ignored and regenerated from `glossary/*.jsonl`, following matt's GLOSSARY-FORMAT.md plus a `_Source_` line per term.
 - The install step belongs to this skill, not to setup's design (user confirmed).
+- Glossary is an independent skill at `weave-your-work/glossary/`; grill calls it when a term resolves (user confirmed on 2026-11-08). The branch owns the file, fields, merge, and generated view; grill owns the moment.
+- The MCP tool interface: `glossary_lookup(term)`, `glossary_list()`, `glossary_write(term, definition, avoid?, group?)`, `glossary_merge()`. No tool writes another operator's file (fixed in this run on 2026-11-08).
+- SKILL.md carries the four moves — challenge the term against the glossary, sharpen fuzzy language, test the boundary with a concrete scenario, and check how the project already uses the word — and the write, read, and merge rules. It points at `glossary-rules.md` for the writing constraints (decided in this run on 2026-11-08).
+- Merge reads every `glossary/*.jsonl`, keeps the latest `updated_at` for each term, and writes the view with a `_Source_` line per term. Same-name conflict handling is out of scope for this version (decided in this run on 2026-11-08).
 
 ## Not yet specified
 
-- SKILL.md content: how to settle a term, merge and dedupe, and write the constraints.
-- The MCP server and hook implementations.
-- The merge format details and the conflict entry shape.
+- ~~SKILL.md content: how to settle a term, merge and dedupe, and write the constraints.~~
+  Resolved on 2026-11-08: the four moves and the write, read, and merge rules are in Decisions so far.
+- ~~The MCP server and hook implementations.~~
+  Resolved on 2026-11-08: the interface is fixed in Decisions so far; the tasks under this map carry the implementations.
+- ~~The merge format details and the conflict entry shape.~~
+  Resolved on 2026-11-08: latest `updated_at` wins; same-name conflicts are out of scope (see Decisions so far).
 
 ## Out of scope
 
