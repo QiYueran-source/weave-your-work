@@ -36,3 +36,25 @@ To be discussed after the marker and the listener.
 - What runs the listener and how the next session receives the queue.
 - Whether a handle roster is wanted.
 - The issue's form.
+
+## Round 2
+
+### Handles
+
+The roster can record other people, not only the operator: `frank = ...`, `hanjiang = ...`. It is meant to cover the case where the operator and the git user differ; the owner asked whether that difference should be ignored.
+
+### Communicate issue
+
+A communicate issue is a normal GitHub issue used for communication, marked in a way like `fm`; it is not a separate physical entity.
+
+### What is important
+
+The test is whether the issue affects something local. The owner pointed at matt's triage for comparison.
+
+### Listener
+
+The owner asked whether GitHub has a hook for this and wants the technical options explored.
+
+### Ownership
+
+The listener is part of the issue skill, not a separate skill.
