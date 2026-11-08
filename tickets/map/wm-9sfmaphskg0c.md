@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T09:31:09Z
-closed_at: 2026-11-08T09:16:16Z
+updated_at: 2026-11-08T09:46:46Z
+closed_at: 2026-11-08T09:46:46Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -65,6 +65,10 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - ~~The seven-step retire-and-replace order is written into `content.md` from waymark's constraints, not from a worked run.~~
   Resolved on 2026-11-08: the order was run end to end in a scratch project and held. A map with two children and a foreign dependent was retired through all seven steps; `validate` reported no findings, the surviving child read under the replacement, the dependent went `blocked` → `ready`, and the dry-run named exactly the ticket the archive would edit. One correction came out of it: the parent field is cleared on the **child**, not the holder — archiving the child while it still points at its parent breaks `validate` once the parent is archived, and an archived child cannot be cleared afterwards (no unarchive command exists; the only repair is a hand edit). That correction is in `content.md`.
 - The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`. (verified by installing and checking every relative link in the copy)
+
+## Not yet specified
+
+- The build ran before its own ticket existed. `wm-9sfmaphskg0c` was closed at 09:16 with the skill already written and no child task under it, and the ticket was reopened on 2026-11-08 to hang [Write the update skill](tickets/task/wm-4dytqnmy4s47.md) and close it. The order the method asks for — map, then task, then work — was inverted. The artifacts are unchanged; the record of who did what and when was written after the fact.
 
 ## Built
 
