@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T09:46:46Z
+updated_at: 2026-11-08T10:11:37Z
 closed_at: 2026-11-08T09:46:46Z
 parent: wm-qhd3twqjzhma
 ---
@@ -32,7 +32,7 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - The trigger is the node's state, not the size of the change: update runs on a closed node, or on a map that has already split. An open node with no children is plain advance. (user confirmed)
 - ~~Content changes on a closed node split two ways: a small change is edited on the ticket; a large change retires the ticket with archive and opens a parallel new ticket.~~ Superseded on 2026-11-08: the split is decided by the two tests below, not by the size of the edit. A one-line change that flips the subject retires the node; a paragraph that only sharpens it does not. (user confirmed)
 - A substantive change keeps the old text struck through with a `Superseded on <date>: <reason>` line; an editorial change replaces the text. (user confirmed)
-- When the recorded acceptance no longer holds after the change, the node reopens, is reviewed again, and closes again. Status is the only signal the tree reads. (user confirmed)
+- ~~When the recorded acceptance no longer holds after the change, the node reopens, is reviewed again, and closes again. Status is the only signal the tree reads.~~ Superseded on 2026-11-08: the reopen-and-reclose part stands. The last sentence is too strong — `waymark ready` reads dependency edges and never looks at a parent or a status, so a status is not the only thing the tree reads. What a false closed child falsifies is its parent's acceptance, which counts children as complete; that is the reason to reopen, and it is narrower than the old sentence claimed.
 - A completed node that its parent no longer needs is archived with a reason; `outcome=failed` is not used, and the archived definition grows to cover "done but retired by an upstream change". (user confirmed)
 - The impact scan is not depth-limited: follow children, the parent, dependency edges in both directions, soft links, and references in bodies, examples, and testimony. (user confirmed)
 - ~~The write boundary is ownership: the operator edits the tree it owns and stops at any node owned by someone else. That node is handed over by opening an issue, never by editing it.~~ Superseded on 2026-11-08: the boundary is what a run may decide, not what it may write. A foreign node's content, status, and parent are never the run's to set; a foreign node's relations are touched only by the two waymark commands that write both ends, and that is announced. (user confirmed)
