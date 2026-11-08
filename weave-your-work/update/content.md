@@ -54,7 +54,7 @@ Where the verdict lands depends on the category, and on whether there is one to 
 
 **A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time.
 
-**A map** has no `## Review` section at all — its five sections hold no verdict — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix.
+**A map** has no `## Review` section — its five sections hold no verdict text — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix. The acceptance direction is not the verdict: it is what the verdict was reached against, which is why test two reads it and then asks about the status.
 
 Whichever category, the run reads the acceptance direction before it writes: `## Acceptance signal` for a task, `## Acceptance direction` for a map. A node with neither is not ready to be updated; write the acceptance direction first, or the second test has nothing to read.
 

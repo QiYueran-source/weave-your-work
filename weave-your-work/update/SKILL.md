@@ -39,9 +39,9 @@ Both yes is the first disposition. First yes, second no is the second. First no 
 The second test needs something to read, and where that is depends on the node:
 
 - **A task** — its `## Review` section, when it has one. Many closed tasks do not: the review skill writes that section, and every task closed before the skill existed closed without it. When it is absent, read the `Acceptance signal` and `Result` together instead. The signal is what the work promised and the result is what it delivered; the close is the verdict that the two agreed. Re-reviewing such a task writes a fresh `## Review`; there is no old one to replace.
-- **A map** — its `## Acceptance direction`, and the `Review point` sentence inside it when one is written. A map body has no `## Review` section at all, so a map's verdict shows only in its status. Read the acceptance direction against the new content and ask whether a reviewer holding it could still close the map.
+- **A map** — its `## Acceptance direction`, and the `Review point` sentence inside it when one is written. A map body has no `## Review` section, so there is no prose verdict to read; what the status records is that a reviewer once held that acceptance direction and closed the map. Test two is therefore: hold the acceptance direction up against the new content and ask whether the same reviewer, given the same evidence, would still close it. A map whose acceptance direction no longer holds has a false status even though nothing on the ticket says so.
 
-An **open** node has no verdict. Test two cannot fail on a node that has never been reviewed, so an open node takes the first or the third disposition only; "reopen, review again, close again" describes a closed node's path and has nothing to do on a node that is already open. An open split map still updates — its children read the changed content, and each takes its own disposition — it just does not go through a reopen.
+An **open** node has no verdict to falsify — nothing ever closed it, so no review verdict is on record. Test two does not apply, and an open node takes the first or the third disposition. That is not the same as reading no acceptance direction: an open split map still has one, and it still has to be read, because it is what the children refine. What an open node skips is the reopen, not the reading.
 
 ## Three dispositions
 
@@ -71,7 +71,7 @@ The scan is not depth-limited. From the node being changed, follow:
 - **soft links**, in either direction;
 - **references in bodies**, in tests, in examples, and in testimony — anything that names the node by id or by title.
 
-All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep. For many nodes at once, `waymark --json list` returns `children`, `dependents`, and `blocked_by` per item — not `parent` and not `soft_links` — so a sweep of soft links still needs one `show` per candidate.
+All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep. `waymark --json list` carries the same five per row, split across two levels: `children`, `dependents`, and `blocked_by` at the top, and `item.parent` and `item.soft_links` inside the item. An empty relation is omitted rather than printed as `[]`, so a missing key means none. `list` stops at 100 rows unless you pass a larger `--limit`, which is the one way a sweep silently misses a dependent.
 
 Bodies are the other half, and there are two kinds of them. `waymark search "<text>"` matches titles, front matter, and ticket bodies, which finds the other tickets that quote the node. It searches the ticket store and nothing else — the skill files, the examples, the testimony, and the tests are ordinary Markdown on disk, so those need `grep -rn` over the repository. Run both; a node named only in an example is the reference no ticket-side query will show.
 
