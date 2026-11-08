@@ -14,7 +14,7 @@ waymark parent set <node> <new parent>
 
 `parent set` writes the node's own front matter and nothing else. The old parent's ticket is not touched — a map body carries no children list, and the tree is read from `parent` fields. Every descendant follows automatically, because each of them points at its own parent and none of them points at the grandparent.
 
-Verified in waymark 0.1.0: the parent file's checksum is unchanged after a child is re-hung, and `waymark tree --root <old parent>` and `--root <new parent>` show the whole subtree in its new place, with the descendants intact.
+Verified in waymark 0.1.2: the parent file's checksum is unchanged after a child is re-hung, and `waymark tree --root <old parent>` and `--root <new parent>` show the whole subtree in its new place, with the descendants intact.
 
 This is why a move is not a retire-and-rebuild. Rebuilding would mean new ids, re-litigating every review verdict, and — the part that cannot be undone — archiving the old node, which strips the edges of everyone depending on it.
 
@@ -55,7 +55,7 @@ The first test is the one that decides whether this is a move at all. A node tha
 
 A move can make work wait longer without touching the moved node's status — but `waymark ready` will not show it.
 
-Read the parent chain yourself. Work hung under a map that waits on a dependency is behind that wait, even though the ticket says `ready`: a task under a blocked map, and a map under a blocked map, both come back `ready` from the query. Verified in waymark 0.1.0 — `waymark ready` reads dependency edges only and never looks at `parent`. A task under a map that is `closed` is `ready` too.
+Read the parent chain yourself. Work hung under a map that waits on a dependency is behind that wait, even though the ticket says `ready`: a task under a blocked map, and a map under a blocked map, both come back `ready` from the query. Verified in waymark 0.1.2 — `waymark ready` reads dependency edges only and never looks at `parent`. A task under a map that is `closed` is `ready` too.
 
 So after a move, walk the new parent chain in `waymark tree --root <Q>` and ask whether anything above N is waiting. The query answers a narrower question than the one being asked, and the gap is exactly where a misplaced subtree hides.
 

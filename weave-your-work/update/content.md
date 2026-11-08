@@ -102,7 +102,7 @@ The last one is the only step that punishes a wrong order permanently, so it is 
 error DANGLING_REFERENCE at work item wm-ad6...: wm-ad6... parent the archived item wm-n9w...
 ```
 
-The finding is at the child, and the child is archived too — so `parent clear` is rejected with `<id> is archived and rejects parent clear`, and there is no unarchive command to undo either half. The only repair left is editing the archived file by hand to drop its `parent:` line. Clearing before archiving is what keeps the run recoverable; verified both ways in waymark 0.1.0.
+The finding is at the child, and the child is archived too — so `parent clear` is rejected with `<id> is archived and rejects parent clear`, and there is no unarchive command to undo either half. The only repair left is editing the archived file by hand to drop its `parent:` line. Clearing before archiving is what keeps the run recoverable; verified both ways in waymark 0.1.2.
 
 Clearing also erases the old position from the ticket, which is why a *move* is never done this way — see `move.md`.
 
