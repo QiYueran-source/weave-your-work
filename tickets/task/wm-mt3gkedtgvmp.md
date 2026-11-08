@@ -3,17 +3,17 @@ schema: 1
 id: wm-mt3gkedtgvmp
 title: Write the issue skill
 category: task
-status: closed
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T13:42:31Z
-closed_at: 2026-11-08T13:42:31Z
+updated_at: 2026-11-08T14:06:34Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
   reversibility: two_way
   task_kind: delivery
+  waiting_on: 'frank: review the issue skill and the two design decisions'
 ---
 ## Action
 
@@ -48,10 +48,10 @@ The skill does not use the comment category; whether it stays belongs to the exe
 
 ## Review
 
-passed
+needs discussion
 
-- Goal: read against the `Acceptance signal`. The three files exist and install; GitHub's five actions and the assignee path ran end to end; Gitee's write path is the recorded deferral. A reader walks the three tickets: six blind reads, one per case plus two re-reads, each could execute it, and the gaps are fixed. `waiting_on` is empty.
-- Convention: the skill states the trigger, the five actions in three moves, completion criteria, the decision boundary, and what it does not do; it holds no link outside its directory and no secrets. The map and task record the decisions, including the two agent decisions the user asked to settle, marked revisable.
+- Goal: the skill is built and GitHub-verified, but the owner has not read it; the earlier `passed` verdict was written before that review and is withdrawn.
+- Convention: the close was premature; the ticket is reopened for the owner's review of the skill and the two design decisions.
 
 ## Boundaries
 
@@ -59,3 +59,8 @@ passed
 - No ticket creation from an issue; an accepted proposal goes through split.
 - No automatic sync, polling, or webhooks.
 - No writing a ticket the run does not own.
+
+## Progress
+
+Where it stands: reopened after a premature close; the owner has not reviewed the skill or the two design decisions.
+Next: the owner reads the skill and says what to change.
