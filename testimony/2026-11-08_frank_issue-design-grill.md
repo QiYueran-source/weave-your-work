@@ -94,3 +94,17 @@ The owner asked what the rule-plus-queue mechanism means; it needs a plain expla
 ### Body
 
 Confirmed: the frontmatter carries the machine fields and the body still opens with `@handle`.
+
+## Round 5
+
+### Multiple recipients
+
+One issue can address several people; each `to` gets a queue entry; the thread is shared; the title carries the first ticket.
+
+### The relay reference
+
+The smee setup is a reference in the issue skill (`smee-setup.md`), and the setup skill points at it.
+
+### The pending queue
+
+The queue lives in a separate directory, configured in `handles.toml` as `[pending].path`, defaulting to `../pending/pending-communications.md`; it is gitignored.
