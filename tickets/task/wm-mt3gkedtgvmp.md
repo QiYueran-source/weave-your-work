@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T13:35:27Z
+updated_at: 2026-11-08T13:37:30Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
@@ -42,5 +42,5 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 ## Progress
 
-Where it stands: GitHub's five actions are verified end to end; four blind reads walked the three callers and the outside-proposal case; Gitee's write path is deferred. Four design questions are open: the issue's form, whether a triage outcome lands locally, how delivery is made prompt, and how an owner resolves to a remote handle.
-Next: settle the four in the map, apply them to the skill, then re-run the affected reads.
+Where it stands: the issue now opens with the ask and uses a known handle as both mention and assignee; GitHub's assignee field was verified on the scratch repository. Two design questions remain: whether a triage outcome lands in the map's `Out of scope`, and how an owner resolves to a handle (a handles roster is proposed). Gitee's write path is deferred.
+Next: settle those two with the user, apply them to the skill, then re-run the affected reads.

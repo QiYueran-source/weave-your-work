@@ -40,11 +40,11 @@ The caller names the recipient. Finding who was affected is the caller's work �
 **Body.** Four parts, in this order:
 
 1. Who it is for: `@handle` when the handle is known, the name otherwise.
-2. Which tickets: the one that will carry the answer, `<id> "<title>"`, and the one the message came from when they differ.
-3. What happened or what is asked: one paragraph a reader who has not seen the ticket can follow.
-4. What the recipient must decide or do, and how to reply: answer in the thread; change the ticket when it is theirs.
+2. What the recipient must decide or do: the ask, in one sentence they can act on.
+3. Which tickets and what happened: the ticket that will carry the answer, `<id> "<title>"`, the one the message came from when they differ, and one paragraph a reader who has not seen the tracker can follow.
+4. How to reply and where it lands: answer in the thread; change the ticket when it is theirs.
 
-A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. An unknown handle is filed the same way — the name in the body, no mention, and a word outside the thread. Write the body in the language the recipient reads.
+A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. An unknown handle is filed the same way — the name in the body, no mention, and a word outside the thread. A known handle is used twice: mentioned in the body and set as the assignee, because the mention notifies and the assignment queues the issue in the recipient's dashboard. A reply-by line is optional for an urgent ask; the local `waiting_on` is the tracker, and nothing polls. Write the body in the language the recipient reads.
 
 The caller's contract sets the content:
 
@@ -60,9 +60,9 @@ An archive hand-over, filled in:
 **Body:**
 > @kim
 >
-> I archived "Glossary install" (`wm-7k2m4p9q1s3t`). Your "Sync glossary records" (`wm-2h5n8r1v4x7z`) depended on it, so the edge was removed and your ticket is ready instead of blocked.
+> Re-point your "Sync glossary records" (`wm-2h5n8r1v4x7z`) at the replacement, or drop the wait if the archived outcome is enough.
 >
-> The replacement is "Glossary storage per operator" (`wm-9c3f6j0l5w8y`). Re-point the edge at it, or drop the wait if the archived outcome is enough.
+> I archived "Glossary install" (`wm-7k2m4p9q1s3t`); the edge was removed and your ticket is ready instead of blocked. The replacement is "Glossary storage per operator" (`wm-9c3f6j0l5w8y`).
 >
 > Reply here with which one; the ticket is yours to change.
 

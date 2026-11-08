@@ -60,7 +60,7 @@ curl -sS --fail-with-body -X POST \
 
 The path is `/repos/<owner>/issues` with the repository in the `repo` form field, not `/repos/<owner>/<repo>/issues`. The reply is the new issue: `number` (a string such as `IKTNFO`, case-sensitive) and `html_url`, which is the receipt the ticket records.
 
-`body@-` reads the body from stdin and form-encodes it. Nothing else is required: `labels` and `assignee` are optional, and this skill sends neither by default.
+`body@-` reads the body from stdin and form-encodes it. `labels` is not sent. `assignee` is sent when the recipient's Gitee username is known: `--data-urlencode "assignee=<username>"`.
 
 ## Read
 

@@ -45,7 +45,7 @@ gh issue create --repo <owner>/<repo> \
   --body-file -
 ```
 
-Write the body to stdin. The command prints the new issue's URL, which is the receipt the ticket records. Add `--assignee <login>` only when the recipient's GitHub handle is known; a waymark owner name is not always a GitHub login.
+Write the body to stdin. The command prints the new issue's URL, which is the receipt the ticket records. Add `--assignee <login>` when the recipient's GitHub handle is known: the assignment puts the issue in their queue, and the `@handle` in the body is the notification. A waymark owner name is not always a GitHub login, so resolve it before filing.
 
 No labels. A label is a repository's own vocabulary, and requiring one makes the skill fail on a repository that never set it up.
 
