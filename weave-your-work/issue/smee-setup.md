@@ -8,7 +8,7 @@ The listener that receives communicate issues and queues them for the next sessi
 - A GitHub webhook for `issues` and `issue_comment`.
 - The Node listener in `bundle/`, which holds the smee client and the webhook receiver.
 - The pending queue path in `.waymark/handles.toml`.
-- The session rule at `.agents/rules/06-pending-communications.md`.
+- The session rule at `.agents/rules/rules-pending-communications.md`.
 - The catch-up query for the sessions where the listener was off.
 
 ## 1. The channel
@@ -97,7 +97,7 @@ The path is resolved from `.waymark/`, so the default is `<repo>/pending/pending
 
 ## 6. The session rule
 
-The rule template is `bundle/rules/06-pending-communications.md`. The setup skill reads `bundle/rules/*` and copies each file into `.agents/rules/`; the copy in this repository is the installed instance. The template says:
+The rule template is `bundle/rules/rules-pending-communications.md`. The setup skill reads `bundle/rules/*` and copies each file into `.agents/rules/`; the copy in this repository is the installed instance. The template says:
 
 ```markdown
 # Read Pending Communications at Session Start
