@@ -7,13 +7,13 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T14:06:34Z
+updated_at: 2026-11-08T14:13:42Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
   reversibility: two_way
   task_kind: delivery
-  waiting_on: 'frank: review the issue skill and the two design decisions'
+  waiting_on: 'frank: the grill''s design decisions'
 ---
 ## Action
 
@@ -50,8 +50,8 @@ The skill does not use the comment category; whether it stays belongs to the exe
 
 needs discussion
 
-- Goal: the skill is built and GitHub-verified, but the owner has not read it; the earlier `passed` verdict was written before that review and is withdrawn.
-- Convention: the close was premature; the ticket is reopened for the owner's review of the skill and the two design decisions.
+- Goal: the first draft is parked at `.inbox/issue/`; the design is being regrilled, so its acceptance is not being judged now.
+- Convention: the earlier `passed` close was premature; the ticket stays open for the grill's design decisions.
 
 ## Boundaries
 
@@ -62,5 +62,5 @@ needs discussion
 
 ## Progress
 
-Where it stands: reopened after a premature close; the owner has not reviewed the skill or the two design decisions.
-Next: the owner reads the skill and says what to change.
+Where it stands: the first draft is parked at `.inbox/issue/`; the design is being regrilled with the owner on 2026-11-08, and the previous `Result`/`Review` describe the parked draft, not a delivery.
+Next: the grill settles the design; rewrite this task's Action and Acceptance from it.
