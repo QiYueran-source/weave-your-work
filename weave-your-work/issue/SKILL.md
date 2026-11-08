@@ -85,7 +85,7 @@ The URL and number are the receipt. Without them the thread is found only by mem
 
 ## Read and reply
 
-Find the thread by the ticket id in the title, or by the URL the ticket carries. Read the issue body and every comment, oldest first.
+Find the thread by the ticket id in the title, or by the URL the ticket carries. A thread with no ticket behind it is found by its number or URL from the person who noticed it, or by listing the open issues and reading titles. Read the issue body and every comment, oldest first.
 
 Reply in the thread, once, with the answer or the next question. When the answer arrived in a meeting or a chat, put it in the thread: the remote side has one place, and it is the issue.
 
@@ -94,6 +94,8 @@ Reply in the thread, once, with the answer or the next question. When the answer
 ## Land and close
 
 Ask one question first: **does this change a ticket?**
+
+**No ticket behind the thread.** A proposal is judged by the owner of the map the work would hang under. When that owner accepts, split creates the ticket, the ticket carries the issue URL as its source, and the issue closes with a comment linking it; when the owner declines, the issue closes as `not planned` with a comment that says why. Until then the issue stays open and nothing lands locally. No run watches it: the answer is read when someone looks.
 
 An answer is a decision when it changes a ticket's text, status, or relations, or settles a fact the ticket already cites. Agreement, thanks, scheduling, and options that lost are not decisions; they stay in the thread, and the local side never copies them.
 
