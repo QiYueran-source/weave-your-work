@@ -6,7 +6,7 @@ The listener that receives communicate issues and queues them for the next sessi
 
 - A smee.io channel, which gives the repository a public webhook URL.
 - A GitHub webhook for `issues` and `issue_comment`.
-- The local listener behind the smee client, with a signature check.
+- The Node listener in `bundle/`, which holds the smee client and the webhook receiver.
 - The pending queue path in `.waymark/handles.toml`.
 - The session rule at `.agents/rules/06-pending-communications.md`.
 - The catch-up query for the sessions where the listener was off.
@@ -29,29 +29,31 @@ GitHub needs no public endpoint of its own; smee holds the public URL and forwar
 
 ## 3. The listener
 
-The listener is `listener.py` in this skill's directory. It needs Python 3.10+ and `tomli` (Python 3.11 has `tomllib`).
+The listener is the Node bundle under this skill's `bundle/`: `bundle/listener.mjs` and `bundle/package.json`. It needs Node 18 or newer.
+
+```bash
+cd <skill-dir>/bundle
+npm install
+```
+
+Run it from the repository root:
 
 ```bash
 cd <repo>
-WEBHOOK_SECRET=<secret> python3 <skill-dir>/listener.py --port 8765
+WEBHOOK_SECRET=<secret> SMEE_URL=https://smee.io/<id> node <skill-dir>/bundle/listener.mjs
 ```
 
-The smee client forwards the webhook to it:
-
-```bash
-npx smee-client --url https://smee.io/<id> --target http://127.0.0.1:8765/webhook
-```
-
-The client keeps the long connection and forwards the original headers, so the listener can verify `X-Hub-Signature-256` before it writes anything. `npx` fetches the client; Node must be installed.
+One process: the smee client connects to the channel, forwards each event to the local `/webhook`, and the receiver verifies `X-Hub-Signature-256` before writing. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs alone, which is how the local test works.
 
 ## 4. The service
 
-Run the two processes at login. A user service with an environment file outside the repository:
+Run it at login. An environment file outside the repository:
 
 `~/.config/work-weave/smee.env` (mode 600):
 
 ```
 WEBHOOK_SECRET=<secret>
+SMEE_URL=https://smee.io/<id>
 ```
 
 `~/.config/systemd/user/issue-listener.service`:
@@ -64,23 +66,7 @@ After=network-online.target
 [Service]
 WorkingDirectory=<repo>
 EnvironmentFile=%h/.config/work-weave/smee.env
-ExecStart=/usr/bin/env python3 <skill-dir>/listener.py --port 8765
-Restart=on-failure
-
-[Install]
-WantedBy=default.target
-```
-
-`~/.config/systemd/user/smee-client.service`:
-
-```ini
-[Unit]
-Description=Forward smee events to the issue listener
-After=issue-listener.service
-
-[Service]
-WorkingDirectory=<repo>
-ExecStart=/usr/bin/env npx smee-client --url https://smee.io/<id> --target http://127.0.0.1:8765/webhook
+ExecStart=/usr/bin/env node <skill-dir>/bundle/listener.mjs
 Restart=on-failure
 
 [Install]
@@ -89,10 +75,10 @@ WantedBy=default.target
 
 ```bash
 systemctl --user daemon-reload
-systemctl --user enable --now issue-listener smee-client
+systemctl --user enable --now issue-listener
 ```
 
-Without a service, run both commands in a terminal while you work. The catch-up in step 7 covers the sessions where neither was running.
+Without a service, run the command in a terminal while you work. The catch-up in step 7 covers the sessions where it was not running.
 
 ## 5. The queue path
 
@@ -137,8 +123,8 @@ Keep the issues whose body opens with `kind: communicate` and whose `tickets` ar
 ## 8. The test
 
 1. File a communicate issue addressed to yourself.
-2. Watch the listener log; the queue should gain one line.
+2. Watch the listener's log; the queue should gain one line per `to`.
 3. Open a new session; the rule should surface the count and title.
 4. Reply and close the issue; the queue line stays as the record of what arrived.
 
-If the queue stays empty, check the webhook's Recent Deliveries, the smee client's connection, the listener's signature check, and the frontmatter's `kind: communicate`.
+If the queue stays empty, check the webhook's Recent Deliveries, the listener's log for the smee connection, the signature check, and the frontmatter's `kind: communicate`.
