@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T13:40:02Z
+updated_at: 2026-11-08T13:41:38Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
@@ -42,5 +42,5 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 ## Progress
 
-Where it stands: the four design questions are settled as revisable decisions; five reads walked the callers and the proposal case, and the gaps they found are fixed; the skill asks first, mentions and assigns a verified handle from `.waymark/handles.toml`, and lands a rejected proposal in the map's `Out of scope`. GitHub's five actions and the assignee path are verified; Gitee's write path is deferred.
+Where it stands: the four design questions are settled as revisable decisions; six reads walked the callers, the proposal case, and the archive case with the roster, and the gaps they found are fixed; the skill asks first, mentions and assigns a verified handle, and lands a rejected proposal in the map's `Out of scope`. `.waymark/handles.toml` exists and resolves `frank`; GitHub's five actions and the assignee path are verified; Gitee's write path is deferred.
 Next: get the user's confirmation on the two agent decisions — the triage landing and the handles roster — then write `Result` and `Review` and close the task and the map.

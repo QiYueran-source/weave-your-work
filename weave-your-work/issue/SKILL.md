@@ -33,9 +33,9 @@ A run is one pass through one of them. Filing and landing can be days apart, in 
 
 One issue per recipient per event. Two people who must both act get two issues, each addressed to one of them; one thread addressed to both leaves each waiting for the other. The owner of the run that has something to say files it; an agent acting for that owner may file on their behalf.
 
-The caller names the recipient. Finding who was affected is the caller's work — update reads the archive's `affected` list and looks up each owner, the map rule names the parent's owner, and a task run names the person in its `Person:` step. This skill does not scan for people to tell.
+The caller names the recipient. Finding who was affected is the caller's work — update reads the archive's `affected` list and looks up each owner, the map rule names the parent's owner, and a task run names the person in its `Person:` step. `waymark --json show <id>` prints a ticket's `owner` when the caller has only an id. This skill does not scan for people to tell.
 
-**Title.** `[<ticket id>] <what the recipient must decide or do>`. The id is the ticket that will carry the answer; when the message is about a different ticket, the body names that one too. It is how the remote side and the local side find each other again. Keep the action in the title; "Update" is not a title.
+**Title.** `[<ticket id>] <what the recipient must decide or do>`. The id is the ticket that will carry the answer, even when the receipt goes on a different live ticket; when the message is about a different ticket, the body names that one too. It is how the remote side and the local side find each other again. Keep the action in the title; "Update" is not a title.
 
 **Body.** Four parts, in this order:
 
