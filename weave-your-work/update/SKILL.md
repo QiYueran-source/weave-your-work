@@ -104,6 +104,8 @@ Before: `--dry-run`. Every waymark command that writes a ticket takes it, down t
 
 The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the tickets the run owns is the step nothing automates, and comparing two owner names is all it takes: every ticket records `owner`, `waymark --json show <id>` prints it, and the run's own tickets are the ones carrying the run's name.
 
+A run's name is the `owner` of the node it started from. It is not the operator recorded in the project config: that is whose machine the command ran on, and on a shared checkout it says nothing about whose tickets these are. When the starting node's owner and the operator disagree, the owner is the one the boundary is drawn around.
+
 After: one issue per affected owner. The issue carries three things, and an issue missing any of them is noise:
 
 - the relation that disappeared, named;
