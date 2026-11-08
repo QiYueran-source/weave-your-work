@@ -15,9 +15,9 @@ The probe has two `Person:` steps. `execute-one-task` says a person step stops t
 - `Progress`: where the work stands and what happens next.
 - `waiting_on`: the process chemist, with the six runs named.
 
-The ticket stayed `in_progress`. When the six runs came back, the run cleared `waiting_on`, read the run log against the signal, and wrote the finding. Nickel reached 76%, 64%, and 41% yield; the hypothesis did not hold. The review passed, because the probe's completeness is about the evidence, not about which way the answer went.
+The ticket stayed `in_progress`. When the six runs came back, the owner cleared `waiting_on`, the run read the run log against the signal, and wrote the finding. Nickel reached 76%, 64%, and 41% yield; the hypothesis did not hold. The review passed, because the probe's completeness is about the evidence, not about which way the answer went.
 
-The clearing step is where the skill is thin. `properties.md` says `waiting_on` is cleared when the answer arrives, not when work resumes. `execute-all` says whoever advances the task clears it. Neither `execute-one-task` nor `execute-all` has a step that says: read the answer, clear the field, then resume. In the walk a person did it by hand with `waymark field update wm-0jba45z3c75b --clear waiting_on`. A run that only follows the skill text does not know to do that, and a `waiting_on` value keeps the task out of the next batch.
+The clearing step used to be where the skill was thin. `properties.md` says `waiting_on` is cleared when the answer arrives, not when work resumes. `execute-all` says the owner clears it. Neither skill had a step that said when. The rule now says the owner clears it after handling the answer, before the next selection; the run stops on a non-empty value. In the walk a person did it by hand with `waymark field update wm-0jba45z3c75b --clear waiting_on`, which is now what the rule describes.
 
 ## A task that comes back
 
@@ -25,7 +25,7 @@ The table's first pass wrote four rows; R-05 and R-06 were missing. The review a
 
 The ticket now shows only the passing `Review`. The earlier one was replaced, not appended, which is what `task-review` requires. A reader of the closed ticket cannot see that the first pass failed; that history lives only in the conversation and in Git if the ticket was committed between passes.
 
-`execute-one-task` does not say to read the earlier `## Review` before a re-run. `execute-all` says a `needs changes` task goes to a fresh subagent "with the named gap", but `dispatch.md`'s list of what a subagent receives does not include that gap. A fresh subagent that receives only the ticket id, the map, and `execute-one-task` would see `Action`, `Acceptance signal`, `Boundaries`, and the fields; it would not see what the last review asked for.
+`execute-one-task` now reads the earlier `## Review` before a re-run. A `needs changes` task fixes only the named gap; a `needs discussion` task stops. The ticket carries the gap, so `dispatch.md` does not have to add it to the subagent prompt.
 
 ## A one-way task
 

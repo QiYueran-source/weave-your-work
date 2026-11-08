@@ -1,33 +1,33 @@
 # Running the batch
 
-`execute-all` is for a map whose tasks can run together. The screen map has three tasks, so the batch is the natural way to advance it. The walk did not start subagents; it checked the selection and claim rules against the ticket states the waymark commands report. Three of those rules do not hold.
+`execute-all` is for a map whose tasks can run together. The screen map has three tasks, so the batch is the natural way to advance it. The walk did not start subagents; it checked the selection and claim rules against the ticket states the waymark commands report.
+
+Two things came out of the walk: one real batch rule, and one split error that looked like a batch problem.
 
 ## Closed tasks are not filtered out
 
-`execute-all` says: "Status does not filter: a task already `in_progress` is picked up again, because the operator owning it is what makes it theirs to advance."
+`execute-all` said: "Status does not filter: a task already `in_progress` is picked up again, because the operator owning it is what makes it theirs to advance."
 
-The sentence is meant to say that `open` and `in_progress` are both eligible. It does not exclude closed tasks, and `waymark start` moves a closed task back to `in_progress`:
+The sentence did not exclude closed tasks, and `waymark start` moves a closed task back to `in_progress`:
 
 ```
 $ waymark --project waymark start wm-wea2f4ywz4v1
 set wm-wea2f4ywz4v1 closed -> in_progress
 ```
 
-The protocol task was already closed when the batch was considered. A run that chooses tasks by owner and follows "status does not filter" would claim it again, then send it to a subagent. The task would be worked a second time, and the first result would be overwritten or the subagent would stop because the work is already done.
+The protocol task was closed when the batch was considered. A run that selects by owner and follows "status does not filter" would claim it again and send it to a subagent. The rule now says only `open` and `in_progress` are candidates; a closed task is never claimed.
 
-The batch needs a positive rule: only `open` and `in_progress` tasks are chosen; a closed task is never claimed. The scenario's screen map has two closed tasks and one open task at the point a batch would start, so this is not a corner case.
+## The table/probe pair is a split error
 
-## A task whose input is produced by an excluded task
+The table's `Action` starts by reading the probe's six run records. The probe has `needs_human: true`; the table does not. The table is open and has no `waiting_on`, so the old batch would select it and send it out without the run log. The subagent would stop on the missing input.
 
-The table reads the probe's run log. The probe has `needs_human: true`, so `execute-all` excludes it. The table has no `waiting_on` value: nobody set one, because the task was written before the batch and the field is for a run that has started waiting. The table is owned by the operator, is open, and has no `waiting_on`, so the batch selects it.
+The fault is not the batch filter. The table and the probe are siblings under one map, and a task that reads another task's output is not parallel with it. The task layer has no dependency edge. The correct shape is one task that runs the six experiments and compiles the table, or two child maps with a dependency edge. `waiting_on` is for a person, not for a task's output; putting the probe there would hide the split error and require a manual release every time.
 
-`dispatch.md`'s collision list covers "work another task in the batch produces, when this task reads it". The probe is not in the batch, so the collision list does not see it. The table goes out without its input. `execute-one-task` then stops on the missing input, writes `Progress` and `waiting_on`, and the slot is wasted. The run recovers on the next pass, but the batch had no way to know before dispatch.
+This is now stated in [split/task.md](../../split/task.md): a part that reads another task's output is a split error.
 
-A realistic lab map has this shape often: one human-run experiment feeds several desk tasks. The current filter has no field that says "this task's input is not here yet" unless someone wrote `waiting_on` by hand. The skills do not say to do that before a batch.
+## Why `waymark ready` is not a batch gate
 
-## A task under a blocked map
-
-A scratch branch in the same project made the point. A map named "Hold for safety review" waited on the pilot map, and a task sat under it. In that scratch copy, `waymark ready` reported the task as ready while `waymark blocked` reported the map it belongs to:
+A scratch branch in the same project made the point. A map named "Hold for safety review" waited on the pilot map, and a task sat under it. In that scratch copy, `waymark ready` reported the task as ready while `waymark blocked` reported the map:
 
 ```
 $ waymark ready
@@ -38,18 +38,14 @@ wm-hbhrt8m40ckz  open  blocked  Hold for safety review
     blocked by wm-gja61tb1k99p
 ```
 
-Waymark's `ready` reads dependency edges only and ignores `parent`. The map was `blocked`; its child task was `ready`. `waymark start` on the task would have succeeded.
+`waymark ready` reads the item's own edges only; it does not walk `parent`. That is not a contradiction: the task has no edge, the map has one. The walk first considered a recursive `startable` check, then rejected it because it would re-block closed descendants when a distant ancestor later waits, and because waymark has no inherited state to read.
 
-That branch was a check, not part of the committed fixture, so its ids are not in the ticket tree under `waymark/`.
+The rule now lives at execution time: the executor lists the task's inputs and the parent map's unfinished dependencies, and stops only when the task actually uses a blocker's output. A blocked map does not freeze its subtree. If the work is genuinely independent, it belongs under a sibling map, not under the blocked map.
 
-`execute-all` chooses tasks under the chosen map and never reads the map's own dependency state. `execute-one-task` reads the map's `Target` and `Acceptance direction` but does not check whether the map is ready. A run that starts the pilot task while the screen is open breaks the order the map layer was built to carry. The glossary says a task is ready when the map above it is ready, but the command does not report that, and neither skill adds the check.
+## The batch rules now
 
-## What the batch page means for the skill
-
-The batch has three gaps, and they compound:
-
-- it can reopen closed work;
-- it can send a task whose input an excluded task holds;
-- it can start a task under a blocked map.
-
-None of them is caught by `waymark validate`. The first is a status rule; the second is a data rule the tickets do not carry; the third is a tree rule the task skills leave to the map layer but never read.
+- Only `open` and `in_progress` tasks are candidates; a closed task is never claimed.
+- The run owner is the chosen map's owner; the local operator is not the owner.
+- A task with a non-empty `waiting_on` is not selected. The owner clears it after handling the person's answer.
+- A task with `needs_human: true` is never sent to a subagent; the owner runs it with `execute-one-task`.
+- The collision list still covers tasks inside the batch. A task that reads another task's output is not a batch case; it is a split error, fixed before the batch starts.

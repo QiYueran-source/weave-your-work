@@ -28,7 +28,9 @@ A child that would conflict with its parent or with a sibling is not written as 
 
 ## When the parts must run in order
 
-Sometimes the layer is a sequence: the second part cannot start until the first is done. That is still two child maps, and the order is one dependency edge:
+Sometimes the layer is a sequence: the second part cannot start until the first is done. The parent map must not itself be waiting on another node when this sequence is written. A dependency on the parent closes first; splitting it early writes child maps against an answer that has not arrived.
+
+That sequence is still two child maps, and the order is one dependency edge:
 
 ```
 waymark dependency add <second child> <first child>

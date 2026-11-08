@@ -21,7 +21,7 @@ The owner is the standing acceptant. A passing review closes the ticket on the s
 
 ## What it reads
 
-The ticket: `Action`, `Acceptance signal`, `Boundaries`, and `Result`. Then the work `Result` points at: the file, the page, the notes, the answers.
+The ticket: `Action`, `Acceptance signal`, `Boundaries`, `Result`, and `waiting_on`. Then the work `Result` points at: the file, the page, the notes, the answers.
 
 `Result` is a claim about that work. The review checks the claim against the thing itself, never against itself.
 
@@ -37,13 +37,13 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 ## Four verdicts
 
-**passed**: both axes hold. The ticket closes.
+**passed**: both axes hold and `waiting_on` is empty. The ticket closes. A ticket that still carries a `waiting_on` value is waiting, not passed: return `needs discussion` instead.
 
-**needs changes**: an axis names a gap an agent can close. The task goes back to the executor with the gap named, it changes only that, and the task is reviewed again.
+**needs changes**: an axis names a gap an agent can close, and `waiting_on` is empty. The task goes back to the executor with the gap named, it changes only that, and the task is reviewed again. If `waiting_on` is set, the task is waiting on a person; that is `needs discussion`, not a change.
 
-**needs discussion**: the signal, or the standard behind it, is unclear and only the owner can settle it. The run stops and the task waits on whoever holds the answer: the owner, or the person the signal names. A run that cannot talk to a person returns this verdict to the one that can.
+**needs discussion**: the signal, or the standard behind it, is unclear and only the owner can settle it, or the task still waits on a person. The run stops and the task waits on whoever holds the answer: the owner, or the person the signal names. A run that cannot talk to a person returns this verdict to the one that can.
 
-**wrong direction**: the work cannot be judged against the signal because the task itself was wrong: the map no longer wants this, or the action never could produce the thing. The ticket closes as a failed attempt, and the owner opens the replacement task.
+**wrong direction**: the work cannot be judged against the signal because the task itself was wrong: the map no longer wants this, or the action never could produce the thing. The ticket closes as a failed attempt, `waiting_on` is cleared, and the owner opens the replacement task.
 
 ## What it writes
 
@@ -51,15 +51,17 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 `outcome=failed`, only with `wrong direction`.
 
+`waiting_on`: cleared on every close, and set only with `needs discussion`. A `passed` or `wrong direction` ticket cannot keep a value.
+
 Nothing else. No comment ticket, no edit to `Result`, no rewrite of the `Action`. The review reads the work; it does not redo it.
 
 ## Closing and handing on
 
-`passed` and `wrong direction`: remove `Progress` if a stop left one, write `## Review`, close the ticket.
+`passed` and `wrong direction`: remove `Progress` if a stop left one, clear `waiting_on`, write `## Review`, close the ticket.
 
-`needs changes`: write `## Review`, leave the ticket open, hand it back naming only the gap.
+`needs changes`: write `## Review`, leave the ticket open, hand it back naming only the gap. A ticket with a non-empty `waiting_on` is not `needs changes`; it is `needs discussion`.
 
-`needs discussion`: write `## Review`, write `Progress`, set `waiting_on` to whoever holds the answer, leave the ticket open.
+`needs discussion`: write `## Review`, write `Progress`, set `waiting_on` to the person who holds the answer, leave the ticket open.
 
 ## The report
 
@@ -71,7 +73,7 @@ A report that names something the ticket does not hold is a missing write, not a
 
 ## When the evidence is not there
 
-No `Result`, or a deliverable that cannot be found or opened, is `needs changes` naming what is missing. Do not guess at the result, and do not pass a task on its executor's word.
+No `Result`, or a deliverable that cannot be found or opened, is `needs changes` naming what is missing, unless `waiting_on` is set; then it is `needs discussion`. Do not guess at the result, and do not pass a task on its executor's word.
 
 If the `Acceptance signal` cannot be read as a standard at all, because it names no evidence or two readings of it disagree, that is `needs discussion`: the mix-up belongs to the owner.
 

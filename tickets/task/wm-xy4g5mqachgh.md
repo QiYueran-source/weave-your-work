@@ -3,11 +3,12 @@ schema: 1
 id: wm-xy4g5mqachgh
 title: Fix the task skill conflicts
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T12:41:33Z
-updated_at: 2026-11-08T12:41:33Z
+updated_at: 2026-11-08T12:45:24Z
+closed_at: 2026-11-08T12:45:24Z
 parent: wm-zkrds7y5at8v
 custom_fields:
   needs_human: false
@@ -31,6 +32,31 @@ Bring the task skill family and its two examples in line with the batch model se
 ## Acceptance signal
 
 The nine files named above state the settled rules, and none still says a blocked map may split, that `waiting_on` can name a thing, or that a batch claims a closed task. `waymark validate` reports no findings. A reader of `split` and `execute-all` sees the same model: a blocked map is not split, and a task that needs another task's output is a split error. The examples no longer teach the old shape.
+
+## Result
+
+The nine files named in the Action are updated:
+
+- `split/SKILL.md`, `split/task.md`, and `split/submap.md` now say a blocked map is not split, and a task that reads another task's output is a split error.
+- `map/frontmatter.md` says the edge gates acceptance, not the subtree, and that task front matter carries no dependency rule.
+- `task-design/properties.md` makes `waiting_on` person-only, fixes the optional-field wording, the parent/dependency check, and the owner-transfer command.
+- `execute-one-task/SKILL.md` adds the closed guard, the parent/dependency check, the person-only wait stop, the `needs_human` manual release, the `Result` hand-back, and the instruction to read and preserve an existing `## Review`.
+- `execute-all/SKILL.md` selects only open/in-progress tasks owned by the chosen map's owner, not the operator, and skips a non-empty `waiting_on`; `dispatch.md` narrows the subagent's writes.
+- `task-review/SKILL.md` refuses to pass or close a ticket with a non-empty `waiting_on`.
+- `task-example.md` is rewritten in the current task shape.
+- The chemistry batch and review pages no longer teach the old shape; the table/probe pair is marked as a split error.
+- `update/need-execute.md` was also aligned so its stopped-gate instruction names the person who holds the answer.
+
+`waymark validate` reports no findings.
+
+The findings page still lists open items that were outside this task: the order wording in `task-design/SKILL.md`, the cross-owner review exception, the required-section checks, the `needs_human`/`Person:` check, the incomplete-probe verdict, the `Next step` confirmation, the `Progress` lifecycle, and the child-map wording.
+
+## Review
+
+passed
+
+- Goal: `split`, `map/frontmatter`, `task-design/properties`, `execute-one-task`, `execute-all`, `dispatch`, `task-review`, `task-example`, and the chemistry pages state the settled rules; none still says a blocked map may split, that `waiting_on` can name a thing, or that a batch claims a closed task; `waymark validate` is clean. Read against the `Acceptance signal`.
+- Convention: only the listed skill files, the two examples, `update/need-execute.md`, and the task's own tickets were changed; no grill, glossary, map review, or issue file was touched.
 
 ## Boundaries
 

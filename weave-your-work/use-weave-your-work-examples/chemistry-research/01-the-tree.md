@@ -25,7 +25,7 @@ The pilot map's `split_as` is `task`, and it holds one task:
 
 - [Run the 5 L palladium pilot](waymark/work/task/wm-gz51ak42aq9k.md): delivery, `one_way`, `needs_human: true`, closed.
 
-Three tasks sit under the screen map as siblings, and the task rule treats siblings as parallel. The protocol can be written while the probe waits on the lab. The table cannot: it reads the probe's run log. That is the tension the batch page takes up.
+Three tasks sit under the screen map as siblings, and the task rule treats siblings as parallel. The protocol can be written while the probe waits on the lab. The table cannot: it reads the probe's run log. That is a split error, not a batch problem; the batch page takes it up.
 
 ## What the tree shows
 

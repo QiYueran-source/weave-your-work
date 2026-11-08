@@ -3,11 +3,12 @@ schema: 1
 id: wm-zkrds7y5at8v
 title: Task skill conflict fixes
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T12:41:26Z
-updated_at: 2026-11-08T12:41:26Z
+updated_at: 2026-11-08T12:45:30Z
+closed_at: 2026-11-08T12:45:30Z
 parent: wm-87pgn0b75yy5
 custom_fields:
   split_as: task

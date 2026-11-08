@@ -75,6 +75,8 @@ waymark link add <task> <other-map>
 
 The link says the two are related. It carries no wait and no shared acceptance, so the task stays a unit that can be handed over on its own. A part that really has to wait for another map is not a task; it is a child map carrying a dependency edge.
 
+A part that reads another task's output is not a task either. The two are one action with several steps, or child maps carrying an edge. A sibling task cannot wait on a sibling: the task layer has no dependency edges, and `waiting_on` is for a person, not for another task's result.
+
 Once `split_as` is `task`, every later child of that map is a task too. A part that needs a map of its own opens a sibling map, not a child of this one.
 
 ## Going back to grill

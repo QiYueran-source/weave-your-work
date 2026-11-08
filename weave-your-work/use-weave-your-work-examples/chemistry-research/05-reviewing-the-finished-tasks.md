@@ -29,11 +29,17 @@ That is the right verdict, but the route to it is odd. `execute-one-task` is sup
 
 A scratch task called "Run the nickel pilot" was written for the nickel conditions before the screen closed. When the screen came back negative, the task promised a pilot the map no longer wanted. The review returned `wrong direction`, set `outcome=failed`, and closed the ticket as a failed attempt.
 
-The verdict and the field work. The run to it does not. `execute-one-task` says a task that no longer holds is handed back to the owner with `Progress` and `waiting_on`, still `in_progress`. It does not write `Result`. `task-review` starts from `Result`. The owner had to write a `Result` and invoke the review by hand to reach the failed close. No skill describes that step.
+The verdict and the field work. The route now does too: `execute-one-task` writes `Result` with the reason and invokes `task-review`; the review closes the task as `wrong direction` or waits on the owner. The scratch walk ran before that fix, so it wrote the `Result` by hand; the rule now covers it.
+
+## Waiting_on
+
+`task-review` now reads `waiting_on`. A `passed` or `wrong direction` verdict requires it empty; a close clears it. A `needs changes` ticket with a value is `needs discussion`, because the task is waiting on a person rather than on a fix. `needs discussion` is the only verdict that sets the field.
+
+The check is a backstop. The executor stops on a non-empty `waiting_on`, and the owner clears it after handling the answer, so a review should normally see it empty. If it is not, the review must not close the ticket on the assumption that the answer arrived.
 
 ## What the review does not read
 
-`task-review` says it reads `Action`, `Acceptance signal`, `Boundaries`, and `Result`. It does not name `Failure recovery` or `Next step`, even though `task-design` makes the first required for `one_way` work and the second required for a probe. A ticket missing either can still pass, because the review never checks for it.
+`task-review` reads `Action`, `Acceptance signal`, `Boundaries`, `Result`, and `waiting_on`. It does not name `Failure recovery` or `Next step`, even though `task-design` makes the first required for `one_way` work and the second required for a probe. A ticket missing either can still pass, because the review never checks for it.
 
 The same gap covers the field and the body. `properties.md` says `needs_human: true` requires at least one `Person:` step, and `false` requires none. The review's convention axis checks `Boundaries` and writes, not that agreement. A task can carry `needs_human: true` with no person step and still pass.
 

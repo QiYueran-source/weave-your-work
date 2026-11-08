@@ -27,7 +27,7 @@ Waymark checks that a field is declared in `.waymark/config.toml`; it does not c
 | `outcome` | `failed` | review, when a node closes as a failed attempt | Absent means the node closed as intended. Only `failed` is written; a passing close is carried by `closed` and needs no field. |
 | `task_kind` | `delivery`, `probe` | split, when it creates the task | Task tickets only, written explicitly at creation. What the two kinds mean is task design's `kind.md`. |
 
-Task front matter beyond `task_kind` — `reversibility`, `needs_human`, `waiting_on` — belongs to the task skill. The dependency rules below are node-agnostic and apply to tasks as well; that is why they live here.
+Task front matter beyond `task_kind` — `reversibility`, `needs_human`, `waiting_on` — belongs to the task skill. The dependency rules below are about maps; a task never carries an edge, and the task skill says why.
 
 ## Writing practice
 
@@ -41,7 +41,7 @@ One owner per item, and only the owner advances it. Writing a field is advancing
 
 ## Dependencies
 
-An edge records a wait: the item it starts from cannot start until the item it points at is closed. It is the only place ordering is expressed. The body never mirrors an edge, and the tree never carries one.
+An edge records a wait: the item it starts from cannot be accepted until the item it points at is closed. It is the only place ordering is expressed. The body never mirrors an edge, and the tree never carries one. A blocked map does not freeze every task under it; the task skills check whether a task actually uses the blocker's output.
 
 ### Direction
 

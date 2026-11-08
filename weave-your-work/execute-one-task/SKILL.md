@@ -10,7 +10,15 @@ Take one task from unclaimed to handed over, and keep working until it is done. 
 
 ## Before the work
 
-Read the ticket: `Action`, `Acceptance signal`, `Boundaries`, and the front matter — `task_kind`, `reversibility`, `needs_human`.
+Read the ticket: `Action`, `Acceptance signal`, `Boundaries`, `waiting_on`, and the front matter — `task_kind`, `reversibility`, `needs_human`. Read `## Review` too when it is there.
+
+If the ticket is `closed`, stop. A closed task is changed through `update`, not started again.
+
+If `parent` is not a map, or the ticket carries a `dependencies` block, stop and hand the ticket back. Waymark accepts both and `validate` does not flag them; the task layer does not.
+
+If `waiting_on` is set, stop. The owner clears it after handling the answer; the run does not guess that the answer arrived.
+
+If `## Review` says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, the ticket should already be closed; stop.
 
 Read the map above it. Its `Target` says why the task matters; its `Acceptance direction` says what the branch is for. Work done correctly against the wrong map is still wrong work.
 
@@ -26,7 +34,9 @@ Claim it with `waymark start`. Say one line about where you are starting and wha
 - The task no longer holds.
 - The work lacks an input or a permission it needs.
 
-The first three and the last are waits: write `Progress`, set `waiting_on` to the person or the thing, and leave the task `in_progress`. The fourth is a hand-back, below.
+If the missing input is produced by another task or map, that is a split error, not a wait: hand the ticket back and say which producer it needs. Do not put a task or map in `waiting_on`. If a person must supply or confirm the input, wait on that person.
+
+The waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
 
 A question about how the work is done is not on this list. Decide it, and say what you decided in `Result`.
 
@@ -48,19 +58,19 @@ Report three lines: what the work produced, the verdict and the axis that decide
 
 ## When it stops
 
-Write `Progress`: the step it reached, what it waits for, and what happens next. Set `waiting_on` to the person or the thing. Leave the status `in_progress`.
+Write `Progress`: the step it reached, what it waits for, and what happens next. Set `waiting_on` to the person. Leave the status `in_progress`.
 
 Report three lines: where it stopped, why, and who picks it up.
 
 ## When the task no longer holds
 
-Hand it back to the owner. `Progress` names the step it reached and the reason, `waiting_on` is the owner, and the status stays `in_progress`. Say what the ticket would have to change to continue.
+Write `Result` with the reason: the action no longer serves the map, or the task cannot be done as written. Keep `Progress` if the run stopped, and set `waiting_on` to the owner. Then invoke `task-review`; its `wrong direction` verdict closes the task as a failed attempt, and its `needs discussion` verdict waits on the owner. Do not leave the ticket open without a review.
 
 Rewriting the `Action`, splitting the task, and changing a task that is already closed are the owner's moves. The last one has its own rules: `update`.
 
 ## What this skill writes
 
-Only `Result`, `Progress`, and `waiting_on`, plus the status it claims with. Every other section was written by the designer and stays as it is; `## Review` and `outcome` belong to the review that follows, not to this skill.
+Only `Result`, `Progress`, and `waiting_on`, plus the status it claims with. Every other section was written by the designer and stays as it is; `## Review` and `outcome` belong to the review that follows, not to this skill. When it replaces the body, it includes the existing `## Review` unchanged; only the review replaces that section.
 
 ## What this skill does not do
 

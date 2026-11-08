@@ -31,9 +31,7 @@ The probe's `Action` has two `Person:` steps: run the six experiments, and confi
 
 The design held when the tickets were written. The probe's two `Person:` steps and `needs_human: true` agreed, and in the scratch walk its stop state carried `Progress` and `waiting_on`. The pilot's `one_way` signal named the confirmation and the record carried it. The fields matched what the bodies said, which is what let `execute-all` exclude the human tasks without reading the bodies.
 
-## What the design did not settle
+## What the walk changed
 
-Two things had to be inferred, and both are on the findings page:
-
-- The `properties` reference says the three optional fields are `waiting_on`, `outcome`, and `needs_human`, then says `needs_human` is "the only optional one". The scenario uses `needs_human` on all four tickets and leaves the other two unset, so the first sentence is the accurate one.
-- The `body` reference says `Progress` is set when the work starts. `execute-one-task` does not write it at the start; it writes it only when the run stops. The closed protocol and table carry no `Progress`, and nothing in the review noticed. Since a closed ticket has no `Progress` either way, the two rules do not produce a visible contradiction, but a reader cannot tell which one to follow while the work is running.
+- The `properties` reference first said the three optional fields were `waiting_on`, `outcome`, and `needs_human`, then called `needs_human` "the only optional one". The walk found the contradiction; the file now separates the field written at creation from the two written during the run.
+- The `body` reference says `Progress` is set when the work starts. `execute-one-task` does not write it at the start; it writes it only when the run stops. The closed protocol and table carry no `Progress`, and nothing in the review noticed. Since a closed ticket has no `Progress` either way, the two rules do not produce a visible contradiction, but a reader cannot tell which one to follow while the work is running. This one is still open.

@@ -20,7 +20,7 @@ When grill has settled the layer: what it holds, which children it needs, and wh
 
 A split never clears fog and never invents a child's content. When the discussion cannot support a child's `Target`, or the evidence a task's acceptance signal would name, the part goes back to grill.
 
-A map that is waiting on another node may still split. The wait stays on the map it was written on, and the children inherit nothing: it belongs to the map, not to the parts.
+A map with an unfinished dependency is not split. The dependency gates the map's acceptance, and the next layer may depend on its result; wait for it to close. Work that is genuinely independent becomes a sibling map, not a child of the waiting map.
 
 ## The freeze
 
