@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T10:59:12Z
+updated_at: 2026-11-08T11:00:40Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: true
@@ -25,7 +25,7 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 5. Write-back: a map's `Decisions so far`, a task's affected section, or `Result` for a person's answer, with the issue URL as the source. A decision that changes no ticket stays remote.
 6. `github.md`: the `gh` commands for file, list/search, view, comment, and close, with the JSON fields each one needs.
 7. `gitee.md`: the REST calls for the same five actions, the token setup, and the response fields.
-8. Verify every command against a scratch repository on GitHub and on Gitee. Person: set `GITEE_TOKEN` in the environment with a token that can read and write issues, and confirm the GitHub scratch repository the run may use.
+8. Verify every command against a scratch repository on GitHub and on Gitee. Person: set `GITEE_TOKEN` in the environment with a token that can read and write issues, name a Gitee repository the run may file a test issue in, and confirm the GitHub scratch repository.
 9. Install with `npx skills add` and check that no link points outside the skill's directory.
 10. Say what the skill does not do.
 
