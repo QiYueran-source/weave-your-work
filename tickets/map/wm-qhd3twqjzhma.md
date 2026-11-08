@@ -7,17 +7,17 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-08T09:16:01Z
+updated_at: 2026-11-08T10:44:10Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
 
-Design the map, task, glossary and explore skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). Suits any domain. This is the core category.
+Design the map, task, grill, and explore skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). The grill skill carries the testimony, glossary, and ADR branches. Suits any domain. This is the core category.
 
 ## Notes
 
 - Category: execution. Answers "is the work advancing, who is accountable, where is it stuck".
-- Delivery location: map/, task/, explore/ and glossary/ skill directories under weave-your-work/ (to be created).
+- Delivery location: map/, task/, explore/, grill/, glossary/, and adr/ skill directories under weave-your-work/ (to be created).
 - Project layout: `tickets/` stores map and task work state; `glossary/` stores per-operator JSONL glossary sources; root `GLOSSARY.md` is the generated local view and is ignored; `testimony/` stores records of grill discussions; `docs/adr/` stores accepted architecture decisions; and `weave-your-work/` stores delivered skills and examples. See [ADR 0001](../../docs/adr/0001-project-document-layout.md).
 - Glossary: GLOSSARY.md (created; ticket/issue/comment/map/task/target tree/dependency edge/refinement/arrive/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
 - Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
@@ -41,6 +41,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - Fog exploration: before choosing a route, turn each fog item into a testable assumption and rank assumptions by impact times risk; test high-impact, high-risk ones first. Then route by where the answer lives: in someone's head, use conversation; in reality, use a probe task. Conversation asks about past behaviour and specific examples, not opinions; a probe uses the smallest reversible action and measures behaviour, not opinions. Methods stay domain-neutral: no A/B tests or other product-specific tools (user confirmed direction).
 - Terminology sync: issue means a GitHub or Gitee issue; ticket means the local waymark document (map or task); comment means a record synced back from an issue, using waymark's comment category for now (user confirmed, recorded in GLOSSARY).
 - explore boundary: ask-me handles entry routing and the generic question protocol; explore handles fog triage, the routes, and landing; map and task reference explore. The explore skill gets its own child map (user confirmed).
+- grill is the parent of the testimony, glossary, and ADR branches; the execution category reaches those three through grill (user confirmed on 2026-11-08).
 - Map body format is a separate child map under this execution map. It defines how Target, Acceptance direction, Decisions so far, Not yet specified, and Out of scope are written; the map workflow stays in the Map skill. Fog is defined as in-scope content in Not yet specified that is not yet specific enough to become a decision, child map, task, or out-of-scope item. Fog entries use extensible types: assumptions carry If wrong, and facts, decisions, and goals carry Why it matters; explore classifies, routes, and lands them (user confirmed).
 
 ## Not yet specified

@@ -7,10 +7,8 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T11:43:18Z
-updated_at: 2026-11-06T16:52:12Z
-parent: wm-qhd3twqjzhma
-soft_links:
-  - wm-7zvr8cnts3rs
+updated_at: 2026-11-08T10:44:30Z
+parent: wm-7zvr8cnts3rs
 custom_fields:
   task_kind: delivery
 ---
