@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-08T10:28:10Z
+updated_at: 2026-11-08T10:34:36Z
 ---
 ## Destination
 
@@ -19,6 +19,12 @@ Form an installable skill set for general team collaboration under weave-your-wo
 - One map per category, listed under "Sub-maps". Design decisions live in each sub-map; this map is an index only and does not restate them.
 - Reference sources: matt skill set (.inbox/skills), reference skills (.inbox/skills-ref), design notes (.inbox/work-methods/).
 - Key findings (general-methods.md): name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts others can read; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
+
+## Acceptance direction
+
+The set is accepted when every skill the sub-maps name is delivered under `weave-your-work/`, installs with `npx skills add`, and one end-to-end run over the whole set has been done.
+
+That run is one batch, not one per map: write the worked example each effort needs under `use-weave-your-work-examples/`, walk every skill's paths in it, and apply whatever the walk shows is wrong. A map is judged on the deliverable its own acceptance direction names; whether a reader can walk the set is judged here, once.
 
 ## Sub-maps
 
