@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:08Z
-updated_at: 2026-11-08T16:03:02Z
+updated_at: 2026-11-08T16:04:28Z
 parent: wm-wjwa9081hse1
 ---
 ## Target
@@ -25,6 +25,7 @@ The setup skill map is accepted and its own children are done, or the environmen
 - A skill that needs installation carries a `bundle/`; a skill with nothing to install has none. The setup skill specifies which skills it installs; it does not scan every installed skill. (user confirmed, 2026-11-08)
 - The bundle layout: `setup.md` (required), `rules/` (optional; plain Markdown rule files), `tools/` (optional). `setup.md` carries the install and verify steps; `tools/` holds scripts and their dependency manifests, and its install command lives in `setup.md`. (user confirmed, 2026-11-08)
 - Setup installs a rule by copying the Markdown into `.agents/rules/<basename>`: an identical file is a no-op, and a different one is a conflict the person decides, not an overwrite. (agent decision, revisable)
+- The convention is also a project rule at `.agents/rules/rules-bundles.md`, so this repository's sessions follow it while the setup skill is being built. (agent decision)
 
 ## Not yet specified
 
