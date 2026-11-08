@@ -51,14 +51,15 @@ A "no" to the first says the destination is wrong. A "no" to the second says the
 
 The first test is the one that decides whether this is a move at all. A node that no longer refines anything at its current parent is not being badly placed; it is answering a different question, and that is the third disposition in `content.md`. Move only when the node is right and the position is wrong.
 
-## Readiness follows the destination
+## Readiness does not follow the destination
 
-A move can make work start or stop without touching the moved node's status.
+A move can make work wait longer without touching the moved node's status — but `waymark ready` will not show it.
 
-- Moving N under a map that is `blocked` by a dependency makes everything under N unreachable until that dependency clears. `waymark ready` will stop listing it.
-- Moving N out from under a blocked map frees it.
+Read the parent chain yourself. Work hung under a map that waits on a dependency is behind that wait, even though the ticket says `ready`: a task under a blocked map, and a map under a blocked map, both come back `ready` from the query. Verified in waymark 0.1.0 — `waymark ready` reads dependency edges only and never looks at `parent`. A task under a map that is `closed` is `ready` too.
 
-Check `waymark ready` and `waymark blocked` after the move, not before. The tree is the only place this shows up, and neither P's nor N's ticket says anything about it.
+So after a move, walk the new parent chain in `waymark tree --root <Q>` and ask whether anything above N is waiting. The query answers a narrower question than the one being asked, and the gap is exactly where a misplaced subtree hides.
+
+Moving N out from under a blocked map shortens the wait the same way, and is equally invisible.
 
 ## What the move does not record
 
@@ -91,7 +92,7 @@ The same goes for changing what a node is for. If N is moving because it now ans
 2. Run the two tests. If N does not refine Q, stop — the destination is wrong.
 3. Check ownership of P and Q. A foreign one gets an issue with the reopen decision, not an edit.
 4. `waymark parent set <N> <Q>`.
-5. Read back: `waymark tree --root <Q>`, `waymark tree --root <P>`, `waymark ready`, `waymark blocked`.
+5. Read back: `waymark tree --root <Q>` and `--root <P>` for the shape, then walk Q's parent chain for waits. `waymark ready` and `waymark blocked` do not see a wait inherited from a parent, so they cannot answer this one.
 6. Reopen P or Q where step 2 said so, each with its own review.
 7. One commit naming N, P, and Q. The message says where it came from and why.
 
