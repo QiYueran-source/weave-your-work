@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T09:06:45Z
+updated_at: 2026-11-08T09:07:16Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -41,6 +41,8 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - Hand-over to another owner is an issue. The issue's shape and count belong to the communication category; update only names the hand-over and records the link. (user confirmed)
 - Update never hangs a child under a foreign map without consent: the rules for a foreign parent — hang directly when it is open, open an issue and wait when it is closed, and prepare the child as an isolated node meanwhile — belong to [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and update points there instead of restating them. (user confirmed)
 - Two waymark writes cross ownership and update must call them out rather than perform them quietly: `link add` / `link remove` writes both tickets, and `archive` removes inbound dependencies and soft links from every ticket pointing at the archived node. Retiring a node that others depend on is a write to their tickets. (verified in waymark 0.1.0)
+- A relocation is chosen by the same two tests as any other change. Content unchanged and only the position wrong → `waymark parent set` writes one file and every dependent keeps working. Content changed as well → the node is retired and rebuilt, so the move does not get its own path. (user confirmed)
+- Rebuilding for a pure relocation is the one case the tests rule out, because it destroys what the move was meant to preserve: archiving the old node removes the edges of everyone depending on it, and `waymark create` always produces an open node, so a closed node comes back open. (verified in waymark 0.1.0)
 - Naming the foreign inbound edges before an archive is cheap: `waymark --json list` returns `dependents` for every item, so the operator reads the full set without grepping. Links are not in that field — a soft link lives on both files, so it shows up as the other ticket's own `soft_links`. (verified in waymark 0.1.0)
 - `--dry-run` computes the full blast radius but does not judge it: `archive --dry-run` lists every ticket whose front matter it will edit and stays silent about their owners. When the archived node belongs to the operator and a foreign ticket is in `affected`, the envelope carries no warning at all — a run that rewrites three other people's files looks clean. Reading `affected` and looking up each owner is the operator's job, and it is the only step nothing automates. (verified in waymark 0.1.0)
 - Archiving changes what a dependent may do, not just what its file says. With carol's ticket depending on kim's node, archiving the node takes carol's ticket from `blocked` to `ready` — her plan moves without her knowing. That consequence, not the merge, is the reason a foreign inbound edge stops the archive. (verified in waymark 0.1.0)
@@ -55,11 +57,12 @@ Review point: Check that the skill states the two boundary tests, the three disp
 
 ## Not yet specified
 
-- The order of writes for the retire-and-replace path, including the steps that must happen before archiving because an archived ticket rejects every write.
+- The order of writes for the retire-and-replace path. Known constraints: an archived ticket rejects every write, so the replacement must exist and its id must be on the old ticket before the archive; and a child left pointing at an archived parent makes `waymark validate` report DANGLING_REFERENCE, so a subtree retires bottom-up with each parent field cleared first.
 - Whether update is model-invocable or user-invoked only.
 - Which of the moved node and its two parents reopen on a move. The rule proposed earlier follows the work: the moved node keeps its status, the old parent reopens when its Target no longer holds without it, and the new parent reopens only when an unfinished subtree arrives under a closed map.
 - Whether update can move a node that is open and not yet split. The trigger for content changes is "closed node or split map", but relocating applies in any state, so `move.md` either widens SKILL.md's entry condition or is reachable only for closed and split nodes.
-- What "relate the isolated preparation tree to the target node" means while an issue is open. `waymark link add` writes both tickets, which is the write the rule exists to prevent, so the only non-invasive relation is a line in the child's own body. The same question applies to soft links in general: a link is symmetric, so it is not a second copy that can drift (one command writes both ends), but it does touch a foreign file and can collide with its owner's edits. Children was removed for redundancy; links are a different case and need their own ruling.
+- What "relate the isolated preparation tree to the target node" means while an issue is open. Archive now proceeds across ownership and notifies afterwards, which is the same trade `link add` would make, so the two may be settled together: either both write and both notify, or both stay inside the operator's own files.
+- Whether a soft link may be written to a foreign ticket at all. It is the one relation stored on both sides, so `link add` and `link remove` rewrite the other owner's file even when nothing about their work changes; nothing is removed from it, unlike the archive case, which is why the two are not automatically the same ruling. (user asked to keep the current behaviour working while the question is open)
 - The hand-over issue itself is designed in the communication category; whether update adds a dependency edge to that map is undecided.
 
 ## Out of scope
