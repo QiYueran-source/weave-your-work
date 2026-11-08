@@ -41,6 +41,7 @@ Review point: Read the entry against the method and the record. The entry points
 - Glossary landing: a term is written to the operator's `glossary/<operator>.jsonl` source the moment it resolves during the discussion, one term at a time, not batched (user confirmed; the source file is the glossary branch's decision).
 - ~~Testimony landing: the testimony is written in real time as the grill advances, and edited as the discussion progresses; other tickets cite it only after the grill closes (user confirmed).~~ Revised on 2026-11-08: the testimony is updated once per round — the question tree is rewritten and the discussion is appended; other tickets cite it only after the grill closes (user confirmed).
 - ADR landing: an ADR is written only when the decision is hard to reverse, surprising without context, and a real trade-off — all three; otherwise the decision goes to the caller's Decisions so far (user confirmed).
+- Entry update on 2026-11-08: `SKILL.md` and its description name the three branches — testimony is a reference file in this skill, glossary and ADR are independent skills — and the testimony bullet points at `testimony.md` instead of restating its per-round rule (settled on 2026-11-08).
 
 ## Not yet specified
 
@@ -61,3 +62,13 @@ Review point: Read the entry against the method and the record. The entry points
 
 - explore's fog resolution.
 - split's child creation.
+
+## Review
+
+Entry checked on 2026-11-08.
+
+- Points at `how-to-grill.md` and `testimony.md`.
+- Names the three branches: testimony, glossary, ADR.
+- Does not restate the method's rules or a branch's landing rule; the per-round testimony rule stays in `testimony.md`.
+- `npx skills add ./weave-your-work/grill --list` finds 1 skill; `testimony.md` exists; the glossary and ADR skills exist and install.
+- The map stays open: `wm-31f6a2c9d840` (testimony) and `wm-rq3exm0m5563` (glossary) are open; `wm-fptggp5yhf8s` (ADR) is closed.

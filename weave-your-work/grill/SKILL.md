@@ -2,8 +2,8 @@
 name: grill
 description: >-
   Grill a plan, decision, or idea until it is clear: ask the questions that can
-  be answered now, record the answers in the testimony, and hand off the work
-  the discussion produces.
+  be answered now, record the answers in the testimony, write resolved terms
+  and ADRs through their skills, and hand off the work the discussion produces.
 ---
 
 # Grill
@@ -20,7 +20,9 @@ Read `how-to-grill.md` before the first round. It defines the question tree, the
 
 ## What the grill writes
 
-- **Testimony**: one update per round — rewrite the question tree and append what was said. `testimony.md` holds the item and body rules.
+The grill has three branches. Testimony is a reference file in this skill; glossary and ADR are independent skills. It also hands off work.
+
+- **Testimony**: the record of this grill. `testimony.md` holds the item and body rules.
 - **Glossary terms**: when a term resolves, write it through the `glossary` skill.
 - **ADRs**: when a decision may pass the ADR skill's gates, call the `adr` skill; it decides and writes the record.
 - **Work**: when a question becomes work, write `work: <what>` in the testimony and hand it to the caller. The caller creates the map or task; the grill does not.
