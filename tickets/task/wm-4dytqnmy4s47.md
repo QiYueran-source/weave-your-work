@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-08T10:23:23Z
+updated_at: 2026-11-08T10:23:39Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -49,7 +49,7 @@ The retire-and-replace order was run end to end — a map with two children and 
 
 passed
 
-- Goal: read against the `Acceptance signal`'s four parts. The files exist and install with `npx skills add`, re-checked after the last edit, and the installed copy holds no path outside its own directory. The reader walkthrough was the part this ticket first passed on nothing, and it now has evidence: three subagents given only the three files and three real tickets. The first two could not use the skill; the third called it usable and found one contradiction left, fixed in `ccad92f`. No reader has seen the skill since that fix, so the followability claim rests on a repair rather than a fresh read — the gap is in the example's gap list, not hidden here.
+- Goal: read against the `Acceptance signal`'s four parts. The files exist and install with `npx skills add`, re-checked after the last edit, and the installed copy holds no path outside its own directory. The reader walkthrough was the part this ticket first passed on nothing, and it now has evidence: three subagents given only the three files and three real tickets. The first two could not use the skill; the third called it usable and found one contradiction left, fixed in `ccad92f`. A fourth reader then checked that fix, found the section still used one word for two things — a map's acceptance direction as its verdict and as not-a-verdict — and that was fixed by separating a plan from a kept promise. At that point the readers were finding wording, not missing steps, which is where the reading stopped.
 - Convention: `task-design/body.md` and rule 05 hold — sections in order, quoted description, no filler section, `Result` written before this section. One deviation stands and is recorded: the build ran before this ticket existed, and the verdict it wrote first was wrong.
 
 The three rounds changed the wording and the reading path, not the design. The three dispositions, the two tests, and the ownership rule survived all of them. What did not survive: where a verdict lives, what an open node's status means, whether a map's verdict is its acceptance direction or its status, how a run learns its own name, and which command reads which relation.
