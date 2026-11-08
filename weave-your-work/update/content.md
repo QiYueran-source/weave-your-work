@@ -46,7 +46,7 @@ waymark reopen <id>
 
 Then the node goes through review again, against the new text, by the same rules as the first time, and closes again when it passes.
 
-Do the same to every closed ancestor whose acceptance counted this node. `waymark reopen` moves one ticket; it does not walk the tree, and no other command does either. So after reopening a child, read its `parent` and reopen that map too if it is closed, then the map above it, stopping where the completion claim stops being about this child. That is the same scan the dispositions describe, run upward, and it is the run's job because nothing else does it.
+Do the same to every closed ancestor whose acceptance counted this node. `waymark reopen` moves one ticket; it does not walk the tree, and no other command does either. So after reopening a child, read its `parent` and reopen that map too if it is closed, then the map above it, stopping where the completion claim stops being about this child. That is the impact scan from `SKILL.md`, run upward, and it is the run's job because nothing else does it.
 
 An ancestor owned by someone else is where the write stops. Reopen what the run owns, and tell that owner in an issue that their map's acceptance no longer holds and why.
 
