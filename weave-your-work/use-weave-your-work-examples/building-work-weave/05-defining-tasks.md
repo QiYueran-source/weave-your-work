@@ -36,6 +36,10 @@ The Task skill map now has two children: [Task design skill](../../../tickets/ma
 
 Later, on 2026-11-08, the map gained a third child, [Task skill entry](../../../tickets/map/wm-aya8m15vkvkj.md), when the total entry was added. [What changed during the run](06-changes.md) records why the earlier no-entry decision was reversed.
 
+Building the entry took six steps: write the Task skill map's new acceptance and decision, reopen it, hang the entry child map, write the child map's body, create the writing task, then implement the entry.
+
+The actual run built the entry map and its task as isolated nodes first, so the parent's body could name the child's id. It wrote the parent's body, reopened it, then hung the map with `parent set`. A closed map takes no child, and update's rule for that case is to build the replacement isolated and hang it after the reopen, so the tree never held a child under a closed parent.
+
 ### What the skill maps do not cover
 
 The four skill maps cover the skill-level targets; the setup ticket covers the first executable piece. The function details stay in each skill map's Not yet specified until they can be written as tasks. The execution map's category-level questions (phases, claiming, acceptance details, git collaboration) stay in its own fog.
