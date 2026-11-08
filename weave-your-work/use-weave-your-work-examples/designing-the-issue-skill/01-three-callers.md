@@ -6,7 +6,7 @@ Three delivered designs needed to send a message, and each fixed one part of the
 
 - [Update skill: change a closed map or task](../../../tickets/map/wm-9sfmaphskg0c.md) files one issue per affected owner after an archive that removed a foreign relation. The issue must name the relation that disappeared, the id that replaced the node, and the decision the owner now has to make. An issue that only says "something changed" fails this caller.
 - [Task execution skill](../../../tickets/map/wm-avc7a31tae33.md) records a `Person:` step's wait in `waiting_on` and `Progress`; the notification is an issue, and the answer is recorded in the task's `Result`.
-- [Map front matter and dependencies](../../../tickets/map/wm-8zyyyafxbdwr.md) opens an issue when a child wants to hang under a closed map owned by someone else, and keeps the child isolated with `Intended parent: <id>, waiting on <issue URL>` until the owner reopens.
+- [Map front matter and dependencies](../../../tickets/map/wm-8zyyyafxbdwr.md) opens an issue when a child wants to hang under a closed map owned by someone else, and keeps the child isolated with `Intended parent: <id>, waiting on <issue URL>` until the owner reopens. A refusal ends the wait too: the `waiting on` line comes off the child, and the issue closes with the reason.
 
 Those three rules agree on the shape: one recipient, the ticket id in the title, the ask in the body, and a named place where the answer lands. The skill did not have to invent a template; it had to write down the one the callers already assumed.
 

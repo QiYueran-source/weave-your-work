@@ -31,7 +31,7 @@ A run is one pass through one of them. Filing and landing can be days apart, in 
 
 ## File
 
-One issue per recipient per event. Two people who must both act get two issues, each addressed to one of them; one thread addressed to both leaves each waiting for the other. The ticket's owner files it; an agent acting for the owner may file on their behalf.
+One issue per recipient per event. Two people who must both act get two issues, each addressed to one of them; one thread addressed to both leaves each waiting for the other. The owner of the run that has something to say files it; an agent acting for that owner may file on their behalf.
 
 **Title.** `[<ticket id>] <what the recipient must decide or do>`. The id is the ticket that will carry the answer; when the message is about a different ticket, the body names that one too. It is how the remote side and the local side find each other again. Keep the action in the title; "Update" is not a title.
 
@@ -82,7 +82,7 @@ Ask one question first: **does this change a ticket?**
 
 An answer is a decision when it changes a ticket's text, status, or relations, or settles a fact the ticket already cites. Agreement, thanks, scheduling, and options that lost are not decisions; they stay in the thread, and the local side never copies them.
 
-**No change.** Close the issue with a comment that says so. Nothing is written locally.
+**No change.** Close the issue with a comment that says so. No decision is written; the ticket may still carry the URL as its receipt.
 
 **A change.** The ticket's owner writes it:
 
@@ -90,11 +90,13 @@ An answer is a decision when it changes a ticket's text, status, or relations, o
 - a task: the affected section — `Action`, `Acceptance signal`, or `Boundaries` — with the URL where the change is explained; a person's answer goes in `Result`, as the task body requires;
 - a relation: the owner runs the waymark command, and the URL goes in the ticket that records the change — the child's `Intended parent` line, a task's `Progress` or `Result`, or the map's `Decisions so far`.
 
+A refusal that ends a wait is a change too: the child's `waiting on` line comes off its body, and the closing comment records the refusal. A wait that ends without a command still changes what the ticket says.
+
 A run that is not the owner stops at the issue. It replies, and it records on its own ticket what it is waiting for; it does not write the foreign ticket.
 
 **Close.** A closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." Whoever sees the ask resolved closes it — the filer, or the recipient after changing their own ticket. Close as completed on GitHub; set `state=closed` on Gitee.
 
-**Done when** the ticket carries the decision, the issue is closed, and the closing comment points at the ticket.
+**Done when** the issue is closed, its closing comment names the ticket, and the ticket carries the decision — or, when the answer changed nothing, the closing comment says so.
 
 ## Failures worth naming
 
