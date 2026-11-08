@@ -34,7 +34,7 @@ Ask them in order and stop at the first one that fails.
 
 Both yes is the first disposition. First yes, second no is the second. First no is the third, and the second does not need asking.
 
-### Where the verdict is
+## Where the verdict is
 
 The second test needs something to read, and where that is depends on the node:
 
