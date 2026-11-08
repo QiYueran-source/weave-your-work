@@ -33,6 +33,8 @@ A run is one pass through one of them. Filing and landing can be days apart, in 
 
 One issue per recipient per event. Two people who must both act get two issues, each addressed to one of them; one thread addressed to both leaves each waiting for the other. The owner of the run that has something to say files it; an agent acting for that owner may file on their behalf.
 
+The caller names the recipient. Finding who was affected is the caller's work — update reads the archive's `affected` list and looks up each owner, the map rule names the parent's owner, and a task run names the person in its `Person:` step. This skill does not scan for people to tell.
+
 **Title.** `[<ticket id>] <what the recipient must decide or do>`. The id is the ticket that will carry the answer; when the message is about a different ticket, the body names that one too. It is how the remote side and the local side find each other again. Keep the action in the title; "Update" is not a title.
 
 **Body.** Four parts, in this order:
@@ -42,7 +44,7 @@ One issue per recipient per event. Two people who must both act get two issues, 
 3. What happened or what is asked: one paragraph a reader who has not seen the ticket can follow.
 4. What the recipient must decide or do, and how to reply: answer in the thread; change the ticket when it is theirs.
 
-A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask for it before filing. Write the body in the language the recipient reads.
+A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. Write the body in the language the recipient reads.
 
 The caller's contract sets the content:
 
@@ -68,14 +70,14 @@ An archive hand-over, filled in:
 
 - Know the platform and the repository; `github.md` and `gitee.md` say how. The checkout's `origin` names the repository; a checkout with several remotes needs the person to name the one that holds the issue.
 - Search for an open issue whose title already carries the ticket id. If one exists, reply there; a second thread splits the answer.
-- If the repository is public, read the draft to the person and get a yes. A public issue is a publication, and it outlives the ticket. Keep tokens, secrets, local paths, and other people's data out of the body.
+- If the repository is public, read the draft to the run's owner and get a yes. The yes belongs to whoever speaks for the repository, not to the recipient, because the publication is the repository's. A public issue outlives the ticket. Keep tokens, secrets, local paths, and other people's data out of the body.
 
 **After.** Record the issue URL where the wait lives:
 
 - a task waiting on a person: `waiting_on` names the person, `Progress` carries the URL;
 - a map waiting on a decision: the question goes in `Not yet specified` with the URL, and moves to `Decisions so far` when it is settled;
 - a child waiting on a foreign parent: its body carries `Intended parent: <id>, waiting on <issue URL>`;
-- a notification filed after a local change, such as an archive that removed a foreign edge: the URL goes on the live ticket that continues the change — the replacement node after a retire-and-replace, or the map or task that made the change. An archived ticket rejects body edits, so it cannot hold the receipt.
+- a notification filed after a local change, such as an archive that removed a foreign edge: the URL goes on the live ticket that continues the change — the replacement node after a retire-and-replace, or the map or task that made the change. An archived ticket rejects body edits, so it cannot hold the receipt. A retire-and-replace names the replacement; an archive with no replacement has nothing to tell the dependents, and the caller does not file. When every live ticket that continues the change is owned by someone else, the run writes no receipt: the issue and its closing comment carry the pointer, and the run reports the URL.
 
 The URL and number are the receipt. Without them the thread is found only by memory.
 
