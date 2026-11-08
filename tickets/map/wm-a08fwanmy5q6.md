@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:08Z
-updated_at: 2026-11-06T12:52:47Z
+updated_at: 2026-11-08T16:00:45Z
 parent: wm-wjwa9081hse1
 ---
 ## Target
@@ -22,11 +22,15 @@ The setup skill map is accepted and its own children are done, or the environmen
 ## Decisions so far
 
 - Environment category holds the setup skill as a skill map (user confirmed).
+- A skill that needs installation carries a `bundle/`; a skill with nothing to install has none. The setup skill specifies which skills it installs; it does not scan every installed skill. (user confirmed, 2026-11-08)
+- The bundle layout: `setup.md` (required), `rules/` (optional; Markdown rule files, each with YAML frontmatter `name`, `title`, `description`), `tools/` (optional). `setup.md` carries the install and verify steps; `tools/` holds scripts and their dependency manifests, and its install command lives in `setup.md`. (user confirmed, 2026-11-08)
+- Setup installs a rule by copying the Markdown into `.agents/rules/<basename>` and adding a `source` frontmatter field; an existing file without `source` is a conflict the person decides, not an overwrite. (agent decision, revisable)
 
 ## Not yet specified
 
 - Whether the environment category holds more skills later.
 - How an initialized project enters the execution flow.
+- The setup skill's own list of bundles, its order, and its conflict report. (reopened 2026-11-08)
 
 ## Out of scope
 
