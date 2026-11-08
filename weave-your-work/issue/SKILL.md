@@ -33,12 +33,12 @@ A run is one pass through one of them. Filing and landing can be days apart, in 
 
 One issue per recipient per event. Two people who must both act get two issues, each addressed to one of them; one thread addressed to both leaves each waiting for the other. The ticket's owner files it; an agent acting for the owner may file on their behalf.
 
-**Title.** `[<ticket id>] <what the recipient must decide or do>`. The id is how the remote side and the local side find each other again. Keep the action in the title; "Update" is not a title.
+**Title.** `[<ticket id>] <what the recipient must decide or do>`. The id is the ticket that will carry the answer; when the message is about a different ticket, the body names that one too. It is how the remote side and the local side find each other again. Keep the action in the title; "Update" is not a title.
 
 **Body.** Four parts, in this order:
 
 1. Who it is for: `@handle` when the handle is known, the name otherwise.
-2. Which ticket: `<id> "<title>"`, once.
+2. Which tickets: the one that will carry the answer, `<id> "<title>"`, and the one the message came from when they differ.
 3. What happened or what is asked: one paragraph a reader who has not seen the ticket can follow.
 4. What the recipient must decide or do, and how to reply: answer in the thread; change the ticket when it is theirs.
 
@@ -61,7 +61,8 @@ The caller's contract sets the content:
 
 - a task waiting on a person: `waiting_on` names the person, `Progress` carries the URL;
 - a map waiting on a decision: the question goes in `Not yet specified` with the URL, and moves to `Decisions so far` when it is settled;
-- a child waiting on a foreign parent: its body carries `Intended parent: <id>, waiting on <issue URL>`.
+- a child waiting on a foreign parent: its body carries `Intended parent: <id>, waiting on <issue URL>`;
+- a notification filed after a local change, such as an archive that removed a foreign edge: the ticket that made the change carries the URL where the change is recorded — `Decisions so far` on a map, `Progress` or `Result` on a task.
 
 The URL and number are the receipt. Without them the thread is found only by memory.
 
@@ -99,7 +100,7 @@ A run that is not the owner stops at the issue. It replies, and it records on it
 
 - No remote, or a host that is neither github.com nor gitee.com. Name the host; the person passes a repository explicitly.
 - `gh` missing or not authenticated. `gh auth login`.
-- `GITEE_TOKEN` missing. Create a token with the issues permission and export it.
+- `GITEE_TOKEN` missing. Create a token with the `issues` and `notes` permissions and export it.
 - A write that fails after the issue exists. Report the URL; the thread is real even when the local record did not land.
 - A remote error. Show its text unchanged; a paraphrase hides the cause.
 

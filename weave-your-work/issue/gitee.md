@@ -6,7 +6,7 @@ This reference covers repositories on `gitee.com`. Enterprise issue endpoints li
 
 ## The token
 
-Create a personal access token in Gitee's settings, at `https://gitee.com/profile/personal_access_tokens`, with the permission that covers issues, then export it:
+Create a personal access token in Gitee's settings, at `https://gitee.com/profile/personal_access_tokens`, with the `issues` and `notes` permissions (Gitee may list comments under `notes`), then export it:
 
 ```bash
 export GITEE_TOKEN=<token>
