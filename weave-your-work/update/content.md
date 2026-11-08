@@ -115,7 +115,7 @@ Clearing also erases the old position from the ticket, which is why a *move* is 
 ## What lands where
 
 - The changed body, via `waymark body replace`.
-- `status`, via `waymark status set`, when the verdict no longer holds.
+- `status` via `waymark reopen`, and back to closed through review, when the verdict no longer holds.
 - For a task, `## Review`, replaced by the review skill; for a map, nothing, because a map body carries no verdict.
 - `archived_at` and `archive_reason`, by `waymark archive`.
 - The replacement's body opens by naming the node it replaces.
