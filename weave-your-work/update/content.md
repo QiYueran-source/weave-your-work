@@ -60,7 +60,7 @@ Whichever category, the run reads the acceptance direction before it writes: `##
 
 Two things to keep straight:
 
-- **The old review is not kept in place.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on.
+- **The old review is not kept in place.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on. The exception is a verdict this skill has to retract rather than supersede — if the review that closed the node was itself wrong, the struck-through verdict is the record that it was, which is what `wm-4dytqnmy4s47` does.
 - **Reopening is decided by the verdict, never by the size of the edit.** A one-line change that makes the acceptance false reopens the node; a long clarifying paragraph that leaves it true does not. That is the first disposition, and the status never moves.
 
 Writing the changed body before reopening also means the reopen lands on a ticket that already says what it now claims. Reopening first leaves a short window where the tree says "not done" and the ticket still describes the old promise.
