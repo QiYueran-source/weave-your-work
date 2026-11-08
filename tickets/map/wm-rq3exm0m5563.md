@@ -7,10 +7,8 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T11:43:18Z
-updated_at: 2026-11-08T10:44:30Z
+updated_at: 2026-11-08T10:45:03Z
 parent: wm-7zvr8cnts3rs
-custom_fields:
-  task_kind: delivery
 ---
 ## Target
 
