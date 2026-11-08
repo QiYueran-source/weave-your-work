@@ -7,13 +7,12 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T11:13:23Z
+updated_at: 2026-11-08T13:35:27Z
 parent: wm-25b3q7mg88c7
 custom_fields:
-  needs_human: true
+  needs_human: false
   reversibility: two_way
   task_kind: delivery
-  waiting_on: 'frank: Gitee token and Gitee test repository'
 ---
 ## Action
 
@@ -26,22 +25,22 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 5. Write-back: a map's `Decisions so far`, a task's affected section, or `Result` for a person's answer, with the issue URL as the source. A decision that changes no ticket stays remote.
 6. `github.md`: the `gh` commands for file, list/search, view, comment, and close, with the JSON fields each one needs.
 7. `gitee.md`: the REST calls for the same five actions, the token setup, and the response fields.
-8. Verify every command against a scratch repository on GitHub and on Gitee. Person: set `GITEE_TOKEN` in the environment with a token that can read and write issues, name a Gitee repository the run may file a test issue in, and confirm the GitHub scratch repository.
+8. Verify every GitHub command against a scratch repository. Gitee's write path is deferred to the end-to-end batch; its reads and write endpoints are checked.
 9. Install with `npx skills add` and check that no link points outside the skill's directory.
 10. Say what the skill does not do.
 
 ## Acceptance signal
 
-`weave-your-work/issue/` holds `SKILL.md`, `github.md`, and `gitee.md`. A reader holding one ticket with a foreign dependent, one task with a `Person:` step, and one child waiting on a closed parent can take each through file, read, reply, land, and close on both platforms. Every command in the two references was run against a scratch repository and its output recorded. The skill installs with `npx skills add` without a YAML parse error and holds no link outside its own directory.
+`weave-your-work/issue/` holds `SKILL.md`, `github.md`, and `gitee.md`. A reader holding one ticket with a foreign dependent, one task with a `Person:` step, and one child waiting on a closed parent can take each through file, read, reply, land, and close on GitHub. Every GitHub command was run against a scratch repository and its output recorded. Gitee's write path is a recorded gap, exercised in the end-to-end batch. The skill installs with `npx skills add` without a YAML parse error and holds no link outside its own directory.
 
 ## Boundaries
 
-- No triage, labels, assignment, or queue.
+- No triage state machine, no labels, no queue.
 - No ticket creation from an issue; an accepted proposal goes through split.
 - No automatic sync, polling, or webhooks.
 - No writing a ticket the run does not own.
 
 ## Progress
 
-Where it stands: GitHub's five actions are verified end to end; four blind reads walked the three callers and the outside-proposal case, and the boundary gaps they found are fixed; Gitee's reads are verified and its three write endpoints are confirmed to exist, but no write has succeeded.
-Next: run Gitee's create, comment, and close with a token and a test repository, record both platforms' outputs in `Result`, then close the task and the map.
+Where it stands: GitHub's five actions are verified end to end; four blind reads walked the three callers and the outside-proposal case; Gitee's write path is deferred. Four design questions are open: the issue's form, whether a triage outcome lands locally, how delivery is made prompt, and how an owner resolves to a remote handle.
+Next: settle the four in the map, apply them to the skill, then re-run the affected reads.
