@@ -78,7 +78,7 @@ That is not a loophole, it is the shape of the tool: there is no command that re
 
 ## Before a cross-owner write, and after it
 
-Before: `--dry-run`. Every write command takes it — `archive`, `close`, `create`, `move`, `reopen`, `link add`/`remove`, `dependency add`/`remove`, `parent set`/`clear`, `status set`, `body replace`. For `archive` and `link`, read the affected list and write down, for each ticket in it, whose it is and which relation disappears. The human output names the relation (`removes dependencies`, `removes soft_links`); the JSON `affected` array carries only ids and paths. `no inbound relationships to remove` means nothing outside the node will be touched.
+Before: `--dry-run`. Every write command in waymark 0.1.2 takes it, down to `title set` and `owner transfer`, and it either reports the change or says `would be unchanged`. For `archive` and `link`, read the affected list and write down, for each ticket in it, whose it is and which relation disappears. The human output names the relation (`removes dependencies`, `removes soft_links`); the JSON `affected` array carries only ids and paths. `no inbound relationships to remove` means nothing outside the node will be touched.
 
 The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the run's own tickets is the step nothing automates.
 
