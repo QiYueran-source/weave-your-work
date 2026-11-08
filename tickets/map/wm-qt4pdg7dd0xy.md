@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:55Z
-updated_at: 2026-11-07T16:21:59Z
-closed_at: 2026-11-07T15:09:25Z
+updated_at: 2026-11-08T13:16:23Z
+closed_at: 2026-11-08T13:16:23Z
 parent: wm-avc7a31tae33
 ---
 ## Target
@@ -29,13 +29,13 @@ All children are complete and no further child is needed.
 - Each task runs in its own subagent, in one pass, with no questions and no interrupt (user confirmed).
 - Each subagent loads `execute-one-task` for the steps; this skill points at it instead of restating them (user confirmed).
 - The dispatching rules are a reference file, `dispatch.md`, inside this skill's directory rather than a sibling skill (user confirmed).
-- A run takes every task under the chosen map whose owner is the operator. Status does not filter it: a task already `in_progress` is picked up again, because the operator owning it is what makes it theirs to advance (user confirmed). The owner may name a subset instead.
-- A task whose `waiting_on` names a person or a thing stays out of the automatic batch until that value is cleared; the owner may still name it explicitly (user confirmed).
+- A run takes every task under the chosen map whose owner is the chosen map's owner. Only `open` and `in_progress` are candidates; a closed task is never claimed. The owner may name a subset instead. (user confirmed)
+- A task whose `waiting_on` names a person stays out of the automatic batch until the owner clears it after handling the answer; the owner may still name it explicitly. A task or map in `waiting_on` is a split error. (user confirmed)
 - Every chosen task is claimed before any of them is sent out, and no more than four run at once by default (user confirmed).
 - `needs_human` tasks are never sent to a subagent; the field cannot tell a whole-human task from a partly-human one, so the rule is uniform (user confirmed).
 - A task is not isolated by a git worktree, because it may act on an API or another system where a branch isolates nothing (user confirmed).
 - Collisions are judged, not checked. A reference lists what can collide and the main agent reads it against the batch before dispatch (user confirmed). The list names at least: the same repository file, the same ticket, the same external record, the same account or credential, the same interface with a call limit, the same shared folder, the same person's time, and the working tree of the same clone when another run has uncommitted changes.
-- A subagent receives its ticket id, the parent map's `Target` and `Acceptance direction`, the procedure to load, and the rule file paths. It writes its own ticket, body and `waiting_on` and the claim status, and the files its work needs; it may not write another ticket or the map, and it does not commit. `## Review`, `outcome`, and the close belong to the review that follows. It reports whether it finished, where it stopped and why, the files it touched, what it could not settle, and what the evidence shows (user confirmed).
+- A subagent receives its ticket id, the parent map's `Target` and `Acceptance direction`, the procedure to load, and the rule file paths. It writes only `Result`, `Progress`, and `waiting_on` on its own ticket plus the claim, and the files its work needs; it may not write another ticket or the map, and it does not commit. `## Review`, `outcome`, and the close belong to the owner's review. It reports whether it finished, where it stopped and why, the files it touched, what it could not settle, and what the evidence shows (user confirmed).
 - A subagent does not decide whether to involve a person. The main agent chooses: re-dispatch with fuller input, interrupt and ask a person, or hand the task back to the owner. Only the main agent talks to a person (user confirmed).
 - An interrupt pauses only the task that hit the person, and the run ends with the list of what it waits on. A stop about the map's direction stops the batch (user confirmed).
 - The run ends with the work reviewed, not when the actions are done. A finished task is not complete until it has been checked (user confirmed).
@@ -44,7 +44,7 @@ All children are complete and no further child is needed.
 - A subagent that stops is released when it reports: nothing can end its wait inside it, and the answer arrives later, so the task is re-dispatched to a fresh subagent rather than resumed (user confirmed).
 - A stopped task gives up its slot to the next ticket in the queue, so one person's delay does not hold the batch (user confirmed).
 - The main agent commits, one task at a time as reports arrive, mostly the ticket files and also the local changes that belong to that task. The file list in the report is what gets staged, which is why the collision list is read before dispatch (user confirmed).
-- The review is sized to the batch: the main agent reviews itself when the batch is small enough to hold, and splits the finished tasks across a few reviewer subagents when it is not, each reviewer taking several tasks (user confirmed).
+- The review is sized to the batch: the main agent, as the run's owner, reviews itself when the batch is small enough to hold. When it is not, reviewer subagents apply the same axes and report; they do not write `## Review` or close, and the owner does the writing and closing (user confirmed).
 - The two files split by reader. `SKILL.md` holds the run: when to use it, which tickets, claiming them all before dispatch, the review, the commits, the stops, and how the run ends. `dispatch.md` holds the distribution: the concurrency cap and how a freed slot is refilled, what a subagent receives, what it may write, how it reports, and the collision list (user confirmed).
 
 ## Not yet specified
