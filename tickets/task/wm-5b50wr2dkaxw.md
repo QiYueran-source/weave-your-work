@@ -18,7 +18,7 @@ Add a glossary initialization step to setup, instructions first and scripts seco
 
 1. Create `glossary/` and add the root `GLOSSARY.md` ignore entry.
 2. Register the glossary MCP server in the current harness configuration: install dependencies in `weave-your-work/glossary/bundle/` and point the stdio command at `node <skill>/bundle/server.js --project <root>`.
-3. Install the git post-merge hook that calls the merge script.
+3. Install the git post-merge hook: replace `@GLOSSARY_SKILL@` in `bundle/post-merge.sh` with the skill's absolute path and install it as `.git/hooks/post-merge`.
 4. Copy `glossary-rules.md` into `.agents/rules/`.
 5. Add a system prompt to AGENTS.md that points the agent at the rules under `.agents/rules/`.
 
