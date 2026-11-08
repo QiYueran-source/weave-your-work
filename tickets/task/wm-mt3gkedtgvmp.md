@@ -7,13 +7,13 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T11:06:18Z
+updated_at: 2026-11-08T11:08:29Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: true
   reversibility: two_way
   task_kind: delivery
-  waiting_on: 'frank: Gitee token and both scratch repositories'
+  waiting_on: 'frank: Gitee token and Gitee test repository'
 ---
 ## Action
 
@@ -43,5 +43,5 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 ## Progress
 
-Where it stands: the skill and its example are written; the read paths are checked and the write paths wait on the two inputs the Person step names. A probe moved the archive receipt from the archived node to its replacement.
-Next: run create, comment, and close on both platforms, then record the outputs in `Result`.
+Where it stands: GitHub's five actions are verified end to end on the private scratch repository; Gitee's write path waits on a token and a test repository.
+Next: run Gitee's create, comment, and close, record both platforms' outputs in `Result`, then close the task and the map.

@@ -18,8 +18,8 @@ The token is sent as `Authorization: token $GITEE_TOKEN`. Gitee's document lists
 
 ### What the verification has shown
 
-- GitHub: `gh repo view --json`, `gh issue list --search`, and `gh issue view --json` return the fields the reference names. `gh issue create` prints the new URL, which is the receipt the skill describes.
+- GitHub: all five actions were run end to end on a private scratch repository on 2026-11-08 — create (which printed the URL the skill treats as the receipt), search, view with comments, comment, and close with a closing comment. The search index missed the new issue for the first few seconds and the list fallback found it, which is why the reference keeps that fallback. The repository was archived after the run, so the issue stays readable and no active scratch project is left behind.
 - Gitee: the list, view, and comment reads were run against `oschina/git-osc`, including an issue with nine comments, and returned `number`, `html_url`, `state`, `user.login`, and per-comment `body`, `user.login`, `created_at`, and `in_reply_to_id`.
-- Both references' write commands follow the documented paths and methods; they have not been run yet, because that needs a scratch repository and a token.
+- Gitee's write commands follow the documented paths and methods; they have not been run yet, because that needs a token and a test repository.
 
 The title and body rules are the same on both platforms. Only the commands differ, which is why the split is one skill with two references rather than two skills.
