@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:53:00Z
-updated_at: 2026-11-08T07:44:58Z
+updated_at: 2026-11-08T09:07:25Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -29,7 +29,9 @@ Review point: Check that the reference covers the custom fields with their write
 - Front matter management is a reference of the map skill: a separate `frontmatter.md` alongside `body.md` (content rules) and the operating procedure reference (workflow rules). It is designed in its own child map. Source: user confirmation.
 - The reference lists map front matter fields only; task front matter (task_kind, reversibility) belongs to the task skill. Dependency rules are node-agnostic and are written here as the shared rule; the task skill references them. Source: user confirmation.
 - Hanging a child under someone else's map is not a write to that map. `parent` lives on the child, so `waymark create --parent <id>` and `waymark parent set <own child> <id>` touch only the child; verified in waymark 0.1.0, where `parent set`, `parent clear`, and `create --parent` leave the parent's file byte-identical. The question is not permission but consent: the child's owner may write their own row, and the parent's owner still decides what belongs in their map. (user confirmed)
-- Two waymark operations do cross ownership and must be treated as such: `waymark link add` / `link remove` writes both tickets because a soft link is symmetric, and `waymark archive` rewrites every ticket that points at the archived node, removing inbound dependencies and soft links from files its owner does not own. Archiving a node that others depend on is therefore a write to their tickets, and it is announced in the hand-over issue rather than done silently. (verified in waymark 0.1.0)
+- Two waymark operations cross ownership: `waymark link add` / `link remove` writes both tickets because a soft link is symmetric, and `waymark archive` rewrites every ticket that points at the archived node, removing inbound dependencies and soft links from files its owner does not own. Both proceed; the foreign owner is told afterwards in an issue. Blocking instead was tried and dropped: the write is the only way to retire a node others depend on, and a rule that cannot be obeyed in the common case gets worked around. (user confirmed)
+- Telling the owner is a step of the operation, not a courtesy: the issue names the relation that disappeared and the id that replaced the node, so the owner can re-point the edge or accept the archived outcome. An archive with no replacement id has nothing to tell them, which is why retiring a node and naming its successor happen together. (user confirmed)
+- Archiving changes what a dependent may do, not only what its file says: with a ticket of carol's depending on kim's node, archiving the node moves carol's ticket from `blocked` to `ready`. The file edit is visible in the diff; the change in her plan is not. That is what the issue is for. (verified in waymark 0.1.0)
 - Whether a child may hang under someone else's map follows the parent's state, not the parent's owner, and waymark enforces none of it — `create --parent` happily hangs a child under a closed map nobody asked. The rule is ours:
 
   | Child | Parent state | What the operator does |
