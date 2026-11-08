@@ -71,7 +71,7 @@ The scan is not depth-limited. From the node being changed, follow:
 - **soft links**, in either direction;
 - **references in bodies**, in tests, in examples, and in testimony — anything that names the node by id or by title.
 
-All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep and no second query. `waymark --json list` returns the same five per item when you need them for many nodes at once.
+All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep. For many nodes at once, `waymark --json list` returns `children`, `dependents`, and `blocked_by` per item — not `parent` and not `soft_links` — so a sweep of soft links still needs one `show` per candidate.
 
 Bodies are the other half. `waymark search "<text>"` matches titles, front matter, and bodies, which finds the examples, the testimony, and the other tickets that quote the node. `waymark tree --root <id>` gives the shape below the node when the children list is long enough that reading ids one at a time is useless.
 
