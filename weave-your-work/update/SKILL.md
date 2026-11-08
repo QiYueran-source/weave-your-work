@@ -114,10 +114,10 @@ Archive gets its own commit for this reason. A cross-owner edit buried in a comm
 
 ## Where the answers live
 
-- `content.md`: the three dispositions in detail — what counts as substantive, the shape of a struck-through change, the reopen and re-review loop, what happens to children when the content moves under them, and the order of writes that ends in archive.
-- `move.md`: relocating a subtree under another parent, which changes no content and still changes what the tree means.
+- `content.md`: the first two dispositions in detail — what counts as substantive, the shape of a struck-through change, the reopen loop and the ancestors it reaches, what happens to children when the content moves under them, and the seven steps of retire-and-replace in the order waymark forces.
+- `move.md`: relocating a subtree under another parent, which changes no content and still changes what the tree means — the one write it takes, which of the three tickets reopen, and why it records nothing.
 
-Most updates are one of these, not both. An update that changes the content and moves the node is the second disposition followed by the first, and the move happens last, after the new node exists.
+Most updates are one of these, not both. When the content changes and the position is wrong too, the move is not a second operation: the third disposition already builds a replacement, and it is built under the parent that should hold it. `move.md` is for the node whose content is right and whose place is not.
 
 ## Reporting
 
