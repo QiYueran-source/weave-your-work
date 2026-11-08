@@ -107,7 +107,7 @@ Reply in the thread, once, with the answer or the next question. When the answer
 
 Ask one question first: **does this change a ticket?**
 
-**No ticket behind the thread.** A proposal is judged by the owner of the map the work would hang under. When the owner accepts, split creates the ticket, the ticket carries the issue URL as its source, and the issue closes with a comment linking it. When the owner declines, the map's `Out of scope` gets one line — what was declined, why, and the issue URL — and the issue closes as `not planned` with a comment that says why. A `needs info` answer lands nothing: the issue stays open until the owner decides. No run watches it: the answer is read when someone looks.
+**No ticket behind the thread.** A proposal is judged by the owner of the map whose Target the work would refine; when no map names it, the root map's owner decides whether to open one. The map's owner writes the outcome. When the owner accepts, split creates the ticket, the ticket carries the issue URL as its source, and the issue closes with a comment linking it. When the owner declines, the map's `Out of scope` gets one line — what was declined, why, and the issue URL — and the issue closes as `not planned` with a comment that says why. A `needs info` answer lands nothing: the issue stays open until the owner decides. A run that is not the map's owner replies and stops at the issue; it does not write the foreign map. No run watches it: the answer is read when someone looks.
 
 An answer is a decision when it changes a ticket's text, status, or relations, or settles a fact the ticket already cites. Agreement, thanks, scheduling, and options that lost are not decisions; they stay in the thread, and the local side never copies them.
 
@@ -124,15 +124,16 @@ Both endings are changes. An acceptance runs `parent set`: the child's `Intended
 
 A run that is not the owner stops at the issue. It replies, and it records on its own ticket what it is waiting for; it does not write the foreign ticket.
 
-**Close.** A closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." Whoever sees the ask resolved closes it — the filer, or the recipient after changing their own ticket. Close as completed on GitHub; set `state=closed` on Gitee.
+**Close.** A closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." When the thread settled into a map's `Out of scope` instead of a ticket, it names the map and the line: "Declined for `<map id>` `<title>`: <one line>." Whoever sees the ask resolved closes it — the filer, or the recipient after changing their own ticket. Close as completed on GitHub; set `state=closed` on Gitee.
 
-**Done when** the issue is closed, its closing comment names the ticket, and the ticket carries the decision — or, when the answer changed nothing, the closing comment says so.
+**Done when** the issue is closed, its closing comment names the ticket or the map, and the ticket or the map's `Out of scope` carries the decision — or, when the answer changed nothing, the closing comment says so.
 
 ## Failures worth naming
 
 - No remote, or a host that is neither github.com nor gitee.com. Name the host; the person passes a repository explicitly.
 - `gh` missing or not authenticated. `gh auth login`.
 - `GITEE_TOKEN` missing. Create a token with the `issues` and `notes` permissions, in the environment or in a file outside the repository.
+- The assignee cannot be added: the account is not a collaborator, or the repository refuses the assignment. File without it, keep the mention in the body, and tell the recipient out of band; the issue is still the record.
 - A write that fails after the issue exists. Report the URL; the thread is real even when the local record did not land.
 - A remote error. Show its text unchanged; a paraphrase hides the cause.
 
