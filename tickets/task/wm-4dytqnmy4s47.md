@@ -3,11 +3,12 @@ schema: 1
 id: wm-4dytqnmy4s47
 title: Write the update skill
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-08T10:23:59Z
+updated_at: 2026-11-08T10:23:54Z
+closed_at: 2026-11-08T10:23:54Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false

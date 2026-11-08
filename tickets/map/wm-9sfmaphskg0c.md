@@ -3,11 +3,12 @@ schema: 1
 id: wm-9sfmaphskg0c
 title: 'Update skill: change a closed map or task'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T10:20:11Z
+updated_at: 2026-11-08T10:23:54Z
+closed_at: 2026-11-08T10:23:54Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
