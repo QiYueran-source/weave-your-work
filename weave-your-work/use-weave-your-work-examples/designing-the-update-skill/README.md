@@ -14,3 +14,5 @@ The ticket that holds the design is [Update skill: change a closed map or task](
 ## What made this effort different
 
 The map opened with a question the user asked in one sentence: changing a closed or split node breaks the things relying on it, so what should the update look like. Four of its entries were later struck through and rewritten, and every one of those reversals came from probing waymark rather than from argument. That is the lesson worth keeping: the design moved when a measurement arrived, and did not move while two of us reasoned about it.
+
+The second thing worth keeping is a fault. The skill was written and the map closed before a ticket for the build existed under it; the user caught it, and the map was reopened to hang one. Every other design map in this repository already had such a ticket, so the pattern was there to copy and was not copied. The artifacts were fine; what was missing was the record that the work happened, which is the only thing tickets are for.
