@@ -151,4 +151,4 @@ Three lines: what was filed or read, what changed on the ticket, and what is sti
 - `gitee.md`: the reads; the writes are marked deferred.
 - `bundle/setup.md`: the install steps, the channel, the webhook, the secret, the listener service, and the session rule.
 - `bundle/tools/listener.mjs`: the webhook receiver that parses the frontmatter and appends to the queue.
-- `bundle/rules/`: the session rule Markdown, with frontmatter, that the setup installs into `.agents/rules/`.
+- `bundle/rules/`: the session rule Markdown that the setup installs into `.agents/rules/`.

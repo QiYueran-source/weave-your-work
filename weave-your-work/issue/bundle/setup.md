@@ -31,23 +31,13 @@ One process: the smee client connects to the channel, forwards each event to the
 
 ## Rules
 
-`bundle/rules/` holds the rule files, each a Markdown file with YAML frontmatter:
+`bundle/rules/` holds the rule files as plain Markdown. The setup copies each file into `.agents/rules/<basename>`:
 
-```yaml
----
-name: pending-communications
-title: Read pending communications at session start
-description: Surface queued communicate issues when a session starts.
----
-```
+- absent: copy it;
+- identical: no-op;
+- different: a conflict, and the person decides; no overwrite.
 
-The setup reads the frontmatter, copies each file into `.agents/rules/<basename>`, and adds a `source` field to the copy:
-
-```yaml
-source: <skill>/bundle/rules/<file>
-```
-
-A target without `source` is a hand-written rule and a conflict the person decides, not an overwrite. The installed copy in this repository is `rules-pending-communications.md`.
+The rule in this bundle is `rules-pending-communications.md`. The installed copy in this repository is the same file.
 
 ## External steps
 

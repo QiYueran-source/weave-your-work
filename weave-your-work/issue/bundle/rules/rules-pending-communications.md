@@ -1,9 +1,3 @@
----
-name: pending-communications
-title: Read pending communications at session start
-description: Surface queued communicate issues when a session starts.
----
-
 # Read Pending Communications at Session Start
 
 The issue skill's listener queues communicate issues in a local file. The queue is state, not a ticket: it lives outside the tracker and is gitignored.
