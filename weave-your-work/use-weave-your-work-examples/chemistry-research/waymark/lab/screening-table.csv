@@ -1,0 +1,7 @@
+substrate,catalyst,yield_pct,purity_pct,run_id
+4-bromoanisole,Pd,91,99.2,R-01
+4-bromoanisole,Ni,76,98.4,R-02
+4-bromotoluene,Pd,88,99.0,R-03
+4-bromotoluene,Ni,64,98.1,R-04
+2-bromonaphthalene,Pd,72,98.8,R-05
+2-bromonaphthalene,Ni,41,97.9,R-06

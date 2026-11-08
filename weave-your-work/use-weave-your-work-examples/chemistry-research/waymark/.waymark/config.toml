@@ -1,0 +1,34 @@
+version = "1.7"
+storage_root = "work"
+
+[categories.map]
+path = "work/map"
+name = "Map"
+
+[categories.task]
+path = "work/task"
+name = "Task"
+
+[fields.needs_human]
+type = "boolean"
+required = false
+
+[fields.outcome]
+type = "string"
+required = false
+
+[fields.reversibility]
+type = "string"
+required = false
+
+[fields.split_as]
+type = "string"
+required = false
+
+[fields.task_kind]
+type = "string"
+required = false
+
+[fields.waiting_on]
+type = "string"
+required = false
