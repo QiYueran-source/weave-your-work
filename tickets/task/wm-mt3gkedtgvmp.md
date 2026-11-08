@@ -3,11 +3,12 @@ schema: 1
 id: wm-mt3gkedtgvmp
 title: Write the issue skill
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T13:41:38Z
+updated_at: 2026-11-08T13:42:31Z
+closed_at: 2026-11-08T13:42:31Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
@@ -33,14 +34,28 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 `weave-your-work/issue/` holds `SKILL.md`, `github.md`, and `gitee.md`. A reader holding one ticket with a foreign dependent, one task with a `Person:` step, and one child waiting on a closed parent can take each through file, read, reply, land, and close on GitHub. Every GitHub command was run against a scratch repository and its output recorded. Gitee's write path is a recorded gap, exercised in the end-to-end batch. The skill installs with `npx skills add` without a YAML parse error and holds no link outside its own directory.
 
+## Result
+
+`weave-your-work/issue/` holds `SKILL.md` (155 lines), `github.md` (89), and `gitee.md` (125). It installs with `npx skills add` and the copied files match the source.
+
+GitHub's five actions were run end to end on a private scratch repository on 2026-11-08: `gh issue create` printed the URL, `--search` missed the new issue for a few seconds and the open-issue list found it, `gh issue view --json` returned the body and comments, `gh issue comment` posted, and `gh issue close --comment --reason completed` closed with the comment. `--assignee` was run separately: the issue's `assignees` field carried the account, and `gh api users/<login>` returned the canonical login. The repository was archived after the runs.
+
+Gitee's list, view, comments, and user lookup were run against `oschina/git-osc`; its create, update, and comment endpoints returned 401 rather than 404 with an invalid token, confirming the paths and methods. The write path is the deferral the user made on 2026-11-08.
+
+Six blind reads walked the archive, human-step, foreign-parent, outside-proposal, proposal re-read, and archive-with-roster cases; each could execute the skill, and the boundary gaps they found are fixed. `.waymark/handles.toml` holds the sample mapping and parses as TOML.
+
+The skill does not use the comment category; whether it stays belongs to the execution map.
+
+## Review
+
+passed
+
+- Goal: read against the `Acceptance signal`. The three files exist and install; GitHub's five actions and the assignee path ran end to end; Gitee's write path is the recorded deferral. A reader walks the three tickets: six blind reads, one per case plus two re-reads, each could execute it, and the gaps are fixed. `waiting_on` is empty.
+- Convention: the skill states the trigger, the five actions in three moves, completion criteria, the decision boundary, and what it does not do; it holds no link outside its directory and no secrets. The map and task record the decisions, including the two agent decisions the user asked to settle, marked revisable.
+
 ## Boundaries
 
 - No triage state machine, no labels, no queue.
 - No ticket creation from an issue; an accepted proposal goes through split.
 - No automatic sync, polling, or webhooks.
 - No writing a ticket the run does not own.
-
-## Progress
-
-Where it stands: the four design questions are settled as revisable decisions; six reads walked the callers, the proposal case, and the archive case with the roster, and the gaps they found are fixed; the skill asks first, mentions and assigns a verified handle, and lands a rejected proposal in the map's `Out of scope`. `.waymark/handles.toml` exists and resolves `frank`; GitHub's five actions and the assignee path are verified; Gitee's write path is deferred.
-Next: get the user's confirmation on the two agent decisions — the triage landing and the handles roster — then write `Result` and `Review` and close the task and the map.
