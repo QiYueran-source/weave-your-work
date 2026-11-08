@@ -32,15 +32,28 @@ Ask them in order and stop at the first one that fails.
 
 Both yes is the first disposition. First yes, second no is the second. First no is the third, and the second does not need asking.
 
+### Where the verdict is
+
+The second test needs something to read, and where that is depends on the node:
+
+- **A task** — its `## Review` section, when it has one. Many closed tasks do not: the review skill writes that section, and every task closed before the skill existed closed without it. When it is absent, read the `Acceptance signal` and `Result` together instead. The signal is what the work promised and the result is what it delivered; the close is the verdict that the two agreed. Re-reviewing such a task writes a fresh `## Review`; there is no old one to replace.
+- **A map** — its `## Acceptance direction`, and the `Review point` sentence inside it when one is written. A map body has no `## Review` section at all, so a map's verdict shows only in its status. Read the acceptance direction against the new content and ask whether a reviewer holding it could still close the map.
+
+An **open** node has no verdict. Test two cannot fail on a node that has never been reviewed, so an open node takes the first or the third disposition only; "reopen, review again, close again" describes a closed node's path and has nothing to do on a node that is already open.
+
 ## Three dispositions
 
 | Tests | What happens | Status |
 |---|---|---|
 | Same subject, verdict holds | Edit the ticket. Editorial changes replace the text; substantive ones keep the old text struck through. | Unchanged |
-| Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. | closed → open → closed |
+| Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. A closed node only. | closed → open → closed |
 | Different subject | Retire the ticket with archive and open a parallel one under the same parent. | archived |
 
-The second disposition exists because a closed child is how its parent counts itself done: a map is accepted when its children are complete. A child left closed on a verdict that no longer holds makes its parent's claim false as well, and the falseness travels upward. Nothing in waymark checks this — `ready` reads dependency edges and never looks at `parent` — so nobody is warned.
+The second disposition exists because a closed child is how its parent counts itself done: a map is accepted when its children are complete. A child left closed on a verdict that no longer holds makes its parent's claim false as well.
+
+Reopening the child does not reopen the parent. Nothing in waymark walks upward, and nothing warns: `ready` reads dependency edges and never looks at `parent`. So the run that reopens a child has to look at the closed ancestors itself and reopen the ones whose acceptance counted that child. A map's acceptance direction often ends with the sentence that does it — most write "All children are complete" — and where that sentence is there, reopening any child falsifies the map.
+
+If an ancestor is owned by someone else, that is where the branch stops: reopen what the run owns, tell the owner in an issue, and let them decide about theirs.
 
 The third exists because a node that answers a different question is not the same node. Editing it would leave its children refining a subject they never agreed to. Retiring it keeps the old text readable and gives the new one a clean review.
 
@@ -55,6 +68,10 @@ The scan is not depth-limited. From the node being changed, follow:
 - **dependency edges in both directions**, since a dependent waits on this node and this node waits on others;
 - **soft links**, in either direction;
 - **references in bodies**, in tests, in examples, and in testimony — anything that names the node by id or by title.
+
+All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep and no second query. `waymark --json list` returns the same five per item when you need them for many nodes at once.
+
+Bodies are the other half. `waymark search "<text>"` matches titles, front matter, and bodies, which finds the examples, the testimony, and the other tickets that quote the node. `waymark tree --root <id>` gives the shape below the node when the children list is long enough that reading ids one at a time is useless.
 
 Each one is read for one question: does this relation still mean what it meant? A child that refined the old content may not refine the new. A dependent waiting on a completed node may be waiting on something that no longer exists. A passage in an example quoting the old text now quotes something retracted.
 

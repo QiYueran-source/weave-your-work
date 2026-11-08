@@ -10,10 +10,12 @@ A ticket body is written to be read as it stands. A change that rewrites it invi
 
 So a change marks itself:
 
-- **Editorial** — spelling, a broken link, a sentence that reads badly, a fact that was always wrong. Replace the text. The meaning is identical, so there is nothing to reconstruct.
+- **Editorial** — spelling, a broken link, a sentence that reads badly. Replace the text. The meaning is identical, so there is nothing to reconstruct.
 - **Substantive** — the answer changed, a decision was reversed, a scope narrowed. Keep the old text with a strike-through and put the replacement after it, or a `Superseded on <date>: <reason>` line below it when the old text is long enough that striking it hurts readability.
 
 The test is not "how much text changed". It is: could someone who read the old version have acted differently because of it? If yes, the old text stays visible.
+
+A fact that was always wrong belongs to whichever side that question puts it on, and the answer is usually substantive. If the wrong fact was a date, a version, or a path that a reader would have relied on, someone may have acted on it, so strike it and say what it now is. It is editorial only when the wrongness could not have changed what anyone did — a typo in a name nothing references, a count in a paragraph nobody plans from. The question comes first and the label follows it; a fact being wrong is not by itself a reason to erase it.
 
 Strike-through works on the decisions and the target statement — the parts a reader acts on. A whole section rewritten is easier to read with the old one struck at the top than with every phrase struck inside the sentence.
 
@@ -44,11 +46,21 @@ waymark reopen <id>
 
 Then the node goes through review again, against the new text, by the same rules as the first time, and closes again when it passes.
 
-Where the verdict lands depends on the category. A task carries a `## Review` section, and the review replaces it rather than appending. A map has no `## Review` section at all — its five sections hold no verdict — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix.
+Do the same to every closed ancestor whose acceptance counted this node. `waymark reopen` moves one ticket; it does not walk the tree, and no other command does either. So after reopening a child, read its `parent` and reopen that map too if it is closed, then the map above it, stopping where the completion claim stops being about this child. That is the same scan the dispositions describe, run upward, and it is the run's job because nothing else does it.
+
+An ancestor owned by someone else is where the write stops. Reopen what the run owns, and tell that owner in an issue that their map's acceptance no longer holds and why.
+
+Where the verdict lands depends on the category, and on whether there is one to replace.
+
+**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time.
+
+**A map** has no `## Review` section at all — its five sections hold no verdict — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix.
+
+Whichever category, the run reads the acceptance direction before it writes: `## Acceptance signal` for a task, `## Acceptance direction` for a map. A node with neither is not ready to be updated; write the acceptance direction first, or the second test has nothing to read.
 
 Two things to keep straight:
 
-- **The old review is not deleted.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on.
+- **The old review is not kept in place.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on.
 - **Reopening is decided by the verdict, never by the size of the edit.** A one-line change that makes the acceptance false reopens the node; a long clarifying paragraph that leaves it true does not. That is the first disposition, and the status never moves.
 
 Writing the changed body before reopening also means the reopen lands on a ticket that already says what it now claims. Reopening first leaves a short window where the tree says "not done" and the ticket still describes the old promise.
