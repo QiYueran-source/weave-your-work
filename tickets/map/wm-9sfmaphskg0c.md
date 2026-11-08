@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T10:16:56Z
+updated_at: 2026-11-08T10:20:11Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -66,9 +66,10 @@ Nothing. The two items that lived here were settled during the build and moved i
 ## Built
 
 - `weave-your-work/update/SKILL.md`: the trigger, the two tests, the three dispositions, the impact scan, the decision/write boundary, and the dry-run-then-notify routine.
-- `weave-your-work/update/content.md`: the first two dispositions in detail, the retire-and-replace order, and a whole short run.
+- `weave-your-work/update/content.md`: all three dispositions in detail, the retire-and-replace order, and a whole short run.
 - `weave-your-work/update/move.md`: the move, its two tests, which of the three tickets reopen, and why it records nothing.
 - The Map operating procedure and the execution map point at the skill; the glossary defines update and move.
+- Three blind reads, by subagents given only the three files and three real tickets, each found something a check of the skill's facts could not: that the second test pointed at a verdict the skill never located, a `## Review` section that most closed tasks here do not have, an open split map routed into a closed-only disposition, a scan with relations and no way to read them, a `create` command that is not runnable as written, and `waymark search` mistaken for a repository-wide grep. The build ticket carries the record; the fixes are `a866db2` onward.
 - **A sequencing fault in this build:** the skill was written and this map closed before its build ticket existed. The ticket was reopened to hang [Write the update skill](tickets/task/wm-4dytqnmy4s47.md) and close it again. The artifacts are unaffected; the record of who wrote what, and when, was made after the fact.
 
 ## Out of scope
