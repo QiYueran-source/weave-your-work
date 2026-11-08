@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-07T07:46:23Z
+updated_at: 2026-11-08T10:28:10Z
 ---
 ## Destination
 
@@ -36,13 +36,14 @@ Form an installable skill set for general team collaboration under weave-your-wo
 - Task types: delivery and probe, with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge. The non-executor rule is dropped (user confirmed).
 - ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).
+- Worked examples and the end-to-end test of every skill happen in one batch, once the skill set is whole. No skill carries a per-skill functional test; each one records the paths it has not exercised in its own gap list, and those lists are the input to that batch. A path left unexercised today is deferred, not closed. (user confirmed)
 
 ## Not yet specified (cross-category coordination)
 
 - Dependencies between skills: how ask-me routes to execution and communication skills.
 - Which map maintains the shared glossary, and which file it lives in.
 - Installation and distribution: reference matt's skill configuration mechanism, optional.
-- Number of acceptance scenarios and eval prompts, and how passing is judged.
+- Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.
 - Whether the local comment category stays.
 - Skills that may join each category later (retro, handoff, and so on); not this round.
 
