@@ -65,6 +65,10 @@ A term goes to the glossary and an ADR to the `adr` skill; the testimony holds a
 
 Research findings, what an agent did during a run, and a ticket's conclusions are not testimony. A file written after the discussion is a summary, not a testimony.
 
+## Where the rest goes
+
+Research findings are results, not testimony. A research question that needs work becomes a task; its findings go in that task's `Result`. A finding the map relies on becomes a `Decisions so far` entry linked to the task. The grill hands the conclusion to its caller, and the caller writes it into its map or task. There is no separate research record.
+
 ## Citing it
 
 Tickets cite a testimony with a relative Markdown link next to the relevant decision, fact, or fog entry. Cite only after the grill closes and the testimony is `closed`.

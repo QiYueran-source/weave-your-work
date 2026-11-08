@@ -71,4 +71,4 @@ Entry checked on 2026-11-08.
 - Names the three branches: testimony, glossary, ADR.
 - Does not restate the method's rules or a branch's landing rule; the per-round testimony rule stays in `testimony.md`.
 - `npx skills add ./weave-your-work/grill --list` finds 1 skill; `testimony.md` exists; the glossary and ADR skills exist and install.
-- The map stays open: `wm-31f6a2c9d840` (testimony) and `wm-rq3exm0m5563` (glossary) are open; `wm-fptggp5yhf8s` (ADR) is closed.
+- The map stays open: `wm-rq3exm0m5563` (glossary) is open; `wm-31f6a2c9d840` (testimony) and `wm-fptggp5yhf8s` (ADR) are closed.
