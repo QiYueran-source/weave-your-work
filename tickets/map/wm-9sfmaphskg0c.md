@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T07:45:14Z
+updated_at: 2026-11-08T08:35:49Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -41,12 +41,17 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - Hand-over to another owner is an issue. The issue's shape and count belong to the communication category; update only names the hand-over and records the link. (user confirmed)
 - Update never hangs a child under a foreign map without consent: the rules for a foreign parent — hang directly when it is open, open an issue and wait when it is closed, and prepare the child as an isolated node meanwhile — belong to [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and update points there instead of restating them. (user confirmed)
 - Two waymark writes cross ownership and update must call them out rather than perform them quietly: `link add` / `link remove` writes both tickets, and `archive` removes inbound dependencies and soft links from every ticket pointing at the archived node. Retiring a node that others depend on is a write to their tickets. (verified in waymark 0.1.0)
+- The skill has two references, following split's shape: `content.md` for changing a node's content and `move.md` for relocating a subtree. SKILL.md keeps what both share — the two boundary tests, the ownership stop, the impact scan, and the reopen rule — and routes to one of them. (user proposed; accepted)
+- A move writes no record field anywhere. `waymark parent set` leaves the old parent in the git diff of the moved node, and `waymark git history --item <id>` prints it; a line saying "moved from X" would be a second copy of something git already holds. (user confirmed)
 
 ## Not yet specified
 
 - The order of writes for the retire-and-replace path, including the steps that must happen before archiving because an archived ticket rejects every write.
 - Whether update is model-invocable or user-invoked only.
-- Whether moving a subtree to another parent is a second mode of update, a separate skill, or part of the map procedure; which of the moved node and its two parents reopen; and where the move is recorded.
+- Which of the moved node and its two parents reopen on a move. The rule proposed earlier follows the work: the moved node keeps its status, the old parent reopens when its Target no longer holds without it, and the new parent reopens only when an unfinished subtree arrives under a closed map.
+- Whether a relocation happens in place or by archiving the original subtree and rebuilding it at the destination. Archiving keeps a readable record of the old shape, but it costs: an archived ticket rejects every write, archiving removes inbound dependencies and soft links from other people's tickets, and rebuilt nodes get new ids, which breaks the references they carried (this repository holds 21 id mentions across 10 ticket bodies and 6 example files).
+- Whether update can move a node that is open and not yet split. The trigger for content changes is "closed node or split map", but relocating applies in any state, so `move.md` either widens SKILL.md's entry condition or is reachable only for closed and split nodes.
+- What "relate the isolated preparation tree to the target node" means while an issue is open. `waymark link add` writes both tickets, which is the write the rule exists to prevent, so the only non-invasive relation is a line in the child's own body.
 - The hand-over issue itself is designed in the communication category; whether update adds a dependency edge to that map is undecided.
 
 ## Out of scope
