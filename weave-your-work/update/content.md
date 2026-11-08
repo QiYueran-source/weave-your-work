@@ -42,7 +42,9 @@ waymark body replace <id> --body-file <path>
 waymark reopen <id>
 ```
 
-Then the node goes through review again, against the new text, by the same rules as the first time. The review skill replaces the `## Review` section rather than appending to it. When it passes, the node closes again.
+Then the node goes through review again, against the new text, by the same rules as the first time, and closes again when it passes.
+
+Where the verdict lands depends on the category. A task carries a `## Review` section, and the review replaces it rather than appending. A map has no `## Review` section at all — its five sections hold no verdict — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix.
 
 Two things to keep straight:
 
@@ -114,7 +116,7 @@ Clearing also erases the old position from the ticket, which is why a *move* is 
 
 - The changed body, via `waymark body replace`.
 - `status`, via `waymark status set`, when the verdict no longer holds.
-- `## Review`, replaced, by the review skill.
+- For a task, `## Review`, replaced by the review skill; for a map, nothing, because a map body carries no verdict.
 - `archived_at` and `archive_reason`, by `waymark archive`.
 - The replacement's body opens by naming the node it replaces.
 
