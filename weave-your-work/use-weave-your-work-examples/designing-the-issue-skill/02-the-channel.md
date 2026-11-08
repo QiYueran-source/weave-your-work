@@ -32,7 +32,7 @@ The state machine stayed out, but a triage result is still a decision about what
 
 ### The handle is a roster, not a guess
 
-A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The skill reads `.waymark/handles.toml`, one table per platform, and verifies the account before it mentions or assigns it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name.
+A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The skill reads `.waymark/handles.toml`, one table per platform, and verifies the account before it mentions or assigns it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name. This repository now carries a sample roster at `.waymark/handles.toml`, mapping `frank` to the account the probe used.
 
 ### What was rejected: copying the thread
 

@@ -1,0 +1,5 @@
+# Waymark owner to remote handle, one table per platform.
+# The issue skill reads the table for the platform and verifies the account
+# before it mentions or assigns it.
+[handles.github]
+frank = "QiYueran-source"
