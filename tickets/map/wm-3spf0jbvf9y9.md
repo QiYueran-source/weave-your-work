@@ -3,11 +3,12 @@ schema: 1
 id: wm-3spf0jbvf9y9
 title: 'Map review skill: accept a map'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:34:36Z
-updated_at: 2026-11-08T12:03:16Z
+updated_at: 2026-11-08T12:03:39Z
+closed_at: 2026-11-08T12:03:39Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   split_as: task
