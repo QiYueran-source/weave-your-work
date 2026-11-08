@@ -85,7 +85,7 @@ This is the disposition with an order to it, because waymark refuses every write
 
 **1. Decide the children first.** Each child gets one of the three outcomes above. A child that is still valid must be re-hung on the replacement, and re-hanging can only happen once the replacement exists — so this step is decided here and written in step 4.
 
-**2. Write the replacement.** `waymark create --parent <the old node's parent>`. The body opens by naming what it replaces: `Replaces <old id>, retired on <date> because <reason>.`
+**2. Write the replacement.** `waymark create --parent <the old node's parent>`. The body opens by naming what it replaces: `Replaces <old id>, retired on <date> because <reason>.` Run it with `--dry-run` first; `create` supports it like every other ticket-writing command.
 
 The parent decides whether the hang is allowed, not who owns it, and waymark enforces none of this — `create --parent` will happily hang a child under a closed map owned by a stranger. The rule to follow: an open parent is a plain hang; a closed parent is not, whatever its owner. Ask the owner to reopen it, and meanwhile build the replacement as an isolated node with no parent, carrying `Intended parent: <id>, waiting on <issue link>` in its own body. `parent set` happens when they reopen. Skipping the wait leaves a closed map that quietly has unfinished work under it.
 
