@@ -14,7 +14,7 @@ parent: wm-7zvr8cnts3rs
 
 Design the ADR skill: turn a decision that is hard to reverse, surprising without context, and the result of a real trade-off into a numbered record under `docs/adr/`, and keep the record's status and superseding honest.
 
-Why: grill produces decisions, and the ones a future reader cannot reconstruct from the code need a record that says what was decided and why. Without this branch, the three gates and the record format stay a paragraph inside grill.
+Why: grill produces decisions, and the ones a future reader cannot reconstruct from the repository need a record that says what was decided and why. Without this branch, the three gates and the record format stay a paragraph inside grill.
 
 ## Acceptance direction
 
@@ -30,10 +30,12 @@ Review point: Check the three gates, the file format, the numbering rule, and th
 - An ADR is written only when all three gates hold: hard to reverse, surprising without context, and a real trade-off. A decision that fails any gate stays in the caller's `Decisions so far` (user confirmed, recorded in the grill map).
 - ADRs live under `docs/adr/` in this repository (recorded in [ADR 0001](../../docs/adr/0001-project-document-layout.md)).
 - ADR is an independent skill at `weave-your-work/adr/`; grill calls it when a decision passes the three gates (user confirmed on 2026-11-08). The branch owns the gates and the record; grill owns the moment.
-- Record: `docs/adr/NNNN-slug.md`; the next number is one above the highest existing. The body is a title and one paragraph saying what was decided and why. `Status`, `Considered Options`, and `Consequences` are optional sections, used only when they add something (decided in this run on 2026-11-08, following `domain-modeling/ADR-FORMAT.md`).
+- Record: `docs/adr/NNNN-slug.md`; the next number is one above the highest existing. The body is a title and one paragraph: what was decided and why, including whatever context the reason needs. `Status`, `Considered Options`, and `Consequences` are optional sections, used only when they add something (adapted from `domain-modeling/ADR-FORMAT.md`, settled on 2026-11-08).
 - Supersede: write a new record, name the old one in it, and add `Status: Superseded by ADR-NNNN` to the old record. The old file and number stay (decided in this run on 2026-11-08).
 - Link back: the owning ticket id, and the testimony when one exists (decided in this run on 2026-11-08).
-- Direction: the `What qualifies` list, if kept, uses this project's kinds of decisions rather than software architecture; `docs/adr/` is created only when the first ADR is needed; the template wording is settled for this skill, not copied from `domain-modeling/ADR-FORMAT.md` (user direction on 2026-11-08). The exact categories and wording are still open.
+- `What qualifies` lists four common shapes — where a document lives, what counts as a record, how work moves, who owns what — as recognition aids, not a checklist (settled on 2026-11-08).
+- The template is one paragraph: what was decided and why, including whatever context the reason needs. `docs/adr/` is created only when the first ADR is needed (settled on 2026-11-08).
+- The skill says `from the repository` and `Make or recommend a decision`, not `from the code` or `architecture advice` (settled on 2026-11-08).
 
 ## Not yet specified
 
@@ -45,7 +47,8 @@ Review point: Check the three gates, the file format, the numbering rule, and th
   Resolved on 2026-11-08: independent skill at `weave-your-work/adr/` (see Decisions so far).
 - ~~Decision to make: how an ADR links back to the ticket and testimony that produced it. Why it matters: the record says why; the ticket says who asked and what was settled around it.~~
   Resolved on 2026-11-08: the owning ticket id plus the testimony when one exists (see Decisions so far).
-- Decision to make: the exact `What qualifies` categories and the template wording; also whether the skill's software-specific phrases (`from the code`, `architecture advice`) should change. Why it matters: the skill should read as a record for any hard decision, not only software architecture. (Open on 2026-11-08.)
+- ~~Decision to make: the exact `What qualifies` categories and the template wording; also whether the skill's software-specific phrases (`from the code`, `architecture advice`) should change. Why it matters: the skill should read as a record for any hard decision, not only software architecture.~~
+  Resolved on 2026-11-08: four shapes; one-paragraph template; `from the repository` and `Make or recommend a decision` (see Decisions so far).
 
 ## Out of scope
 

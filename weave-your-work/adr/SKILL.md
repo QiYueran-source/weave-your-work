@@ -8,7 +8,7 @@ description: >-
 
 # ADR
 
-An ADR records a decision a future reader cannot reconstruct from the code: what was decided, and why. It is not a design document and not a meeting note. It earns its place only when the decision will still surprise someone later.
+An ADR records a decision a future reader cannot reconstruct from the repository: what was decided, and why. It is not a design document and not a meeting note. It earns its place only when the decision will still surprise someone later.
 
 ## The three gates
 
@@ -20,13 +20,22 @@ Write an ADR only when all three hold:
 
 If any gate fails, skip the ADR. The decision stays in the ticket's `Decisions so far`. A decision that is easy to reverse will be reversed; one that is not surprising needs no explanation; one with no alternative has nothing to explain.
 
+## What qualifies
+
+The gates are abstract; these are the common shapes of a decision that passes them. The list helps a reader recognize one; it is not a checklist.
+
+- **Where a document lives.** A kind of material gets its own root, or a generated file stops being the source.
+- **What counts as a record.** A record type, its category, owner, status, and body.
+- **How work moves.** A hand-off rule, a review gate, or when a record is written.
+- **Who owns what.** Which skill or role decides, which one only records it, and what may parent what.
+
 ## The file
 
 `docs/adr/NNNN-slug.md`
 
-`NNNN` is the next number: read the highest number in `docs/adr/` and add one. `slug` is a short kebab-case name for the decision.
+`NNNN` is the next number: read the highest number in `docs/adr/` and add one. `slug` is a short kebab-case name for the decision. Create `docs/adr/` only when the first ADR is needed.
 
-The record is a title and one paragraph:
+The record is a title and one paragraph: what was decided and why, including whatever context the reason needs.
 
 ```md
 # Usage-based pricing for the API
@@ -56,7 +65,6 @@ Name the ticket that owns the decision, by id. When a testimony exists, link it 
 
 ## What it does not do
 
-- Make the decision. The owner decides; this skill writes it down.
+- Make or recommend a decision. The owner decides; this skill writes it down.
 - Write the ticket or the testimony.
 - Record a decision that fails a gate.
-- Give architecture advice.
