@@ -14,7 +14,7 @@ Use it when a plan, decision, or idea is still fuzzy, or when `fog-explore`, `sp
 
 ## Before the first question
 
-Name the subject in one sentence: what is being decided. Create the testimony item for this grill, link it to the discussion's work item, and open `testimony.md` for what it holds.
+Name the subject in one sentence: what is being decided. Create the testimony item for this grill, link it to the discussion's work item when there is one, and open `testimony.md` for what it holds.
 
 Read `how-to-grill.md` before the first round. It defines the question tree, the askable set, the fact rule, and the hand-off.
 

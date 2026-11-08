@@ -11,7 +11,7 @@ It is a record, not a work item: it has a category, an owner, and a status, but 
 - Owner: the person the grill is for — the owner of the discussion's work item, or the user when the grill is standalone.
 - Creator: the operator or agent that wrote it.
 - Status: `open` while the grill runs, `closed` when it ends. Tickets cite it only after it closes.
-- Links: a soft link to the discussion's work item, and to any work item the grill hands off.
+- Links: a soft link to the discussion's work item when there is one, and to any work item the grill hands off.
 
 The file is the waymark id, `testimony/wm-....md`. The date and last edit come from `created_at` and `updated_at`; do not repeat them in the title.
 
