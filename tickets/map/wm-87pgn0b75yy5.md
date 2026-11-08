@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-08T12:54:50Z
-closed_at: 2026-11-08T12:54:50Z
+updated_at: 2026-11-08T13:10:12Z
+closed_at: 2026-11-08T13:10:12Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: submap
@@ -56,7 +56,7 @@ Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and revi
 - `execute-all` selects tasks owned by the chosen map's owner, not by the local operator. (user confirmed on 2026-11-08)
 
 - `waiting_on` names a person only. A task waiting on another task or a map is a split error, not a wait. (user confirmed on 2026-11-08)
-- A map with an unfinished dependency is not split; wait for the dependency to close. Independent early work becomes a sibling map. (user confirmed on 2026-11-08)
+- ~~A map with an unfinished dependency is not split; wait for the dependency to close. Independent early work becomes a sibling map.~~ Superseded on 2026-11-08: a blocked map may still split; the wait stays on the map, children inherit nothing, and a child that uses the blocker's output carries its own edge or stops at execution. (user confirmed)
 - The chemistry table/probe pair is a mis-split. Merge them or put them under sibling maps with an edge; the batch needs no external-input rule for it. (agent decision, revisable)
 
 ## Not yet specified

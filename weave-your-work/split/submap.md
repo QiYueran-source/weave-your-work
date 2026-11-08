@@ -28,7 +28,7 @@ A child that would conflict with its parent or with a sibling is not written as 
 
 ## When the parts must run in order
 
-Sometimes the layer is a sequence: the second part cannot start until the first is done. The parent map must not itself be waiting on another node when this sequence is written. A dependency on the parent closes first; splitting it early writes child maps against an answer that has not arrived.
+Sometimes the layer is a sequence: the second part cannot start until the first is done. A map that is waiting on another node may still be split; the parent's edge is not copied to the children. If a child in the sequence needs the blocker's output, add an edge from that child to the blocker. Otherwise it starts on its own.
 
 That sequence is still two child maps, and the order is one dependency edge:
 

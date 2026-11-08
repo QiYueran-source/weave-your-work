@@ -41,7 +41,7 @@ One owner per item, and only the owner advances it. Writing a field is advancing
 
 ## Dependencies
 
-An edge records a wait: the item it starts from cannot be accepted until the item it points at is closed. It is the only place ordering is expressed. The body never mirrors an edge, and the tree never carries one. A blocked map does not freeze every task under it; the task skills check whether a task actually uses the blocker's output.
+An edge records a wait: the item it starts from cannot be accepted until the item it points at is closed. It is the only place ordering is expressed. The body never mirrors an edge, and the tree never carries one. A blocked map does not freeze every task under it; the task skills check whether a task actually uses the blocker's output. A child created after the edge does not inherit it either; a child that uses the blocker's output carries its own edge or stops at execution.
 
 ### Direction
 
