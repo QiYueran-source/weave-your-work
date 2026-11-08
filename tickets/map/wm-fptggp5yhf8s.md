@@ -49,9 +49,18 @@ Review point: Check the three gates, the file format, the numbering rule, and th
   Resolved on 2026-11-08: the owning ticket id plus the testimony when one exists (see Decisions so far).
 - ~~Decision to make: the exact `What qualifies` categories and the template wording; also whether the skill's software-specific phrases (`from the code`, `architecture advice`) should change. Why it matters: the skill should read as a record for any hard decision, not only software architecture.~~
   Resolved on 2026-11-08: four shapes; one-paragraph template; `from the repository` and `Make or recommend a decision` (see Decisions so far).
+- Decision to make: cover partial supersede in the skill, or accept that the rule describes only a full replacement. ADR-0002 supersedes only the testimony clauses of ADR-0001, not the whole record. Why it matters: a reader could supersede the whole old record when only one clause changed. (Open on 2026-11-08.)
 
 ## Out of scope
 
 - Decisions that fail a gate; they stay in the caller's `Decisions so far`.
 - Glossary terms and testimonies; each has its own branch under grill.
 - Advice on what to decide beyond recording the decision.
+
+## Review
+
+Checked on 2026-11-08.
+
+- Recorded decision: ADR-0002 passes the three gates, the file format, and the numbering. Its supersede is a partial one — only the testimony clauses of ADR-0001 — and the skill describes only the full form. The record itself is correct; the skill needs one sentence for the partial case.
+- Not recorded: the testimony write cadence ("once per round") fails the hard-to-reverse gate, because changing it is a text edit, not a migration. It stays in the testimony map. Correct.
+- The two existing records do not name their owning ticket, although the skill's `Linking back` section asks for it; they predate the rule. New records should follow it.
