@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T11:00:40Z
+updated_at: 2026-11-08T11:04:26Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: true
@@ -42,5 +42,5 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 ## Progress
 
-Where it stands: the three skill files are drafted and install; the read path is checked on both platforms, and the write path waits on a scratch repository and a Gitee token.
-Next: run create, comment, and close on GitHub and Gitee, record the outputs in `Result`, then check the skill against the three callers.
+Where it stands: the skill and its example are written; the read paths are checked and the write paths wait on the two inputs the Person step names. A probe moved the archive receipt from the archived node to its replacement.
+Next: run create, comment, and close on both platforms, then record the outputs in `Result`.
