@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:48:15Z
-updated_at: 2026-11-08T12:55:48Z
+updated_at: 2026-11-08T13:25:22Z
 parent: wm-qhd3twqjzhma
 soft_links:
   - wm-25b3q7mg88c7
@@ -19,8 +19,6 @@ Design the grill skill: discuss an idea, question or proposal with the owner unt
 Why: new ideas and open questions do not arrive as fog; without a discussion skill they either stall or get lost.
 
 ## Acceptance direction
-
-The grill `SKILL.md`, `how-to-grill.md`, and `testimony.md` exist under `weave-your-work/grill/`.
 
 All children are complete and no further children are needed.
 
