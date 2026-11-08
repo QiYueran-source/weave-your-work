@@ -2,6 +2,8 @@
 
 Testimony is a waymark record item in a `testimony` category at `testimony/`, not a plain file and not a work item. Its title is the topic; its owner is the person the grill is for; its creator is the operator or agent; its status is open while the grill runs and closed when it ends. The body holds the question tree and the discussion, written once per round. Work a grill produces is handed off to the target tree with a `work:` pointer; the testimony never parents work. Post-hoc summaries live under `testimony/summaries/` and are not waymark items. Work queries filter to map and task, so a testimony never enters the frontier.
 
+Owning ticket: [wm-31f6a2c9d840](../../tickets/map/wm-31f6a2c9d840.md).
+
 ## Status
 
 Accepted. The testimony clauses of ADR-0001 are superseded by this record; the rest of ADR-0001 stands.

@@ -59,6 +59,8 @@ Do not edit the old decision into the new one. Write a new ADR and leave the old
 2. The old record gets `## Status` with `Superseded by ADR-0007.`
 3. The old file keeps its number. A number is a position in history, not a version.
 
+When only part of the old record is superseded, name the part in both records and say the rest still stands.
+
 ## Linking back
 
 Name the ticket that owns the decision, by id. When a testimony exists, link it next to the decision. The record says why; the ticket says who asked and what was settled around it.

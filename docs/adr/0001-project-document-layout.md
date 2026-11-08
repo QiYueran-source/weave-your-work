@@ -1,6 +1,8 @@
 # Keep project state, sources, testimony, and delivery artifacts in separate roots
 
-The project keeps different kinds of durable material in separate top-level locations: `tickets/` stores map and task work state, `glossary/` stores per-operator JSONL glossary sources, `GLOSSARY.md` is the generated local glossary view and is ignored, `testimony/` stores records of grill discussions, `docs/adr/` stores accepted architecture decisions, and `weave-your-work/` stores the delivered skills and examples. This separation keeps tracker state, source data, records, decisions, and deliverables from being mistaken for one another.
+The project keeps different kinds of durable material in separate top-level locations: `tickets/` stores map and task work state, `glossary/` stores per-operator JSONL glossary sources, `GLOSSARY.md` is the generated local glossary view and is ignored, `testimony/` stores records of grill discussions, `docs/adr/` stores accepted decisions, and `weave-your-work/` stores the delivered skills and examples. This separation keeps tracker state, source data, records, decisions, and deliverables from being mistaken for one another.
+
+Owning ticket: [wm-qhd3twqjzhma](../../tickets/map/wm-qhd3twqjzhma.md).
 
 ## Consequences
 

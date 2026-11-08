@@ -3,11 +3,12 @@ schema: 1
 id: wm-fptggp5yhf8s
 title: ADR skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:43:47Z
-updated_at: 2026-11-08T11:24:26Z
+updated_at: 2026-11-08T14:06:26Z
+closed_at: 2026-11-08T14:06:26Z
 parent: wm-7zvr8cnts3rs
 ---
 ## Target
@@ -31,7 +32,7 @@ Review point: Check the three gates, the file format, the numbering rule, and th
 - ADRs live under `docs/adr/` in this repository (recorded in [ADR 0001](../../docs/adr/0001-project-document-layout.md)).
 - ADR is an independent skill at `weave-your-work/adr/`; grill calls it when a decision passes the three gates (user confirmed on 2026-11-08). The branch owns the gates and the record; grill owns the moment.
 - Record: `docs/adr/NNNN-slug.md`; the next number is one above the highest existing. The body is a title and one paragraph: what was decided and why, including whatever context the reason needs. `Status`, `Considered Options`, and `Consequences` are optional sections, used only when they add something (adapted from `domain-modeling/ADR-FORMAT.md`, settled on 2026-11-08).
-- Supersede: write a new record, name the old one in it, and add `Status: Superseded by ADR-NNNN` to the old record. The old file and number stay (decided in this run on 2026-11-08).
+- Supersede: write a new record, name the old one in it, and add `Status: Superseded by ADR-NNNN` to the old record. The old file and number stay (decided in this run on 2026-11-08). When only part of the old record is superseded, name the part in both records and say the rest stands (settled on 2026-11-08).
 - Link back: the owning ticket id, and the testimony when one exists (decided in this run on 2026-11-08).
 - `What qualifies` lists four common shapes — where a document lives, what counts as a record, how work moves, who owns what — as recognition aids, not a checklist (settled on 2026-11-08).
 - The template is one paragraph: what was decided and why, including whatever context the reason needs. `docs/adr/` is created only when the first ADR is needed (settled on 2026-11-08).
@@ -49,7 +50,8 @@ Review point: Check the three gates, the file format, the numbering rule, and th
   Resolved on 2026-11-08: the owning ticket id plus the testimony when one exists (see Decisions so far).
 - ~~Decision to make: the exact `What qualifies` categories and the template wording; also whether the skill's software-specific phrases (`from the code`, `architecture advice`) should change. Why it matters: the skill should read as a record for any hard decision, not only software architecture.~~
   Resolved on 2026-11-08: four shapes; one-paragraph template; `from the repository` and `Make or recommend a decision` (see Decisions so far).
-- Decision to make: cover partial supersede in the skill, or accept that the rule describes only a full replacement. ADR-0002 supersedes only the testimony clauses of ADR-0001, not the whole record. Why it matters: a reader could supersede the whole old record when only one clause changed. (Open on 2026-11-08.)
+- ~~Decision to make: cover partial supersede in the skill, or accept that the rule describes only a full replacement. ADR-0002 supersedes only the testimony clauses of ADR-0001, not the whole record. Why it matters: a reader could supersede the whole old record when only one clause changed.~~
+  Resolved on 2026-11-08: the skill says to name the part in both records and say the rest stands (see Decisions so far).
 
 ## Out of scope
 
@@ -61,6 +63,7 @@ Review point: Check the three gates, the file format, the numbering rule, and th
 
 Checked on 2026-11-08.
 
-- Recorded decision: ADR-0002 passes the three gates, the file format, and the numbering. Its supersede is a partial one — only the testimony clauses of ADR-0001 — and the skill describes only the full form. The record itself is correct; the skill needs one sentence for the partial case.
+- Recorded decision: ADR-0002 passes the three gates, the file format, and the numbering. Its supersede is a partial one — only the testimony clauses of ADR-0001 — and the skill now says how to handle a partial supersede (settled on 2026-11-08). The record itself is correct.
 - Not recorded: the testimony write cadence ("once per round") fails the hard-to-reverse gate, because changing it is a text edit, not a migration. It stays in the testimony map. Correct.
-- The two existing records do not name their owning ticket, although the skill's `Linking back` section asks for it; they predate the rule. New records should follow it.
+- The two existing records now name their owning tickets: ADR-0001 → `wm-qhd3twqjzhma`, ADR-0002 → `wm-31f6a2c9d840` (settled on 2026-11-08).
+- Verdict: pass.
