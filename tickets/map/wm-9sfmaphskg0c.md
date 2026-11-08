@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T06:57:55Z
+updated_at: 2026-11-08T07:01:09Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -18,7 +18,7 @@ Why: waymark lets any closed node be rewritten with no cascade and no warning, w
 
 ## Acceptance direction
 
-The skill exists under `weave-your-work/update/`; a reader can take one closed map and one closed task through it, and after each run the node's status, its review record, its parent's Children list, and its dependency edges agree with the change.
+The skill exists under `weave-your-work/update/`; a reader can take one closed map, one split map, and one closed task through it, and after each run the node's status, its review record, its parent's Children list, and its dependency edges agree with the change.
 
 All children are complete and no further children are needed.
 
@@ -31,7 +31,8 @@ Review point: Check that the skill states the two boundary tests, the three disp
 ## Decisions so far
 
 - It is a standalone skill under `weave-your-work/update/`. The Map operating procedure will point at it when that map is built, and the update rules in its fog are removed then. (user confirmed)
-- advance stays the umbrella for every write an owner makes; update is the narrower operation that changes the content of a node that is already closed. (user confirmed)
+- advance stays the umbrella for every write an owner makes; update is the narrower operation that changes the content of a node that is already closed or already split into children. (user confirmed)
+- The trigger is the node's state, not the size of the change: update runs on a closed node, or on a map that has already split. An open node with no children is plain advance. (user confirmed)
 - Content changes on a closed node split two ways: a small change is edited on the ticket; a large change retires the ticket with archive and opens a parallel new ticket. (user confirmed)
 - A substantive change keeps the old text struck through with a `Superseded on <date>: <reason>` line; an editorial change replaces the text. (user confirmed)
 - When the recorded acceptance no longer holds after the change, the node reopens, is reviewed again, and closes again. Status is the only signal the tree reads. (user confirmed)
@@ -47,6 +48,7 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - Whether update triggers only on closed nodes or also on a map that is split and still open.
 - The order of writes for the retire-and-replace path, including the steps that must happen before archiving because an archived ticket rejects every write.
 - Whether update is model-invocable or user-invoked only.
+- Whether moving a subtree to another parent is a second mode of update, a separate skill, or part of the map procedure; which of the moved node and its two parents reopen; and where the move is recorded.
 - The hand-over issue itself is designed in the communication category; whether update adds a dependency edge to that map is undecided.
 
 ## Out of scope
