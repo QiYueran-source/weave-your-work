@@ -17,5 +17,6 @@ Read them when:
 
 - `building-work-weave/README.md`: how this project split its own tree, in order.
 - `designing-the-update-skill/README.md`: how one design map became the update skill, and the four decisions that were reversed on the way.
+- `designing-the-issue-skill/README.md`: how the communication map became a skill for GitHub and Gitee, and why the decisions landed in the ticket rather than a second document.
 - `map-example.md`: one complete map.
 - `task-example.md`: one complete task.
