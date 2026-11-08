@@ -79,6 +79,8 @@ Bodies are the other half, and there are two kinds of them. `waymark search "<te
 
 Each one is read for one question: does this relation still mean what it meant? A child that refined the old content may not refine the new. A dependent waiting on a completed node may be waiting on something that no longer exists. A passage in an example quoting the old text now quotes something retracted.
 
+A soft link is the one relation that records no reason. Waymark stores it as a bare id on both tickets, so the edge does not say what the two nodes had to do with each other. When the scan reaches one, the reason has to come from reading both bodies — and if it cannot be found, the link is already meaningless and the change is a fair moment to drop it.
+
 The scan is unlimited in reach and the write is not; see below.
 
 ## What a run may decide, and what it may write
