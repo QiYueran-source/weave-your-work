@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:48:15Z
-updated_at: 2026-11-08T11:28:02Z
+updated_at: 2026-11-08T12:55:48Z
 parent: wm-qhd3twqjzhma
 soft_links:
   - wm-25b3q7mg88c7
@@ -20,25 +20,28 @@ Why: new ideas and open questions do not arrive as fog; without a discussion ski
 
 ## Acceptance direction
 
-The grill `SKILL.md` exists under `weave-your-work/grill/`.
+The grill `SKILL.md`, `how-to-grill.md`, and `testimony.md` exist under `weave-your-work/grill/`.
 
 All children are complete and no further children are needed.
 
-Review point: Read the grill `SKILL.md` against its three branch maps. It names the three artifacts and points at the branch that owns each; every landing rule it states is the branch's own. Each branch's delivered file exists and installs with `npx skills add` when it is a skill.
+Review point: Read the entry against the method and the record. The entry points at both, names the three branch maps, and restates neither the method's rules nor a branch's landing rule. Each branch's delivered file exists and installs with `npx skills add` when it is a skill.
 
 ## Decisions so far
 
 - ~~grill is a peer skill under Execution, level with map/task/glossary (user confirmed).~~ Superseded on 2026-11-08: grill is the parent skill; testimony, glossary, and ADR hang under it as its branches (user confirmed). The parent relation says each branch refines grill's target; it does not by itself settle how a branch is invoked.
 - An ADR skill is added as the third branch (user confirmed on 2026-11-08). Its design is [ADR skill](tickets/map/wm-fptggp5yhf8s.md).
+- The grill skill has three files: `SKILL.md` (entry and contract), `how-to-grill.md` (the method: question tree, askable set, rounds, facts, hand off), and `testimony.md` (the record) (user confirmed on 2026-11-08).
+- Method terms: `refine` (question tree), `hand off` (question to work), `split` (target tree). The grill uses the first two; the split skill owns the third (user confirmed on 2026-11-08).
+- Fact rule: a fact the agent can check is the agent's; a fact only a person knows is asked; a fact nobody knows becomes an assumption or a probe. The person may not be the decider; "ask X" is a wait, not a forced decision (decided in this design on 2026-11-08).
 - Delivery shape (user confirmed on 2026-11-08): testimony is a reference file at `weave-your-work/grill/testimony.md`; glossary and ADR are independent skills at `weave-your-work/glossary/` and `weave-your-work/adr/`. The tree's parent relation is design refinement, not directory nesting.
 - Landing split (follows the delivery shape, user confirmed on 2026-11-08): grill owns when an artifact is written and the output contract; each branch owns how its artifact is written. Grill's `SKILL.md` points at the branch and does not restate its landing rule.
 - ask-me only routes; grill owns the discussion (user confirmed).
 - grill is both a low-level conversation ability called by fog-explore/split/review and a standalone entry (user confirmed).
 - grill lands three artifacts itself: glossary terms, testimonies, and ADRs. ~~It owns the landing rules for those three.~~ Superseded on 2026-11-08: it owns when each artifact is written and the output contract; each branch owns the landing rule. Everything else — map decisions, split results, task creation — is landed by the skill that called grill: the caller references grill, receives its clear conclusions, terms, testimonies, and ADRs, and writes them into its own ticket (user confirmed, revising the earlier "grill lands map decisions and task creation" wording).
 - Discussion protocol: prefer the harness's built-in choice feature for questions with selectable options; when no choice feature exists, fall back to the grilling protocol (one round covers the whole frontier, numbered questions with recommended answers) (user confirmed).
-- Grill's output contract: grill returns clear conclusions plus the glossary, testimony, and ADR artifacts to the calling skill, and the calling skill lands the conclusions itself. When a calling skill needs grill is that skill's own design, not grill's (user confirmed).
+- Grill's output contract: grill returns clear conclusions, the testimony path, the glossary and ADR artifacts, and the work to hand off; the calling skill lands the conclusions itself. When a calling skill needs grill is that skill's own design, not grill's (user confirmed; the hand-off was added on 2026-11-08).
 - Glossary landing: a term is written to the operator's `glossary/<operator>.jsonl` source the moment it resolves during the discussion, one term at a time, not batched (user confirmed; the source file is the glossary branch's decision).
-- Testimony landing: the testimony is written in real time as the grill advances, and edited as the discussion progresses; other tickets cite it only after the grill closes (user confirmed).
+- ~~Testimony landing: the testimony is written in real time as the grill advances, and edited as the discussion progresses; other tickets cite it only after the grill closes (user confirmed).~~ Revised on 2026-11-08: the testimony is updated once per round — the question tree is rewritten and the discussion is appended; other tickets cite it only after the grill closes (user confirmed).
 - ADR landing: an ADR is written only when the decision is hard to reverse, surprising without context, and a real trade-off — all three; otherwise the decision goes to the caller's Decisions so far (user confirmed).
 
 ## Not yet specified

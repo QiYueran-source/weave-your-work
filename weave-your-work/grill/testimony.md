@@ -1,41 +1,70 @@
 # Testimony
 
-A testimony is the record of a grill: what a person said while a decision was being discussed — their answers, the ideas raised along the way, the alternatives that lost. It is written as the discussion happens.
+A testimony is the record of a grill: the question tree and what the person said while the decisions were discussed. It is one waymark record item per grill.
 
-It holds nothing else. Research findings, what an agent did during a run, and a ticket's conclusions are not testimony.
+It is a record, not a work item: it has a category, an owner, and a status, but it is not a map or a task and does not enter the target tree.
 
-## It is not a ticket
+## The item
 
-A testimony has no waymark front matter, is not processed by waymark, and does not enter the target tree, status, frontier, or acceptance. It is a Markdown file under `testimony/` that tickets link to.
+- Category: `testimony`.
+- Title: the topic, in plain words. No date or operator prefix.
+- Owner: the person the grill is for — the owner of the discussion's work item, or the user when the grill is standalone.
+- Creator: the operator or agent that wrote it.
+- Status: `open` while the grill runs, `closed` when it ends. Tickets cite it only after it closes.
+- Links: a soft link to the discussion's work item, and to any work item the grill hands off.
 
-## Where it lives and what it is called
+The file is the waymark id, `testimony/wm-....md`. The date and last edit come from `created_at` and `updated_at`; do not repeat them in the title.
 
-`testimony/YYYY-MM-DD_operator_topic.md`
+## The body
 
-- `YYYY-MM-DD` is the date the grill starts.
-- `operator` is the project operator, or the git user name when the project has no operator.
-- `topic` is a human-readable kebab-case name, not a ticket id.
+Two sections:
 
-Example: `testimony/2026-11-08_frank_pricing-model.md`.
+### Question tree
 
-## When it is written
-
-Open the file when the grill starts, before the first question, and edit it as the discussion moves. Write the answers and the ideas that were raised, including the ones that lost.
-
-A file written after the discussion is a summary, not a testimony. The name and the directory do not make it one.
-
-## What it holds
-
-There is no required structure. Write what was said in the order it was said, or group it by decision. Keep the person's answers and the alternatives that lost; those are the parts a later session cannot reconstruct.
-
-When several tickets share one testimony, an optional `Related tickets` list at the end names them.
-
-## How a ticket cites it
-
-Use an ordinary Markdown relative link next to the relevant decision, fact, or fog entry:
+A short outline of the questions, one line per node, indented where a question refines another. Use a checkbox and a note:
 
 ```md
-- The pricing model is usage-based. See [Testimony: pricing model](../../testimony/2026-11-08_frank_pricing-model.md).
+- [x] Launch in Q1
+  - [x] What counts as ready
+  - [ ] Is the contract signed — fact, agent checking
+  - [ ] Who approves — decision, waiting on VP
+- [ ] Will sales object — assumption
 ```
 
-Cite a testimony only after the grill closes. While the grill is running, the file is still changing.
+`[x]` settled, `[ ]` open. A note says who is resolving it or what it waits on. The labels `fact`, `decision`, `goal`, `assumption` are optional; write one only when it helps say who resolves the node.
+
+Rewrite the tree at the end of each round. Do not keep a history of tree states; the discussion below is the history.
+
+### Discussion
+
+What was said, appended at the end of each round:
+
+```md
+### Round 1
+
+- Q: ...
+  A: ...
+- Lost alternative: ...
+```
+
+Write the answers in the person's terms; do not replace an answer with your own conclusion. Questions may be shortened.
+
+## Work leaves the testimony
+
+When a question becomes work — someone must do something and it must be checked — write one line and hand it to the caller:
+
+```md
+- work: Contract review (the agent cannot check the contract; the caller creates the task)
+```
+
+The caller creates the map or task in the target tree. The work item hangs under a map, not under the testimony; the testimony is a record, not a target. Add the work item's id or link when it exists.
+
+A term goes to the glossary and an ADR to the `adr` skill; the testimony holds at most a one-line pointer.
+
+## What it does not hold
+
+Research findings, what an agent did during a run, and a ticket's conclusions are not testimony. A file written after the discussion is a summary, not a testimony.
+
+## Citing it
+
+Tickets cite a testimony with a relative Markdown link next to the relevant decision, fact, or fog entry. Cite only after the grill closes and the testimony is `closed`.

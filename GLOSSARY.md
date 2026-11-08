@@ -5,20 +5,32 @@ Work-weave is a skill set for general team collaboration. It uses waymark as the
 ## Language
 
 **ticket (local work item)**:
-A waymark document inside the repository, the carrier of local work state. Both map and task are tickets. Advancing, claiming, closing, and archiving all act on tickets.
+A waymark document inside the repository, the carrier of local work state. Both map and task are tickets. Advancing, claiming, closing, and archiving all act on tickets. A record item is a waymark document too, but it is not a ticket.
 _Avoid_: issue (issues live on GitHub or Gitee, not in the repository)
+
+**record item**:
+A waymark document that records a discussion or a decision rather than work: comment and testimony are record items. It has front matter, an owner, and a status, but no target-tree parent, no acceptance, and no place in the work frontier.
+_Avoid_: ticket (when the meaning is a work item), work item
 
 **issue (remote issue)**:
 A problem report on GitHub or Gitee, used for real-time team communication. It is not local state; a discussion's conclusion counts only after it is written back to a ticket.
 _Avoid_: ticket (a local work item), task
 
 **comment (synced record)**:
-A record synced back from an issue, carrying a discussion conclusion or decision. It uses waymark's comment category for now.
+A record synced back from an issue, carrying a discussion conclusion or decision. It is a waymark record item, not a work item; it uses waymark's comment category for now.
 _Avoid_: discussion (when referring to the remote conversation itself)
 
 **testimony (口供)**:
-The record of a grill: what a person said while a decision was being discussed — their answers, the ideas raised along the way, the alternatives that lost — written down as the discussion happens. It holds nothing else: research findings, what an agent did during a run, and a ticket's conclusions are not part of it. A testimony is not a ticket: it has no ticket frontmatter, is not processed by waymark, and does not enter the target tree, status, frontier, or acceptance. Tickets cite a testimony with a relative Markdown link next to the relevant entry.
-_Avoid_: log, weave log, evidence record, attachment (when it implies a ticket relation)
+The record of a grill: the question tree and what a person said while a decision was being discussed — their answers, the ideas raised along the way, the alternatives that lost. It holds the discussion only: research findings, run history, and a ticket's conclusions are not part of it. It is a waymark record item: it has front matter, a category, an owner, and a status, but it is not a work item and does not enter the target tree or the work frontier. Its title is the topic; its owner is the person the grill is for; tickets cite it with a relative Markdown link after it closes.
+_Avoid_: log, weave log, evidence record, attachment (when it implies a work item)
+
+**question tree**:
+The grill's refinement tree of open questions. A child question is a narrower part of its parent; siblings are parallel. It is not the target tree, and its nodes are not work items.
+_Avoid_: design tree (ambiguous with the target tree), target tree
+
+**askable set**:
+The questions in the question tree whose prerequisites are settled; the grill asks this set in one round. It is not the frontier, which is work items.
+_Avoid_: frontier (that is the waymark work frontier)
 
 **map (target node)**:
 A target node that answers "what I want": the expected outcome or requirement. Each map states its goal, why it is worth doing, its boundaries, and its acceptance direction, and hangs one or more refined targets (child maps or tasks) under it. A map does not cover feasibility or implementation; those belong to tasks. The root map is the overall goal and has no parent; a map's children are more refined targets. Every target node is called a map; there is no separate name for levels.
@@ -41,16 +53,24 @@ A map whose own dependency edge is unfinished. The edge gates the map's acceptan
 _Avoid_: blocked (for a task waiting on a person; that is `waiting_on`)
 
 **refinement**:
-The relation between a parent target and a child target: the child is a more specific statement of the parent. Unrelated to ordering.
+The relation between a parent target and a child target: the child is a more specific statement of the parent. Unrelated to ordering. The same relation holds for questions in a question tree.
 _Avoid_: breakdown (when it implies slicing once into executable pieces)
+
+**refine (question tree)**:
+Split a broad question into narrower sub-questions. A child question is a more specific question than its parent. It is not the target tree's split or the grill's hand off.
+_Avoid_: split (when the question tree is meant), breakdown
 
 **arrive (到达)**:
 The moment a settled decision becomes a child node. It arrives as a task when one action and one clearly auditable standard can be written and the action ends at a result that can be handed over and checked on its own; otherwise it is a child map. Prefer a task over a child map; a child map is used only when the item still has several independent directions, needs its own owner, or needs its own phase.
 _Avoid_: graduation, breakdown, splitting (when they mean a fog item becoming a node rather than slicing work)
 
 **split (分裂)**:
-The act of turning one map's next layer into child maps or tasks. The split skill decides when to split and which type; it never resolves fog. A map with an unfinished dependency is not split; wait for the dependency to close. Independent early work belongs under a sibling map, not under the blocked map.
-_Avoid_: explore (exploring fog is not splitting), breakdown
+The act of turning one map's next layer into child maps or tasks. The split skill decides when to split and which type; it never resolves fog. It is not the grill's refine or hand off. A map with an unfinished dependency is not split; wait for the dependency to close. Independent early work belongs under a sibling map, not under the blocked map.
+_Avoid_: explore (exploring fog is not splitting), breakdown, refine (the question tree's act), hand off (the grill's act)
+
+**hand off**:
+Move a settled question to the target tree as work. The work item hangs under a map, not under the question or the testimony; the testimony keeps a `work:` pointer. It is not the target tree's split or the question tree's refine.
+_Avoid_: split (the target tree's act), refine (the question tree's act)
 
 **hang (挂)**:
 The act of opening a child ticket under a node. Hanging is done by split when it creates a child: the child records its parent in its own front matter, and nothing is written on the parent ticket. The tree reads the parent field; a map body carries no children list.
@@ -101,8 +121,8 @@ An entry in a map's Not yet specified section: in-scope content that is not yet 
 _Avoid_: todo, backlog, open question (when the content is already scoped to a map)
 
 **frontier**:
-The set of nodes with no unfinished dependencies that can be started now. Given by waymark's ready query.
-_Avoid_: todo, next actions (when referring to a personal list)
+The set of work items (map or task) with no unfinished dependencies that can be started now. Given by waymark's ready query filtered to map and task.
+_Avoid_: todo, next actions (when referring to a personal list), askable set (the grill's questions are not work)
 
 **slice (切片)**:
 One stage of a result, finished before anything downstream can use it. A slice needs a sibling to mean anything, which is how it is told apart from a task: a task ends at a result that can be handed over whole and checked on its own. Named as the shape to avoid when defining a task.
