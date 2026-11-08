@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-08T07:45:23Z
+updated_at: 2026-11-08T10:49:58Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target
@@ -46,6 +46,8 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 
 ## Not yet specified
 
+- Decision to make: where a map's own entry document comes from when the map has already split into child maps. `wm-w87msnqhda40` wrote split's `SKILL.md` from a task hanging under this map, which now holds two child maps and one task, and the freeze says a map's children are all one type.
+  Why it matters: either the freeze covers only the children a map refines into, and a map may carry a task that delivers its own file beside them, or those tasks need a different home, and the Map skill's own `SKILL.md` currently has none.
 - Whether a blocked map may split. A map waiting on another may still have parts that do not need the blocker's answer; the open question is whether those parts may be split now or must wait.
 - The submap side of vertical slicing: when work must run in sequence, what the child maps look like and where the edge is carried. The task side is settled in the task skill.
 - How a task relates to other maps. A task hangs under exactly one map but may link to another; what a link is used for, and what it does not mean (no ordering, no shared acceptance).
