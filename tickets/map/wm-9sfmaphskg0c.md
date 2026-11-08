@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T10:12:07Z
+updated_at: 2026-11-08T10:13:00Z
 closed_at: 2026-11-08T09:46:46Z
 parent: wm-qhd3twqjzhma
 ---
@@ -57,14 +57,12 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - Rebuilding also resets what the nodes assert: `waymark create` always produces an open node, so a closed task rebuilt under a new parent comes back open and its recorded review does not carry over. A relocation that preserves status has to be a `parent set`. (verified in waymark 0.1.2)
 - The skill has two references, following split's shape: `content.md` for changing a node's content and `move.md` for relocating a subtree. SKILL.md keeps what both share — the two boundary tests, the ownership stop, the impact scan, and the reopen rule — and routes to one of them. (user proposed; accepted)
 - A move writes no record field anywhere. `waymark parent set` leaves the old parent in the git diff of the moved node, and `waymark git history --item <id>` prints it; a line saying "moved from X" would be a second copy of something git already holds. (user confirmed)
+- `update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident. (agent decision, revisable)
+- The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`. (verified by installing and checking every relative link in the copy)
 
 ## Not yet specified
 
-- `update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident. (agent decision, revisable)
-- Whether update adds a dependency edge to the communication map. The issue it files is the communication category's to design; update names what the issue must carry and points there. An edge between the two maps would say the update work waits on the issue work, which is false today — the skill can file issues by hand.
-- ~~The seven-step retire-and-replace order is written into `content.md` from waymark's constraints, not from a worked run.~~
-  Resolved on 2026-11-08: the order was run end to end in a scratch project and held. A map with two children and a foreign dependent was retired through all seven steps; `validate` reported no findings, the surviving child read under the replacement, the dependent went `blocked` → `ready`, and the dry-run named exactly the ticket the archive would edit. One correction came out of it: the parent field is cleared on the **child**, not the holder — archiving the child while it still points at its parent breaks `validate` once the parent is archived, and an archived child cannot be cleared afterwards (no unarchive command exists; the only repair is a hand edit). That correction is in `content.md`.
-- The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`. (verified by installing and checking every relative link in the copy)
+Nothing. The two items that lived here were settled during the build and moved into `Decisions so far`; the third was resolved by running it, and the fourth was too narrow to be a child, so it went to `Out of scope`.
 
 ## Built
 
@@ -78,3 +76,4 @@ Review point: Check that the skill states the two boundary tests, the three disp
 
 - Editing nodes that are still open, which is plain advance.
 - Designing the issue exchange itself, which belongs to the communication category.
+- A dependency edge between this map and the communication map. It would claim the update work waits on the issue work, which is false — the skill can file an issue by hand today. If the edge is ever wanted, it is the communication map's decision, not a fog item left on a closed map.
