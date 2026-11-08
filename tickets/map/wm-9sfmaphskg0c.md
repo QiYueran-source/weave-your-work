@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T08:58:17Z
+updated_at: 2026-11-08T08:59:30Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -41,6 +41,7 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - Hand-over to another owner is an issue. The issue's shape and count belong to the communication category; update only names the hand-over and records the link. (user confirmed)
 - Update never hangs a child under a foreign map without consent: the rules for a foreign parent — hang directly when it is open, open an issue and wait when it is closed, and prepare the child as an isolated node meanwhile — belong to [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and update points there instead of restating them. (user confirmed)
 - Two waymark writes cross ownership and update must call them out rather than perform them quietly: `link add` / `link remove` writes both tickets, and `archive` removes inbound dependencies and soft links from every ticket pointing at the archived node. Retiring a node that others depend on is a write to their tickets. (verified in waymark 0.1.0)
+- Naming the foreign inbound edges before an archive is cheap: `waymark --json list` returns `dependents` for every item, so the operator reads the full set without grepping. Links are not in that field — a soft link lives on both files, so it shows up as the other ticket's own `soft_links`. (verified in waymark 0.1.0)
 - The gate is a comparison, not a query: `--dry-run` prints the ids that will be rewritten, and the operator checks each against its own. Nothing in waymark performs that check. `archive --dry-run` warns OWNER_MISMATCH only for the node being archived, never for the tickets in `affected`, so a run that will rewrite three other people's files looks clean. (verified in waymark 0.1.0)
 - Archiving changes what a dependent may do, not just what its file says. With carol's ticket depending on kim's node, archiving the node takes carol's ticket from `blocked` to `ready` — her plan moves without her knowing. That consequence, not the merge, is the reason a foreign inbound edge stops the archive. (verified in waymark 0.1.0)
 - Every waymark write command takes `--dry-run`: archive, close, create, link add/remove, dependency add/remove, parent set/clear, status set, body replace. The skill runs it before every write and reads the affected list. Dry-run is not a permission check, though: `archive --dry-run` names each ticket whose front matter it will edit (`affected` in the JSON envelope, one `removes dependencies` / `removes soft_links` line each in the human output) and raises no OWNER_MISMATCH for those tickets — only the node being archived is warned about. The operator compares the affected ids against its own. (verified in waymark 0.1.0)
