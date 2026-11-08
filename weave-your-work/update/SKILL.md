@@ -4,7 +4,6 @@ description: >-
   Change what a map or task says after other nodes already rely on it: edit it
   in place, retire and replace it, or move it under another parent, and carry
   the change to its children, its dependents, and its recorded review.
-disable-model-invocation: true
 ---
 
 # Update
@@ -41,7 +40,7 @@ Both yes is the first disposition. First yes, second no is the second. First no 
 | Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. | closed → open → closed |
 | Different subject | Retire the ticket with archive and open a parallel one under the same parent. | archived |
 
-The second disposition exists because status is the only signal the tree reads. A node whose acceptance no longer holds is not done, whatever its ticket says, and leaving it closed tells every reader something false.
+The second disposition exists because a closed child is how its parent counts itself done: a map is accepted when its children are complete. A child left closed on a verdict that no longer holds makes its parent's claim false as well, and the falseness travels upward. Nothing in waymark checks this — `ready` reads dependency edges and never looks at `parent` — so nobody is warned.
 
 The third exists because a node that answers a different question is not the same node. Editing it would leave its children refining a subject they never agreed to. Retiring it keeps the old text readable and gives the new one a clean review.
 
