@@ -5,3 +5,7 @@ The project keeps different kinds of durable material in separate top-level loca
 ## Consequences
 
 `GLOSSARY.md` is not the shared source file and must be regenerated from `glossary/*.jsonl`; the source files and testimony records are committed so the team can share and review them. Testimony files are named `YYYY-MM-DD_operator_topic.md`; they are not tickets, are not processed by waymark, and do not enter the target tree. The directory was called `weave-logs/` until 2026-11-08, when the record was narrowed to grill discussion and renamed testimony.
+
+## Status
+
+The testimony clauses are superseded by ADR-0002; the rest of this record stands.
