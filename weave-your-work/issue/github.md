@@ -35,6 +35,8 @@ GitHub's search index lags by a few seconds. When a thread was opened moments ag
 gh issue list --repo <owner>/<repo> --state open --limit 100 --json number,title,url
 ```
 
+Add `--state all` to the search to find a closed thread carrying the id; the open search is for a thread still waiting.
+
 ## File
 
 ```bash
