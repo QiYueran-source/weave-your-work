@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T06:50:43Z
+updated_at: 2026-11-08T06:57:55Z
 parent: wm-qhd3twqjzhma
 ---
 ## Target
@@ -38,15 +38,16 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - A completed node that its parent no longer needs is archived with a reason; `outcome=failed` is not used, and the archived definition grows to cover "done but retired by an upstream change". (user confirmed)
 - The impact scan is not depth-limited: follow children, the parent, dependency edges in both directions, soft links, and references in bodies, examples, and testimony. (user confirmed)
 - The write boundary is ownership: the operator edits the tree it owns and stops at any node owned by someone else. That node is handed over by opening an issue, never by editing it. (user confirmed)
+- The boundary is two tests in order: does the node still answer the same question, and does the recorded acceptance still hold? Same subject and verdict holds → edit in place, status unchanged. Same subject and verdict fails → strike the old text with `Superseded on <date>: <reason>`, reopen, review again, close. Different subject → archive the old ticket, open a parallel new one, and repoint the parent's Children. (user confirmed)
+- A foreign-owned node stops that branch, not the whole run: the operator finishes the tree it owns and hands the rest over. A branch cannot continue when the foreign node is the parent whose Children list must change. (user confirmed)
+- Hand-over to another owner is an issue. The issue's shape and count belong to the communication category; update only names the hand-over and records the link. (user confirmed)
 
 ## Not yet specified
 
-- The boundary between the in-place edit and the parallel replacement: proposed as two tests (is it the same subject? does the recorded acceptance still hold?) giving three dispositions; waiting for confirmation.
 - Whether update triggers only on closed nodes or also on a map that is split and still open.
-- Whether a foreign-owned node stops the whole run or only that branch.
-- What the hand-over issue contains, whether one issue covers several nodes, and whether the run waits for an answer.
 - The order of writes for the retire-and-replace path, including the steps that must happen before archiving because an archived ticket rejects every write.
 - Whether update is model-invocable or user-invoked only.
+- The hand-over issue itself is designed in the communication category; whether update adds a dependency edge to that map is undecided.
 
 ## Out of scope
 
