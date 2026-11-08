@@ -24,7 +24,7 @@ A grill decides when a term has resolved. This skill decides how it is written.
 1. **Challenge the term against the glossary.** If the word in use conflicts with the recorded meaning, say so and ask which one is meant.
 2. **Sharpen fuzzy language.** When a word covers two things, propose the precise term for each and pick one as canonical.
 3. **Test the boundary with a concrete scenario.** Invent a case at the edge of the definition; if the term cannot decide the case, it is not sharp enough.
-4. **Check how the project already uses the word.** Search the tickets, docs, and code before naming it. A new name that contradicts existing use is a second problem.
+4. **Check the project's actual behavior, not just the word.** Read the ticket, the process, or the output. If the recorded definition and what the project does disagree, say so and fix one of them; searching for the word is not enough.
 
 ## Writing a term
 
