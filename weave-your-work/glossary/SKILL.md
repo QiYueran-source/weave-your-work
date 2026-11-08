@@ -50,7 +50,7 @@ The source is `glossary/<operator>.jsonl`. Never write to another operator's fil
 
 ## Running the tools
 
-The MCP server and the CLI live in `bundle/`. `usage.md` has the install step, the CLI commands, the stdio config shape, and troubleshooting. Read it when the tools are not running or when you need the CLI instead of the MCP.
+The MCP server and the CLI live in `bundle/tools/`. `bundle/setup.md` installs them; `usage.md` has the CLI commands, the stdio config shape, and troubleshooting. Read it when the tools are not running or when you need the CLI instead of the MCP.
 
 ## The generated view
 
@@ -60,7 +60,7 @@ The merge reads every source, keeps the latest `updated_at` for each term, and w
 
 ## The rules file
 
-`glossary-rules.md` carries the writing constraints and is installed under `.agents/rules/` by setup. Read it before writing a term; it holds the conventions this file does not repeat.
+The rule at `bundle/rules/rules-glossary.md` carries the writing constraints and is installed under `.agents/rules/rules-glossary.md` by setup. Read it before writing a term; it holds the conventions this file does not repeat.
 
 ## What it does not do
 

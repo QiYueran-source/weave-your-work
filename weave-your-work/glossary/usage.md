@@ -4,19 +4,19 @@ The glossary has two front ends over the same sources: an MCP server with four t
 
 `<skill>` is the directory that holds this file. `<root>` is the project root, the directory with `.waymark/config.toml`.
 
-## First run
+## Install and check
 
-1. Install the MCP dependencies once:
+1. Run `bundle/setup.md` once; it installs the dependencies, the rule, and the post-merge hook. To install by hand:
 
    ```bash
-   cd <skill>/bundle
+   cd <skill>/bundle/tools
    npm install
    ```
 
 2. Check the CLI against the project:
 
    ```bash
-   node <skill>/bundle/glossary.js --project <root> list
+   node <skill>/bundle/tools/glossary.js --project <root> list
    ```
 
    It prints one JSON object per merged term. When the current directory is the project root, `--project` can be left out.
@@ -28,7 +28,7 @@ The glossary has two front ends over the same sources: an MCP server with four t
      "mcpServers": {
        "glossary": {
          "command": "node",
-         "args": ["<skill>/bundle/server.js", "--project", "<root>"]
+         "args": ["<skill>/bundle/tools/server.js", "--project", "<root>"]
        }
      }
    }
@@ -50,10 +50,10 @@ The glossary has two front ends over the same sources: an MCP server with four t
 ## The CLI
 
 ```bash
-node <skill>/bundle/glossary.js --project <root> list
-node <skill>/bundle/glossary.js --project <root> lookup <term>
-node <skill>/bundle/glossary.js --project <root> write --term <term> --definition <definition> [--avoid <word>]... [--group <group>]
-node <skill>/bundle/glossary.js --project <root> merge
+node <skill>/bundle/tools/glossary.js --project <root> list
+node <skill>/bundle/tools/glossary.js --project <root> lookup <term>
+node <skill>/bundle/tools/glossary.js --project <root> write --term <term> --definition <definition> [--avoid <word>]... [--group <group>]
+node <skill>/bundle/tools/glossary.js --project <root> merge
 ```
 
 - `list` prints every merged term as JSON, one per line.
@@ -82,7 +82,7 @@ The CLI needs no dependencies. The MCP server does.
 
 ## Troubleshooting
 
-- `Cannot find module '@modelcontextprotocol/sdk'`: run `npm install` in `<skill>/bundle/`.
+- `Cannot find module '@modelcontextprotocol/sdk'`: run `npm install` in `<skill>/bundle/tools/`.
 - `not found`: the term may carry a parenthetical note; try the part before ` (`.
-- `GLOSSARY.md` is stale: run `merge`, or install the post-merge hook (separate task).
+- `GLOSSARY.md` is stale: run `merge`, or install the post-merge hook with `bundle/setup.md`.
 - A write went to the wrong operator: check `.waymark/user.toml` or `git config user.name`. The server resolves the operator at startup, so restart it after a change.
