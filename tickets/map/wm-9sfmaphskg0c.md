@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T09:16:16Z
+updated_at: 2026-11-08T09:21:05Z
 closed_at: 2026-11-08T09:16:16Z
 parent: wm-qhd3twqjzhma
 ---
@@ -19,7 +19,7 @@ Why: waymark lets any closed node be rewritten with no cascade and no warning, w
 
 ## Acceptance direction
 
-The skill exists under `weave-your-work/update/`; a reader can take one closed map, one split map, and one closed task through it, and after each run the node's status, its review record, and its dependency edges agree with the change. The move path has been read end to end against the repository's own move at `b699d5f`; the retire-and-replace path has not been run on a real node yet.
+The skill exists under `weave-your-work/update/`; a reader can take one closed map, one split map, and one closed task through it, and after each run the node's status, its review record, and its dependency edges agree with the change. The move path has been read end to end against the repository's own move at `b699d5f`; the retire-and-replace path has been run end to end in a scratch project, and its write order held.
 
 All children are complete and no further children are needed.
 
@@ -60,7 +60,8 @@ Review point: Check that the skill states the two boundary tests, the three disp
 ## Not yet specified
 
 - Whether update adds a dependency edge to the communication map. The issue it files is the communication category's to design; update names what the issue must carry and points there. An edge between the two maps would say the update work waits on the issue work, which is false today — the skill can file issues by hand.
-- The seven-step retire-and-replace order is written into `content.md` from waymark's constraints, not from a worked run. No retired-and-replaced node exists in this repository yet; the first real one is the test of that order.
+- ~~The seven-step retire-and-replace order is written into `content.md` from waymark's constraints, not from a worked run.~~
+  Resolved on 2026-11-08: the order was run end to end in a scratch project and held. A map with two children and a foreign dependent was retired through all seven steps; `validate` reported no findings, the surviving child read under the replacement, the dependent went `blocked` → `ready`, and the dry-run named exactly the ticket the archive would edit. One correction came out of it: the parent field is cleared on the **child**, not the holder — archiving the child while it still points at its parent breaks `validate` once the parent is archived, and an archived child cannot be cleared afterwards (no unarchive command exists; the only repair is a hand edit). That correction is in `content.md`.
 
 ## Built
 
