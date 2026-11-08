@@ -51,6 +51,19 @@ The caller's contract sets the content:
 - **A foreign closed parent** — ask the owner to reopen the map, and say which child waits on it.
 - **A question** — the question, the options you can see, and what each answer changes.
 
+An archive hand-over, filled in:
+
+**Title:** `[wm-2h5n8r1v4x7z] Re-point "Sync glossary records" or drop the wait`
+
+**Body:**
+> @kim
+>
+> I archived "Glossary install" (`wm-7k2m4p9q1s3t`). Your "Sync glossary records" (`wm-2h5n8r1v4x7z`) depended on it, so the edge was removed and your ticket is ready instead of blocked.
+>
+> The replacement is "Glossary storage per operator" (`wm-9c3f6j0l5w8y`). Re-point the edge at it, or drop the wait if the archived outcome is enough.
+>
+> Reply here with which one; the ticket is yours to change.
+
 **Before.**
 
 - Know the platform and the repository; `github.md` and `gitee.md` say how. The checkout's `origin` names the repository; a checkout with several remotes needs the person to name the one that holds the issue.
