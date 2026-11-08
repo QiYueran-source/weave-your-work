@@ -1,10 +1,10 @@
 # Record the Construction as an Example
 
-Building this skill set is a run of its own methods. Keep that run under `.agents/docs/examples/` as a worked example: how the target tree was split, how dependencies were set, and how tasks were defined.
+Building this skill set is a run of its own methods. Keep that run as a worked example: how the target tree was split, how dependencies were set, and how tasks were defined.
 
 ## What to do
 
-1. Write one file per effort at `.agents/docs/examples/<effort>.md`. Name it after the effort, not the lesson: `building-work-weave.md` reads better than `how-to-split-a-tree.md`.
+1. Write one directory per effort under `weave-your-work/use-weave-your-work-examples/`, named after the effort rather than the lesson: `building-work-weave/` reads better than `how-to-split-a-tree/`. The directory holds a `README.md` with the order the pages are read in, and one page per section after it. Split by section so each page stays short.
 2. Record while the tickets are fresh. The tickets hold each decision; the example holds the order the decisions were made in and the alternatives that lost.
 3. Write down the judgment, not only the outcome:
    - **Splitting the tree**: what became a child map, what became a task, what stayed in Not yet specified, and why. Include splits you rejected.

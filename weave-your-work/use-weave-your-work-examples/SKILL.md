@@ -16,5 +16,6 @@ Read them when:
 ## Files
 
 - `building-work-weave/README.md`: how this project split its own tree, in order.
+- `designing-the-update-skill/README.md`: how one design map became the update skill, and the four decisions that were reversed on the way.
 - `map-example.md`: one complete map.
 - `task-example.md`: one complete task.
