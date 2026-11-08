@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:03:36Z
-updated_at: 2026-11-08T07:39:05Z
+updated_at: 2026-11-08T10:48:04Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -18,7 +18,7 @@ Why: `task.md` is a reference inside the split skill, not a skill of its own, bu
 
 ## Acceptance direction
 
-The reference is written into split's `task.md`: the test, the body it writes, the fields it sets, and how the task is hung are all stated, and a sample map is split into tasks that a run can pick up.
+The reference is written into split's `task.md`: the test, the body it writes, the fields it sets, and how the task is hung are all stated. ~~A sample map is split into tasks that a run can pick up.~~ That sample split is the worked example the root map defers to one batch: [Work-weave: general team collaboration skill set](tickets/map/wm-wjwa9081hse1.md).
 
 All children are complete and no further child is needed.
 
@@ -35,7 +35,7 @@ All children are complete and no further child is needed.
 - The count is decided before anything is written, then each task is taken one at a time. The first split writes `split_as: task`, and every later child of that map is a task; a part that needs a map opens a sibling map (user confirmed).
 - When the discussion cannot support a body — no evidence the signal could name, or no single action that ends at one result — split sends the part back to grill. It never guesses (user confirmed).
 
-- The split plan — how many tasks this layer makes and one line for each — is written on this map, not in a testimony (user confirmed). One bullet in `Decisions so far` carries it, because the count and each task's scope are what the grill settled. No new section is opened for it: the result of the split is `Children`, and anything still unwritten is the decided list minus what `Children` and `waymark tree` already show. Source: user confirmation that the plan lives on the map; the section choice is this file's, and a section of its own can be added later if a split ever spans sessions.
+- The split plan — how many tasks this layer makes and one line for each — is written on this map, not in a testimony (user confirmed). One bullet in `Decisions so far` carries it, because the count and each task's scope are what the grill settled. No new section is opened for it: the result of the split is the set of children, read back with `waymark tree --root <map>`, and anything still unwritten is the decided list minus what that read shows. Source: user confirmation that the plan lives on the map; the section choice is this file's, and a section of its own can be added later if a split ever spans sessions.
 - The fields split sets at creation are `task_kind`, `reversibility`, `needs_human` written explicitly, `owner` defaulting to the parent map's, and `parent` given on `waymark create`. What each field accepts and who may write it stays in task design's `properties.md`, which the reference names instead of restating (user confirmed).
 - Split writes all the task tickets first, then reads the shape back with `waymark tree --root <map>`. A half-finished split leaves no body edit behind, and any ticket whose parent is wrong shows up in that check (user confirmed).
 

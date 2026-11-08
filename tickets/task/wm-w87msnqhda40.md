@@ -3,11 +3,12 @@ schema: 1
 id: wm-w87msnqhda40
 title: Write the split skill entry
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:46:06Z
-updated_at: 2026-11-08T10:46:06Z
+updated_at: 2026-11-08T10:48:06Z
+closed_at: 2026-11-08T10:48:06Z
 parent: wm-3nhrhmds8rqd
 custom_fields:
   needs_human: false
@@ -28,6 +29,19 @@ Write `weave-your-work/split/SKILL.md`, the router that decides when a map split
 ## Acceptance signal
 
 `weave-your-work/split/SKILL.md` exists. It states the criterion once and routes to exactly one of the two references. It states when to split, the freeze, and the rhythm, and names `submap.md`, `task.md`, and `body.md` without restating what they say. A reader holding a settled layer can tell which reference to open from this file alone.
+
+## Result
+
+`weave-your-work/split/SKILL.md` is written, 57 lines. It carries the criterion as one router question, when a split runs, the freeze on `split_as`, the two-step rhythm, what a split writes and what it leaves to the parent's owner, and the pointers to `task.md` and `submap.md`. It restates neither reference, and it names `body.md` and `frontmatter.md` instead of repeating their rules.
+
+What it has not done: no split has been run against it yet. Whether the router question is enough to send a real layer the right way is what the worked example in the deferred batch shows.
+
+## Review
+
+passed
+
+- Goal: `weave-your-work/split/SKILL.md` exists; the criterion appears once; it routes to one of the two references; when-to-split, the freeze, and the rhythm are stated; `body.md` and the two references are named, not restated. Read against the acceptance signal line by line.
+- Convention: only `weave-your-work/split/SKILL.md` was written by this task; the ticket edits were the run's own `Result`, `Review`, and status.
 
 ## Boundaries
 

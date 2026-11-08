@@ -3,11 +3,12 @@ schema: 1
 id: wm-wwhftqxkatdj
 title: Write the submap reference
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:46:06Z
-updated_at: 2026-11-08T10:46:06Z
+updated_at: 2026-11-08T10:48:06Z
+closed_at: 2026-11-08T10:48:06Z
 parent: wm-nnjk0yb5wbd9
 custom_fields:
   needs_human: false
@@ -28,6 +29,19 @@ Write `weave-your-work/split/submap.md`, the reference for splitting a map into 
 ## Acceptance signal
 
 `weave-your-work/split/submap.md` exists. A reader holding a settled layer can decide that it splits into child maps, decide how many, and write each child body from this file plus `body.md`, without asking its author. The file restates no rule of `body.md`.
+
+## Result
+
+`weave-your-work/split/submap.md` is written, 73 lines. It covers the decision test for a child map, the minimal child body, where the content comes from, what a child never inherits from its parent, the create commands including the `split_as` write on the parent, the one-child case, and the two situations that send a part back to grill. It names `body.md` for the body shape rather than restating it.
+
+What it has not done: no real map has been split through it. The sample split its acceptance originally named is part of the one batch the root map defers, so the file is written and unexercised.
+
+## Review
+
+passed
+
+- Goal: the reference exists; the decision test, the minimal body, the source of a child's content, the create commands, the one-child case, and the return-to-grill rule are all stated; `body.md` is named and not restated. Read against the acceptance signal line by line.
+- Convention: only `weave-your-work/split/submap.md` was written by this task; the ticket edits were the run's own `Result`, `Review`, and status.
 
 ## Boundaries
 

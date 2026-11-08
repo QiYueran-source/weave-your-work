@@ -3,11 +3,12 @@ schema: 1
 id: wm-nnjk0yb5wbd9
 title: 'Submap reference: how to split into child maps'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:01:13Z
-updated_at: 2026-11-08T07:39:05Z
+updated_at: 2026-11-08T10:48:06Z
+closed_at: 2026-11-08T10:48:06Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
@@ -18,7 +19,7 @@ Why: `submap.md` is a reference inside the split skill, not a separate skill, bu
 
 ## Acceptance direction
 
-The reference is written into split's `submap.md`: the decision test, the rhythm, and the child map body are all stated, and a sample map is split into child maps.
+The reference is written into split's `submap.md`: the decision test, the rhythm, and the child map body are all stated. ~~A sample map is split into child maps.~~ The sample split is the worked example the root map defers to one batch: [Work-weave: general team collaboration skill set](tickets/map/wm-wjwa9081hse1.md).
 
 ## Decisions so far
 
