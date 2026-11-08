@@ -76,3 +76,21 @@ The owner wants a long connection and a trigger, not periodic polling.
 ### Handles
 
 Confirmed: a team table with a reverse lookup; when the operator, the git user, and the issue author differ, the author is ignored and the ticket and sender in the body identify the sender.
+
+## Round 4
+
+### Frontmatter
+
+`to` can address several people, and `tickets` can list several tickets. The body's `@` mention is still the platform notification.
+
+### Relay
+
+smee.io is the chosen relay for now.
+
+### Session injection
+
+The owner asked what the rule-plus-queue mechanism means; it needs a plain explanation before it can be accepted.
+
+### Body
+
+Confirmed: the frontmatter carries the machine fields and the body still opens with `@handle`.
