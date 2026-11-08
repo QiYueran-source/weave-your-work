@@ -41,7 +41,7 @@ The second test needs something to read, and where that is depends on the node:
 - **A task** — its `## Review` section, when it has one. Many closed tasks do not: the review skill writes that section, and every task closed before the skill existed closed without it. When it is absent, read the `Acceptance signal` and `Result` together instead. The signal is what the work promised and the result is what it delivered; the close is the verdict that the two agreed. Re-reviewing such a task writes a fresh `## Review`; there is no old one to replace.
 - **A map** — its `## Acceptance direction`, and the `Review point` sentence inside it when one is written. A map body has no `## Review` section at all, so a map's verdict shows only in its status. Read the acceptance direction against the new content and ask whether a reviewer holding it could still close the map.
 
-An **open** node has no verdict. Test two cannot fail on a node that has never been reviewed, so an open node takes the first or the third disposition only; "reopen, review again, close again" describes a closed node's path and has nothing to do on a node that is already open.
+An **open** node has no verdict. Test two cannot fail on a node that has never been reviewed, so an open node takes the first or the third disposition only; "reopen, review again, close again" describes a closed node's path and has nothing to do on a node that is already open. An open split map still updates — its children read the changed content, and each takes its own disposition — it just does not go through a reopen.
 
 ## Three dispositions
 
