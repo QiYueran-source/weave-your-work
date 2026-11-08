@@ -48,6 +48,10 @@ The source is `glossary/<operator>.jsonl`. Never write to another operator's fil
 
 `glossary_lookup` returns one term with its definition, avoid list, group, and source. `glossary_list` returns the terms. Read the generated view when you need the whole vocabulary at once.
 
+## Running the tools
+
+The MCP server and the CLI live in `bundle/`. `usage.md` has the install step, the CLI commands, the stdio config shape, and troubleshooting. Read it when the tools are not running or when you need the CLI instead of the MCP.
+
 ## The generated view
 
 `GLOSSARY.md` at the project root is generated from `glossary/*.jsonl`. Never edit it by hand; the next merge overwrites it. Rebuild it with `glossary_merge`, or let the post-merge hook do it after a pull.
