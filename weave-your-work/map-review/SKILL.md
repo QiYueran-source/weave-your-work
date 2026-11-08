@@ -15,7 +15,7 @@ A map still carrying fog is not ready. An entry in `Not yet specified` says a fu
 
 ## Who reviews
 
-Anyone, including the owner. The owner is the standing acceptant: a passing review closes the map, and the owner may reopen it. A reviewer who is not the owner acts with that authority, not instead of it.
+The owner reviews and closes. A non-owner who has findings reports them to the owner and does not close the map. The owner is the standing acceptant: a passing review closes the map, and the owner may reopen it.
 
 ## What it reads
 
