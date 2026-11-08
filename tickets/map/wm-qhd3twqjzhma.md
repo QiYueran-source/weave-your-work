@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-07T16:21:59Z
+updated_at: 2026-11-08T06:50:54Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -31,6 +31,7 @@ Design the map, task, glossary and explore skills: the complete collaboration ch
 - [Glossary skill](tickets/map/wm-rq3exm0m5563.md): one vocabulary with per-person sources and a generated view.
 - [Grill skill: discuss and clarify](tickets/map/wm-7zvr8cnts3rs.md): discusses an idea and lands the outcomes.
 - [Testimony records](tickets/map/wm-31f6a2c9d840.md): design the record of a grill discussion.
+- [Update skill: change a closed map or task](tickets/map/wm-9sfmaphskg0c.md): change a closed node's content and carry its consequences.
 
 ## Decisions so far
 
