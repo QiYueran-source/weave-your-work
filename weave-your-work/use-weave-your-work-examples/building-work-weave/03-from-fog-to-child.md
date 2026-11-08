@@ -4,7 +4,7 @@ The example's central move: a patch of fog is not a task or a map until it can b
 
 ## The execution map's fog arrived as the explore map
 
-The execution map carried "how fog gets explored" in Not yet specified. It was not sharp enough to be a task: exploring fog has several parts (triage, routes, landing), and none of them was settled. The owner judged the impact high, because without it a map can carry fog for a long time and never move. So the item arrived as a child map, [Explore skills: fog exploration](../../../tickets/map/wm-8m5cckpf4tc2.md), not a task.
+The execution map carried "how fog gets explored" in Not yet specified. It was not sharp enough to be a task: exploring fog has several parts (triage, routes, landing), and none of them was settled. The owner judged the impact high, because without it a map can carry fog for a long time and never move. So the item arrived as a child map, not a task. That map is now [Fog-explore skill: clear a map's fog](../../../tickets/map/wm-3084re0f48z3.md); the original was archived on 2026-11-07 when the design restarted.
 
 The layer test: a task needs one action and one verifiable result that one person can finish in one go. "Explore fog" has several parts, so it is a map.
 
@@ -16,7 +16,7 @@ The explore map opened with eight fog items: triggers, assumption-ization, ranki
 - Decision fog (triggers, interface, landing): put to the owner, settled into Decisions so far.
 - Goal fog (probe design): moved out to the task skill's scope.
 - Fact fog: none.
-- Action fog (how to verify the skill): sharp enough to be an action plus a verifiable result, so it arrived as a task, [Define the exploration skill](../../../tickets/task/wm-dxz6qcg4aamx.md).
+- Action fog (how to verify the skill): sharp enough to be an action plus a verifiable result, so it arrived as a task. That task was archived with the design it belonged to, and its replacement now lives under the fog-explore map.
 - Irrelevant fog: deleted.
 
 The fog items that could not pass the test stayed in prose. They were struck through only when they had arrived.

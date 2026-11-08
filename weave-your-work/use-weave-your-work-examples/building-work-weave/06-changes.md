@@ -13,3 +13,4 @@
 - The examples moved into the `use-weave-your-work-examples` skill, split by section.
 - Rule 05 was added: a skill's `description` is quoted, because an unquoted colon fails the installer's YAML parse.
 - This rule and example were added on 2026-11-06.
+- The update skill was built on 2026-11-08 from its design map; a move turned out to be one `parent set`, not a retire-and-rebuild, and a cross-owner archive now proceeds and tells the owner instead of stopping.

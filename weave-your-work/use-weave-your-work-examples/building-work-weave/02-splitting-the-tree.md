@@ -18,7 +18,7 @@ The execution map settled the semantic model first: every target node is a map; 
 - [Map skill](../../../tickets/map/wm-0b59r7xfhk73.md) under the execution map.
 - [Task skill](../../../tickets/map/wm-87pgn0b75yy5.md) under the execution map.
 - [Glossary skill](../../../tickets/map/wm-rq3exm0m5563.md) under the execution map.
-- [Explore skills: fog exploration](../../../tickets/map/wm-8m5cckpf4tc2.md) under the execution map.
+- Explore skills: under the execution map. That map was later retired and re-charted as [Fog-explore skill: clear a map's fog](../../../tickets/map/wm-3084re0f48z3.md); the ticket named here was archived on 2026-11-07.
 - [Setup skill](../../../tickets/map/wm-ygnttse5hd5k.md) under the environment map.
 - [Initialize the glossary during setup](../../../tickets/task/wm-5b50wr2dkaxw.md) under the glossary map.
 
