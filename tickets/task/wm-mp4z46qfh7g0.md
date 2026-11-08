@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T11:24:43Z
-updated_at: 2026-11-08T13:09:03Z
+updated_at: 2026-11-08T13:14:21Z
 parent: wm-rq3exm0m5563
 custom_fields:
   needs_human: false
@@ -37,4 +37,4 @@ Build the glossary source store and the four MCP tools so a skill can read and w
 
 ## Progress
 
-2026-11-08: the store, CLI, and view merge are in place. `weave-your-work/glossary/glossary.py` implements `lookup`, `list`, `write`, and `merge`; the current 37 terms are migrated to `glossary/frank.jsonl` with `glossary/_header.md`, and `GLOSSARY.md` is generated from them. Tested in a scratch project with two operator sources: the latest `updated_at` wins, a write stays in the current operator's file, and the `_Source_` line names the winning file. The four MCP tool wrappers, the merge hook, and the setup install remain.
+2026-11-08: the store, CLI, and view merge are in place. `weave-your-work/glossary/glossary.js` (Node, no dependencies) implements `lookup`, `list`, `write`, and `merge`; the current 37 terms are migrated to `glossary/frank.jsonl` with `glossary/_header.md`, and `GLOSSARY.md` is generated from them. Tested in a scratch project with two operator sources: the latest `updated_at` wins, a write stays in the current operator's file, and the `_Source_` line names the winning file. The four MCP tool wrappers, the merge hook, and the setup install remain.
