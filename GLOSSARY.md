@@ -57,8 +57,12 @@ The act of resolving a map's fog: turning an undecided item into a decision, a c
 _Avoid_: split (splitting is not exploring), grill (an interview method, not the act itself)
 
 **advance**:
-An operation an owner performs on their own work item: changing title/body/fields/status, adding or removing dependencies, closing, reopening, archiving, transferring ownership. Only the owner can do it.
-_Avoid_: update, modify (when the actor is not specified)
+An operation an owner performs on their own work item: changing title/body/fields/status, adding or removing dependencies, closing, reopening, archiving, transferring ownership. Only the owner can do it. Update is the branch of advance that changes a closed node's content.
+_Avoid_: modify (when the actor is not specified)
+
+**update**:
+The branch of advance that changes the content of a ticket already closed: its target or action, its acceptance standard, its boundaries, its decisions, or its record. An update carries the consequences of the change — the children that refined the old content, the dependents that waited on it, and the review verdict judged against it — and the node reopens when the recorded acceptance no longer holds.
+_Avoid_: advance (when the content of a closed node is meant), edit (when the consequences are meant)
 
 **owner**:
 The accountable party of a ticket: the person who advances it and decides whether it passes. Waymark records one owner per item. The owner of a task is the person who accepts it; a link is added by the owner; a person who merely did the work is not, by that fact, the owner.
