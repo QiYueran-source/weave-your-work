@@ -9,6 +9,10 @@ name = "Map"
 path = "work/task"
 name = "Task"
 
+[categories.testimony]
+path = "work/testimony"
+name = "Testimony"
+
 [fields.needs_human]
 type = "boolean"
 required = false

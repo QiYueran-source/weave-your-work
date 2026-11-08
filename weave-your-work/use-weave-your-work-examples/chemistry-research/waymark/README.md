@@ -9,6 +9,6 @@ waymark --project . tree
 waymark --project . show wm-t0k1c4ddsngp
 ```
 
-The project has three maps and four tasks, all closed. The lab files the tasks produced are under `lab/`. The project sees the parent repository's Git history, so `waymark validate` reports no findings.
+The project has four maps and four tasks, all closed, and one testimony and one ADR from the grill case. The lab files the tasks produced are under `lab/`. The project sees the parent repository's Git history, so `waymark validate` reports no findings.
 
 The fixture has no local operator setting. A write command may warn that your operator is not the ticket owner, because every ticket is owned by `frank`.
