@@ -3,12 +3,11 @@ schema: 1
 id: wm-4dytqnmy4s47
 title: Write the update skill
 category: task
-status: closed
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-08T09:46:35Z
-closed_at: 2026-11-08T09:46:35Z
+updated_at: 2026-11-08T10:16:36Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -40,7 +39,7 @@ Write `weave-your-work/update/SKILL.md` and its two references: change what a cl
 
 ## Result
 
-Three files, 363 lines: `SKILL.md` (112), `content.md` (135), `move.md` (116).
+Three files, 394 lines: `SKILL.md` (131), `content.md` (147), `move.md` (116). The first version was 363 lines; a blind read of it found the second test unreadable on real tickets, and the fixes are in `a866db2` and after.
 
 Verified in waymark 0.1.2 against scratch projects, which corrected four claims the first draft had asserted from reading the tree: `parent clear` belongs on the child, not on its holder (`DANGLING_REFERENCE` is unrecoverable once both ends are archived); `waymark ready` never reads `parent`, so a subtree moved under a blocked map still reads ready; `waymark move` exists and swaps the category without touching the body; and the trigger fires on node state, never on how large the edit looks.
 
@@ -48,7 +47,7 @@ The retire-and-replace order was run end to end — a map with two children and 
 
 ## Review
 
-passed
+~~passed~~ Superseded on 2026-11-08: the goal check was run against the wrong evidence. It checked that the files install and that no claim about waymark is false, which was true. The acceptance signal also claims a reader can take a closed map, a split map, and a closed task through the skill, and that was never tried. A reader with no context tried it and could not: the second test asked for a verdict and the skill did not say where one lives, expected a `## Review` that 11 of 15 closed tasks here do not have, admitted open split maps into a closed-only disposition, and named five relations in the scan without naming a command to read them. Fixed in `a866db2` and the commits after it.
 
 - Goal: the three files exist, `npx skills add` lists the skill with no `YAML parse error`, and every relative link in the installed copy resolves — checked by installing and walking the links, not by reading the source. Every waymark claim in the files carries a version and a scratch-project probe behind it, and four of those probes reversed a claim the first draft had asserted.
 - Convention: the conventions in `task-design/body.md` and rule 05 hold — sections in order, quoted description, no section left as filler. The build broke one convention of its own: it ran before this ticket existed.
