@@ -37,8 +37,8 @@ A relation between maps expressing "who waits for whom to finish". It carries th
 _Avoid_: prerequisite (when the direction is not made explicit)
 
 **blocked**:
-A map whose own dependency edge is unfinished. The edge gates the map's acceptance; it does not automatically freeze every task under the map. A task stops when it needs the blocker's output, and records the wait in `waiting_on`. Waymark reports the per-item state.
-_Avoid_: blocked (for a task waiting on a person or thing; that is `waiting_on`)
+A map whose own dependency edge is unfinished. The edge gates the map's acceptance; it does not automatically freeze every task under the map. A task stops when it needs the blocker's output; if a person must supply it, `waiting_on` names them; otherwise the split is wrong. Waymark reports the per-item state.
+_Avoid_: blocked (for a task waiting on a person; that is `waiting_on`)
 
 **refinement**:
 The relation between a parent target and a child target: the child is a more specific statement of the parent. Unrelated to ordering.
@@ -49,7 +49,7 @@ The moment a settled decision becomes a child node. It arrives as a task when on
 _Avoid_: graduation, breakdown, splitting (when they mean a fog item becoming a node rather than slicing work)
 
 **split (分裂)**:
-The act of turning one map's next layer into child maps or tasks. The split skill decides when to split and which type; it never resolves fog.
+The act of turning one map's next layer into child maps or tasks. The split skill decides when to split and which type; it never resolves fog. A map with an unfinished dependency is not split; wait for the dependency to close. Independent early work belongs under a sibling map, not under the blocked map.
 _Avoid_: explore (exploring fog is not splitting), breakdown
 
 **hang (挂)**:
@@ -117,8 +117,12 @@ What a delivery task's failure is. The promised output is missing or falls short
 _Avoid_: bug, error (when describing the contractual weight of a failed delivery)
 
 **readiness**:
-Whether an item can be started now. A map is ready when every map it waits on is closed. A task is ready when its ticket is open and the executor finds no unfinished dependency whose output the task uses; a blocked map above it does not by itself freeze the task. Waymark's ready query reports only the item's own edges, not that judgment.
+Whether an item can be started now. A map is ready when every map it waits on is closed. A task is ready when its ticket is open and the executor finds no unfinished dependency whose output the task uses; a blocked map above it does not by itself freeze the task. If the missing output belongs to another task or map, the split is wrong. Waymark's ready query reports only the item's own edges, not that judgment.
 _Avoid_: priority, scheduling (readiness is about waiting, not about order of importance)
+
+**waiting_on**:
+An optional task field naming the one person whose answer the task waits on now. A run stops on a `Person:` step and writes it; the task stays `in_progress`. The owner clears it after handling the answer, before the task is selected again. It is not a status and not a dependency edge. Waiting on another task or map is a split error, not a `waiting_on` value.
+_Avoid_: blocked (a map's dependency state), status, assign (the field names a wait, not an owner)
 
 **link (soft link)**:
 A symmetric association between two items, recorded by `waymark link`. It marks something worth following, such as a task whose output was used elsewhere or two items covering one subject. It never carries order: it does not block, does not make anything wait, and does not change readiness.
