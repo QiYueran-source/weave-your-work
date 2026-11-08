@@ -79,17 +79,7 @@ This is also what the hand-over issue quotes. An archive with no replacement id 
 
 **4. Re-hang the children that survive.** `waymark parent set <child> <new id>`, one file each. This writes only the child, so it needs no parent-side index and no second edit.
 
-**5. Retire the subtree bottom-up.** Children that are not carried over are archived first, leaves before their parents, each with an `archive_reason` that names the replacement or the upstream change that retired it.
-
-Clear each child's parent before its parent is archived, or `waymark validate` reports an error:
-
-```
-error DANGLING_REFERENCE at work item wm-ad6...: wm-ad6... parent the archived item wm-n9w...
-```
-
-The check fires at the child, so clearing the *parent field* is what avoids it — archiving the child is not enough on its own. Verified in waymark 0.1.0: a child archived while still pointing at its parent leaves the tree inconsistent the moment the parent is archived, and `validate` says so; clearing first leaves `validate: no findings`.
-
-There is no way back through waymark. An archived ticket rejects `parent clear` the same way it rejects every other write, and there is no unarchive command. The only repair is editing the archived child's file by hand to drop the `parent:` line, which is exactly the kind of write this skill exists to avoid needing. Get the order right the first time.
+**5. Retire the subtree bottom-up.** Children that are not carried over are cleared (`waymark parent clear <child>`) and then archived, leaves before their parents, each with an `archive_reason` that names the replacement or the upstream change that retired it. The clear is not optional and not a formality; the next section says why.
 
 **6. Archive the old node.** `waymark archive <id> --reason "<reason>; replaced by <new id>"`. Before running it, `--dry-run` and read the affected list — that list is the set of people to tell.
 
@@ -104,7 +94,17 @@ The constraints are waymark's, not this skill's preference:
 - **Archive last among the writes to the old node**, because it is the point of no return: an archived ticket rejects `parent set`, `status`, and `body replace` with `<id> is archived and rejects <verb>`.
 - **Replacement before archive**, because the old ticket's last write names the replacement.
 - **Children before parent** on a retired subtree, because a map with active children cannot be archived.
-- **Parent fields cleared before the holder is archived**, or `validate` reports the dangling reference and there is no way back: the archived child cannot be cleared and the archived parent cannot be restored. Clearing erases the old position from the ticket, which is why a *move* is never done this way — see `move.md`.
+- **Each child's parent field cleared before that child is archived**, or `waymark validate` reports a dangling reference and there is no way back.
+
+The last one is the only step that punishes a wrong order permanently, so it is worth seeing. Archiving a parent while a child still names it produces:
+
+```
+error DANGLING_REFERENCE at work item wm-ad6...: wm-ad6... parent the archived item wm-n9w...
+```
+
+The finding is at the child, and the child is archived too — so `parent clear` is rejected with `<id> is archived and rejects parent clear`, and there is no unarchive command to undo either half. The only repair left is editing the archived file by hand to drop its `parent:` line. Clearing before archiving is what keeps the run recoverable; verified both ways in waymark 0.1.0.
+
+Clearing also erases the old position from the ticket, which is why a *move* is never done this way — see `move.md`.
 
 ## What lands where
 

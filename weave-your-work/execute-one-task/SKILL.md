@@ -56,7 +56,7 @@ Report three lines: where it stopped, why, and who picks it up.
 
 Hand it back to the owner. `Progress` names the step it reached and the reason, `waiting_on` is the owner, and the status stays `in_progress`. Say what the ticket would have to change to continue.
 
-Rewriting the `Action` and splitting the task are the owner's moves.
+Rewriting the `Action`, splitting the task, and changing a task that is already closed are the owner's moves. The last one has its own rules: `update`.
 
 ## What this skill writes
 
@@ -66,4 +66,4 @@ Only `Result`, `Progress`, and `waiting_on`, plus the status it claims with. Eve
 
 - Run several tasks at once. That is `execute-all`.
 - Review the result. That is `task-review`.
-- Rewrite the `Action` or split the task.
+- Rewrite the `Action` or split the task. That is the owner's, and changing a closed task is `update`.
