@@ -67,6 +67,14 @@ waymark tree --root <map>
 
 Writing all the tickets first leaves nothing half-done on the parent, and the tree read shows any ticket whose parent is wrong. The map's body is not edited: it holds no children list.
 
+A task hangs under one map only. When it is related to another map, add a soft link:
+
+```
+waymark link add <task> <other-map>
+```
+
+The link says the two are related. It carries no wait and no shared acceptance, so the task stays a unit that can be handed over on its own. A part that really has to wait for another map is not a task; it is a child map carrying a dependency edge.
+
 Once `split_as` is `task`, every later child of that map is a task too. A part that needs a map of its own opens a sibling map, not a child of this one.
 
 ## Going back to grill
