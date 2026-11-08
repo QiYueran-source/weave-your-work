@@ -26,6 +26,14 @@ A list was the obvious first answer to "what counts as a decision": an accepted 
 
 The replacement is one test: an answer is a decision when it changes a ticket's text, status, or relations, or settles a fact the ticket already cites. Everything else — agreement, thanks, scheduling, options that lost — stays in the thread. The test is checkable against the ticket in front of the reader, and it makes the write-back rule and the "do not copy the discussion" rule the same rule.
 
+### The outcome lands, the queue does not
+
+The state machine stayed out, but a triage result is still a decision about what the map includes. A rejected proposal writes one line into the map's `Out of scope` — what was declined, why, and the issue URL — and the issue closes as `not planned`. An accepted one becomes a ticket through split, with the issue URL as its source; a `needs info` answer writes nothing and leaves the issue open. The labels and the queue stay remote; the local tracker can still say why an idea is not in the tree.
+
+### The handle is a roster, not a guess
+
+A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The skill reads `.waymark/handles.toml`, one table per platform, and verifies the account before it mentions or assigns it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name.
+
 ### What was rejected: copying the thread
 
 A local mirror of every comment was considered and dropped for the reason the draft's section 6 gives: it duplicates the remote side, goes stale, and there is no owner for the copy. The ticket holds the decision; the issue holds the conversation.

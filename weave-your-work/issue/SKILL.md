@@ -44,7 +44,7 @@ The caller names the recipient. Finding who was affected is the caller's work �
 3. Which tickets and what happened: the ticket that will carry the answer, `<id> "<title>"`, the one the message came from when they differ, and one paragraph a reader who has not seen the tracker can follow.
 4. How to reply and where it lands: answer in the thread; change the ticket when it is theirs.
 
-A name without a handle does not notify anyone. When the recipient's remote handle is unknown, ask the run's owner or the person who named the recipient. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. An unknown handle is filed the same way — the name in the body, no mention, and a word outside the thread. A known handle is used twice: mentioned in the body and set as the assignee, because the mention notifies and the assignment queues the issue in the recipient's dashboard. A reply-by line is optional for an urgent ask; the local `waiting_on` is the tracker, and nothing polls. Write the body in the language the recipient reads.
+A name without a handle does not notify anyone. The run's owner is the ticket's owner; an agent executing for them asks that owner, and when the owner is also the recipient there is no issue to file, because they are the person who would answer. When the recipient has no account on the platform, file the issue with their name and tell them where it is outside the thread: the issue is still the record, but it is not the notification. An unknown handle is filed the same way — the name in the body, no mention, and a word outside the thread. A known handle is used twice: mentioned in the body and set as the assignee, because the mention notifies and the assignment queues the issue in the recipient's dashboard. A reply-by line is optional for an urgent ask; the local `waiting_on` is the tracker, and nothing polls. Write the body in the language the recipient reads.
 
 The caller's contract sets the content:
 
@@ -65,6 +65,18 @@ An archive hand-over, filled in:
 > I archived "Glossary install" (`wm-7k2m4p9q1s3t`); the edge was removed and your ticket is ready instead of blocked. The replacement is "Glossary storage per operator" (`wm-9c3f6j0l5w8y`).
 >
 > Reply here with which one; the ticket is yours to change.
+
+**Handles.** A waymark owner is a local name, not a remote login. Resolve it from `.waymark/handles.toml`, in the table for the platform:
+
+```toml
+[handles.github]
+frank = "frank-gh"
+
+[handles.gitee]
+frank = "frank-gitee"
+```
+
+Verify the account exists (`gh api users/<handle> --jq .login`; Gitee `GET /api/v5/users/<username>`). A missing table, a missing owner, or an account that does not exist means ask the run's owner; never guess a login from the waymark name.
 
 **Before.**
 
@@ -95,7 +107,7 @@ Reply in the thread, once, with the answer or the next question. When the answer
 
 Ask one question first: **does this change a ticket?**
 
-**No ticket behind the thread.** A proposal is judged by the owner of the map the work would hang under. When that owner accepts, split creates the ticket, the ticket carries the issue URL as its source, and the issue closes with a comment linking it; when the owner declines, the issue closes as `not planned` with a comment that says why. Until then the issue stays open and nothing lands locally. No run watches it: the answer is read when someone looks.
+**No ticket behind the thread.** A proposal is judged by the owner of the map the work would hang under. When the owner accepts, split creates the ticket, the ticket carries the issue URL as its source, and the issue closes with a comment linking it. When the owner declines, the map's `Out of scope` gets one line — what was declined, why, and the issue URL — and the issue closes as `not planned` with a comment that says why. A `needs info` answer lands nothing: the issue stays open until the owner decides. No run watches it: the answer is read when someone looks.
 
 An answer is a decision when it changes a ticket's text, status, or relations, or settles a fact the ticket already cites. Agreement, thanks, scheduling, and options that lost are not decisions; they stay in the thread, and the local side never copies them.
 

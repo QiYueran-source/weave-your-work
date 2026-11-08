@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T13:37:30Z
+updated_at: 2026-11-08T13:38:39Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
@@ -42,5 +42,5 @@ Write `weave-your-work/issue/`: carry a ticket's message to GitHub or Gitee, rea
 
 ## Progress
 
-Where it stands: the issue now opens with the ask and uses a known handle as both mention and assignee; GitHub's assignee field was verified on the scratch repository. Two design questions remain: whether a triage outcome lands in the map's `Out of scope`, and how an owner resolves to a handle (a handles roster is proposed). Gitee's write path is deferred.
-Next: settle those two with the user, apply them to the skill, then re-run the affected reads.
+Where it stands: all four design questions are settled as revisable decisions; the skill asks first, mentions and assigns a known handle resolved from `.waymark/handles.toml`, and lands a rejected proposal in the map's `Out of scope`. GitHub's five actions and the assignee field are verified; Gitee's write path is deferred.
+Next: re-run the affected reads and close the task and the map.
