@@ -13,6 +13,10 @@ name = "Map"
 path = "tickets/task"
 name = "Task"
 
+[categories.testimony]
+path = "testimony"
+name = "Testimony"
+
 [fields.needs_human]
 type = "boolean"
 required = false
