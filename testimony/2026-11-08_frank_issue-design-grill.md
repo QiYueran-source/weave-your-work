@@ -58,3 +58,21 @@ The owner asked whether GitHub has a hook for this and wants the technical optio
 ### Ownership
 
 The listener is part of the issue skill, not a separate skill.
+
+## Round 3
+
+### The marker
+
+The communicate issue is marked by YAML frontmatter at the top of the body, not a label or a title prefix.
+
+### The importance test
+
+Confirmed: an issue lands locally when it produces a local artifact — an accepted change to a map or task, or a rejection recorded in `Out of scope`.
+
+### The listener
+
+The owner wants a long connection and a trigger, not periodic polling.
+
+### Handles
+
+Confirmed: a team table with a reverse lookup; when the operator, the git user, and the issue author differ, the author is ignored and the ticket and sender in the body identify the sender.
