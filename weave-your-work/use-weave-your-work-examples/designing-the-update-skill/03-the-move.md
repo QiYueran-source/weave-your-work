@@ -26,6 +26,18 @@ The last one is the non-obvious case. Hanging finished work under a closed map c
 
 The design first wanted a `moved from` note on the ticket. It was dropped: `waymark git history --item <id>` and the commit diff both show the `-parent:` line, so a note would be a second copy of a fact git already holds and a second thing to keep true. This repository has one such move to check against — the glossary install task moving under the glossary map (`b699d5f`) — and the old parent survives in exactly that place.
 
-### The move was also the cheap way to retire, and that was rejected
+### The wrong claim about category changes
 
-If a move is one command, why not use it to get a node out of the way instead of archiving? Because the reason to retire a node is that its subject changed, and moving a wrong node to a different parent leaves it just as wrong. The two operations answer different questions, and the tests that choose between them never overlapped once they were written down.
+The first draft of `move.md` said no waymark command changes a category, so turning a task into a map was a retire-and-replace by default. That was never checked, and it is false: `waymark move <id> <category>` exists, rewrites the category field and moves the file to the other directory.
+
+The conclusion survived the correction and the reason changed, which is the useful part. The command does not touch the body, and `waymark validate` does not check whether a body matches its category — so moving a task with an `## Action` section into the map directory produces a map ticket with no Target, and nothing complains. The operation is still a retire-and-replace, because the body has to be rewritten either way. The skill now says that instead of saying the command is missing.
+
+### Why a move is not just the cheap way to retire
+
+If a move is one command, why not use it to get a node out of the way instead of archiving? Because the reason to retire a node is that its subject changed, and moving a wrong node to a different parent leaves it just as wrong. The two operations answer different questions.
+
+### A claim that did not survive the probe either
+
+The first draft of `move.md` said moving a subtree under a blocked map takes everything under it out of `waymark ready`. It does not: `waymark ready` reads dependency edges and never looks at `parent`, so a task under a blocked map, and a map under a blocked map, both come back ready. The wait is real — the work is behind a map that has not started — but no query reports it, so the skill says to walk the parent chain by hand.
+
+Two claims in one file were wrong in the same way: they were plausible from the model of the tree and had never been run. Both were caught by writing a scratch project and asking, which is cheaper than it sounds and was the only thing in this effort that ever changed a decision.
