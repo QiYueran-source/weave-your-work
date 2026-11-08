@@ -56,6 +56,8 @@ Where the verdict lands depends on the category, and on whether there is one to 
 
 **A map** has no `## Review` section — its five sections hold no verdict text — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix. The acceptance direction is not the verdict: it is what the verdict was reached against, which is why test two reads it and then asks about the status.
 
+An open map's acceptance direction is a plan, not a kept promise. Changing it is the first disposition and the status does not move — but the children still get re-read, because it is the thing they refine, and it is also what the map will be judged against when it closes.
+
 Whichever category, the run reads the acceptance direction before it writes: `## Acceptance signal` for a task, `## Acceptance direction` for a map. A node with neither is not ready to be updated; write the acceptance direction first, or the second test has nothing to read.
 
 Two things to keep straight:
