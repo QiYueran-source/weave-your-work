@@ -33,6 +33,7 @@ Review point: Check the three gates, the file format, the numbering rule, and th
 - Record: `docs/adr/NNNN-slug.md`; the next number is one above the highest existing. The body is a title and one paragraph saying what was decided and why. `Status`, `Considered Options`, and `Consequences` are optional sections, used only when they add something (decided in this run on 2026-11-08, following `domain-modeling/ADR-FORMAT.md`).
 - Supersede: write a new record, name the old one in it, and add `Status: Superseded by ADR-NNNN` to the old record. The old file and number stay (decided in this run on 2026-11-08).
 - Link back: the owning ticket id, and the testimony when one exists (decided in this run on 2026-11-08).
+- Direction: the `What qualifies` list, if kept, uses this project's kinds of decisions rather than software architecture; `docs/adr/` is created only when the first ADR is needed; the template wording is settled for this skill, not copied from `domain-modeling/ADR-FORMAT.md` (user direction on 2026-11-08). The exact categories and wording are still open.
 
 ## Not yet specified
 
@@ -44,9 +45,10 @@ Review point: Check the three gates, the file format, the numbering rule, and th
   Resolved on 2026-11-08: independent skill at `weave-your-work/adr/` (see Decisions so far).
 - ~~Decision to make: how an ADR links back to the ticket and testimony that produced it. Why it matters: the record says why; the ticket says who asked and what was settled around it.~~
   Resolved on 2026-11-08: the owning ticket id plus the testimony when one exists (see Decisions so far).
+- Decision to make: the exact `What qualifies` categories and the template wording; also whether the skill's software-specific phrases (`from the code`, `architecture advice`) should change. Why it matters: the skill should read as a record for any hard decision, not only software architecture. (Open on 2026-11-08.)
 
 ## Out of scope
 
 - Decisions that fail a gate; they stay in the caller's `Decisions so far`.
 - Glossary terms and testimonies; each has its own branch under grill.
-- Architecture advice beyond recording a decision.
+- Advice on what to decide beyond recording the decision.
