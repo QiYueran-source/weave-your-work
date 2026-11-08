@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-08T10:16:36Z
+updated_at: 2026-11-08T10:19:04Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -39,7 +39,7 @@ Write `weave-your-work/update/SKILL.md` and its two references: change what a cl
 
 ## Result
 
-Three files, 394 lines: `SKILL.md` (131), `content.md` (147), `move.md` (116). The first version was 363 lines; a blind read of it found the second test unreadable on real tickets, and the fixes are in `a866db2` and after.
+Three files, 405 lines: `SKILL.md` (133), `content.md` (156), `move.md` (116). The first version was 363 lines; two blind reads of it found the second test unreadable on real tickets, a command that is not runnable as written, and a scan that named relations with no command to read them. The fixes run from `a866db2` to `d3df04f`.
 
 Verified in waymark 0.1.2 against scratch projects, which corrected four claims the first draft had asserted from reading the tree: `parent clear` belongs on the child, not on its holder (`DANGLING_REFERENCE` is unrecoverable once both ends are archived); `waymark ready` never reads `parent`, so a subtree moved under a blocked map still reads ready; `waymark move` exists and swaps the category without touching the body; and the trigger fires on node state, never on how large the edit looks.
 
