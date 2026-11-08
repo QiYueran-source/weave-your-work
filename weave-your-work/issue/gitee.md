@@ -6,13 +6,15 @@ This reference covers repositories on `gitee.com`. Enterprise issue endpoints li
 
 ## The token
 
-Create a personal access token in Gitee's settings, at `https://gitee.com/profile/personal_access_tokens`, with the `issues` and `notes` permissions (Gitee may list comments under `notes`), then export it:
+Create a personal access token in Gitee's settings, at `https://gitee.com/profile/personal_access_tokens`, with the `issues` and `notes` permissions (Gitee may list comments under `notes`). Make it available to the run in one of two ways:
 
 ```bash
 export GITEE_TOKEN=<token>
+# or, when the run cannot inherit the shell's environment:
+export GITEE_TOKEN="$(cat ~/.config/work-weave/gitee-token)"
 ```
 
-Do not put the token in a file in the repository, and do not pass it in a URL. Gitee accepts it as a header, which keeps it out of the request line:
+The file lives outside the repository and is readable only by its owner. Do not put the token in a file in the repository, and do not pass it in a URL. Gitee accepts it as a header, which keeps it out of the request line:
 
 ```bash
 curl -sS --fail-with-body \

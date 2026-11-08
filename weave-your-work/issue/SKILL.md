@@ -100,7 +100,7 @@ A run that is not the owner stops at the issue. It replies, and it records on it
 
 - No remote, or a host that is neither github.com nor gitee.com. Name the host; the person passes a repository explicitly.
 - `gh` missing or not authenticated. `gh auth login`.
-- `GITEE_TOKEN` missing. Create a token with the `issues` and `notes` permissions and export it.
+- `GITEE_TOKEN` missing. Create a token with the `issues` and `notes` permissions, in the environment or in a file outside the repository.
 - A write that fails after the issue exists. Report the URL; the thread is real even when the local record did not land.
 - A remote error. Show its text unchanged; a paraphrase hides the cause.
 
