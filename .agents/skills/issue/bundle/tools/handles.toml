@@ -1,9 +1,6 @@
 # Map project owners to their GitHub logins.
 [handles]
 frank = "QiYueran-source"
-# The user's second account. It exists to exercise the cross-owner exchange;
-# remove this line once that is recorded.
-archived = "QiYueran-archived"
 
 # Resolve the local, gitignored queue path from the project root.
 [pending]
