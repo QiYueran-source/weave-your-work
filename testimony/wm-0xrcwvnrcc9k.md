@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:41:22Z
-updated_at: 2026-11-09T05:12:41Z
+updated_at: 2026-11-09T05:16:41Z
 soft_links:
   - wm-hy12yjm0yn9g
 ---
@@ -22,9 +22,10 @@ soft_links:
 - [x] When a dependency closes as failed, may the waiting map proceed?
 - [x] How is uncovered acceptance work kept visible across partial splits?
 - [x] What is the cost of adding a map Review section, and should the map have one?
-  - [ ] Which verdicts produce a Review section?
-  - [ ] How are old reviews marked on reopen and replaced on re-review?
-  - [ ] How are interrupted writes and mismatched status handled?
+  - [x] Which verdicts produce a Review section?
+  - [x] How are old reviews marked on reopen?
+  - [ ] Does a struck-through review remain after re-review?
+  - [x] How are interrupted writes and mismatched status handled?
 - [x] How should a review gap be repaired without violating the frozen child type?
 
 ## Discussion
@@ -56,3 +57,10 @@ soft_links:
 
 - Q: Should maps have a short Review section with the verdict, goal and convention checks, and evidence, while status remains the lifecycle state and existing maps are not bulk backfilled?
   A: "9.可以". The user agreed.
+
+### Round 5
+
+- Q: Should all four verdicts write Review?
+- Q: On reopen, should the prior Review be invalidated with a reason and a new review written after re-review, without inventing old reviews for legacy maps?
+- Q: Should the owner recheck children and evidence when Review and status disagree, rather than treating the mismatch as a pass or mechanically changing status?
+- A: "11可以 12 可以，用~~划掉旧的吧，13可以". The user accepted all three and specified strikethrough for the old review. Whether it remains after re-review needs clarification.

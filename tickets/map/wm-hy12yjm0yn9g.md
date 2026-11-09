@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:42:21Z
-updated_at: 2026-11-09T05:12:41Z
+updated_at: 2026-11-09T05:16:41Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-0xrcwvnrcc9k
@@ -39,6 +39,10 @@ Review point: the discussion records the choices, each affected skill agrees wit
 
 - Maps have a short Review section recording the verdict, goal and convention checks, and evidence; status remains the lifecycle state. Do not bulk backfill existing maps or invent past review evidence. (user confirmed)
 
+- All four map review verdicts write Review, including needs discussion; the review records the unresolved question without deciding it. (user confirmed)
+- On reopen, invalidate the old Review, strike it through with `~~`, and record why it is invalid; do not invent old reviews for legacy maps. (user confirmed)
+- If Review and status disagree, do not treat the map as passed automatically. The owner rechecks children and evidence before completing the appropriate state change; changed evidence requires a fresh review. (user confirmed)
+
 ## Not yet specified
 
 - ~~Decision to make: which parent writes belong to a first split and later splits?~~
@@ -57,10 +61,12 @@ Review point: the discussion records the choices, each affected skill agrees wit
   Resolved on 2026-11-09: keep the complete acceptance direction; unclear work stays as fog, and review requires evidence rather than plans.
 - ~~Decision to make: should map review write a Review section, and what would that cost?~~
   Resolved on 2026-11-09: add a short Review section; retain lifecycle status and do not bulk backfill old maps.
-- Decision to make: which verdicts write Review, and how are reviews invalidated and replaced?
-  Why it matters: open maps and reopened maps must not present an obsolete pass as current.
-- Decision to make: how should interrupted or inconsistent status and Review writes be handled?
-  Why it matters: separate writes can leave mismatched verdicts.
+- ~~Decision to make: which verdicts write Review, and how is an old review invalidated on reopen?~~
+  Resolved on 2026-11-09: all four verdicts write Review; strike through the invalidated review and state why.
+- ~~Decision to make: how should interrupted or inconsistent status and Review writes be handled?~~
+  Resolved on 2026-11-09: do not infer a pass; the owner rechecks children and evidence before the next state write.
+- Decision to make: does a struck-through review remain in the ticket after re-review?
+  Why it matters: keeping it gives in-ticket history; replacing it keeps only the current review and relies on committed Git history.
 - ~~Decision to make: how is a review gap repaired without violating the frozen child type?~~
   Resolved on 2026-11-09: use update for a gap already promised by a task; otherwise discuss the new requirement or structure first.
 
