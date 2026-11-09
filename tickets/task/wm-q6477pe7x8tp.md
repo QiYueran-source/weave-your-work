@@ -3,11 +3,11 @@ schema: 1
 id: wm-q6477pe7x8tp
 title: Align map lifecycle skills with audit decisions
 category: task
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-09T05:25:57Z
-updated_at: 2026-11-09T05:26:15Z
+updated_at: 2026-11-09T05:28:17Z
 parent: wm-hy12yjm0yn9g
 soft_links:
   - wm-c3pkrzmxr4h0
