@@ -49,7 +49,7 @@ Every finding names its source: the acceptance direction line it did not meet, t
 
 ## What it writes
 
-Write `Review` for all four verdicts, including the verdict, separate goal and convention checks with evidence, and any unresolved question. Cite evidence for passing checks as well as sources for findings. Preserve invalidated struck-through reviews on same-subject re-review, as `map/body.md` and `update` specify.
+Write `Review` for all four verdicts, including the verdict, separate goal and convention checks with evidence, and any unresolved question. Cite evidence for passing checks as well as sources for findings. On same-subject re-review, strike through the previous current review and record why it is superseded, including when a non-passing review was resolved while the map stayed in progress. Retain that history with the fresh verdict, as `map/body.md` and `update` specify.
 
 `passed` and `wrong direction`: close the map. With `wrong direction`, write `outcome=failed` before closing. If a failed outcome remains from an interrupted or invalidated review and the owner has freshly established `passed`, clear it with `waymark field update <map> --clear outcome` before closing; do not clear a failed outcome merely to make the fields match.
 
