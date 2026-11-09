@@ -30,7 +30,7 @@ or, for a rewritten paragraph:
 ```
 ~~The map hands its children one destination at a time and waits for each to close before opening the next.~~
 
-Superseded on 2026-11-08: children are parallel; order comes from dependency edges. See `04-dependencies.md`.
+Superseded on 2026-11-08: children are parallel; order comes from dependency edges, which the map skill defines.
 ```
 
 Do not delete the old text and do not keep both without marking them. A reader who cannot tell which line is current is worse off than one reading a stale ticket, because they do not know to be careful.
