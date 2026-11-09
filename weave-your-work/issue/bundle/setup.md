@@ -33,6 +33,8 @@ The bundled listener speaks one host, GitHub: it reads GitHub's issue webhook pa
 
 If `WEBHOOK_SECRET` is set to a non-empty value, the listener verifies `X-Hub-Signature-256` against received bytes and rejects missing or invalid signatures. Smee can reserialize JSON, so a valid signature can fail even with the correct secret. Leave `WEBHOOK_SECRET` unset for the default smee setup; use it only with a transport verified to preserve the signed bytes. Whitespace-only values are rejected at startup.
 
+The `SMEE_URL`, `PORT`, and `WEBHOOK_SECRET` settings belong to this file: the service below sets them, and `usage.md` describes running the listener day to day without repeating them.
+
 ## Rules
 
 `bundle/rules/` holds the rule files as plain Markdown. The setup copies each file into `.agents/rules/<basename>`:

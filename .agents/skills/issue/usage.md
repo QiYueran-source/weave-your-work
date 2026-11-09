@@ -61,11 +61,8 @@ SMEE_URL=https://smee.io/<id> node <skill>/bundle/tools/listener.mjs
 node <skill>/bundle/tools/check-pending.mjs
 ```
 
-Run both from the project root. The listener holds one process: it connects to the channel, forwards each event to the local `/webhook`, and then scans for issues opened while it was off.
+Run both from the project root. The listener holds one process: it connects to the channel, forwards each event to the local `/webhook`, and then scans for issues opened while it was off. `bundle/setup.md` explains `SMEE_URL`, `PORT`, and `WEBHOOK_SECRET`, and installs the service that sets them.
 
-- `SMEE_URL` empty: the HTTP endpoint runs alone, with no channel.
-- `PORT` defaults to `8765`.
-- `WEBHOOK_SECRET` unset: events are accepted unsigned. Set it only with a transport that preserves the signed bytes.
 - The listener redacts the channel URL from its log. Keep that URL private; anyone who knows it can post or view events.
 - Log lines worth reading: `listening on http://...`, `Catch-up complete: queued N entries from <repo>`, `Skipped <label>: invalid <fields>`, and `Catch-up failed: <reason>`. A skipped message is one that claimed `kind: communicate` but failed a field check; the failing field is named.
 

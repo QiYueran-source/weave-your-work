@@ -120,6 +120,8 @@ A later private live test created an issue while the listener was offline, then 
 
 The isolated startup tests cover paginated results, mapped recipients, malformed issues, duplicate entries across restarts, a live webhook during a delayed scan, and GitHub or repository errors. After moving the tests into `tools/tests/`, the installed security and catch-up tests passed, as did the source catch-up tests; both source tests match their installed copies.
 
-The communicate issue protocol is implemented in `communicate-issue.md` and the listener. Tests cover each category, ordinary issues, a missing or unknown `category`, several or non-list `to` values, empty `tickets`, an empty `from`, and a missing title; each invalid message is skipped. The smee channel URL stays out of the log. The source and installed security and catch-up suites pass from `tools/tests/`.
+The communicate issue protocol is implemented in `communicate-issue.md` and the listener. Tests cover each category, ordinary issues, a missing or unknown `category`, several or non-list `to` values, empty `tickets`, an empty `from`, a missing title, and a pull request carrying a matching body; each invalid message is skipped. The smee channel URL stays out of the log. The source and installed security and catch-up suites pass from `tools/tests/`.
+
+The host references were replaced by one `usage.md`, and the listener's host-specific code is now two functions, `readIssueEvent` and `listOpenIssues`. Catch-up routes through every handle table after a test showed it previously read only `[handles.github]`, which would have dropped a recipient that the live path accepted. Both suites pass from the source and the installed copy.
 
 Next: deploy a listener for this repository and verify a full exchange; the session-start rule was reported to work by the owner but has not been recorded in this repository's tests.
