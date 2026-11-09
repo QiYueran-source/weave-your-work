@@ -19,7 +19,7 @@ Every task passes all six. A gate that fails sends the part back to grill or tas
 3. **Who does it.** The action marks every step a person has to perform, and `needs_human` agrees with what the action says.
 4. **What breaks if it goes wrong.** The answer sets `reversibility`: work that cannot be undone is `one_way` and carries `Failure recovery`.
 5. **Whether the output can be named.** Yes is a delivery. No is a probe: a question to answer, with both `Next step` lines written before it runs.
-6. **Whether the ticket is writable.** The body carries the sections its kind requires: `Action` and `Acceptance signal`, plus `Failure recovery` for `one_way` and `Next step` for a probe. `needs_human` agrees with the `Person:` steps. The parent is a map, and the ticket carries no `dependencies` block.
+6. **Whether the ticket is writable.** Check its body, kind and fields against task design's `body.md`, `kind.md`, and `properties.md`. A ticket that fails those checks goes back to task design.
 
 Gates 3, 4, 5, and 6 each decide a field, which is why a layer settles them before the ticket exists rather than during the work.
 
@@ -77,7 +77,7 @@ waymark link add <task> <other-map>
 
 The link says the two are related. It carries no wait and no shared acceptance. A map may depend on another map's output; tasks that need that input wait at execution when it is unavailable, while unrelated tasks may run. Load the map skill and read its `frontmatter.md` for the dependency rules.
 
-A part that reads another task's output is not a task either. The two are one action with several steps, or child maps carrying an edge. A sibling task cannot wait on a sibling: the task layer has no dependency edges, and `waiting_on` is for a person, not for another task's result.
+A part that reads another task's output cannot be a separate sibling task. The two may be one action with several steps, or child maps carrying an edge. Check task design's `body.md` and `properties.md` for the task-layer constraints.
 
 Once `split_as` is `task`, every later child of that map is a task too. A part that needs a map of its own opens a sibling map, not a child of this one.
 
