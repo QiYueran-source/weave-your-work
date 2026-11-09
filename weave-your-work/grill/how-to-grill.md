@@ -24,6 +24,7 @@ A node is askable when its children are settled. The askable set is every such n
 - Number each question and give a recommended answer. Word it so "yes" accepts the recommendation.
 - Use the harness's choice prompt when the question has a few options; otherwise ask in text.
 - Wait for the answers before the next round. Then mark what settled, refine what is still broad, and compute the next askable set.
+- Append what the person said to the testimony after each round. As a decision settles, update its owning map or task before asking the next round; testimony preserves the discussion, and the ticket holds the current decision.
 
 A question that depends on another open question in the same round waits for the next round.
 

@@ -3,11 +3,11 @@ schema: 1
 id: wm-pz0abm8rz5nv
 title: Add map and task work-record bundles
 category: task
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-09T01:38:51Z
-updated_at: 2026-11-09T01:38:51Z
+updated_at: 2026-11-09T02:51:27Z
 parent: wm-hfs0qa6h35yx
 custom_fields:
   needs_human: false
@@ -34,3 +34,7 @@ Both rule files and both bundle setup guides exist; the guides prescribe safe in
 - No total setup skill or installation of the new rules into this checkout.
 - No changes to ownership, split type, or update's dispositions.
 - No worked-example or end-to-end acceptance batch.
+
+## Progress
+
+Created both bundle rule files, setup guides, and usage guides. Updated both skill entries to point to setup and usage. Revised grill to record testimony each round and land settled decisions in their owning tickets; revised map procedure to use update's two tests and three dispositions. Recorded the future setup registration in the setup environment map. No rule has been installed into this repository. Verification and final ticket review remain.

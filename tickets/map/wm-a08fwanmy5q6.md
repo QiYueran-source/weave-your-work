@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:08Z
-updated_at: 2026-11-08T16:04:28Z
+updated_at: 2026-11-09T02:51:27Z
 parent: wm-wjwa9081hse1
 ---
 ## Target
@@ -35,6 +35,7 @@ The setup skill map is accepted and its own children are done, or the environmen
 - Whether the environment category holds more skills later.
 - How an initialized project enters the execution flow.
 - The setup skill's own list of bundles, its order, and its conflict report. (reopened 2026-11-08)
+- Register `map` and `task` as explicit entries when the total setup skill is implemented; each bundle owns installing its own rule. Source: user confirmation, 2026-11-09.
 
 ## Out of scope
 

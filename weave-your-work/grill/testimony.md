@@ -47,11 +47,11 @@ What was said, appended at the end of each round:
 - Lost alternative: ...
 ```
 
-Write the answers in the person's terms; do not replace an answer with your own conclusion. Questions may be shortened.
+Write the answers in the person's terms; do not replace an answer with your own conclusion. Questions may be shortened. After each round, copy the settled decision into its owning map or task as well; testimony records what was said, while the ticket carries the current decision.
 
 ## Work leaves the testimony
 
-When a question becomes work — someone must do something and it must be checked — write one line and hand it to the caller:
+Before a project-design grill, the caller finds or creates the owning map. A pure consultation needs no work ticket. When a question becomes work — someone must do something and it must be checked — write one line and hand it to the caller:
 
 ```md
 - work: Contract review (the agent cannot check the contract; the caller creates the task)

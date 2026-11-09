@@ -98,19 +98,20 @@ What a change costs depends on how far the map has gone.
 
 | State | What a change is |
 |---|---|
-| `open`, no children | a plain edit. `waymark body replace`, and nothing else moves: no child has been written against the text yet |
-| `in_progress` | a change to its children, in the five steps below. The update skill owns what it does to the nodes that rely on the map |
-| `closed` | the update skill's business. Its second disposition reopens the map and revises it; its third retires it and opens the replacement |
+| `open`, no children | a plain edit. `waymark body replace`; no child has been written against the text yet |
+| `open`, with children | use the update skill; the map already has work that relies on it |
+| `in_progress` | use the update skill and check affected branches before changing the map |
+| `closed` | use the update skill to test whether the verdict still holds; reopen only when its disposition requires it, or retire and replace if the subject changed |
 
-From the first split on, a map's children are what its target means, so editing the target is not a one-file edit. The change runs in this order:
+From the first split on, a map's children are what its target means, so editing the target is not a one-file edit. Follow the update skill:
 
-1. **Reopen the map first.** A closed map that is being changed goes back to `in_progress` with the update skill's second disposition, before anything else.
-2. **Change what the map says.** `Target`, `Acceptance direction`, or `Decisions so far`, in the words the discussion settled.
-3. **Revise the affected branches in the same run.** Every child whose meaning depends on the changed sentence is adjusted, closed or not. A child that never referred to it is left alone.
-4. **Deal with the closed descendants.** A closed child's verdict was given against the old content. It is either reopened for a new review or retired and replaced. Leaving it closed puts a "passed" mark on work that no longer answers the question.
-5. **Review the map again** once the branches are settled.
+1. **Scan the relations.** Read the map, its children and descendants, its parent, dependency edges, soft links, and references. Determine which tickets rely on the changed content.
+2. **Apply the two tests to each affected node.** Ask whether it still answers the same question, then whether its recorded verdict still holds. A closed node does not reopen merely because an ancestor changed; its own verdict must fail the test.
+3. **Use the matching disposition.** Edit when the verdict holds; strike the old content, reopen, and review again when the subject is the same but the verdict fails; retire and replace when the subject changed. For an affected open child, update its content without inventing a prior verdict.
+4. **Respect ownership.** Work through nodes this run owns; hand foreign-owned changes to their owners as the update skill directs.
+5. **Review reopened maps** after their affected branches are settled. Do not reopen an ancestor whose own acceptance still holds.
 
-Who may write what is in `frontmatter.md`. What each change does to a node other people rely on — the three dispositions, the order, the issue for a foreign owner — is the update skill. This file only says when a change reaches it, and what has to be true before one starts.
+`frontmatter.md` defines who may write which fields. The update skill owns the impact scan, the two tests, the three dispositions, and cross-owner hand-off. This procedure only identifies the state that calls for update.
 
 ## Who runs a step
 
