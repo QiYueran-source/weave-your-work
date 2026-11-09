@@ -65,9 +65,11 @@ Link the earlier issue in the body when the message answers or follows one. Ther
 
 ## Receiving and closing
 
-- The listener queues a message when `kind`, `category`, `from`, `to`, and `tickets` match this format. A message that claims `kind: communicate` but fails these checks is not queued, and the listener logs which field failed.
+- The listener queues a message when the issue was opened by a login in `handles.toml` and `kind`, `category`, `from`, `to`, and `tickets` match this format. A message that claims `kind: communicate` but fails these checks is not queued, and the listener logs which field failed.
+
+  The author check is a roster, not a signature: it asks whether the issue's `user.login` is someone this project knows, not whether `from` matches that account. Filing on another owner's behalf therefore still works when the filer's own login is on the roster. It exists because a public repository lets anyone open an issue, and their real login is on it.
 - A recipient whose checkout does not yet contain a referenced ticket still receives the message. Before acting, confirm the ticket and the version: sync the main branch, or check whether the referenced version is the right base. Ask the sender when it is unclear.
-- `from` is not proof of identity. Unsigned smee delivery can be forged by anyone who knows the channel URL, so check the issue on GitHub when the sender or the request is uncertain.
+- `from` is not proof of identity, and neither is the author check: both travel in the same unverified payload, because smee re-serializes the JSON and breaks the signature. Anyone who knows the channel URL can post a body claiming any login. Check the issue on GitHub when the sender or the request matters.
 - The recipient confirms what it did in the issue thread, then opens a `result` issue when the sender needs to know the work is finished. A `result` is only needed when the sender has to check or decide something.
 - The sender closes a `request` after checking that its ask is satisfied. The recipient closes a `result` or `comment` after reading it.
 - A message to keep open must not be closed before its recipient has seen it: the startup scan reads open issues only.

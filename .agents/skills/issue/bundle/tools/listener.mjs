@@ -73,6 +73,12 @@ function ownerFor(handles, handle) {
   return null
 }
 
+// The handles file is the roster of logins that may send. Anyone who is not on
+// it is treated as a stranger, and a stranger's message is not queued.
+function loginKnown(handles, login) {
+  return typeof login === 'string' && Object.values(handles).includes(login)
+}
+
 function append(queue, entries) {
   let content
   try {
@@ -118,8 +124,8 @@ function communicationFields(front) {
 // ---- GitHub ---------------------------------------------------------------
 // Everything outside this block — the HTTP endpoint, the signature check, the
 // queue, the deduplication and the log redaction — touches no GitHub detail.
-// These two functions are where GitHub shows through: the webhook event shape
-// and the `gh api` listing. A fork for another host rewrites this block and
+// These two functions are where GitHub shows through: the webhook event shape,
+// the `gh api` listing, and the `user.login` that says who opened the issue. A fork for another host rewrites this block and
 // the [handles] table, and leaves the rest alone.
 
 // Normalises one webhook body, or returns null when it is not an event this
@@ -134,6 +140,7 @@ function readIssueEvent(payload, event) {
     title: typeof issue.title === 'string' ? issue.title : '',
     body: typeof issue.body === 'string' ? issue.body : '',
     state: issue.state,
+    author: issue.user && typeof issue.user.login === 'string' ? issue.user.login : '',
   }
 }
 
@@ -161,6 +168,7 @@ async function* listOpenIssues(root) {
         title: typeof record.title === 'string' ? record.title : '',
         body: typeof record.body === 'string' ? record.body : '',
         state: record.state,
+        author: record.user && typeof record.user.login === 'string' ? record.user.login : '',
         label: `issue ${record.number || ''}`.trim(),
       })
     }
@@ -171,8 +179,9 @@ async function* listOpenIssues(root) {
 
 // ---- end of GitHub -------------------------------------------------------
 
-// Decides from the format alone whether an issue is a message and, when it is,
-// appends one queue entry.
+// Decides whether an issue is a message from a login on the roster and, when it
+// is, appends one queue entry. The format is checked first, so a malformed
+// message is reported as malformed rather than as an unknown author.
 function queueIssue(issue, { mappedOnly = false, label = 'issue' } = {}) {
   const front = parseFrontmatter(issue.body)
   const fields = communicationFields(front)
@@ -186,6 +195,10 @@ function queueIssue(issue, { mappedOnly = false, label = 'issue' } = {}) {
     return 0
   }
   const { handles, pending } = loadConfig()
+  if (!loginKnown(handles, issue.author)) {
+    console.error(`Skipped ${label}: author is not a known login`)
+    return 0
+  }
   if (mappedOnly && !ownerFor(handles, fields.to)) return 0
   const received = new Date().toISOString().slice(0, 16)
   const owner = ownerFor(handles, fields.to) || 'unknown'

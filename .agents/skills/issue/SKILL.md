@@ -89,7 +89,11 @@ The `to` handle is used twice: in the frontmatter for the listener, and as the `
 
 The listener is part of this skill. `bundle/setup.md` covers the channel, webhook, Node listener in `bundle/tools/`, and session rule in `bundle/rules/`.
 
-The default smee setup does not verify signatures. Anyone who knows the channel URL can send or view events, so keep the URL private; the listener redacts it from its log. The queue is a reminder, not proof of sender identity; if a message is uncertain, check the issue on GitHub. Each valid message appends one JSON object; catch-up includes only messages whose `to` matches a configured handle. Each object occupies a Markdown list line:
+The default smee setup does not verify signatures: smee re-serializes the JSON, so GitHub's HMAC over the original bytes cannot match. Anyone who knows the channel URL can send or view events, so keep the URL private; the listener redacts it from its log.
+
+What the listener does check is the issue's author. An issue whose `user.login` is not one of the logins in `handles.toml` is not queued, on both the webhook path and the startup scan. That stops a stranger on a public repository, whose real login is stamped on the issue they opened. It is not authentication: the author field travels inside the same unverified payload, so anyone who knows the channel URL can post a body with any login in it. Check the issue on GitHub when the sender or the request matters.
+
+Each valid message appends one JSON object; catch-up also requires `to` to match a configured handle. Each object occupies a Markdown list line:
 
 ```text
 - {"url":"https://example.test/issues/1","from":"frank","to":"kim-dev","owner":"kim","title":"The ask","received":"2026-11-09T02:13"}
@@ -133,10 +137,10 @@ A run that is not the owner stops at the issue. It replies and records on its ow
 
 ## Failures worth naming
 
-- No `bundle/tools/handles.toml`, a missing table, or a handle that does not resolve. Ask the run's owner; do not guess.
+- No `bundle/tools/handles.toml`, a missing owner, or a handle that does not resolve. Ask the run's owner; do not guess.
 - The account cannot be assigned: it is not a collaborator, or the repository refuses it. File without the assignment, keep the mention, and tell the recipient out of band.
 - No smee channel or webhook. The issue is still filed; the startup scan can queue matching open issues.
-- A bad signature when `WEBHOOK_SECRET` is configured, or a message whose `category`, `from`, `to`, or `tickets` does not match the format. The listener writes nothing and logs the failing field.
+- A bad signature when `WEBHOOK_SECRET` is configured, a message whose `category`, `from`, `to`, or `tickets` does not match the format, or an issue whose author is not in `handles.toml`. The listener writes nothing and logs the reason.
 
 ## Reporting
 

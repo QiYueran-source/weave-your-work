@@ -91,14 +91,14 @@ async function startListener(t, f, webhookSecret = secret) {
   return port
 }
 
-function issue({ url = 'https://example.test/issues/42', from = 'sender', to = 'alice-handle', title = 'A title', category = 'request', tickets = ['wm-test'] } = {}) {
+function issue({ url = 'https://example.test/issues/42', from = 'sender', to = 'alice-handle', title = 'A title', category = 'request', tickets = ['wm-test'], author = 'alice-handle' } = {}) {
   return {
     action: 'opened',
     issue: {
       html_url: url,
       title,
       body: `---\nkind: communicate\ncategory: ${category}\nfrom: ${JSON.stringify(from)}\nto: [${JSON.stringify(to)}]\ntickets: ${JSON.stringify(tickets)}\n---\nBody`,
-      user: { login: 'author' },
+      user: { login: author },
     },
   }
 }
@@ -310,6 +310,23 @@ test('listener keeps the smee channel URL out of its log', async (t) => {
   const output = result.stdout + result.stderr
   assert.ok(!output.includes('channel-secret-value'), output)
   assert.match(output, /Cannot connect to smee/)
+})
+
+test('an issue opened by a login outside the handles file is not queued', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f)
+  assert.deepEqual(await request(port, issue({ author: 'stranger' })), { status: 202, body: 'queued 0\n' })
+  assert.equal(await queueText(f), '')
+})
+
+test('a known login may file on behalf of another owner', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f)
+  // The body says bob-hands is the sender; the issue was opened by alice's login.
+  const payload = issue({ author: 'alice-handle', to: 'bob-handle' })
+  assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
+  const entry = JSON.parse((await queueText(f)).slice(2))
+  assert.equal(entry.owner, 'bob')
 })
 
 test('a nested handle table is rejected instead of yielding no recipients', async (t) => {

@@ -61,6 +61,13 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - The listener is one process per project, because it reads the project's `handles.toml` and queue path.
 - The Gitee research stays in the worked example; deleting the reference does not delete the findings.
 
+## Author roster (confirmed 2026-11-09)
+
+- Queue an issue only when its `user.login` is one of the logins in `handles.toml`. The check runs on both the webhook path and the startup scan, and the roster check uses every login in the file, not `handles[from]`.
+- It is a roster, not authentication. Filing on another owner's behalf keeps working, because the filer's own login is on the roster; requiring author == `handles[from]` would have broken that and the shared-token case. What it blocks is a stranger on a public repository, whose real login is on the issue they opened.
+- Signature verification stays unavailable through smee: smee parses the body and re-serializes it, so the HMAC over the original bytes cannot match. The author field travels in the same unverified payload, so it can be forged by anyone who knows the channel URL. Say both in the docs; do not let the author check read as authentication.
+- Real verification is a transport question: a tunnel with `WEBHOOK_SECRET` set, which the listener already supports because it verifies before parsing. That is separate work.
+
 ## Test directory (confirmed 2026-11-09)
 
 - Keep the security and catch-up regression tests, but move them from `bundle/tools/` to `bundle/tools/tests/` in both the source skill and the installed copy. Adjust their paths to the listener and dependencies, and update the research note's test link without changing the historical command.

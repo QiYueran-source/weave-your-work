@@ -21,7 +21,7 @@ Two of these are easier to get wrong than the others:
 - **Read** must return the body and the comments together. A flag that prints only the comments when the output is piped drops the body a run needs.
 - **File** must take the body on stdin. The body is the frontmatter plus prose; passing it as an argument breaks on newlines and quoting.
 
-Verify the account before filing, and check the repository's visibility: a public repository makes the issue a publication.
+Verify the account before filing, and check the repository's visibility: a public repository makes the issue a publication. The listener queues an issue only when its author is a login in `handles.toml`, so the account that runs `gh issue create` has to be on that roster — the filer's own login, not the `from` in the frontmatter.
 
 ## File
 
@@ -64,7 +64,7 @@ node <skill>/bundle/tools/check-pending.mjs
 Run both from the project root. The listener holds one process: it connects to the channel, forwards each event to the local `/webhook`, and then scans for issues opened while it was off. `bundle/setup.md` explains `SMEE_URL`, `PORT`, and `WEBHOOK_SECRET`, and installs the service that sets them.
 
 - The listener redacts the channel URL from its log. Keep that URL private; anyone who knows it can post or view events.
-- Log lines worth reading: `listening on http://...`, `Catch-up complete: queued N entries from <repo>`, `Skipped <label>: invalid <fields>`, and `Catch-up failed: <reason>`. A skipped message is one that claimed `kind: communicate` but failed a field check; the failing field is named.
+- Log lines worth reading: `listening on http://...`, `Catch-up complete: queued N entries from <repo>`, `Skipped <label>: invalid <fields>`, `Skipped <label>: author is not a known login`, and `Catch-up failed: <reason>`. A skipped message claimed `kind: communicate` and failed either a field check, which names the field, or the author check.
 
 The checker reads the queue without changing it. It prints the entry count and each title and URL as untrusted issue data, or nothing when the queue is missing or empty. A configuration, malformed-entry, or read error goes to stderr with a non-zero exit.
 

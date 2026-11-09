@@ -7,7 +7,7 @@ The listener that receives communicate issues and queues them for the next sessi
 - A smee.io channel, which gives the repository a public webhook URL.
 - A webhook on the GitHub repository, for issue events.
 - The Node listener in `bundle/tools/`, which holds the smee client and the webhook receiver.
-- A project-specific `bundle/tools/handles.toml` with the team mappings and pending queue path.
+- A project-specific `bundle/tools/handles.toml` with the team mappings and pending queue path. It is also the roster of logins allowed to send.
 - The session rule generated from `bundle/rules/` into `.agents/rules/rules-pending-communications.md`.
 - A startup scan for open communicate issues missed while the listener was off.
 
@@ -99,7 +99,7 @@ The checker reads the queue without changing it. With entries it prints their co
 4. **Handles and queue.** In the project's installed issue skill, use `.agents/skills/issue/bundle/tools/handles.toml`:
 
    - If it exists, keep it unchanged. Ask before changing any mapping or queue path.
-   - If it is absent, ask the person responsible for the project which local owners and GitHub logins to record, and which queue path to use. Offer `pending/pending-communications.md` as the default. Create the file from their answers; do not guess handles. If an older `.waymark/handles.toml` exists, show its entries and ask the person to confirm them; preserve its mappings and translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
+   - If it is absent, ask the person responsible for the project which local owners and GitHub logins to record, and which queue path to use. Say what the list does: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Offer `pending/pending-communications.md` as the default. Create the file from their answers; do not guess handles. If an older `.waymark/handles.toml` exists, show its entries and ask the person to confirm them; preserve its mappings and translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
    - Track the new file in Git alongside the installed skill. Do not put credentials or secrets in it.
 
    Example, using names supplied by the person:

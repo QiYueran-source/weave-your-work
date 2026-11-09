@@ -130,13 +130,13 @@ async function finish(listener, outcome = 'complete') {
   await waitFor(() => listener.output().includes(`Catch-up ${outcome}:`), `catch-up ${outcome}`, listener.output)
 }
 
-function issue(number, { to = 'alice-handle', title = `Issue ${number}`, body, from = 'sender', category = 'request', tickets = ['wm-test'], ...extra } = {}) {
+function issue(number, { to = 'alice-handle', title = `Issue ${number}`, body, from = 'sender', category = 'request', tickets = ['wm-test'], author = 'alice-handle', ...extra } = {}) {
   return {
     html_url: `https://github.com/example/project/issues/${number}`,
     title,
     state: 'open',
     body: body ?? `---\nkind: communicate\ncategory: ${category}\nfrom: ${JSON.stringify(from)}\nto: [${JSON.stringify(to)}]\ntickets: ${JSON.stringify(tickets)}\n---\nBody`,
-    user: { login: 'author' },
+    user: { login: author },
     ...extra,
   }
 }
@@ -189,8 +189,9 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
     issue(8, { body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: [alice-handle, bob-handle]\ntickets: [wm-test]\n---\n' }),
     issue(9, { body: '---\nkind: communicate\nfrom: sender\nto: [alice-handle]\ntickets: [wm-test]\n---\n' }),
     issue(12, { to: 'unmapped' }),
+    issue(14, { author: 'stranger' }),
     null,
-    ...Array.from({ length: 90 }, (_, index) => issue(100 + index, { body: 'ordinary issue' })),
+    ...Array.from({ length: 89 }, (_, index) => issue(100 + index, { body: 'ordinary issue' })),
   ]
   assert.equal(first.length, 100)
   await stage(f, 1, first)
@@ -205,6 +206,7 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
     ['https://github.com/example/project/issues/6', 'alice-handle', 'alice'],
   ])
   assert.equal(found[2].title, 'Second page')
+  assert.ok(!found.some(({ url }) => url.endsWith('/issues/14')), 'a stranger\'s issue was queued')
   assert.deepEqual((await calls(f)).map((args) => args.at(-1)), ['page=1', 'page=2'])
   const beforeRestart = await queue(f)
   await stop(listener)
