@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-09T05:31:34Z
+updated_at: 2026-11-09T06:11:37Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: task
@@ -27,6 +27,8 @@ All children are complete and no further children are needed.
 Review point: Check that the skill states the two boundary tests, the three dispositions, the ownership stop rule, and the order that ends in archive.
 
 ## Decisions so far
+
+- Update may invoke the `map` skill for its dependency rules; it does not point to files inside another skill. If `map` is unavailable, stop and ask the owner to install it. (user confirmed)
 
 - A reopened map's invalidated Review is struck through with its reason and remains after a same-subject re-review. Old maps without a Review are not backfilled; the three update dispositions still use the two existing tests. This change concerns map Review history, not task Review history. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
 

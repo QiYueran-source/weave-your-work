@@ -12,7 +12,7 @@ A task takes no child. If the change is to a task and its verdict fails, reopen 
 
 If the gap was already required by a task's acceptance signal, use the two tests on that task to decide whether to reopen, fix, and re-review it. Do not assume a new task is needed.
 
-If the task met its signal but the parent omitted a new requirement, discuss the target or structure before deciding the work. Do not automatically create a task dependent on a sibling's output. Any resulting split must respect the frozen child type and the dependency rules in `map/frontmatter.md`.
+If the task met its signal but the parent omitted a new requirement, discuss the target or structure before deciding the work. Do not automatically create a task dependent on a sibling's output. Any resulting split must respect the frozen child type; invoke the `map` skill for dependency rules. If it is unavailable, stop and ask the owner to install it.
 
 The rest of this file is about a map that needs a child after that decision.
 

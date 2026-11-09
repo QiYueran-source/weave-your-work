@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-09T05:50:43Z
+updated_at: 2026-11-09T06:12:59Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -55,5 +55,7 @@ passed
 The three rounds changed the wording and the reading path, not the design. The three dispositions, the two tests, and the ownership rule survived all of them. What did not survive: where a verdict lives, what an open node's status means, whether a map's verdict is its acceptance direction or its status, how a run learns its own name, and which command reads which relation.
 
 ## Progress
+
+The owner confirmed the reference boundary: update may invoke the `map` skill but must not point at files inside it. `need-execute.md` and `move.md` now invoke `map` for dependency rules and stop if it is unavailable. An isolated `npx skills add --copy` install succeeded; its local Markdown links resolved within the skill and both dependency branches retained the invocation. `waymark validate` found no structural issues. These checks do not establish the remaining reader walkthroughs or verification of every Waymark claim; keep this task open for that separate review.
 
 Update invalidated the prior passed verdict on the same subject: the acceptance signal requires no references outside the update skill directory, but its dependency disposition now calls for the map skill frontmatter reference; universal verification of Waymark claims has not been re-established for the changed files. Reassess the signal and current evidence before re-review. Seven related skills, including update, were copied successfully by npx skills add in an isolated temporary project; that install alone does not establish semantic usability. Related implementation: wm-q6477pe7x8tp.
