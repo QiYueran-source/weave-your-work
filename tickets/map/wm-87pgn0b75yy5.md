@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-08T13:10:12Z
+updated_at: 2026-11-09T14:52:11Z
 closed_at: 2026-11-08T13:10:12Z
 parent: wm-qhd3twqjzhma
 custom_fields:
@@ -44,7 +44,7 @@ Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and revi
 - ~~The execution side splits further into four flat skills: `execute-step-by-step`, `execute-all`, `task-dispatch`, and `task-review`.~~ Superseded on 2026-11-08: three skills, not four. `execute-step-by-step` is `execute-one-task`, `task-dispatch` is `dispatch.md` inside `execute-all`, and `task-review` stays its own skill. Decided in the execution map, which this map routes to.
 - Execution posits no self-grill and no log in its first version; the executor gathers what it needs and reports what it could not settle (user confirmed).
 - The Task skill gains a total entry skill at `weave-your-work/task/`, named `task`. It routes to the four task skills; it does not carry the task body, the execution procedure, or the review rules. (user confirmed)
-- The entry is user-invoked, like the two execute skills, because it is the name a person types, not a router a model loads. (agent decision, revisable)
+- The entry is user-invoked, like the two execute skills, because it is the name a person types, not a router a model loads. (user confirmed, 2026-11-09; see [Work-weave: general team collaboration skill set](wm-wjwa9081hse1.md))
 - The entry names `update` for changing a closed task and `split` for deciding whether work is a task or a child map. It restates neither. (agent decision, revisable)
 - The entry is designed in [Task skill entry](tickets/map/wm-aya8m15vkvkj.md), which hangs [Write the task skill entry](tickets/task/wm-vatw4s6pj8df.md) under it. (agent decision, revisable)
 - Batch selection: only `open` and `in_progress` tasks are candidates; a closed task is never claimed. (user confirmed on 2026-11-08)
