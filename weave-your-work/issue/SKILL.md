@@ -35,7 +35,7 @@ Reply here with which one; the ticket is yours to change.
 ```
 
 - `kind: communicate` marks the issue. Without it, the listener skips the issue.
-- `to` is one or more remote handles. Each matching configured handle gets a queue entry; the thread is shared.
+- `to` is one or more remote handles. A live event queues each handle; startup catch-up queues configured GitHub handles. The thread is shared.
 - `tickets` is one or more waymark ids. The first is the primary: the title carries it, and it is the ticket that will record the answer.
 - `from` is the waymark owner sending. The issue author is the token's account, not the sender, so `from` plus the tickets identify the sender.
 - The body opens with the `@handle` mentions, then the ask, the context, and how to reply. The ask comes first.
