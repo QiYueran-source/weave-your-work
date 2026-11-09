@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:52:39Z
-updated_at: 2026-11-06T12:52:39Z
+updated_at: 2026-11-09T01:39:08Z
 parent: wm-a08fwanmy5q6
 ---
 ## Target
@@ -24,6 +24,8 @@ All child tasks are complete and no further child task is needed: a fresh projec
 - setup scope: check dependency configuration, initialize the project, initialize rules (user confirmed).
 - Prefer instructions an AI executes over one script; mechanical pieces may be scripts (user confirmed).
 - Installing a skill's pieces is a task under that skill's map, not under setup: the glossary install step lives under the glossary map (user confirmed).
+
+- The future total setup explicitly lists the map and task bundles and reads each bundle setup; it does not discover bundles by scanning. The skill and its complete list are not implemented yet. Source: user confirmation.
 
 ## Not yet specified
 
