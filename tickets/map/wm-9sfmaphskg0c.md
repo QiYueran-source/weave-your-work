@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-09T14:49:10Z
+updated_at: 2026-11-09T15:57:36Z
 closed_at: 2026-11-09T14:49:10Z
 parent: wm-qhd3twqjzhma
 custom_fields:
@@ -67,7 +67,7 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - The update run executes the task it wrote when it is `two_way`, `needs_human: false`, inside the run's ownership, and does not rewrite the map's `Target` or `Acceptance direction`, or the task's `Action` or `Acceptance signal`, without the owner's confirmation. Any other case stops after the task is written and records the wait. (user confirmed)
 - The reference is `weave-your-work/update/need-execute.md`. It states the shape table, the order, and the execution gate; it points at `split`, `task-design`, `execute-one-task`, and `task-review` and does not restate their rules. (user confirmed)
 - A move writes no record field anywhere. `waymark parent set` leaves the old parent in the git diff of the moved node, and `waymark git history --item <id>` prints it; a line saying "moved from X" would be a second copy of something git already holds. (user confirmed)
-- `update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident. (user confirmed, 2026-11-09; see [Work-weave: general team collaboration skill set](wm-wjwa9081hse1.md))
+- ~~`update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident. (user confirmed, 2026-11-09; see [Work-weave: general team collaboration skill set](wm-wjwa9081hse1.md))~~ Superseded on 2026-11-09: the contrast no longer holds; no skill carries the flag, and `execute-all` keeps the guard against starting a batch unasked in its own text. (user confirmed, 2026-11-09)
 - The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`. (see [Write the update skill](../task/wm-4dytqnmy4s47.md))
 - The map body carries no build index: what was written lives in the build task's `Result` and in the files themselves. This build has one fault worth keeping, and it is recorded here because no other section owns it — the skill was written and the map closed before the build ticket existed, so the ticket was reopened to hang [Write the update skill](../task/wm-4dytqnmy4s47.md) and closed again. The artifacts are unaffected; the record of who wrote what, and when, was made after the fact. (see [Write the update skill](../task/wm-4dytqnmy4s47.md))
 

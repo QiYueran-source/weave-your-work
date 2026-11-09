@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T11:09:20Z
-updated_at: 2026-11-09T14:52:11Z
+updated_at: 2026-11-09T15:57:36Z
 closed_at: 2026-11-08T11:10:16Z
 parent: wm-87pgn0b75yy5
 custom_fields:
@@ -31,7 +31,7 @@ Review point: open `SKILL.md` alone and check that a reader can tell which skill
 
 - The Task skill gets a total entry skill at `weave-your-work/task/`, named `task`. (user confirmed)
 - The entry routes; it does not carry the task body, the execution procedure, or the review rules. (agent decision, revisable)
-- The entry is user-invoked, like the two execute skills. It is the name a person types, not a model-side router. (user confirmed, 2026-11-09; see [Work-weave: general team collaboration skill set](wm-wjwa9081hse1.md))
+- ~~The entry is user-invoked, like the two execute skills. It is the name a person types, not a model-side router. (user confirmed, 2026-11-09; see [Work-weave: general team collaboration skill set](wm-wjwa9081hse1.md))~~ Superseded on 2026-11-09: the flag is gone; the entry is still the name a person types, but every skill is model-invocable. (user confirmed, 2026-11-09)
 - The entry names the four task skills and points at `update` and `split` for the adjacent operations; it does not restate any of their rules. (agent decision, revisable)
 - The entry replaces the earlier decision that the two skills are their own entry. That decision was recorded when the family had two skills and `ask-me` was the only router; with four skills and no built `ask-me`, a stable entry name is worth the upkeep. (user confirmed)
 
