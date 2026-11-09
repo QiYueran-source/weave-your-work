@@ -32,11 +32,11 @@ The state machine stayed out, but a triage result is still a decision about what
 
 ### The handle is a roster, not a guess
 
-A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The skill reads `.waymark/handles.toml`, one table per platform, and verifies the account before it mentions or assigns it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name. This repository now carries a sample roster at `.waymark/handles.toml`, mapping `frank` to the account the probe used.
+A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The first design read `.waymark/handles.toml`, one table per platform, and verified the account before mentioning or assigning it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name. The sample roster mapped `frank` to the account the probe used.
 
 ### Moving the roster out of waymark
 
-The original roster lived under `.waymark/`, although the issue skill rather than waymark reads it. The later discussion chose the installed skill's `bundle/tools/`: each project commits its own copy, and issue setup asks the person responsible for the owner-to-handle mappings. Setup and later skill updates preserve an existing roster. The migration plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md); it still awaits implementation confirmation.
+The original roster lived under `.waymark/`, although the issue skill rather than waymark reads it. The later discussion chose the installed skill's `bundle/tools/`: each project commits its own copy, and issue setup asks the person responsible for the owner-to-handle mappings. Repeated setup preserves an existing roster. A skill update can replace the installed directory, so the setup guide calls for backing up the roster and restoring it afterward. The migration plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
 
 ### What was rejected: copying the thread
 

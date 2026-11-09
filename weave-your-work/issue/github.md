@@ -21,7 +21,7 @@ A missing account is repaired with `gh auth login`. `gh` keeps the token; do not
 
 ## Resolve the handles
 
-The frontmatter's `to` and the body's `@` both use the remote handle. Read `.waymark/handles.toml`, in the table for the platform, then verify:
+The frontmatter's `to` and the body's `@` both use the remote handle. Read `bundle/tools/handles.toml` beside this skill's listener, in the table for the platform, then verify:
 
 ```bash
 gh api users/<handle> --jq .login

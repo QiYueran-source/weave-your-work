@@ -1,0 +1,7 @@
+# Map project owners to their remote handles, one table per platform.
+[handles.github]
+frank = "QiYueran-source"
+
+# Resolve the local, gitignored queue path from the project root.
+[pending]
+path = "pending/pending-communications.md"

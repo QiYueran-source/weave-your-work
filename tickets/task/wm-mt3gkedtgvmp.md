@@ -23,16 +23,16 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 2. `github.md`: the commands for file, search/view, comment, close, the mention and assignee, the frontmatter, and the catch-up query.
 3. `gitee.md`: the reads; the writes marked deferred.
 4. `bundle/setup.md`: the install steps, the channel, the webhook, the secret, the smee client, the listener, the session rule, and the catch-up.
-5. The Node bundle `bundle/tools/`: the smee client, the webhook receiver, the frontmatter parse, the `to` routing through `.waymark/handles.toml`, and the append to `[pending].path`.
-6. In this repository: `.waymark/handles.toml` gains `[pending].path`; `.gitignore` gains `pending/`; the rule file is `bundle/rules/rules-pending-communications.md`, and its installed copy is `.agents/rules/rules-pending-communications.md`.
+5. The Node bundle `bundle/tools/`: the smee client, the webhook receiver, the frontmatter parse, the `to` routing through the installed skill's `bundle/tools/handles.toml`, and the append to `[pending].path`.
+6. In this repository: the installed skill's handles file contains `[pending].path`; `.gitignore` includes `pending/`; the rule file is `bundle/rules/rules-pending-communications.md`, and its installed copy is `.agents/rules/rules-pending-communications.md`.
 7. Verify the listener locally with a sample payload.
 8. Person: create the smee channel, add the webhook, store the secret, and file a test communicate issue; watch the queue.
 9. Install with `npx skills add`; no link outside the directory.
 10. Say what the skill does not do.
 
-## Proposed configuration migration (awaiting plan confirmation)
+## Configuration migration (confirmed 2026-11-09)
 
-- Issue setup asks the person responsible for the project which owners and remote handles to record, then creates `handles.toml` in the installed skill's `bundle/tools/`. On later setup or skill updates, preserve an existing file rather than replacing team data.
+- Issue setup asks the person responsible for the project which owners and remote handles to record, then creates `handles.toml` in the installed skill's `bundle/tools/`. Repeated setup preserves an existing file. The `skills add --copy` installer deletes the destination on update, so the setup instructions require saving the file outside that directory and restoring it after an update; automatic preservation is not guaranteed.
 - Migrate this repository's existing mapping and queue setting without losing data; leave the queue at the repository's `pending/pending-communications.md`. Use a path relative to the project root so the queue location does not depend on where the skill is installed.
 - Update the listener, issue instructions, setup guide, bundled session rule, and this repository's installed rule to read the same configuration. Update the worked example to explain the change.
 - Check first setup and repeat setup, the preserved mapping, queue resolution from an installed skill, and the listener with a local sample. The live GitHub and smee test remains separate.
@@ -52,4 +52,6 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 ## Progress
 
 Where it stands: the skill files, the Node listener in `bundle/tools/`, the handles config, the gitignore entry, and the session rule file are written; the listener passed a local test (a valid signature queues, a bad signature returns 401, a non-communicate issue is skipped); the live smee and GitHub path waits on the owner's channel and webhook.
+The configuration migration is implemented: the tracked installed skill holds the existing owner mapping and a root-relative queue path. A local signed payload test covers the adjacent config, custom and default queue paths, reverse mapping, deduplication, and signature rejection. A temporary `skills add --copy` reinstall removed the config; backing it up and restoring it retained its contents. Setup describes creation and preservation, but the interactive setup has not been run with a project owner.
+
 Next: the owner sets up smee and the webhook, files a test communicate issue, and reviews the skill.

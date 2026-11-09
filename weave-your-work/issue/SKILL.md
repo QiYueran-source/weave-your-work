@@ -62,7 +62,7 @@ A run is one pass through the human actions. Filing and landing can be days apar
 
 The owner of the run files it; an agent acting for the owner may file on their behalf.
 
-**Handles.** A waymark owner is a local name, not a remote login. Resolve the handle from `.waymark/handles.toml`, in the table for the platform:
+**Handles.** A waymark owner is a local name, not a remote login. Resolve the handle from `bundle/tools/handles.toml` beside this skill's listener, in the table for the platform:
 
 ```toml
 [handles.github]
@@ -94,7 +94,7 @@ The listener parses the frontmatter and appends one line per `to` to the pending
 - <issue URL> | from=<owner> | to=<handle> | <title> | <received at>
 ```
 
-The queue path is `[pending].path` in `.waymark/handles.toml`, resolved from `.waymark/`; it defaults to `../pending/pending-communications.md`, which is `<repo>/pending/pending-communications.md`. The directory is local state and gitignored; `handles.toml` is shared.
+The queue path is `[pending].path` in this skill's `bundle/tools/handles.toml`, resolved from the project root; it defaults to `pending/pending-communications.md`. The queue is local state and gitignored; the handles file is shared.
 
 The session rule reads the queue at the start of a session and surfaces the count and titles. Nothing acts on an entry until the person asks. If the listener was off, the session's catch-up query (`gh search issues --mentions @me --state open`) fills the gap.
 
@@ -128,7 +128,7 @@ A run that is not the owner stops at the issue. It replies and records on its ow
 
 ## Failures worth naming
 
-- No `.waymark/handles.toml`, a missing table, or a handle that does not resolve. Ask the run's owner; do not guess.
+- No `bundle/tools/handles.toml`, a missing table, or a handle that does not resolve. Ask the run's owner; do not guess.
 - The account cannot be assigned: it is not a collaborator, or the repository refuses it. File without the assignment, keep the mention, and tell the recipient out of band.
 - No smee channel or webhook. The issue is still filed; the session's catch-up query finds it later.
 - A webhook with a bad signature, or a payload whose frontmatter is missing or malformed. Reject the event; the listener writes nothing.

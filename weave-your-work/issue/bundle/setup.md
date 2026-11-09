@@ -7,7 +7,7 @@ The listener that receives communicate issues and queues them for the next sessi
 - A smee.io channel, which gives the repository a public webhook URL.
 - A GitHub webhook for `issues` and `issue_comment`.
 - The Node listener in `bundle/tools/`, which holds the smee client and the webhook receiver.
-- The pending queue path in `.waymark/handles.toml`.
+- A project-specific `bundle/tools/handles.toml` with the team mappings and pending queue path.
 - The session rule generated from `bundle/rules/` into `.agents/rules/rules-pending-communications.md`.
 - The catch-up query for the sessions where the listener was off.
 
@@ -81,7 +81,13 @@ The rule in this bundle is `rules-pending-communications.md`. The installed copy
 
    Without a service, run the command in a terminal while you work; the catch-up covers the sessions where it was not running.
 
-4. **Queue path.** `.waymark/handles.toml`:
+4. **Handles and queue.** In the project's installed issue skill, use `.agents/skills/issue/bundle/tools/handles.toml`:
+
+   - If it exists, keep it unchanged. Ask before changing any mapping or queue path.
+   - If it is absent, ask the person responsible for the project which local owners and remote handles to record for each platform, and which queue path to use. Offer `pending/pending-communications.md` as the default. Create the file from their answers; do not guess handles. If an older `.waymark/handles.toml` exists, show its entries and ask the person to confirm them; preserve its mappings and translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
+   - Track the new file in Git alongside the installed skill. Do not put credentials or secrets in it.
+
+   Example, using names supplied by the person:
 
    ```toml
    [handles.github]
@@ -89,10 +95,10 @@ The rule in this bundle is `rules-pending-communications.md`. The installed copy
    hanjiang = "hanjiang-gh"
 
    [pending]
-   path = "../pending/pending-communications.md"
+   path = "pending/pending-communications.md"
    ```
 
-   The path is resolved from `.waymark/`, so the default is `<repo>/pending/pending-communications.md`. The directory is local state: add `pending/` to `.gitignore`. `handles.toml` is shared and tracked.
+   The queue path is relative to the project root. Its directory is local state: add it to `.gitignore`; `pending/` ignores the default. Before updating or reinstalling the skill, preserve the existing handles file outside the directory being replaced; restore it afterward and verify it is unchanged. In `skills` 1.7.6, `skills add --copy` deletes the installed directory before copying; setup runs too late to prevent that deletion. If an update fails, keep the backup and restore it before running the listener or setup again.
 
 5. **Catch-up.** The listener only receives while it runs. When a session starts after the machine was off, run:
 

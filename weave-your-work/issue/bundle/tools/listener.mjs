@@ -2,7 +2,7 @@
 // Receive a smee webhook stream and queue communicate issues.
 //
 // Run from the repository root:
-//   WEBHOOK_SECRET=<secret> SMEE_URL=https://smee.io/<id> node <skill>/bundle/listener.mjs
+//   WEBHOOK_SECRET=<secret> SMEE_URL=https://smee.io/<id> node <skill>/bundle/tools/listener.mjs
 //
 // Without SMEE_URL the HTTP endpoint runs alone, which is how the local test
 // exercises it. The signature is checked before anything is written.
@@ -12,18 +12,20 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import { parse as parseToml } from 'smol-toml'
 import { parse as parseYaml } from 'yaml'
 import SmeeClient from 'smee-client'
 
-const DEFAULT_PENDING = '../pending/pending-communications.md'
+const DEFAULT_PENDING = 'pending/pending-communications.md'
 const root = process.cwd()
+const toolsDir = path.dirname(fileURLToPath(import.meta.url))
 const port = Number(process.env.PORT || 8765)
 const secret = process.env.WEBHOOK_SECRET || ''
 const smeeUrl = process.env.SMEE_URL || ''
 
 function loadConfig() {
-  const file = path.join(root, '.waymark', 'handles.toml')
+  const file = path.join(toolsDir, 'handles.toml')
   if (!fs.existsSync(file)) {
     return { handles: {}, pending: DEFAULT_PENDING }
   }
@@ -35,7 +37,7 @@ function loadConfig() {
 }
 
 function queuePath(configured) {
-  return path.resolve(root, '.waymark', configured)
+  return path.resolve(root, configured)
 }
 
 function parseFrontmatter(body) {
