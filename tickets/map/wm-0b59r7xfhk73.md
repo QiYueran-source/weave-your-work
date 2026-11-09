@@ -3,12 +3,11 @@ schema: 1
 id: wm-0b59r7xfhk73
 title: Map skill
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:25Z
-updated_at: 2026-11-09T00:28:16Z
-closed_at: 2026-11-09T00:28:16Z
+updated_at: 2026-11-09T05:30:57Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: submap

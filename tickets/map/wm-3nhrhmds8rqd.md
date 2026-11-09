@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-09T00:43:56Z
+updated_at: 2026-11-09T05:30:50Z
 closed_at: 2026-11-09T00:43:56Z
 parent: wm-0b59r7xfhk73
 custom_fields:
@@ -50,7 +50,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - A blocked map may still split. The dependency edge stays on the map it was written on, and the children it creates inherit nothing: the wait belongs to the map, not to the parts. Copying the edge to each child would turn one wait into several and leave them behind when the wait ends. Source: user confirmation.
 - A child created after the edge does not inherit the wait. If it uses the blocker's output, it carries its own edge or stops at execution. (user confirmed on 2026-11-08)
 - Vertical slicing produces two child maps and one dependency edge between them, with the later child carrying the edge. Putting the stages inside one node would hide the wait inside an action that cannot be judged as a whole. Source: user confirmation.
-- A task hangs under one map and may soft-link another. The link says the two are related and nothing else: no wait, no shared acceptance. Adding a wait would turn the task into a slice, because a task is defined by ending at a result that can be handed over on its own. A part that genuinely has to wait for another map is a child map carrying an edge, not a task. Source: user confirmation.
+- ~~A task hangs under one map and may soft-link another. The link says the two are related and nothing else: no wait, no shared acceptance. Adding a wait would turn the task into a slice, because a task is defined by ending at a result that can be handed over on its own. A part that genuinely has to wait for another map is a child map carrying an edge, not a task. Source: user confirmation.~~ Superseded on 2026-11-09: a task carries no edge, but can need output from a map its own map waits for; it waits for that input rather than inventing it. A soft link alone still orders nothing. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
 - `split` names grill as the step that settles a layer before it is split. Grill is not built yet; naming it is the whole relation, and split does not carry an edge to it. A placeholder name does not block a skill that is already written. Source: user confirmation. The rules live in [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and split points there instead of restating them (user confirmed).
 
 ## Not yet specified
