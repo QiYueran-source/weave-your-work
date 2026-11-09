@@ -304,8 +304,11 @@ test('deduplication compares full URLs and recipients', async (t) => {
 test('listener keeps the smee channel URL out of its log', async (t) => {
   const f = await fixture(t)
   const channel = 'http://127.0.0.1:1/channel-secret-value'
+  // A free port, because the default 8765 may belong to a real listener.
+  const port = await freePort()
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: { ...environment(), SMEE_URL: channel }, encoding: 'utf8', timeout: 15000,
+    cwd: f.root, env: { ...environment(), SMEE_URL: channel, PORT: String(port) },
+    encoding: 'utf8', timeout: 15000,
   })
   const output = result.stdout + result.stderr
   assert.ok(!output.includes('channel-secret-value'), output)

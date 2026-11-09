@@ -87,7 +87,7 @@ The `to` handle is used twice: in the frontmatter for the listener, and as the `
 
 ## Listen and the queue
 
-The listener is part of this skill. `bundle/setup.md` covers the channel, webhook, Node listener in `bundle/tools/`, and session rule in `bundle/rules/`.
+The listener is part of this skill. `bundle/setup.md` covers the channel, webhook, Node listener in `bundle/tools/`, and session rule in `bundle/rules/`. Setup reads the existing channel and webhook back with `gh` before creating either, so installing on a repository that already has a listener adds nothing and asks nothing.
 
 The default smee setup does not verify signatures: smee re-serializes the JSON, so GitHub's HMAC over the original bytes cannot match. Anyone who knows the channel URL can send or view events, so keep the URL private; the listener redacts it from its log.
 

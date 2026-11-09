@@ -68,6 +68,13 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Signature verification stays unavailable through smee: smee parses the body and re-serializes it, so the HMAC over the original bytes cannot match. The author field travels in the same unverified payload, so it can be forged by anyone who knows the channel URL. Say both in the docs; do not let the author check read as authentication.
 - Real verification is a transport question: a tunnel with `WEBHOOK_SECRET` set, which the listener already supports because it verifies before parsing. That is separate work.
 
+## Setup runs itself (confirmed 2026-11-09)
+
+- Setup reads the existing channel, webhook, service, and handles file back with `gh` before creating anything, and creates only when the read came back empty. One channel per repository: smee sends each event to every connected client, so a second channel splits deliveries and a second issue hook doubles them.
+- Fill `handles.toml` in from the repository's collaborators and the waymark owners in `tickets/`, and ask only about a name with no matching login, with the candidates found. Ask nothing else the commands answer.
+- No `.env.example`. The real file is `~/.config/work-weave/smee.env`, outside the repository, and setup.md is the one description of `SMEE_URL`, `PORT`, and `WEBHOOK_SECRET`; a template in the repository would be a second copy that drifts.
+- Verify is a list of commands: the webhook points at the channel in the env file, the log shows a connection, a live issue queues, and an issue filed while the service is off is recovered on the next start. Only the session-start delivery has no command, and the file says so.
+
 ## Test directory (confirmed 2026-11-09)
 
 - Keep the security and catch-up regression tests, but move them from `bundle/tools/` to `bundle/tools/tests/` in both the source skill and the installed copy. Adjust their paths to the listener and dependencies, and update the research note's test link without changing the historical command.
@@ -132,5 +139,9 @@ The isolated startup tests cover paginated results, mapped recipients, malformed
 The communicate issue protocol is implemented in `communicate-issue.md` and the listener. Tests cover each category, ordinary issues, a missing or unknown `category`, several or non-list `to` values, empty `tickets`, an empty `from`, a missing title, and a pull request carrying a matching body; each invalid message is skipped. The smee channel URL stays out of the log. The source and installed security and catch-up suites pass from `tools/tests/`.
 
 The two host references were replaced by one `usage.md`, and the listener's GitHub-specific code is now two functions, `readIssueEvent` and `listOpenIssues`, marked in the file. `handles.toml` is a flat `[handles]` table; the listener rejects a nested table by name, because a per-platform table would leave it with no recipients while looking configured. Both suites pass from the source and the installed copy.
+
+Deploying the service also changed the test suite's environment: the redaction test started the listener on the default port 8765 and now collides with the live service, so it failed with `EADDRINUSE`. It now takes a free port like the other tests. Only the installed copy was affected in practice; both copies carry the fix.
+
+On 2026-11-09, two listeners were connected to the same smee channel at once. A new issue produced a `POST ... 202` in both logs, and the queue gained one line: the first listener appended it and the second's read of the queue already contained it. That confirms the one-channel-many-listeners arrangement the setup now describes, and it does not test the simultaneous-append case that the same note warns about, since the two appends were seconds apart.
 
 On 2026-11-09 the listener was deployed for this repository: a smee channel, an issues webhook on `QiYueran-source/weave-your-work`, `~/.config/work-weave/smee.env` at mode 600, and `issue-listener.service` as an enabled user unit with linger on. Three live checks ran against that deployment and all passed: a running listener queued the webhook delivery of issue #2, a running listener queued issue #3, and a stopped listener missed issue #4 until the next start, whose catch-up queued it. The webhook's test delivery returned 202 from the listener. All three issues were closed with a closing comment. The fail-open, self-addressed limit is unchanged: no second owner has sent or received anything, and the session-start rule has still not been recorded in this repository's tests.
