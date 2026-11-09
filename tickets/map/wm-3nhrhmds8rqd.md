@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-08T13:10:12Z
-closed_at: 2026-11-08T13:10:12Z
+updated_at: 2026-11-09T00:43:56Z
+closed_at: 2026-11-09T00:43:56Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   split_as: submap
@@ -35,7 +35,7 @@ The skill exists under `weave-your-work/split/`: SKILL.md states the decision qu
 - Split takes settled decisions, not fog: a clear target is written into Decisions so far first, then split; fog stays for explore (user confirmed).
 - The decision that triggers a split must itself be grilled first: what this layer will hold, which children it needs, and what is still unknown in each; split then writes the children (user confirmed).
 - A split decides only whether each part becomes a submap or a task; it does not resolve fog (user confirmed).
-- After a split, add same-type children while the map is open; once closed, reopen or open a sibling map; a direction change opens a sibling map (user confirmed).
+- After a split, add same-type children while the map is not closed; once closed, reopen or open a sibling map; a direction change opens a sibling map (user confirmed). ~~After a split, add same-type children while the map is open.~~ Corrected on 2026-11-09: the first split moves the map to `in_progress`, so a second layer is added to a map that is no longer open. The line that matters is closed, not open.
 - A `split_as` field (submap / task) is written at split time to record the child type and support the structure freeze (user confirmed).
 - The router question is the choice criterion: can one complete execution action and one clearly auditable standard be written? Yes goes to `task.md`, no to `submap.md` (user confirmed).
 - The criterion lives once in SKILL.md; the two references do not restate it (user confirmed).
