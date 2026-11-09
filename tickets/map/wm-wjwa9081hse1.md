@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-08T10:34:36Z
+updated_at: 2026-11-09T13:35:47Z
 ---
 ## Destination
 
@@ -43,6 +43,8 @@ That run is one batch, not one per map: write the worked example each effort nee
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge. The non-executor rule is dropped (user confirmed).
 - ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).
 - Worked examples and the end-to-end test of every skill happen in one batch, once the skill set is whole. No skill carries a per-skill functional test; each one records the paths it has not exercised in its own gap list, and those lists are the input to that batch. A path left unexercised today is deferred, not closed. (user confirmed)
+- Skill invocation has one test: a skill is model-invocable only when another skill reaches it mid-run, or when its trigger is a state the run has to notice for itself. Every other skill is user-invoked, which loads no description into context. (user confirmed, 2026-11-09)
+- Five skills are user-invoked. `execute-all` and `execute-one-task`, because each spends a run of unspecified size and writes real files. `task`, because it is the entry name a person types and no skill calls it. `issue`, because a filed issue is sent under the operator's GitHub account and cannot be recalled. `use-weave-your-work-examples`, because no skill calls it and its description is the longest in the set, spent on examples a person opens deliberately; its content is revised later, and this entry settles only how it is invoked. (user confirmed, 2026-11-09)
 
 ## Not yet specified (cross-category coordination)
 
