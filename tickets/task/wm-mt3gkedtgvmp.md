@@ -57,7 +57,9 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 
 ## Progress
 
-Where it stands: the skill files, the Node listener in `bundle/tools/`, the handles config, the gitignore entry, and the session rule file are written; the listener passed a local test (a valid signature queues, a bad signature returns 401, a non-communicate issue is skipped); the live smee and GitHub path waits on the owner's channel and webhook.
+The listener passed local payload tests and a temporary live GitHub → smee → listener test on 2026-11-09; the test issue was closed and the temporary webhook removed. This did not configure a persistent channel or service, and session-start notification has not been verified.
 The configuration migration is implemented: the tracked installed skill holds the existing owner mapping and a root-relative queue path. A local signed payload test covers the adjacent config, custom and default queue paths, reverse mapping, deduplication, and signature rejection. A temporary `skills add --copy` reinstall removed the config; backing it up and restoring it retained its contents. Setup describes creation and preservation, but the interactive setup has not been run with a project owner.
 
-Next: the owner sets up smee and the webhook, files a test communicate issue, and reviews the skill.
+The read-only Node queue checker is implemented in the source and installed skill. Tests cover missing and empty queues, a custom root-relative path, titles with separators, control-character escaping, unchanged queue contents, invalid entries and configuration, and a queue read error. A copied skill includes the checker. No harness hook or new-session delivery has been tested.
+
+Next: review the skill, decide how to address the listener security issues recorded in the map, and verify session-start notification in the intended harness.
