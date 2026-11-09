@@ -93,7 +93,9 @@ The default smee setup does not verify signatures: smee re-serializes the JSON, 
 
 What the listener does check is the issue's author. An issue whose `user.login` is not one of the logins in `handles.toml` is not queued, on both the webhook path and the startup scan. That stops a stranger on a public repository, whose real login is stamped on the issue they opened. It is not authentication: the author field travels inside the same unverified payload, so anyone who knows the channel URL can post a body with any login in it. Check the issue on GitHub when the sender or the request matters.
 
-Each valid message appends one JSON object; catch-up also requires `to` to match a configured handle. Each object occupies a Markdown list line:
+It also routes. A machine queues a message only when `to` resolves to that machine's owner, so a message between two other people does not fill this queue. The owner comes from `git config user.name`, matched against the `[handles]` keys without regard to case. `git config --local user.name <owner>` is the per-clone, untracked slot for a machine that belongs to someone else; a machine with no matching name refuses to start and names the roster. One machine serves one owner.
+
+Each valid message appends one JSON object. Each object occupies a Markdown list line:
 
 ```text
 - {"url":"https://example.test/issues/1","from":"frank","to":"kim-dev","owner":"kim","title":"The ask","received":"2026-11-09T02:13"}
@@ -103,7 +105,7 @@ Use a JSON serializer when adding catch-up entries; never interpolate issue text
 
 The queue path is `[pending].path` in this skill's `bundle/tools/handles.toml`, resolved from the project root; it defaults to `pending/pending-communications.md`. The queue is local state and gitignored; the handles file is shared.
 
-At startup, the listener connects to smee first, then lists open issues from the current project's GitHub repo identified by git `origin`, following all pages. It queues messages that match the communicate issue format and whose `to` is a configured handle, deduplicating by issue URL and recipient. Closed issues are excluded. Scan errors are logged; there is no polling or scan on reconnect. The session rule reads the queue at the start of a session and surfaces the count and titles. Nothing acts on an entry until the person asks.
+At startup, the listener connects to smee first, then lists open issues from the current project's GitHub repo identified by git `origin`, following all pages. It applies the same two checks as the webhook — a known author and this machine's owner in `to` — deduplicating by issue URL and recipient. Closed issues are excluded. Scan errors are logged; there is no polling or scan on reconnect. The session rule reads the queue at the start of a session and surfaces the count and titles. Nothing acts on an entry until the person asks.
 
 This skill supports GitHub. `usage.md` lists what a different host would require.
 
@@ -138,9 +140,10 @@ A run that is not the owner stops at the issue. It replies and records on its ow
 ## Failures worth naming
 
 - No `bundle/tools/handles.toml`, a missing owner, or a handle that does not resolve. Ask the run's owner; do not guess.
+- `git config user.name` matches no owner in `handles.toml`. The listener refuses to start and prints the roster; set this machine's owner with `git config --local user.name <owner>`. Do not add a per-machine key to `handles.toml`, which is shared.
 - The account cannot be assigned: it is not a collaborator, or the repository refuses it. File without the assignment, keep the mention, and tell the recipient out of band.
 - No smee channel or webhook. The issue is still filed; the startup scan can queue matching open issues.
-- A bad signature when `WEBHOOK_SECRET` is configured, a message whose `category`, `from`, `to`, or `tickets` does not match the format, or an issue whose author is not in `handles.toml`. The listener writes nothing and logs the reason.
+- A bad signature when `WEBHOOK_SECRET` is configured, a message whose `category`, `from`, `to`, or `tickets` does not match the format, an issue whose author is not in `handles.toml`, or a message addressed to another owner. The listener writes nothing and logs the reason.
 
 ## Reporting
 

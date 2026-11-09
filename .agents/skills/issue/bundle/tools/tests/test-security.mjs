@@ -25,7 +25,14 @@ async function modulesDir() {
   }
 }
 
-async function fixture(t) {
+// A machine belongs to one owner, named by its local git identity. Every fixture
+// records that identity, so the listener resolves the same way it does here.
+function setName(root, name) {
+  const result = spawnSync('git', ['config', 'user.name', name], { cwd: root, encoding: 'utf8' })
+  assert.equal(result.status, 0, result.stderr)
+}
+
+async function fixture(t, { owner = 'alice' } = {}) {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'issue-security-'))
   t.after(async () => {
     assert.equal(path.dirname(root), os.tmpdir())
@@ -40,6 +47,9 @@ async function fixture(t) {
   // Use installed dependencies without copying credentials or configuration.
   await fs.symlink(await modulesDir(), path.join(tools, 'node_modules'), 'dir')
   await fs.writeFile(path.join(tools, 'handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = "queue/pending.md"\n')
+  const init = spawnSync('git', ['init', '--quiet'], { cwd: root, encoding: 'utf8' })
+  assert.equal(init.status, 0, init.stderr)
+  setName(root, owner)
   return { root, tools, queue: path.join(root, 'queue/pending.md') }
 }
 
@@ -202,7 +212,6 @@ test('malicious remote values stay on one line and redelivery is deduplicated', 
   const payload = issue({
     url: 'https://example.test/evil\n- forged | to=bob',
     from: 'sender\n- forged | from=x',
-    to: 'strange\n- forged',
     title: 'Title | with\n- forged\r\u0001"quoted" <script>&',
   })
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
@@ -212,8 +221,8 @@ test('malicious remote values stay on one line and redelivery is deduplicated', 
   assert.ok(!content.includes('<script>'))
   assert.ok(lines[0].startsWith('- {'))
   const entry = JSON.parse(lines[0].slice(2))
-  assert.equal(entry.to, 'strange\n- forged')
-  assert.equal(entry.owner, 'unknown')
+  assert.equal(entry.to, 'alice-handle')
+  assert.equal(entry.owner, 'alice')
   assert.equal(entry.url, payload.issue.html_url)
   assert.equal(entry.from, 'sender\n- forged | from=x')
   assert.equal(entry.title, payload.issue.title)
@@ -236,15 +245,15 @@ test('legacy and JSON queue entries survive an append without a trailing newline
   const existing = '- {"url":"https://example.test/issues/99","from":"old","to":"bob-handle","owner":"bob","title":"Existing JSON","received":"2026-01-01T00:00"}'
   const original = `${legacy}\n${existing}`
   await fs.writeFile(f.queue, original)
-  assert.deepEqual(await request(port, issue({ to: 'bob-handle' })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await request(port, issue({ url: 'https://example.test/issues/7', to: 'alice-handle' })), { status: 202, body: 'queued 1\n' })
   const content = await queueText(f)
   assert.ok(content.startsWith(original + '\n- {'))
   assert.ok(content.endsWith('\n'))
   const lines = content.trimEnd().split('\n')
   assert.equal(lines.length, 3)
   const added = JSON.parse(lines[2].slice(2))
-  assert.equal(added.url, 'https://example.test/issues/42')
-  assert.equal(added.to, 'bob-handle')
+  assert.equal(added.url, 'https://example.test/issues/7')
+  assert.equal(added.to, 'alice-handle')
   const result = checker(f)
   assert.equal(result.status, 0, result.stderr)
   assert.match(result.stdout, /Communication queue: 3 entries/)
@@ -252,7 +261,7 @@ test('legacy and JSON queue entries survive an append without a trailing newline
   assert.deepEqual(displayed, [
     { title: 'Legacy title', url: 'https://example.test/issues/42' },
     { title: 'Existing JSON', url: 'https://example.test/issues/99' },
-    { title: 'A title', url: 'https://example.test/issues/42' },
+    { title: 'A title', url: 'https://example.test/issues/7' },
   ])
   assert.equal(await queueText(f), content)
 })
@@ -291,13 +300,14 @@ test('every category of a valid message is queued once', async (t) => {
   for (const line of lines) assert.ok(line.startsWith('- {'), line)
 })
 
-test('deduplication compares full URLs and recipients', async (t) => {
+test('deduplication compares full URLs', async (t) => {
   const f = await fixture(t)
   const port = await startListener(t, f)
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/10', to: 'alice-handle-long' }))).body, 'queued 1\n')
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: 'alice-handle-long' }))).body, 'queued 1\n')
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: 'alice-handle' }))).body, 'queued 1\n')
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: 'alice-handle' }))).body, 'queued 0\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/10' }))).body, 'queued 1\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1' }))).body, 'queued 1\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1' }))).body, 'queued 0\n')
+  // A prefix of a queued URL is a different issue.
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1/extra' }))).body, 'queued 1\n')
   assert.equal((await queueText(f)).trimEnd().split('\n').length, 3)
 })
 
@@ -325,18 +335,76 @@ test('an issue opened by a login outside the handles file is not queued', async 
 test('a known login may file on behalf of another owner', async (t) => {
   const f = await fixture(t)
   const port = await startListener(t, f)
-  // The body says bob-hands is the sender; the issue was opened by alice's login.
-  const payload = issue({ author: 'alice-handle', to: 'bob-handle' })
+  // The body says bob is the sender; the issue was opened by alice's login, and
+  // the message is addressed to alice, whose machine this is.
+  const payload = issue({ author: 'alice-handle', from: 'bob', to: 'alice-handle' })
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
   const entry = JSON.parse((await queueText(f)).slice(2))
-  assert.equal(entry.owner, 'bob')
+  assert.equal(entry.from, 'bob')
+  assert.equal(entry.owner, 'alice')
 })
 
-test('a nested handle table is rejected instead of yielding no recipients', async (t) => {
+test('a message addressed to another owner is not queued', async (t) => {
   const f = await fixture(t)
   const port = await startListener(t, f)
+  assert.deepEqual(await request(port, issue({ to: 'bob-handle' })), { status: 202, body: 'queued 0\n' })
+  assert.equal(await queueText(f), '')
+})
+
+test('a message addressed to a handle outside the roster is not queued', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f)
+  assert.deepEqual(await request(port, issue({ to: 'nobody-handle' })), { status: 202, body: 'queued 0\n' })
+  assert.equal(await queueText(f), '')
+})
+
+test('the machine owner matches the git name without regard to case', async (t) => {
+  const f = await fixture(t, { owner: 'Alice' })
+  const port = await startListener(t, f)
+  assert.deepEqual(await request(port, issue({ to: 'alice-handle' })), { status: 202, body: 'queued 1\n' })
+  assert.equal(JSON.parse((await queueText(f)).slice(2)).owner, 'alice')
+})
+
+test('a machine whose git name is no owner refuses to start and names the roster', async (t) => {
+  const f = await fixture(t, { owner: 'Carol' })
+  const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+  })
+  assert.equal(result.status, 1, result.stderr)
+  assert.match(result.stderr, /"Carol", which is not an owner in handles\.toml \(alice, bob\)/)
+  assert.match(result.stderr, /git config --local user\.name/)
+  assert.equal(await queueText(f), '')
+})
+
+test('a machine with no git name refuses to start', async (t) => {
+  const f = await fixture(t)
+  setName(f.root, '')
+  const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+  })
+  assert.equal(result.status, 1, result.stderr)
+  assert.match(result.stderr, /git config user\.name is empty/)
+})
+
+test('owners that differ only by case are rejected', async (t) => {
+  const f = await fixture(t)
+  await fs.writeFile(path.join(f.tools, 'handles.toml'), '[handles]\nalice = "alice-handle"\nAlice = "other-handle"\n[pending]\npath = "queue/pending.md"\n')
+  const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+  })
+  assert.equal(result.status, 1, result.stderr)
+  assert.match(result.stderr, /differ only by case/)
+})
+
+test('a nested handle table is rejected before the port opens', async (t) => {
+  const f = await fixture(t)
   await fs.writeFile(path.join(f.tools, 'handles.toml'), '[handles.github]\nalice = "alice-handle"\n[pending]\npath = "queue/pending.md"\n')
-  assert.equal((await request(port, issue())).status, 500)
+  const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+  })
+  assert.equal(result.status, 1, result.stderr)
+  assert.match(result.stderr, /no owners|not a login/)
+  assert.ok(!result.stdout.includes('listening on'), result.stdout)
   assert.equal(await queueText(f), '')
 })
 

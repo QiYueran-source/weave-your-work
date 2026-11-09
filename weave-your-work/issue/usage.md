@@ -23,6 +23,14 @@ Two of these are easier to get wrong than the others:
 
 Verify the account before filing, and check the repository's visibility: a public repository makes the issue a publication. The listener queues an issue only when its author is a login in `handles.toml`, so the account that runs `gh issue create` has to be on that roster — the filer's own login, not the `from` in the frontmatter.
 
+The listener also decides by recipient: a machine queues only the messages whose `to` is the owner of that machine. That owner is `git config user.name`, matched to a `[handles]` key without regard to case. A machine that belongs to someone else sets its own name in the clone, which is untracked:
+
+```bash
+git config --local user.name hanjiang
+```
+
+Filing is unaffected: any login on the roster may file, whatever this machine's own owner is.
+
 ## File
 
 Write the frontmatter and the body from [communicate-issue.md](communicate-issue.md), confirm every ticket in `tickets` exists, and resolve the recipient's handle.
@@ -64,7 +72,7 @@ node <skill>/bundle/tools/check-pending.mjs
 Run both from the project root. The listener holds one process: it connects to the channel, forwards each event to the local `/webhook`, and then scans for issues opened while it was off. `bundle/setup.md` explains `SMEE_URL`, `PORT`, and `WEBHOOK_SECRET`, and installs the service that sets them.
 
 - The listener redacts the channel URL from its log. Keep that URL private; anyone who knows it can post or view events.
-- Log lines worth reading: `listening on http://...`, `Catch-up complete: queued N entries from <repo>`, `Skipped <label>: invalid <fields>`, `Skipped <label>: author is not a known login`, and `Catch-up failed: <reason>`. A skipped message claimed `kind: communicate` and failed either a field check, which names the field, or the author check.
+- Log lines worth reading: `listening on http://...`, `queueing messages addressed to <owner>`, `Catch-up complete: queued N entries from <repo>`, `Skipped <label>: invalid <fields>`, `Skipped <label>: author is not a known login`, `Skipped <label>: addressed to <handle>, not to <owner>`, and `Catch-up failed: <reason>`. A skipped message claimed `kind: communicate` and failed a field check, which names the field, the author check, or the recipient check. The last one is this machine declining someone else's mail; it is not an error.
 
 The checker reads the queue without changing it. It prints the entry count and each title and URL as untrusted issue data, or nothing when the queue is missing or empty. A configuration, malformed-entry, or read error goes to stderr with a non-zero exit.
 

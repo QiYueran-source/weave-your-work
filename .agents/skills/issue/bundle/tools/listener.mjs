@@ -55,6 +55,42 @@ function queuePath(configured) {
   return path.resolve(root, configured)
 }
 
+// This machine's owner is the local git identity, matched against the [handles]
+// keys without regard to case. `git config --local user.name` is the per-clone
+// slot: untracked, so a machine that belongs to someone else changes it without
+// touching the shared roster.
+async function resolveMachineOwner(handles) {
+  const owners = Object.keys(handles)
+  if (!owners.length) {
+    throw new Error('handles.toml has no owners; add at least one under [handles]')
+  }
+  const folded = new Map()
+  for (const owner of owners) {
+    const key = owner.toLowerCase()
+    if (folded.has(key)) {
+      throw new Error(`handles.toml has owners that differ only by case (${folded.get(key)}, ${owner}); rename one`)
+    }
+    folded.set(key, owner)
+  }
+  const hint = () => owners.length === 1
+    ? `git config --local user.name ${owners[0]}`
+    : `git config --local user.name <one of: ${owners.join(', ')}>`
+  let name
+  try {
+    const { stdout } = await run('git', ['config', 'user.name'], { cwd: root, timeout: 15000 })
+    name = stdout.trim()
+  } catch (error) {
+    if (error.code === 'ENOENT') throw new Error("git is not installed, and it names this machine's owner")
+    throw new Error(`git config user.name is unset, so this machine has no owner; set it with: ${hint()}`)
+  }
+  if (!name) throw new Error(`git config user.name is empty; set it with: ${hint()}`)
+  const owner = folded.get(name.toLowerCase())
+  if (!owner) {
+    throw new Error(`git config user.name is "${name}", which is not an owner in handles.toml (${owners.join(', ')}); set this machine's owner with: ${hint()}`)
+  }
+  return owner
+}
+
 function parseFrontmatter(body) {
   if (!body || !body.startsWith('---')) return null
   const end = body.indexOf('\n---', 3)
@@ -179,10 +215,11 @@ async function* listOpenIssues(root) {
 
 // ---- end of GitHub -------------------------------------------------------
 
-// Decides whether an issue is a message from a login on the roster and, when it
-// is, appends one queue entry. The format is checked first, so a malformed
-// message is reported as malformed rather than as an unknown author.
-function queueIssue(issue, { mappedOnly = false, label = 'issue' } = {}) {
+// Decides whether an issue is a message for this machine from a login on the
+// roster and, when it is, appends one queue entry. The format is checked first,
+// so a malformed message is reported as malformed rather than as an unknown
+// author.
+function queueIssue(issue, { label = 'issue' } = {}) {
   const front = parseFrontmatter(issue.body)
   const fields = communicationFields(front)
   if (fields === null) return 0
@@ -194,29 +231,29 @@ function queueIssue(issue, { mappedOnly = false, label = 'issue' } = {}) {
     console.error(`Skipped ${label}: invalid title or url`)
     return 0
   }
-  const { handles, pending } = loadConfig()
-  if (!loginKnown(handles, issue.author)) {
+  if (!loginKnown(config.handles, issue.author)) {
     console.error(`Skipped ${label}: author is not a known login`)
     return 0
   }
-  if (mappedOnly && !ownerFor(handles, fields.to)) return 0
+  const owner = ownerFor(config.handles, fields.to)
+  if (owner !== machineOwner) {
+    console.error(`Skipped ${label}: addressed to ${fields.to}, not to ${machineOwner}`)
+    return 0
+  }
   const received = new Date().toISOString().slice(0, 16)
-  const owner = ownerFor(handles, fields.to) || 'unknown'
-  return append(queuePath(pending), [{
+  return append(queuePath(config.pending), [{
     url: issue.url, from: fields.from, to: fields.to, owner, title: issue.title, received,
   }])
 }
 
 async function catchUp() {
-  const { handles } = loadConfig()
-  if (!Object.keys(handles).length) throw new Error('no handles configured for catch-up')
   let queued = 0
   let repo = ''
   for await (const page of listOpenIssues(root)) {
     repo = page.repo
     for (const issue of page.issues) {
       if (issue.state !== 'open') continue
-      queued += queueIssue(issue, { mappedOnly: true, label: issue.label })
+      queued += queueIssue(issue, { label: issue.label })
     }
   }
   console.log(`Catch-up complete: queued ${queued} entries from ${repo}`)
@@ -284,8 +321,22 @@ const server = http.createServer((req, res) => {
   })
 })
 
+// The configuration and this machine's owner are read once, before the port
+// opens: a machine with no owner can queue nothing, so it refuses to start
+// instead of running and silently dropping every message.
+let config
+let machineOwner
+try {
+  config = loadConfig()
+  machineOwner = await resolveMachineOwner(config.handles)
+} catch (error) {
+  console.error(error.message)
+  process.exit(1)
+}
+
 server.listen(port, '127.0.0.1', async () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
+  console.log(`queueing messages addressed to ${machineOwner}`)
   if (!secret) console.warn('Webhook signatures are not verified; queued messages are untrusted')
   if (smeeUrl) {
     const smee = new SmeeClient({

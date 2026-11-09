@@ -87,6 +87,7 @@ if (fs.existsSync(path.join(process.env.FAKE_PAGES, 'block-' + page))) {
 `
   await fs.writeFile(path.join(bin, 'gh'), fake, { mode: 0o755 })
   git(root, 'init', '--quiet')
+  git(root, 'config', 'user.name', 'alice')
   if (remote) git(root, 'remote', 'add', 'origin', 'https://github.com/example/project.git')
   return { root, tools, bin, pages, children, queue: path.join(root, 'queue/pending.md'), calls: path.join(root, 'calls') }
 }
@@ -200,12 +201,13 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
   await finish(listener)
   assert.ok((await queue(f)).startsWith(original))
   const found = await entries(f)
+  // Issue 1 is addressed to bob, and this machine belongs to alice, so neither
+  // its page-1 nor its page-2 copy is queued.
   assert.deepEqual(found.map(({ url, to, owner }) => [url, to, owner]), [
     [existing.url, 'alice-handle', 'alice'],
-    [existing.url, 'bob-handle', 'bob'],
     ['https://github.com/example/project/issues/6', 'alice-handle', 'alice'],
   ])
-  assert.equal(found[2].title, 'Second page')
+  assert.equal(found[1].title, 'Second page')
   assert.ok(!found.some(({ url }) => url.endsWith('/issues/14')), 'a stranger\'s issue was queued')
   assert.deepEqual((await calls(f)).map((args) => args.at(-1)), ['page=1', 'page=2'])
   const beforeRestart = await queue(f)

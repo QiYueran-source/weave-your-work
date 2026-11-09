@@ -165,7 +165,15 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
 
    The queue path is relative to the project root. Its directory is local state: add it to `.gitignore`; `pending/` ignores the default. Before updating or reinstalling the skill, preserve the existing handles file outside the directory being replaced; restore it afterward and verify it is unchanged. In `skills` 1.7.6, `skills add --copy` deletes the installed directory before copying; setup runs too late to prevent that deletion. If an update fails, keep the backup and restore it before running the listener or setup again.
 
-5. **Startup scan.** After connecting to smee, the listener uses `gh` to list all pages of open issues in the current project's repository identified by git `origin`. It reads a single `github.com` HTTPS or SSH origin and needs the `[handles]` table from step 4. It queues messages that match the communicate issue format, whose author is a login in that table, and whose `to` is one of those handles, deduplicating by issue URL and recipient. A message claiming `kind: communicate` with a missing or malformed `category`, `from`, `to`, or `tickets`, or one opened by a login outside the table, is skipped and logged. Closed issues are excluded. If the scan fails, the listener logs `Catch-up failed` and keeps accepting live events; fix the reported problem and restart to retry. There is no polling or scan on reconnect. The listener only queues reminders; nothing acts on an issue until the person asks.
+   The listener also needs to know which owner this machine is, because it queues only the messages addressed to that owner. It reads `git config user.name` in the project root and matches it against the `[handles]` keys without regard to case, so a one-owner file needs nothing more. On a machine that belongs to another owner, set the name in the clone, which is untracked and conflicts with nobody:
+
+   ```bash
+   git config --local user.name <owner>
+   ```
+
+   Do not add a per-machine key to `handles.toml`. That file is shared and committed, so its value would be the same for every clone. When the name matches no owner, the listener refuses to start and prints the roster, which is also the command that fixes it.
+
+5. **Startup scan.** After connecting to smee, the listener uses `gh` to list all pages of open issues in the current project's repository identified by git `origin`. It reads a single `github.com` HTTPS or SSH origin, the `[handles]` table from step 4, and this machine's owner. It queues messages that match the communicate issue format, whose author is a login in that table, and whose `to` resolves to this machine's owner, deduplicating by issue URL and recipient. The webhook path applies the same checks. A message claiming `kind: communicate` with a missing or malformed `category`, `from`, `to`, or `tickets`, one opened by a login outside the table, or one addressed to another owner is skipped and logged. Closed issues are excluded. If the scan fails, the listener logs `Catch-up failed` and keeps accepting live events; fix the reported problem and restart to retry. There is no polling or scan on reconnect. The listener only queues reminders; nothing acts on an issue until the person asks.
 
 ## Verify
 
@@ -175,7 +183,7 @@ Each step is a command, so a run can check the install without asking the person
 
 2. **The listener is connected.** `journalctl --user -u issue-listener -n 20 --no-pager` shows `listening on`, `Connected to <smee channel>`, and `Catch-up complete`. The channel URL itself is redacted in that output; a literal URL there means the redaction broke.
 
-3. **A live issue arrives.** File one to yourself and watch the queue:
+3. **A live issue arrives.** File one addressed to this machine's owner and watch the queue:
 
    ```bash
    gh issue create --repo <owner>/<repo> --title "<ticket>: verify the listener" \
@@ -183,11 +191,11 @@ Each step is a command, so a run can check the install without asking the person
    node .agents/skills/issue/bundle/tools/check-pending.mjs
    ```
 
-   The queue gains one line within a few seconds. Close the issue afterwards; the queue line stays as the record of what arrived.
+   `<login>` is the login of this machine's owner, not just any handle in the table: a message addressed to another owner is skipped on purpose. The queue gains one line within a few seconds. Close the issue afterwards; the queue line stays as the record of what arrived.
 
 4. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete: queued 1 entries` and the new line. This is the only step that proves the startup scan works; the live path and the scan are separate code.
 
 5. **Open a new session.** The rule should surface the count and title. This is the one step no command verifies: whether the harness delivers the checker's output to the agent is outside this setup.
 
-If the queue stays empty, check the webhook's recent deliveries, the listener's smee connection and log, and the frontmatter's `kind: communicate`. GitHub reporting success at smee does not prove the local listener received the event. An issue whose author is not in `handles.toml` is skipped on purpose; its log line names the reason.
+If the queue stays empty, check the webhook's recent deliveries, the listener's smee connection and log, and the frontmatter's `kind: communicate`. GitHub reporting success at smee does not prove the local listener received the event. An issue whose author is not in `handles.toml`, or whose `to` is another owner, is skipped on purpose; its log line names which.
 
