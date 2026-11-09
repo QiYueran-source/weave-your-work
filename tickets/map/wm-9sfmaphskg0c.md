@@ -3,11 +3,12 @@ schema: 1
 id: wm-9sfmaphskg0c
 title: 'Update skill: change a closed map or task'
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-09T09:51:41Z
+updated_at: 2026-11-09T09:56:20Z
+closed_at: 2026-11-09T09:52:53Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: task
@@ -94,7 +95,7 @@ passed
 - Goal: every line of the `Acceptance direction` still holds, and this is the second reading of it — the first verdict on this map was wrong and was replaced inside the child task, and nothing since then touched the deliverable. The skill is under `weave-your-work/update/` as four files and installs as one skill with no broken local link and no path outside its own directory. The three-node walkthrough is in the child task's `Result` and was re-read here: a closed task and its closed map through strike, reopen, start, a fresh verdict from `task-review` and from `map-review`, and back to closed, with status, review record, and tree agreeing afterwards. The move path is read end to end against `b699d5f`, and `move.md:122` cites that same commit for the same event. The retire-and-replace path was re-run for the previous review in a scratch project with a real dependent, and its facts are re-checked here rather than taken on trust: with a closed split map carrying two closed task children and one dependent outside the subtree, the replacement was created, the old ticket named it, both children re-hung, the old map archived, `waymark validate` reported no findings, and the dependent moved from blocked to ready. The review point's four items are each stated: the two tests in `SKILL.md`, the three dispositions there and in `content.md`, the ownership stop rule in `SKILL.md`, and the seven-step order ending in archive in `content.md`.
 - Convention: the three findings the previous verdict recorded are closed, and the body now matches `body.md`.
   - `## Built` is gone. The body carries the six sections in the order `body.md` lists them, and the build record lives where it belongs — the child task's `Result` names the four files and what each holds. The one item that had no other home, the sequencing fault where the skill was written before its build ticket existed, is now a `Decisions so far` entry, because it is a fact about how this map's record was made rather than an index of deliverables.
-  - `## Not yet specified` is back in the shape the rule requires: all four entries are restored, struck through, each with a `Resolved on 2026-11-08:` line saying what it became and where it went. Nothing was invented — the text is the text from `b6ac57a`, the commit before the section was emptied, and the three resolutions already recorded there are kept verbatim.
+  - `## Not yet specified` is back in the shape the rule requires: all four entries are restored, struck through, each with a `Resolved on 2026-11-08:` line saying what it became and where it went. Nothing was invented — the entry text is the text from `b6ac57a`, the commit before the section was emptied. One of the four already carried a `Resolved on` line there and it is kept verbatim; the other three are the same entries struck through with a `Resolved on` line naming the decision or the exclusion each became, which the emptied section only described in prose.
   - Both dead links resolve. `../map/wm-8zyyyafxbdwr.md` and `../task/wm-4dytqnmy4s47.md` are relative to `tickets/map/`, so each opens the ticket it names; every local link in the body was resolved and all of them exist.
 
 The goal axis held at the previous review as well. This verdict is not a second opinion on that axis — what changed is the convention axis, and the evidence was re-read rather than assumed.
