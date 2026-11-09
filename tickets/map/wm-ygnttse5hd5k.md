@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:52:39Z
-updated_at: 2026-11-09T01:39:08Z
+updated_at: 2026-11-09T02:54:20Z
 parent: wm-a08fwanmy5q6
 ---
 ## Target
@@ -32,7 +32,7 @@ All child tasks are complete and no further child task is needed: a fresh projec
 - Which dependencies to check (waymark, git, node, and so on).
 - The order of the steps and which parts are scripts.
 - How the AGENTS.md prompt is worded.
-- How setup discovers each skill's install steps.
+- ~~How setup discovers each skill's install steps.~~ Resolved on 2026-11-09: the total setup reads each explicitly listed skill's `bundle/setup.md`; it does not scan skills.
 
 ## Out of scope
 
