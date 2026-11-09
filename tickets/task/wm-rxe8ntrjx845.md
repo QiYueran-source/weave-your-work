@@ -3,11 +3,12 @@ schema: 1
 id: wm-rxe8ntrjx845
 title: Run and document the map lifecycle audit
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T03:24:53Z
-updated_at: 2026-11-09T05:33:05Z
+updated_at: 2026-11-09T14:51:24Z
+closed_at: 2026-11-09T14:51:24Z
 parent: wm-13pnvh9d6n44
 custom_fields:
   needs_human: false
@@ -36,6 +37,10 @@ Created an isolated Waymark project at `weave-your-work/use-weave-your-work-exam
 Wrote `weave-your-work/use-weave-your-work-examples/chemistry-research/08-map-lifecycle-audit.md`, which links the audit tickets and outputs, records actual status transitions and setup mistakes, distinguishes synthetic values from chemistry evidence, documents the erroneous reopen and its correction, and lists untested review verdicts and lifecycle branches. The original `chemistry-research/waymark/` fixtures were not changed.
 
 ## Review
+
+passed
+- Goal: the acceptance signal reads against the files. The audit project is at `weave-your-work/use-weave-your-work-examples/chemistry-research/map-audit/`, and `waymark validate --project` reports no findings. [The case](../../weave-your-work/use-weave-your-work-examples/chemistry-research/08-map-lifecycle-audit.md) links every ticket it names and every relative link resolves; it records creation, the first split, the repeated split, task completion, the map closures, the update path, and the errors found afterwards; its opening and `Status and limits` keep invented values apart from the workflow test and list the paths the run did not cover.
+- Convention: the delivery sections run in the order task design sets — Action, Acceptance signal, Result, Review, Boundaries — with the optional Failure recovery left out for this `two_way` task. The invalidated verdict below stays struck, with the reason it no longer holds; the corrected `Result` above it is what this verdict reads.
 
 ~~passed~~
 
