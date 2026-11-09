@@ -76,7 +76,7 @@ A reopened node is not automatically claimed by the run that reopened it. It goe
 A child refines its parent. When the parent's content changes, each child has to be read again against the new content, and there are three outcomes:
 
 - **Still refines it.** Nothing happens to the child.
-- **Refines it, but its own acceptance no longer holds.** The child goes through the second disposition itself: strike, reopen, review, close. This recurses, which is why the scan has no depth limit.
+- **Refines it, but its own acceptance no longer holds.** A closed child goes through the second disposition itself: strike, reopen, review, close. An unfinished child has no verdict to strike, so its owner changes its `Acceptance signal` and advances it; the update run reports the gap rather than rewriting another owner's task. Either way this recurses, which is why the scan has no depth limit.
 - **No longer refines anything.** The child is retired with archive and a reason. `outcome=failed` is not used: the child did its job, and the parent moved out from under it. If the work is still wanted somewhere else, a replacement is opened where it now belongs.
 
 A map cannot be archived while any child is still active; waymark refuses with `cannot archive <id>: N unarchived child item(s)`. So retiring a subtree runs bottom-up, and each child's own disposition is decided before its parent's.
