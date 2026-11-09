@@ -6,7 +6,7 @@ A map body says what you want and how someone else will know you got it. This fi
 
 Six sections, in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
 
-A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`.
+A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`. The exception is `Not yet specified`: when its fog has been cleared, its explicit empty marker records that state.
 
 The body holds the target, decisions, unresolved content, and review evidence; operating instructions live in the procedure.
 
