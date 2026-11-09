@@ -41,11 +41,11 @@ One owner per item, and only the owner advances it. Writing a field is advancing
 
 ## Dependencies
 
-An edge records a wait: the item it starts from cannot be accepted until the item it points at is closed. It is the only place ordering is expressed. The body never mirrors an edge, and the tree never carries one. A blocked map does not freeze every task under it; the task skills check whether a task actually uses the blocker's output. A child created after the edge does not inherit it either; a child that uses the blocker's output carries its own edge or stops at execution.
+An edge records a wait: the map it starts from cannot be accepted until the map it points at is closed. An edge can also name a producer whose output is needed to perform some of the waiting map's work. The tree does not express that order. A blocked map does not freeze every task under it: the executor checks whether the task actually needs a missing output. A child does not inherit its parent's edge; a child map may carry its own edge when the relation applies to it, while a task carries no edge and waits at execution if its required input is unavailable.
 
 ### Direction
 
-A may wait on B only when B can be implemented without A. The blocked node has to be independently implementable; if it needs B's result to be written at all, the two belong in one node.
+A waits on B when B must finish before A can be accepted, including when A needs B's output. B must not depend on A: the producer must be able to finish without the waiting map. A can be specified before B finishes, but work that needs B's missing output waits. If A cannot be specified without that output, leave the undecided part for a later split rather than inventing it.
 
 That rule draws the line for the two common cases:
 
@@ -58,7 +58,7 @@ Explicit edges are for waits between siblings or across branches: a node here th
 
 Grill the relation before wiring it. Whether the wait is real is a judgment someone has to talk through; `waymark dependency add` only records the outcome. Wiring first and asking later leaves edges nobody remembers justifying.
 
-Once a blocker closes, its edge stays as history. The owner removes it with `waymark dependency remove` when the wait no longer holds, not when the blocker closes.
+Once a blocker closes, its edge stays as history. Closed does not necessarily mean successful: if the blocker has `outcome=failed`, check whether the required output actually exists and is usable. If not, the work needing it and the waiting map's acceptance must wait. The owner decides whether to wait for a replacement or adjust the target and dependency; do not automatically change the edge. The owner removes it with `waymark dependency remove` when the wait no longer holds, not merely when the blocker closes.
 
 ```
 waymark dependency add <id> <blocking-id>     # <id> waits for <blocking-id>
@@ -112,7 +112,7 @@ Machine-checked, by `waymark validate` or by the command itself:
 Person-checked, because waymark cannot see the intent:
 
 4. Hand-edited front matter: a value that changed with no command behind it, or an `updated_at` that predates the content around it.
-5. A reverse dependency: the blocked node could not be implemented without the node it waits for.
+5. A reverse or circular dependency: the supposed blocker itself cannot finish without the waiting map.
 6. An explicit edge between a parent and its child.
 7. A `split_as` that was flipped after the first split.
 8. A custom field value outside the ones listed above.
