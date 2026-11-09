@@ -75,7 +75,7 @@ A task hangs under one map only. When it is related to another map, add a soft l
 waymark link add <task> <other-map>
 ```
 
-The link says the two are related. It carries no wait and no shared acceptance. A map may depend on another map's output; tasks that need that input wait at execution when it is unavailable, while unrelated tasks may run. See the map skill's [`frontmatter.md`](../map/frontmatter.md) for the dependency rules.
+The link says the two are related. It carries no wait and no shared acceptance. A map may depend on another map's output; tasks that need that input wait at execution when it is unavailable, while unrelated tasks may run. Load the map skill and read its `frontmatter.md` for the dependency rules.
 
 A part that reads another task's output is not a task either. The two are one action with several steps, or child maps carrying an edge. A sibling task cannot wait on a sibling: the task layer has no dependency edges, and `waiting_on` is for a person, not for another task's result.
 

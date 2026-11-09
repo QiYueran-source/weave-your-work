@@ -12,7 +12,7 @@ The whole skill hangs on one question: can one complete execution action and one
 - Yes: open `task.md` and write the tasks there.
 - No: open `submap.md` and write the child maps there.
 
-This file holds the question, when a split runs, the freeze, and the rhythm. The two references hold how each kind of child is written.
+This file holds the question, when a split runs, the freeze, and the rhythm. The two references hold how each kind of child is written. Load the map skill for its body and dependency references; when the required skill is unavailable, stop and ask the owner to install it.
 
 ## When a split runs
 
@@ -20,7 +20,7 @@ When grill has settled the layer: what it holds, which children it needs, and wh
 
 A split never clears fog and never invents a child's content. When the discussion cannot support a child's `Target`, or the evidence a task's acceptance signal would name, the part goes back to grill.
 
-A map with an unfinished dependency may still split. The wait stays on the map it was written on; the children inherit no edge. A child map may carry its own edge when it needs the output; a task carries no edge and checks its needed input at execution. See the map skill's [`frontmatter.md`](../map/frontmatter.md) for dependency and failed-output rules. When the next layer's content depends on the blocker's result, leave that part for later rather than guessing.
+A map with an unfinished dependency may still split. The wait stays on the map it was written on; the children inherit no edge. A child map may carry its own edge when it needs the output; a task carries no edge and checks its needed input at execution. Load the map skill and read its `frontmatter.md` for dependency and failed-output rules. When the next layer's content depends on the blocker's result, leave that part for later rather than guessing.
 
 ## The freeze
 

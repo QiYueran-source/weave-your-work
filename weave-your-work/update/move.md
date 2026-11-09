@@ -57,7 +57,7 @@ A move can change which inputs work needs without touching the moved node's stat
 
 Read the parent chain yourself. A task under a blocked map and a map under a blocked map can both come back `ready` from the query. Verified in waymark 0.1.2 — `waymark ready` reads dependency edges only and never looks at `parent`. A task under a map that is `closed` is `ready` too.
 
-After a move, walk Q's parent chain and check its map dependencies against the inputs work under N actually needs. A blocked ancestor does not stop unrelated tasks; needed output must exist and be usable, including when its producer closed as failed. The map skill's [`frontmatter.md`](../map/frontmatter.md) owns the dependency and failed-output rules.
+After a move, walk Q's parent chain and check its map dependencies against the inputs work under N actually needs. A blocked ancestor does not stop unrelated tasks; needed output must exist and be usable, including when its producer closed as failed. Load the map skill and read its `frontmatter.md` for dependency and failed-output rules; if it is unavailable, stop and ask the owner to install it.
 
 Moving N out from under a blocked map also changes which dependencies need inspection, without changing the query result.
 

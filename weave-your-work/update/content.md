@@ -44,7 +44,7 @@ waymark body replace <id> --body-file <path>
 waymark reopen <id>
 ```
 
-Include the map's invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. A legacy map without a Review has none to strike; do not fabricate one. Then review the node again against the new text and close it when it passes.
+For a map, include its invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. A legacy map without a Review has none to strike; do not fabricate one. For a task, keep its Review unchanged and write in `Progress` that update invalidated that verdict, why, and what must be repaired; task-review replaces it after execution. `waymark reopen` puts the node in `open`. For an already-split map, use `waymark start <id>` to resume `in_progress` before repair or review; keep its existing `split_as`. A reopened task is started by its executor. Then review the node again against the new text and close it when it passes.
 
 When the new content does not exist yet, the run does not write it. On a map, it hangs the work as a child; a task takes no child and rewrites its own `Action`. `need-execute.md` carries the shape, the order, and the gate.
 
@@ -54,7 +54,7 @@ An ancestor owned by someone else is where the write stops. Reopen what the run 
 
 Where the verdict lands depends on the category, and on whether there is one to replace.
 
-**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. When its verdict is invalidated, strike the old Review through and give the reason before reopening; this marks it as historical rather than an active pass while execution resumes. The new task review replaces the old section rather than appending, except when the review itself was wrong and its retraction is kept as described below. If no Review exists, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time.
+**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time. While a reopened task awaits re-review, `Progress` says which prior verdict was invalidated and why; update does not write the Review section.
 
 **A map** carries a `## Review` with the verdict and both axes. When reopening invalidates it, retain the struck-through review and its reason alongside the fresh review for the same subject. A legacy map without Review gets its first entry on re-review. If status and Review disagree, the owner rechecks children and evidence before completing the appropriate state change; changed evidence requires a fresh review.
 

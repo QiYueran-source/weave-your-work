@@ -33,7 +33,7 @@ The child map in the `submap` row is a real map with its own Target and Acceptan
 ## The order
 
 1. Apply the two tests and write the confirmed decision and acceptance. When reopening a map, invalidate its existing Review as `content.md` directs; do not fabricate one for a legacy map.
-2. Reopen a closed map if its verdict fails. An open split map needs no reopen; a different subject requires retire-and-replace. If a closed map's verdict still holds, leave it closed and stop to discuss the proposed new work before adding a child.
+2. Reopen a closed map if its verdict fails, then start the reopened map to resume `in_progress`, keeping its existing `split_as`. An already `in_progress` split map needs no reopen; start an `open` split map before resuming. A different subject requires retire-and-replace. If a closed map's verdict still holds, leave it closed and stop to discuss the proposed new work before adding a child.
 3. Read `split_as` and hang the child according to the shape above. The child map's body is written by `submap.md`; the task's body by `task-design`.
 4. Check the ticket is writable: the body carries the sections its kind requires, `needs_human` agrees with the `Person:` steps, the parent is a map, and there is no `dependencies` block. A failure stops here and goes back to the owner; do not execute a malformed ticket.
 5. Read the task's `reversibility`, `needs_human`, and the impact scan from `SKILL.md`. Decide whether to execute now.

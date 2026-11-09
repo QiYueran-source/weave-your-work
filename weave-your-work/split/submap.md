@@ -28,7 +28,7 @@ A child that would conflict with its parent or with a sibling is not written as 
 
 ## When the parts must run in order
 
-Sometimes one map needs another map's output. A waiting map may still be split; the parent's edge is not copied to the children. If a child map needs the blocker's output, add an edge from that child to the blocker. Tasks carry no edges: only tasks needing unavailable input wait at execution. See the map skill's [`frontmatter.md`](../map/frontmatter.md) for dependency and failed-output rules.
+Sometimes one map needs another map's output. A waiting map may still be split; the parent's edge is not copied to the children. If a child map needs the blocker's output, add an edge from that child to the blocker. Tasks carry no edges: only tasks needing unavailable input wait at execution. Load the map skill and read its `frontmatter.md` for dependency and failed-output rules.
 
 That sequence is still two child maps, and the order is one dependency edge:
 

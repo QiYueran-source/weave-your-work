@@ -20,11 +20,11 @@ Check the body against its kind: `Action` and `Acceptance signal` are there; `Fa
 
 If `waiting_on` is set, stop. The owner clears it after handling the answer; the run does not guess that the answer arrived.
 
-Read the current, unstruck verdict in `## Review`. If it says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, the ticket should already be closed; stop. A struck-through Review with an invalidation reason is historical, not a current pass: after `update` reopens the task, execute the reopened work and let task review replace the section.
+Read `## Review` when present. If it says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, stop unless `Progress` explicitly says `update` invalidated that verdict and names why and what must be repaired. For that reopened task, do the named work and let task-review replace the Review; do not infer invalidation merely from an open status.
 
 Read the map above it. Its `Target` says why the task matters; its `Acceptance direction` says what the branch is for. Work done correctly against the wrong map is still wrong work.
 
-Read the parent chain and its maps' dependencies. If this task needs a sibling task's output, hand it back as a split error; see [`task.md`](../split/task.md). For each map output this task actually needs, check that it exists and is usable before starting the task. An unfinished dependency does not stop unrelated tasks; a failed closed dependency does not establish that its output is usable. If a required output is missing or unusable, leave the task's status unchanged and tell the owner which input is unavailable. Follow the map skill's [`frontmatter.md`](../map/frontmatter.md) for the owner's disposition. `waymark ready` alone cannot establish input availability.
+Load the map and split skills for their dependency and task-split references; if either is unavailable, stop and ask the owner to install it. Read the parent chain and its maps' dependencies. If this task needs a sibling task's output, hand it back as a split error; read `task.md` in the split skill. For each map output this task actually needs, check that it exists and is usable before starting the task. An unfinished dependency does not stop unrelated tasks; a failed closed dependency does not establish that its output is usable. If a required output is missing or unusable, leave the task's status unchanged and tell the owner which input is unavailable. Follow the map skill's `frontmatter.md` for the owner's disposition. `waymark ready` alone cannot establish input availability.
 
 Check that the task still holds: the action still serves what the map wants, and nothing has made it moot or impossible.
 
@@ -38,7 +38,7 @@ Claim it with `waymark start`. Say one line about where you are starting and wha
 - The task no longer holds.
 - The work lacks an input or a permission it needs.
 
-If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's [`frontmatter.md`](../map/frontmatter.md). If the missing input is a sibling task's output, hand the ticket back as a split error; see [`task.md`](../split/task.md). If a person must supply or confirm the input, wait on that person.
+If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's `frontmatter.md`. If the missing input is a sibling task's output, hand the ticket back as a split error; read `task.md` in the split skill. If a person must supply or confirm the input, wait on that person.
 
 Person waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. For unavailable map output, record the stop and needed input in `Progress` without setting `waiting_on` to a ticket. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
 
