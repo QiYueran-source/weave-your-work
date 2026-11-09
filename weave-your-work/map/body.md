@@ -89,7 +89,7 @@ Example:
 - Onboarding runs from one checklist per role, not one shared checklist. (user confirmed)
 - The first week carries no scheduled meeting before 11:00, so the new hire has a block to read and try things. (user confirmed)
 - ~~Every step names the person who approves it.~~ Superseded on 2026-03-04: most steps need no approval, and naming an approver for each one made the checklist unusable. The rule now applies only to steps that touch production data. (user confirmed)
-- Each role's checklist is owned by that role, and updated by whoever last saw a step fail. (user confirmed; see [testimony](../../testimony/onboarding-checklist.md))
+- Each role's checklist is owned by that role, and updated by whoever last saw a step fail. (user confirmed; see testimony `wm-example`.)
 ```
 
 ## Not yet specified
