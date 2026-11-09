@@ -3,11 +3,12 @@ schema: 1
 id: wm-13pnvh9d6n44
 title: Run a real map lifecycle audit in the chemistry example
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T03:24:34Z
-updated_at: 2026-11-09T03:24:53Z
+updated_at: 2026-11-09T03:45:54Z
+closed_at: 2026-11-09T03:45:54Z
 parent: wm-wjwa9081hse1
 custom_fields:
   split_as: task
