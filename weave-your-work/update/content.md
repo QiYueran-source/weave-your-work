@@ -153,8 +153,9 @@ A closed map says the exporter runs weekly. It runs daily now, and one of its tw
 
 - Test one: still the same map, same destination. Pass.
 - Test two: the weekly window task's acceptance says "seven days of data"; daily data still reads as seven days, so its verdict holds. The other task's acceptance says "runs on the weekly schedule", which is now false.
-- First disposition for the map: strike the weekly line, keep the rest, status unchanged.
-- Second disposition for the second task: strike its acceptance line, reopen, review against the new text, close.
-- No archive, no issue, one commit.
+- First disposition for the map's text: strike the weekly line and keep the rest. The map's own verdict still needs an ancestor check after the child reopens.
+- Second disposition for the second task: strike its acceptance line, record the invalidated task verdict in Progress, reopen, fix, and review against the new text.
+- If the map's acceptance counted that task as complete, reopen and start the map too; after the task closes, review the map again. Otherwise leave it closed only if its own acceptance still holds.
+- No archive and no issue are needed for this owned branch; commit the completed changes.
 
 The same map, now told it exports only to the internal warehouse. That is a different question, and the tree hangs a different map under the parent. Third disposition: replacement created, children re-hung or retired, old map archived bottom-up with its children, one issue to whoever depended on it.

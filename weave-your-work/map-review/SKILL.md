@@ -57,7 +57,7 @@ Write `Review` for all four verdicts, including the verdict, separate goal and c
 
 `needs discussion`: record the unresolved question in Review and take it to `grill` without choosing an answer.
 
-If a child reopens during review, the review is void; wait for it to close and review again. If Review and status disagree, the owner rechecks children and evidence before completing the appropriate state change. Changed evidence requires a fresh review; neither status nor an old verdict alone proves a pass.
+If a child reopens during review, the review is void; wait for it to close and review again. If Review and status disagree, the owner rechecks children and evidence before completing the appropriate state change. When an existing verdict is invalidated by changed evidence, strike it through with the reason even if the map is already `in_progress`; keep it as history, wait until review prerequisites hold, and write a fresh review. Neither status nor an old verdict alone proves a pass.
 
 ## The report
 

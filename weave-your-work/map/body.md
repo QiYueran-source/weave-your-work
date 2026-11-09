@@ -195,6 +195,21 @@ Write a short entry for every verdict: `passed`, `needs changes`, `needs discuss
 
 On reopen, strike through each line of the invalidated review with `~~` and record why it no longer holds. Keep it alongside the fresh review after re-review of the same subject. A legacy map without a Review has no old entry to invalidate; do not invent or backfill one.
 
+Example after a same-subject re-review:
+
+```markdown
+## Review
+
+passed
+- Goal: the role checklists are linked from the first-week plan, as the review point requires.
+- Convention: the children are all tasks, matching `split_as`; their Result and Review sections cite the delivered checklists.
+
+~~passed~~
+~~- Goal: the first-week plan links every checklist.~~
+~~- Convention: all child tasks were closed.~~
+Invalidated on 2026-11-09: a checklist task reopened when its link stopped working.
+```
+
 ## Keeping a body short
 
 `Target` and `Acceptance direction` are required from creation; `Review` is written when review occurs. The other sections record settled decisions, fog, and exclusions when they exist.

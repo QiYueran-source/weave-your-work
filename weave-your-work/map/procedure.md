@@ -73,7 +73,7 @@ The type stays the one the map's first split wrote. A map that split into child 
 
 ## Review
 
-Runs when every child is closed, `Not yet specified` is empty, and the acceptance direction has no known uncovered work. Known ambiguous standards go to `fog-explore` before review; a gap first discovered during review receives the appropriate verdict.
+Runs when every child and dependency is closed, `Not yet specified` has no unresolved fog, and the acceptance direction has no known uncovered work. Check required dependency outputs, including failed blockers, as `frontmatter.md` directs. Known ambiguous standards go to `fog-explore` before review; a gap first discovered during review receives the appropriate verdict.
 
 A map with no children is not reviewed. A target that needs no refinement is a task, not a map: the split skill prefers a task, and a map whose verdict has nothing behind it could be closed without any work having been done.
 
