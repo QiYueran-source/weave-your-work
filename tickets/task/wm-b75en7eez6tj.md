@@ -3,12 +3,11 @@ schema: 1
 id: wm-b75en7eez6tj
 title: Write the map body reference
 category: task
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:43:08Z
-updated_at: 2026-11-08T10:45:23Z
-closed_at: 2026-11-08T10:45:23Z
+updated_at: 2026-11-09T05:50:43Z
 parent: wm-6c4f9e2a7b31
 custom_fields:
   needs_human: false
@@ -48,3 +47,7 @@ passed
 - No front matter fields, dependency rules, or ownership. Those are the front matter reference.
 - No lifecycle, statuses, or hand-offs. Those are the operating procedure reference.
 - No task body format. That is task design.
+
+## Progress
+
+Update invalidated the prior passed verdict on the same subject: the acceptance signal forbids workflow rules and front matter fields in the body reference, but the confirmed map Review design now includes Review invalidation and the reference displays front matter. Reassess the signal against the confirmed design before re-review. The fog-empty wording was clarified; the previous Result remains a historical account. Related implementation: wm-q6477pe7x8tp.

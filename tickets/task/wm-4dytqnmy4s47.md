@@ -3,12 +3,11 @@ schema: 1
 id: wm-4dytqnmy4s47
 title: Write the update skill
 category: task
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-08T10:23:54Z
-closed_at: 2026-11-08T10:23:54Z
+updated_at: 2026-11-09T05:50:43Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -54,3 +53,7 @@ passed
 - Convention: `task-design/body.md` and rule 05 hold — sections in order, quoted description, no filler section, `Result` written before this section. One deviation stands and is recorded: the build ran before this ticket existed, and the verdict it wrote first was wrong.
 
 The three rounds changed the wording and the reading path, not the design. The three dispositions, the two tests, and the ownership rule survived all of them. What did not survive: where a verdict lives, what an open node's status means, whether a map's verdict is its acceptance direction or its status, how a run learns its own name, and which command reads which relation.
+
+## Progress
+
+Update invalidated the prior passed verdict on the same subject: the acceptance signal requires no references outside the update skill directory, but its dependency disposition now calls for the map skill frontmatter reference; universal verification of Waymark claims has not been re-established for the changed files. Reassess the signal and current evidence before re-review. Seven related skills, including update, were copied successfully by npx skills add in an isolated temporary project; that install alone does not establish semantic usability. Related implementation: wm-q6477pe7x8tp.
