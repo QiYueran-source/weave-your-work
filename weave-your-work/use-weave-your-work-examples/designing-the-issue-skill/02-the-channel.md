@@ -44,7 +44,7 @@ A file watcher that pushes messages into a running agent would need a different 
 
 ### Securing the listener and queue
 
-The listener review found that an empty secret disabled signature checks and remote fields could break the line-based queue format. The proposed fix requires a secret and encodes new records without rewriting existing local queues; the plan and compatibility tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
+The listener review found that an empty secret disabled signature checks and remote fields could break the line-based queue format. The confirmed fix requires a secret and encodes new records without rewriting existing local queues; the plan and compatibility tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
 
 ### What was rejected: copying the thread
 

@@ -44,7 +44,7 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Keep the session-start rule as the default. In `bundle/setup.md`, explain that an agent may adapt the checker to a harness's session-start hook only after checking that harness's documentation and verifying the output reaches the agent; otherwise the rule remains the fallback. No harness-specific plugin or file watcher is included.
 - Test missing, empty and populated queues, custom paths, malformed input and read errors; check that the source and installed copies match. Record any harness integration not actually tested.
 
-## Proposed listener security fix (awaiting confirmation)
+## Listener security fix (confirmed)
 
 - Require a non-empty `WEBHOOK_SECRET` before the listener binds; reject requests with missing or invalid `X-Hub-Signature-256`, verifying the original request bytes before parsing or queueing. Do not add an unsigned mode.
 - Write new queue records as one structured JSON object per Markdown list line, encoding every remote value so newlines, separators and control characters cannot create extra records. Keep the queue file and path. Update the checker to read both the new records and existing legacy lines without rewriting the existing file; old entries remain untrusted and their integrity cannot be retroactively guaranteed. Update the skill and setup documentation to explain the format and compatibility.
