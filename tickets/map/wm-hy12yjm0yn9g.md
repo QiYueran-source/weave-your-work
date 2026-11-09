@@ -3,14 +3,17 @@ schema: 1
 id: wm-hy12yjm0yn9g
 title: Resolve map skill audit findings
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:42:21Z
-updated_at: 2026-11-09T05:21:03Z
+updated_at: 2026-11-09T05:26:15Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-0xrcwvnrcc9k
+  - wm-c3pkrzmxr4h0
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -25,6 +28,8 @@ The identified instruction conflicts have an agreed disposition, and resulting c
 Review point: the discussion records the choices, each affected skill agrees with them, and the worked audit distinguishes validated behavior from untested paths.
 
 ## Decisions so far
+
+The design decisions below were confirmed in [the map skill discussion](../../testimony/wm-0xrcwvnrcc9k.md).
 
 - Record the number of tasks and one-line-per-task split plan in the discussion testimony, not a child list in the parent map; read actual children from the Waymark tree. (user confirmed)
 - On the first split, the parent moves from open to in_progress and gets split_as; creating children does not edit its body. Later splits leave its status and split_as unchanged. (user confirmed)

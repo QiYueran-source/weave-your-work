@@ -3,11 +3,12 @@ schema: 1
 id: wm-0xrcwvnrcc9k
 title: Map skill audit design discussion
 category: testimony
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:41:22Z
-updated_at: 2026-11-09T05:21:03Z
+updated_at: 2026-11-09T05:24:14Z
+closed_at: 2026-11-09T05:24:14Z
 soft_links:
   - wm-hy12yjm0yn9g
 ---
@@ -75,3 +76,10 @@ soft_links:
 
 - Q: By small and large changes, do you mean the existing update tests: same subject with the verdict holding means edit; same subject with the verdict no longer holding means reopen and review; a different subject means archive and replace, regardless of the amount of text changed?
   A: "我指的就是这个". The user confirmed the existing tests.
+
+### Round 8
+
+- Q: Is the summary of split planning, dependencies, Review, update tests, and legacy compatibility correct, and may implementation proceed after inspecting affected tickets?
+  A: "可以". The user confirmed the design summary and agreed to implementation.
+
+- Work: implement the agreed map skill-family changes and check affected tickets; the owning map carries the work.
