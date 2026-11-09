@@ -20,7 +20,7 @@ When grill has settled the layer: what it holds, which children it needs, and wh
 
 A split never clears fog and never invents a child's content. When the discussion cannot support a child's `Target`, or the evidence a task's acceptance signal would name, the part goes back to grill.
 
-A map with an unfinished dependency may still split. The wait stays on the map it was written on; the children inherit nothing. If a child actually needs the blocker's output, it carries its own edge or stops at execution. When the next layer's content depends on the blocker's result, leave that part for later rather than guessing.
+A map with an unfinished dependency may still split. The wait stays on the map it was written on; the children inherit no edge. A child map may carry its own edge when it needs the output; a task carries no edge and checks its needed input at execution. See the map skill's [`frontmatter.md`](../map/frontmatter.md) for dependency and failed-output rules. When the next layer's content depends on the blocker's result, leave that part for later rather than guessing.
 
 ## The freeze
 
@@ -33,16 +33,16 @@ The field lives on the map whose children they are, and it never flips. Mixing t
 Two decisions, then writing.
 
 1. Decide the type, with the question above.
-2. Decide how many children this layer gets. The count comes out of the same discussion that settled the layer, and it is not tied to the number of decisions: several decisions may feed one child, and one decision may feed several.
+2. Decide how many children this layer gets. The count comes out of the same discussion that settled the layer, and it is not tied to the number of decisions: several decisions may feed one child, and one decision may feed several. For tasks, record the count and one-line plan per task in the discussion testimony.
 3. Write the children one at a time, against the reference for their type.
 
 Decide the count before anything is written. It is the one thing a later child cannot repair, because a layer written one child at a time grows a child per idea.
 
 ## What a split touches
 
-The children, and nothing else. Each child records its own `parent` in its own front matter, and `waymark tree --root <map>` reads the shape back.
+The first split starts the parent and sets its `split_as`; later splits leave both unchanged. Each child records its own `parent` in its own front matter, and `waymark tree --root <map>` reads the shape back. The map procedure gives the first-split commands.
 
-The parent's body is not edited. It holds no list of children, so there is nothing to update, and the parent's owner is never asked to open their ticket because someone else split under it.
+Creating children does not edit the parent's body; it holds no list of children.
 
 ## The two references
 

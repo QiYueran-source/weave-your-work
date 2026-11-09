@@ -36,7 +36,7 @@ Follow the work, not the edit.
 
 **P reopens when its Target no longer holds without N.** A map whose Target is "ship the importer" and whose only child was the importer task does not survive that task leaving. A map with six children and one of them moved usually does. The test is the recorded acceptance, not a feeling about importance.
 
-**Q reopens only when an unfinished subtree arrives under a closed map.** A closed map asserts that its work is done. Hanging an open subtree under it makes that assertion false, and Q's owner has to reopen it and decide. An already-closed subtree arriving under a closed map changes nothing about Q's verdict, so Q does not move.
+**Q's owner applies the two tests when a subtree arrives under a closed map.** An unfinished subtree makes the claim that all children are complete false. For an already-closed subtree, read Q's acceptance direction, Review, and evidence against the changed tree; do not assume the verdict either holds or fails. Use the disposition selected by the tests.
 
 P and Q belong to whoever owns them. When either is not the run's, the run moves N and hands over the reopen decision with the reason — see `SKILL.md` on ownership.
 
@@ -53,13 +53,13 @@ The first test is the one that decides whether this is a move at all. A node tha
 
 ## Readiness does not follow the destination
 
-A move can make work wait longer without touching the moved node's status — but `waymark ready` will not show it.
+A move can change which inputs work needs without touching the moved node's status — and `waymark ready` will not show it.
 
-Read the parent chain yourself. Work hung under a map that waits on a dependency is behind that wait, even though the ticket says `ready`: a task under a blocked map, and a map under a blocked map, both come back `ready` from the query. Verified in waymark 0.1.2 — `waymark ready` reads dependency edges only and never looks at `parent`. A task under a map that is `closed` is `ready` too.
+Read the parent chain yourself. A task under a blocked map and a map under a blocked map can both come back `ready` from the query. Verified in waymark 0.1.2 — `waymark ready` reads dependency edges only and never looks at `parent`. A task under a map that is `closed` is `ready` too.
 
-So after a move, walk the new parent chain in `waymark tree --root <Q>` and ask whether anything above N is waiting. The query answers a narrower question than the one being asked, and the gap is exactly where a misplaced subtree hides.
+After a move, walk Q's parent chain and check its map dependencies against the inputs work under N actually needs. A blocked ancestor does not stop unrelated tasks; needed output must exist and be usable, including when its producer closed as failed. The map skill's [`frontmatter.md`](../map/frontmatter.md) owns the dependency and failed-output rules.
 
-Moving N out from under a blocked map shortens the wait the same way, and is equally invisible.
+Moving N out from under a blocked map also changes which dependencies need inspection, without changing the query result.
 
 ## What the move does not record
 
@@ -84,7 +84,7 @@ A line on the ticket saying "moved from X" would be a second copy of something g
 
 `parent set` moves a node between maps. Turning a task into a map, or a map into a task, is a different operation: the body format, the required sections, and the review rules all differ.
 
-Waymark has a command for it — `waymark move <id> <category>` — and it does less than it looks. Verified in waymark 0.1.2: it rewrites the category field and moves the file to the other directory, and leaves the body exactly as it was. A task body in a map file is not a map; the five sections a map needs are absent, and `waymark validate` reports nothing, because it checks front matter and the graph, not whether a body matches its category. The tool will not stop you.
+Waymark has a command for it — `waymark move <id> <category>` — and it does less than it looks. Verified in waymark 0.1.2: it rewrites the category field and moves the file to the other directory, and leaves the body exactly as it was. A task body in a map file is not a map; the map body sections are absent, and `waymark validate` reports nothing, because it checks front matter and the graph, not whether a body matches its category. The tool will not stop you.
 
 So change the category only when you are rewriting the body anyway, which means it is a retire-and-replace — see `content.md`. A node whose category changed and whose body did not is a ticket that lies about what it is.
 
@@ -96,7 +96,7 @@ The same goes for changing what a node is for. If N is moving because it now ans
 2. Run the two tests. If N does not refine Q, stop — the destination is wrong.
 3. Check ownership of P and Q. A foreign one gets an issue with the reopen decision, not an edit.
 4. `waymark parent set <N> <Q>`.
-5. Read back: `waymark tree --root <Q>` and `--root <P>` for the shape, then walk Q's parent chain for waits. `waymark ready` and `waymark blocked` do not see a wait inherited from a parent, so they cannot answer this one.
+5. Read back: `waymark tree --root <Q>` and `--root <P>` for the shape, then walk Q's parent chain and check needed inputs. `waymark ready` and `waymark blocked` do not inspect ancestor dependencies or output usability.
 6. Reopen P or Q where step 2 said so, each with its own review.
 7. One commit naming N, P, and Q. The message says where it came from and why.
 

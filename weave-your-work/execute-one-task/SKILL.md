@@ -24,6 +24,8 @@ If `## Review` says `needs changes`, fix only the gap it names. If it says `need
 
 Read the map above it. Its `Target` says why the task matters; its `Acceptance direction` says what the branch is for. Work done correctly against the wrong map is still wrong work.
 
+Read the parent chain and its maps' dependencies. If this task needs a sibling task's output, hand it back as a split error; see [`task.md`](../split/task.md). For each map output this task actually needs, check that it exists and is usable before starting the task. An unfinished dependency does not stop unrelated tasks; a failed closed dependency does not establish that its output is usable. If a required output is missing or unusable, leave the task's status unchanged and tell the owner which input is unavailable. Follow the map skill's [`frontmatter.md`](../map/frontmatter.md) for the owner's disposition. `waymark ready` alone cannot establish input availability.
+
 Check that the task still holds: the action still serves what the map wants, and nothing has made it moot or impossible.
 
 Claim it with `waymark start`. Say one line about where you are starting and what the first step is, then work.
@@ -36,9 +38,9 @@ Claim it with `waymark start`. Say one line about where you are starting and wha
 - The task no longer holds.
 - The work lacks an input or a permission it needs.
 
-If the missing input is produced by another task or map, that is a split error, not a wait: hand the ticket back and say which producer it needs. Do not put a task or map in `waiting_on`. If a person must supply or confirm the input, wait on that person.
+If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's [`frontmatter.md`](../map/frontmatter.md). If the missing input is a sibling task's output, hand the ticket back as a split error; see [`task.md`](../split/task.md). If a person must supply or confirm the input, wait on that person.
 
-The waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
+Person waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. For unavailable map output, record the stop and needed input in `Progress` without setting `waiting_on` to a ticket. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
 
 A question about how the work is done is not on this list. Decide it, and say what you decided in `Result`.
 
@@ -60,7 +62,7 @@ Report three lines: what the work produced, the verdict and the axis that decide
 
 ## When it stops
 
-Write `Progress`: the step it reached, what it waits for, and what happens next. Set `waiting_on` to the person. Leave the status `in_progress`.
+Write `Progress`: the step it reached, what it waits for, and what happens next. For a person wait, set `waiting_on` to the person. Leave the status `in_progress`.
 
 Report three lines: where it stopped, why, and who picks it up.
 
