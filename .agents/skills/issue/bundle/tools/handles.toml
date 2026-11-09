@@ -1,5 +1,5 @@
-# Map project owners to their remote handles, one table per platform.
-[handles.github]
+# Map project owners to their GitHub logins.
+[handles]
 frank = "QiYueran-source"
 
 # Resolve the local, gitignored queue path from the project root.

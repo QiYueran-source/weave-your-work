@@ -1,4 +1,4 @@
-# Choosing the host and dropping it from the text
+# Settling on one host, twice
 
 ### GitHub keeps its own credential; Gitee does not
 
@@ -32,13 +32,26 @@ The files were not the same kind of document. `github.md` was a command referenc
 
 And the split was in the wrong place. The five operations — find, file, read, reply, close — are the same on any host; only the command spells them. The skill already had to state what each operation must produce, because that is protocol. Restating it per host meant two copies of the same rules that could drift, and a third file for a third host.
 
-The replacement is one `usage.md` with three boundaries:
+The replacement is one `usage.md` with four parts:
 
 - **What each operation must produce**, as a contract, with no command.
 - **Exact commands for this skill's own tools** — the listener and the checker — because no `--help` documents them.
-- **Capability requirements for the host CLI**, not its syntax. A run can read that CLI's own help; what it cannot infer is that reading an issue must return the body *and* the comments, or that the body must go in on stdin.
+- **What `gh` must be able to do** for each operation, not the syntax of each command. A run can read `gh --help`; what it cannot infer is that reading an issue must return the body *and* the comments, or that the body must go in on stdin.
+- **The other hosts, and what a fork changes.** GitLab, Gitee, Gitea, Bitbucket, and Azure DevOps are named as unsupported, with the listener block, the handle table, the setup, and the CLI listed.
 
-The skill text now says "the remote repo" and names no host product.
+### The first version was too neutral
+
+The first replacement went further than that. It removed the host from the text altogether: the remote side became "the remote repo", the CLI was "the host's CLI", and `handles.toml` kept a `[handles.github]` table so a second platform could sit beside it.
+
+That read as "multi-platform, not finished yet". Three places carried the claim — the prose that talked about "the host", a config table nested under a platform name, and a code comment saying a second host would replace one block and nothing else — and none of them was true. There was one host, and saying otherwise made a reader look for a knob that does not exist.
+
+The correction, on 2026-11-09, was to name GitHub and keep naming it:
+
+- the docs say GitHub, and `usage.md` closes with the hosts that are not supported;
+- `handles.toml` is a flat `[handles]` table, so the file does not imply a platform axis;
+- the listener rejects a nested `[handles.github]` table by name, instead of reading it as an empty recipient list and appearing configured.
+
+The seam in the code stayed, because it is real regardless of what the docs promise: two functions where GitHub shows through, and everything outside them independent of the host. What changed is how it is described. It is not an extension point the skill offers; it is where a fork starts.
 
 ### The listener kept one process
 
@@ -46,8 +59,6 @@ Deleting the host references raised the matching question for the code: does eac
 
 Most of the listener is host-neutral — the HTTP endpoint, the signature check, the queue, the deduplication by issue URL and recipient, and the log redaction. Only two things know where the events come from: the webhook payload shape, and the call that lists a repository's open issues. A listener per host would copy the neutral majority.
 
-The code was split along that seam into `readIssueEvent` and `listOpenIssues`, with the rest left alone. No plugin mechanism and no `platform` config key were added: with one host built, an abstraction over hosts would be a guess. A second host replaces that one block.
+The code was split along that seam into `readIssueEvent` and `listOpenIssues`, with the rest left alone. No plugin mechanism and no `platform` config key were added: with one host built, an abstraction over hosts would be a guess.
 
 The listener stays one process per project, which is a different axis: it reads the project's `handles.toml` and queue path, so each project runs its own.
-
-The docs now say plainly that the bundled listener speaks GitHub. A neutral skill over a GitHub-only listener is honest only if the limit is written down.

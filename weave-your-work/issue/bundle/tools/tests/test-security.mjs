@@ -39,7 +39,7 @@ async function fixture(t) {
   }
   // Use installed dependencies without copying credentials or configuration.
   await fs.symlink(await modulesDir(), path.join(tools, 'node_modules'), 'dir')
-  await fs.writeFile(path.join(tools, 'handles.toml'), '[handles.github]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = "queue/pending.md"\n')
+  await fs.writeFile(path.join(tools, 'handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = "queue/pending.md"\n')
   return { root, tools, queue: path.join(root, 'queue/pending.md') }
 }
 
@@ -310,6 +310,14 @@ test('listener keeps the smee channel URL out of its log', async (t) => {
   const output = result.stdout + result.stderr
   assert.ok(!output.includes('channel-secret-value'), output)
   assert.match(output, /Cannot connect to smee/)
+})
+
+test('a nested handle table is rejected instead of yielding no recipients', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f)
+  await fs.writeFile(path.join(f.tools, 'handles.toml'), '[handles.github]\nalice = "alice-handle"\n[pending]\npath = "queue/pending.md"\n')
+  assert.equal((await request(port, issue())).status, 500)
+  assert.equal(await queueText(f), '')
 })
 
 test('listener refuses to append to a malformed queue', async (t) => {

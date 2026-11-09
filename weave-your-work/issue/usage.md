@@ -2,11 +2,11 @@
 
 Use `SKILL.md` as the entry point. It holds the protocol; this file holds what each operation must produce and the commands for this skill's own tools.
 
-The remote side is **the remote repo**: whichever host the project publishes issues on. Nothing here names a host or a command; the host's own CLI help is the manual for its syntax. For installation — the channel, the webhook, the listener service, the handles file, the session rule — read `bundle/setup.md`.
+The skill supports one host: GitHub. Every operation below runs through `gh`, which is the manual for its own syntax — this file states what each operation must produce, not the commands. For installation — the channel, the webhook, the listener service, the handles file, the session rule — read `bundle/setup.md`.
 
-## What the host CLI must be able to do
+## What `gh` must be able to do
 
-The five operations below each need one capability. Any host CLI that provides all five can carry a communicate issue; check its `--help` for the exact command and output flags.
+The five operations below each need one capability from `gh`. Check `gh <command> --help` for the exact flags.
 
 | Operation | Capability |
 | --- | --- |
@@ -27,9 +27,9 @@ Verify the account before filing, and check the repository's visibility: a publi
 
 Write the frontmatter and the body from [communicate-issue.md](communicate-issue.md), confirm every ticket in `tickets` exists, and resolve the recipient's handle.
 
-A handle is not a local owner name. Read `bundle/tools/handles.toml` beside this skill's listener, in the table for the host, and verify the account exists. A missing table, a missing owner, or an account that does not exist means ask the run's owner; never guess a login from a waymark name.
+A handle is not a local owner name. Read the `[handles]` table in `bundle/tools/handles.toml` beside this skill's listener and verify the account exists. A missing file, a missing owner, or an account that does not exist means ask the run's owner; never guess a login from a waymark name.
 
-The handle is used twice: in the frontmatter for the listener, and as the `@mention` in the body for the host's notification. Assign the issue to the same account as well; the assignment puts it in the recipient's dashboard. If the host refuses the assignment, file without it, keep the mention, and tell the recipient out of band.
+The handle is used twice: in the frontmatter for the listener, and as the `@mention` in the body for GitHub's notification. Assign the issue to the same account as well; the assignment puts it in the recipient's dashboard. If `gh` refuses the assignment, file without it, keep the mention, and tell the recipient out of band.
 
 Search for an open issue whose title carries the main ticket id first. A closed thread is the record of an earlier event, so a new message gets a new issue. The search index lags by seconds; when the thread was opened moments ago, list the open issues and read the titles instead.
 
@@ -47,9 +47,9 @@ Fetch the issue with `--json` or the equivalent structured flag — not a render
 
 Close with a comment that names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." A thread that settled into a map's `Out of scope` closes with that line instead: "Declined for `<map id>` `<title>`: <one line>."
 
-Use the host's ordinary "completed" close. A thread closed without a change takes the "not planned" reason where the host has one.
+Use GitHub's ordinary "completed" close. A thread closed without a change takes the "not planned" reason.
 
-The closing comment is the pointer the remote side keeps.
+The closing comment is the pointer GitHub keeps.
 
 ## The queue and the listener
 
@@ -76,15 +76,20 @@ Each valid message appends one JSON object per list line:
 
 The queue file is `[pending].path` in `bundle/tools/handles.toml`, resolved from the project root; it defaults to `pending/pending-communications.md`. The queue is local state and gitignored; the handles file is shared and tracked.
 
-## What is connected
+## Other hosts
 
-The bundled listener speaks one host, GitHub: it reads that host's webhook event shape and lists that host's open issues. A project on another host can still use `SKILL.md`, the format, and the checker; the listener's two host-specific functions — reading a webhook event, and listing a repository's open issues — are where a second host would be added. Nothing else in the queue path depends on the host.
+GitLab, Gitee, Gitea, Bitbucket, and Azure DevOps are not supported. The format, the categories, and the checker would still hold there, but carrying a message needs a fork:
+
+- **The listener's GitHub block.** In `bundle/tools/listener.mjs`, the two functions between the `---- GitHub ----` markers: one reads a webhook event, the other lists a repository's open issues. Everything outside them — the HTTP endpoint, the signature check, the queue, the deduplication, and the log redaction — is independent of the host.
+- **The handle table.** `[handles]` maps a local owner to a GitHub login. A fork that supports two hosts at once would have to put a host name back into that file and decide which table a message resolves against.
+- **The setup.** The webhook page, the event name, the signature header, and the CLI the listener calls for its startup scan all change with the host.
+- **`gh` in the five operations.** The capability table above is what a replacement CLI has to provide.
 
 ## Troubleshooting
 
 - `Cannot find package`: run `npm install` in `bundle/tools/`.
-- `Catch-up failed: origin is not a supported ... URL`: the checkout's git `origin` is not a repository the listener can read, or it has more than one fetch URL.
-- `Catch-up failed: no ... handles configured`: `bundle/tools/handles.toml` has no table for the connected host.
+- `Catch-up failed: origin is not a supported github.com repository URL`: the checkout's git `origin` is not a GitHub URL, or it has more than one fetch URL.
+- `Catch-up failed: no handles configured for catch-up`: `bundle/tools/handles.toml` has no `[handles]` entries.
 - `Cannot connect to smee`: the channel URL is wrong or the network is down; the process exits non-zero and does not scan.
-- The queue stays empty after an issue was opened: check the host's webhook recent deliveries, the listener's log, and whether the body opens with `kind: communicate`. The host reporting success at the channel does not prove the local listener received the event.
+- The queue stays empty after an issue was opened: check the webhook's recent deliveries, the listener's log, and whether the body opens with `kind: communicate`. GitHub reporting success at the channel does not prove the local listener received the event.
 - The checker reports an invalid entry: the queue holds a line that is neither the JSON form nor the older pipe form. Do not rewrite the file blindly; the earlier entries are a record.

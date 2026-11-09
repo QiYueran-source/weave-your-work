@@ -39,8 +39,14 @@ function loadConfig() {
     return { handles: {}, pending: DEFAULT_PENDING }
   }
   const data = parseToml(fs.readFileSync(file, 'utf8'))
+  const handles = data.handles || {}
+  for (const [owner, login] of Object.entries(handles)) {
+    if (typeof login !== 'string') {
+      throw new Error(`handles.toml: ${owner} is not a login; put every owner under one [handles] table`)
+    }
+  }
   return {
-    handles: data.handles || {},
+    handles,
     pending: (data.pending && data.pending.path) || DEFAULT_PENDING,
   }
 }
@@ -61,10 +67,8 @@ function parseFrontmatter(body) {
 }
 
 function ownerFor(handles, handle) {
-  for (const table of Object.values(handles)) {
-    for (const [owner, value] of Object.entries(table)) {
-      if (value === handle) return owner
-    }
+  for (const [owner, login] of Object.entries(handles)) {
+    if (login === handle) return owner
   }
   return null
 }
@@ -111,12 +115,12 @@ function communicationFields(front) {
   return { category: front.category, from: front.from, to: front.to[0], tickets: front.tickets }
 }
 
-// ---- host adapter ---------------------------------------------------------
-// Everything below this block is host-neutral: the HTTP endpoint, the
-// signature check, the queue, the deduplication and the log redaction. These
-// two functions are the only place that knows which product the events come
-// from. They currently speak GitHub. A second host replaces this block and
-// nothing else.
+// ---- GitHub ---------------------------------------------------------------
+// Everything outside this block — the HTTP endpoint, the signature check, the
+// queue, the deduplication and the log redaction — touches no GitHub detail.
+// These two functions are where GitHub shows through: the webhook event shape
+// and the `gh api` listing. A fork for another host rewrites this block and
+// the [handles] table, and leaves the rest alone.
 
 // Normalises one webhook body, or returns null when it is not an event this
 // listener acts on.
@@ -165,10 +169,10 @@ async function* listOpenIssues(root) {
   }
 }
 
-// ---- end of host adapter --------------------------------------------------
+// ---- end of GitHub -------------------------------------------------------
 
-// Host-neutral: decides from the format alone whether an issue is a message
-// and, when it is, appends one queue entry.
+// Decides from the format alone whether an issue is a message and, when it is,
+// appends one queue entry.
 function queueIssue(issue, { mappedOnly = false, label = 'issue' } = {}) {
   const front = parseFrontmatter(issue.body)
   const fields = communicationFields(front)

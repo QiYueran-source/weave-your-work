@@ -21,7 +21,7 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 
 1. `SKILL.md`: the trigger, the frontmatter form, the five actions — file, listen, read and reply, land, close — and the local-artifact test.
 2. `communicate-issue.md`: the single definition of the format, the categories, and the closing rules.
-3. `usage.md`: the five operations as contracts, the queue, and the listener's own commands. Host-neutral; it names no host product.
+3. `usage.md`: the five operations as contracts, the queue, the listener's own commands, and what a non-GitHub host would require.
 4. `bundle/setup.md`: the install steps, the channel, the webhook, the secret, the smee client, the listener, the session rule, and the catch-up.
 5. The Node bundle `bundle/tools/`: the smee client, the webhook receiver, the frontmatter parse, the `to` routing through the installed skill's `bundle/tools/handles.toml`, and the append to `[pending].path`.
 6. In this repository: the installed skill's handles file contains `[pending].path`; `.gitignore` includes `pending/`; the rule file is `bundle/rules/rules-pending-communications.md`, and its installed copy is `.agents/rules/rules-pending-communications.md`.
@@ -51,12 +51,14 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Stop treating `issue_comment` as a listener event: messages travel as issues, and ordinary comments stay in the thread.
 - Do not remove the local Waymark `comment` category in this step; its remaining uses are recorded separately.
 
-## Host-neutral references (confirmed 2026-11-09)
+## One reference, one host (confirmed 2026-11-09)
 
-- Replace `github.md` and `gitee.md` with one `usage.md`. The skill names no host product: the remote side is "the remote repo", and the five operations are contracts, not commands.
-- `usage.md` has three boundaries: what each operation must produce; exact commands for this skill's own tools (the listener and the checker, which no `--help` documents); and capability requirements for the host CLI rather than its syntax, because a run can read that CLI's own help.
-- The bundled listener is still GitHub-only. Ship it as one listener, not one per host: the HTTP service, signature check, queue, deduplication, and log redaction are host-neutral and would otherwise be copied. Collect the host-specific code into two named functions — reading a webhook event, and listing a repository's open issues — and say in the docs that only GitHub is connected. Do not add a `platform` config key or a plugin mechanism until a second host is actually built.
-- The listener is one process per project, because it reads the project's `handles.toml` and queue path. That is per project, not per host.
+- Replace `github.md` and `gitee.md` with one `usage.md`. The five operations are contracts, not commands; `gh` documents its own syntax.
+- `usage.md` has four parts: what each operation must produce; exact commands for this skill's own tools (the listener and the checker, which no `--help` documents); the capability each operation needs from `gh`; and a closing section that lists the other hosts and what a fork would change.
+- The skill supports one host, GitHub, and says so. It does not present a host abstraction or describe a second adapter as a supported extension point. A reader should not come away thinking GitLab works with a config change.
+- Ship one listener, not one per host: the HTTP service, signature check, queue, deduplication, and log redaction would otherwise be copied. Collect the GitHub-specific code into two named functions — reading a webhook event, and listing a repository's open issues — and mark that block in the file. A fork for another host rewrites that block and the setup.
+- `handles.toml` has a flat `[handles]` table, not one table per platform: the file maps a local owner to a GitHub login, and a per-platform table would claim support the skill does not have. The listener rejects a nested table by name rather than silently finding no recipients.
+- The listener is one process per project, because it reads the project's `handles.toml` and queue path.
 - The Gitee research stays in the worked example; deleting the reference does not delete the findings.
 
 ## Test directory (confirmed 2026-11-09)
@@ -92,14 +94,14 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 
 ## Acceptance signal
 
-`weave-your-work/issue/` holds `SKILL.md`, `communicate-issue.md`, `usage.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on a remote repo with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. The bundled listener connects to GitHub only; another host needs its own event and listing adapters.
+`weave-your-work/issue/` holds `SKILL.md`, `communicate-issue.md`, `usage.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on this project's GitHub repo with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. The skill, its docs, and its config are written for GitHub; `usage.md` lists what another host would require of a fork.
 
 ## Boundaries
 
 - No triage state machine; triage remains its own skill.
 - No action on a queued issue without the person asking.
 - The listener only queues and surfaces; it does not file, reply, or land.
-- No second host adapter. GitHub is the only connected host until one is built.
+- No second host. The skill supports GitHub; another host is a fork, not a configuration change.
 
 ## Progress
 
@@ -122,6 +124,6 @@ The isolated startup tests cover paginated results, mapped recipients, malformed
 
 The communicate issue protocol is implemented in `communicate-issue.md` and the listener. Tests cover each category, ordinary issues, a missing or unknown `category`, several or non-list `to` values, empty `tickets`, an empty `from`, a missing title, and a pull request carrying a matching body; each invalid message is skipped. The smee channel URL stays out of the log. The source and installed security and catch-up suites pass from `tools/tests/`.
 
-The host references were replaced by one `usage.md`, and the listener's host-specific code is now two functions, `readIssueEvent` and `listOpenIssues`. Catch-up routes through every handle table after a test showed it previously read only `[handles.github]`, which would have dropped a recipient that the live path accepted. Both suites pass from the source and the installed copy.
+The two host references were replaced by one `usage.md`, and the listener's GitHub-specific code is now two functions, `readIssueEvent` and `listOpenIssues`, marked in the file. `handles.toml` is a flat `[handles]` table; the listener rejects a nested table by name, because a per-platform table would leave it with no recipients while looking configured. Both suites pass from the source and the installed copy.
 
 Next: deploy a listener for this repository and verify a full exchange; the session-start rule was reported to work by the owner but has not been recorded in this repository's tests.
