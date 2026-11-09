@@ -4,6 +4,7 @@ description: >-
   Carry a communicate issue to a GitHub recipient and bring it back: write the
   frontmatter and the ask, receive it through the smee listener, land the
   decision that changes local work, and close it.
+disable-model-invocation: true
 ---
 
 # Issue
