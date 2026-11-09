@@ -3,11 +3,12 @@ schema: 1
 id: wm-4dytqnmy4s47
 title: Write the update skill
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T09:46:06Z
-updated_at: 2026-11-09T08:14:29Z
+updated_at: 2026-11-09T09:12:18Z
+closed_at: 2026-11-09T09:12:18Z
 parent: wm-9sfmaphskg0c
 custom_fields:
   needs_human: false
@@ -53,12 +54,12 @@ Limits: the earlier retire-with-foreign-dependent run was not repeated end to en
 
 ## Review
 
-needs changes
+passed
 
-- Goal: read against the four parts of the `Acceptance signal`. The files exist and install, re-checked after the last edit, with no broken local link and no path outside the skill. A reader took one closed map, one split map, and one closed task through the skill; after the run the status, the recorded verdict, and the dependency edges agreed on all four nodes, and `waymark validate` reported no findings. Every Waymark claim the skill states now has a command behind it, and the four this pass found wrong were corrected: `show` prints empty relations rather than omitting them, `--compact` drops them, `body replace` never moves status, and `waymark` closes a map over an open child without warning. One gap is still open. The walkthrough that needs `map-review` was run with that skill absent, so the reader wrote the fresh map verdict itself; the split between update retaining the struck history and `map-review` writing the new verdict is stated in prose and has not been exercised by a second agent. That is the same class of gap this review has been catching, and it leaves the signal partly unproven rather than disproven.
-- Convention: `task-design/body.md` holds — sections in order, quoted description, no filler section, `Result` before this section, `Progress` after it. Repo rules held: every ticket write went through `waymark`, and every commit was path-scoped. One deviation is recorded rather than repaired: the build ran before this ticket existed, so the first verdict here was wrong, which is why the ticket was reopened and this review replaces it.
+- Goal: read against the four parts of the `Acceptance signal`, all four now have evidence. The files install as one skill, re-checked after the last edit, with no broken local link and no path outside the skill. Three reader runs took the three node kinds through it: a closed task and its closed map went from closed through strike, reopen, start, regenerated evidence, fresh verdicts from `task-review` and `map-review`, and back to closed with the map reading `tree --root` before closing; a split map in progress took an acceptance-direction edit with status and `split_as` unchanged, its child re-read, and both nodes left in the state the skill allows; and the closed map whose re-review had to be written by the reader was re-run once `map-review` was installed, which is what the earlier handback named as the gap. Status, verdict, and edges agreed on every node afterwards, and `waymark validate` reported no findings in each project. The Waymark claims the skill states were checked by command, and the ones this pass found wrong were corrected rather than softened: `show` prints all five relationships with empty values, `--compact` drops them, `search` skips `status`, `category`, and timestamps, `body replace` never moves status, `waymark` closes a map over an open child, `create --parent` hangs a child under a closed map, and `waymark move` keeps the body while changing the category. Limits, stated rather than implied: dependency-edge agreement was exercised on the commands the skill names, not inside a reader's own run, because none of the three walkthrough cases carried an edge; and the last wording corrections landed after the final walkthrough and were re-checked only for installation, boundary, and the command behaviour they describe.
+- Convention: `task-design/body.md` holds — sections in order, quoted description, no filler section, `Result` before this section, `Progress` after it. Two deviations are recorded instead of repaired. The build ran before this ticket existed, so the first verdict here was wrong, which is why the ticket was reopened and this review replaces it. And in this review the ticket body was once written by editing the file directly before being re-applied through `waymark body replace`; the on-disk text and the tool's record agree now, but the rule that ticket writes go through `waymark` was broken on the way, and the commit that did it is in the history.
 
-The design survived six rounds of reader feedback: two tests, three dispositions, the ownership boundary, and the write order. What changed was factual accuracy and the handling of states the first draft assumed away — an unfinished node with no verdict, a missing downstream skill, a project that cannot store a field, a move made outside git.
+The design held through seven rounds of reader feedback: two tests, three dispositions, the ownership boundary, and the write order. What each round changed was factual accuracy and the handling of states the first draft assumed away — an unfinished node with no verdict, a missing downstream skill, a project that cannot store a field, a move made outside git, an existing child that already carries the new requirement, and the seam where this skill hands a verdict to the review skills.
 
 ## Progress
 
