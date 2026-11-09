@@ -30,6 +30,14 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 9. Install with `npx skills add`; no link outside the directory.
 10. Say what the skill does not do.
 
+## Proposed configuration migration (awaiting plan confirmation)
+
+- Issue setup asks the person responsible for the project which owners and remote handles to record, then creates `handles.toml` in the installed skill's `bundle/tools/`. On later setup or skill updates, preserve an existing file rather than replacing team data.
+- Migrate this repository's existing mapping and queue setting without losing data; leave the queue at the repository's `pending/pending-communications.md`. Use a path relative to the project root so the queue location does not depend on where the skill is installed.
+- Update the listener, issue instructions, setup guide, bundled session rule, and this repository's installed rule to read the same configuration. Update the worked example to explain the change.
+- Check first setup and repeat setup, the preserved mapping, queue resolution from an installed skill, and the listener with a local sample. The live GitHub and smee test remains separate.
+- Do not change the communication protocol or claim to have tested real webhook delivery.
+
 ## Acceptance signal
 
 `weave-your-work/issue/` holds `SKILL.md`, `github.md`, `gitee.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on GitHub with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. Gitee's write path is a recorded gap.

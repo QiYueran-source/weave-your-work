@@ -34,6 +34,10 @@ The state machine stayed out, but a triage result is still a decision about what
 
 A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The skill reads `.waymark/handles.toml`, one table per platform, and verifies the account before it mentions or assigns it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name. This repository now carries a sample roster at `.waymark/handles.toml`, mapping `frank` to the account the probe used.
 
+### Moving the roster out of waymark
+
+The original roster lived under `.waymark/`, although the issue skill rather than waymark reads it. The later discussion chose the installed skill's `bundle/tools/`: each project commits its own copy, and issue setup asks the person responsible for the owner-to-handle mappings. Setup and later skill updates preserve an existing roster. The migration plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md); it still awaits implementation confirmation.
+
 ### What was rejected: copying the thread
 
 A local mirror of every comment was considered and dropped for the reason the draft's section 6 gives: it duplicates the remote side, goes stale, and there is no owner for the copy. The ticket holds the decision; the issue holds the conversation.
