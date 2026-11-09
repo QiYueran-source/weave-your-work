@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:41:22Z
-updated_at: 2026-11-09T05:16:41Z
+updated_at: 2026-11-09T05:18:27Z
 soft_links:
   - wm-hy12yjm0yn9g
 ---
@@ -24,7 +24,8 @@ soft_links:
 - [x] What is the cost of adding a map Review section, and should the map have one?
   - [x] Which verdicts produce a Review section?
   - [x] How are old reviews marked on reopen?
-  - [ ] Does a struck-through review remain after re-review?
+  - [x] Does a struck-through review remain after re-review for a small change?
+  - [ ] What distinguishes small changes from changes that require archive and a new ticket?
   - [x] How are interrupted writes and mismatched status handled?
 - [x] How should a review gap be repaired without violating the frozen child type?
 
@@ -64,3 +65,8 @@ soft_links:
 - Q: On reopen, should the prior Review be invalidated with a reason and a new review written after re-review, without inventing old reviews for legacy maps?
 - Q: Should the owner recheck children and evidence when Review and status disagree, rather than treating the mismatch as a pass or mechanically changing status?
 - A: "11可以 12 可以，用~~划掉旧的吧，13可以". The user accepted all three and specified strikethrough for the old review. Whether it remains after re-review needs clarification.
+
+### Round 6
+
+- Q: After re-review, should the struck-through old Review remain in the section, with the new verdict above it?
+  A: "小改动留，大的直接archive加新票了". The user chose to retain the old review for small changes and archive the old ticket and add a new one for large changes. The boundary between small and large remains to be clarified.

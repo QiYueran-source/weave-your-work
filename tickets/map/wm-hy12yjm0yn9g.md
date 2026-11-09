@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:42:21Z
-updated_at: 2026-11-09T05:16:41Z
+updated_at: 2026-11-09T05:18:27Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-0xrcwvnrcc9k
@@ -43,6 +43,8 @@ Review point: the discussion records the choices, each affected skill agrees wit
 - On reopen, invalidate the old Review, strike it through with `~~`, and record why it is invalid; do not invent old reviews for legacy maps. (user confirmed)
 - If Review and status disagree, do not treat the map as passed automatically. The owner rechecks children and evidence before completing the appropriate state change; changed evidence requires a fresh review. (user confirmed)
 
+- For a small change, keep the struck-through old Review after re-review. For a large change, archive the old ticket and add a new ticket; the boundary between small and large remains to be clarified. (user confirmed)
+
 ## Not yet specified
 
 - ~~Decision to make: which parent writes belong to a first split and later splits?~~
@@ -65,8 +67,10 @@ Review point: the discussion records the choices, each affected skill agrees wit
   Resolved on 2026-11-09: all four verdicts write Review; strike through the invalidated review and state why.
 - ~~Decision to make: how should interrupted or inconsistent status and Review writes be handled?~~
   Resolved on 2026-11-09: do not infer a pass; the owner rechecks children and evidence before the next state write.
-- Decision to make: does a struck-through review remain in the ticket after re-review?
-  Why it matters: keeping it gives in-ticket history; replacing it keeps only the current review and relies on committed Git history.
+- ~~Decision to make: does a struck-through review remain after re-review for a small change?~~
+  Resolved on 2026-11-09: retain it for small changes; archive and add a new ticket for large changes.
+- Decision to make: what distinguishes a small change from a large change that requires archive and a new ticket?
+  Why it matters: update currently uses same subject and whether the verdict holds, not change size, to decide between edit, reopen, and archive.
 - ~~Decision to make: how is a review gap repaired without violating the frozen child type?~~
   Resolved on 2026-11-09: use update for a gap already promised by a task; otherwise discuss the new requirement or structure first.
 
