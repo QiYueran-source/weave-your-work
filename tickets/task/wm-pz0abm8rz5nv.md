@@ -3,11 +3,12 @@ schema: 1
 id: wm-pz0abm8rz5nv
 title: Add map and task work-record bundles
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T01:38:51Z
-updated_at: 2026-11-09T02:54:41Z
+updated_at: 2026-11-09T02:57:43Z
+closed_at: 2026-11-09T02:57:43Z
 parent: wm-hfs0qa6h35yx
 custom_fields:
   needs_human: false
@@ -37,4 +38,15 @@ Both rule files and both bundle setup guides exist; the guides prescribe safe in
 
 ## Progress
 
-Created both bundle rule files, setup guides, and usage guides. Updated both skill entries to point to setup and usage. Revised grill to record testimony each round and land settled decisions in their owning tickets; revised map procedure to use update's two tests and three dispositions. Recorded the future setup registration in the setup environment map. Resolved its stale fog about discovery: the total setup reads each explicitly listed setup guide and does not scan. No rule has been installed into this repository. Verification and final ticket review remain.
+Created both bundle rule files, setup guides, and usage guides. Updated both skill entries to point to setup and usage. Revised grill to record testimony each round and land settled decisions in their owning tickets; revised map procedure to use update's two tests and three dispositions. Recorded the future setup registration in the setup environment map. Resolved its stale fog about discovery: the total setup reads each explicitly listed setup guide and does not scan.
+
+Both bundle guides use the five required sections. Their copy behavior was exercised in temporary directories for absent, identical, and conflicting targets; absent files were copied, identical files skipped, and conflicting files left untouched. `git diff --check` passed and `waymark validate` reported no findings. The rules were not installed in this repository. Whole-set worked examples and end-to-end testing remain deferred to the root map.
+
+## Review
+
+passed
+
+- Goal: both rules and setup guides exist; both skill entries point to setup and usage; grill lands settled decisions in the owning tickets; map procedure follows update's state and dispositions. Read each changed file against the acceptance signal.
+- Setup behavior: tested the copy logic in temporary directories. Missing destinations were copied, identical files were skipped, and conflicts stopped without overwriting.
+- Convention: staged only this task's files and its owning map/setup-map updates; unrelated issue changes remain unstaged. `git diff --check` passed and `waymark validate` reported no findings.
+- Not tested: Windows PowerShell commands, a full project install, worked examples, and the whole-skill end-to-end batch; those remain for the root map.

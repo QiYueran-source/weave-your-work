@@ -3,11 +3,12 @@ schema: 1
 id: wm-hfs0qa6h35yx
 title: Map and task work-record rules
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T01:38:28Z
-updated_at: 2026-11-09T01:39:08Z
+updated_at: 2026-11-09T02:57:43Z
+closed_at: 2026-11-09T02:57:43Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: task
