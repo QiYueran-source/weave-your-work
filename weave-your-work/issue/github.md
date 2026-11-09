@@ -1,6 +1,6 @@
 # GitHub
 
-The commands for a communicate issue: file it, find it, read it, reply, and close it. The listener's setup is in `smee-setup.md`; this file covers the human side.
+The commands for a communicate issue: file it, find it, read it, reply, and close it. The listener's setup is in `bundle/setup.md`; this file covers the human side.
 
 ## The repository
 
@@ -90,14 +90,7 @@ The closing comment is the pointer the remote side keeps. `--reason completed` i
 
 ## Catch-up
 
-When the listener was off, the queue misses events. At session start:
-
-```bash
-gh search issues --mentions @me --state open --limit 50 \
-  --json number,title,repository,url
-```
-
-Keep the issues whose body opens with `kind: communicate` and whose tickets are local; queue the missing ones using the JSON list-item format in `SKILL.md`. Encode fields with a JSON serializer, not string interpolation. `gh api notifications` is the other source: filter by `reason` (`mention`, `assign`, `comment`) and parse the body's frontmatter.
+The listener connects to smee first, then at startup uses authenticated `gh` to list all pages of open issues in the current project GitHub repository identified by git `origin`. It selects issues with `kind: communicate` frontmatter and `to` recipients matching configured GitHub handles, and queues them with deduplication. Closed issues are excluded. Errors are logged; the listener does not poll or scan again on reconnect. The scan only queues reminders; a person must ask before an issue is acted on.
 
 ## What comes back
 

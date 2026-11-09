@@ -7,7 +7,9 @@
 // Without SMEE_URL the HTTP endpoint runs alone. WEBHOOK_SECRET optionally
 // enables signature verification for transports that preserve request bytes.
 
+import { execFile } from 'node:child_process'
 import http from 'node:http'
+import { promisify } from 'node:util'
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -18,6 +20,7 @@ import { parse as parseYaml } from 'yaml'
 import SmeeClient from 'smee-client'
 import { formatEntry, parseQueue } from './queue.mjs'
 
+const run = promisify(execFile)
 const DEFAULT_PENDING = 'pending/pending-communications.md'
 const root = process.cwd()
 const toolsDir = path.dirname(fileURLToPath(import.meta.url))
@@ -90,7 +93,7 @@ function append(queue, entries) {
   return added.length
 }
 
-function queuePayload(payload) {
+function queuePayload(payload, { mappedGithubOnly = false } = {}) {
   if (payload.action !== 'opened') return 0
   const issue = payload.issue || {}
   const front = parseFrontmatter(typeof issue.body === 'string' ? issue.body : '')
@@ -102,14 +105,51 @@ function queuePayload(payload) {
   if (typeof sender !== 'string' || typeof title !== 'string' || !title.trim() ||
       typeof url !== 'string' || !url.trim() ||
       !recipients.length || recipients.some((handle) => typeof handle !== 'string' || !handle.trim())) {
+    if (mappedGithubOnly) {
+      console.error('Catch-up skipped an issue with invalid communicate fields')
+      return 0
+    }
     throw new Error('Invalid communicate issue fields')
   }
   const received = new Date().toISOString().slice(0, 16)
   const { handles, pending } = loadConfig()
-  const entries = recipients.map((handle) => ({
-    url, from: sender, to: handle, owner: ownerFor(handles, handle) || 'unknown', title, received,
+  const githubHandles = handles.github || {}
+  const eligible = mappedGithubOnly
+    ? recipients.filter((handle) => Object.values(githubHandles).includes(handle))
+    : recipients
+  const entries = eligible.map((handle) => ({
+    url, from: sender, to: handle, owner: ownerFor(mappedGithubOnly ? { github: githubHandles } : handles, handle) || 'unknown', title, received,
   }))
   return append(queuePath(pending), entries)
+}
+
+async function catchUp() {
+  const { stdout } = await run('git', ['remote', 'get-url', '--all', 'origin'], { cwd: root, timeout: 15000 })
+  const remotes = stdout.trim().split(/\r?\n/)
+  if (remotes.length !== 1) throw new Error('origin must have exactly one fetch URL')
+  const remote = remotes[0]
+  const match = /^(?:git@github\.com:|ssh:\/\/git@github\.com\/|https:\/\/github\.com\/)([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/.exec(remote)
+  if (!match) throw new Error('origin is not a supported github.com repository URL')
+  const repo = `${match[1]}/${match[2]}`
+  const { handles } = loadConfig()
+  if (!handles.github || !Object.keys(handles.github).length) {
+    throw new Error('no GitHub handles configured for catch-up')
+  }
+  let queued = 0
+  for (let page = 1; ; page++) {
+    const result = await run('gh', [
+      'api', '--hostname', 'github.com', '--method', 'GET', `repos/${repo}/issues`,
+      '-f', 'state=open', '-F', 'per_page=100', '-F', `page=${page}`,
+    ], { cwd: root, timeout: 30000, maxBuffer: 32 * 1024 * 1024 })
+    const issues = JSON.parse(result.stdout)
+    if (!Array.isArray(issues)) throw new Error('GitHub returned an invalid issues page')
+    for (const issue of issues) {
+      if (!issue || typeof issue !== 'object' || issue.pull_request || issue.state !== 'open') continue
+      queued += queuePayload({ action: 'opened', issue }, { mappedGithubOnly: true })
+    }
+    if (issues.length < 100) break
+  }
+  console.log(`Catch-up complete: queued ${queued} entries from ${repo}`)
 }
 
 const server = http.createServer((req, res) => {
@@ -160,7 +200,7 @@ const server = http.createServer((req, res) => {
   })
 })
 
-server.listen(port, '127.0.0.1', () => {
+server.listen(port, '127.0.0.1', async () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
   if (!secret) console.warn('Webhook signatures are not verified; queued messages are untrusted')
   if (smeeUrl) {
@@ -169,9 +209,21 @@ server.listen(port, '127.0.0.1', () => {
       target: `http://127.0.0.1:${port}/webhook`,
       logger: console,
     })
-    smee.start()
-    console.log(`forwarding ${smeeUrl}`)
+    try {
+      await smee.start()
+    } catch (error) {
+      console.error(`Cannot connect to smee; catch-up not started: ${error.message || 'connection failed'}`)
+      await smee.stop()
+      server.close()
+      process.exitCode = 1
+      return
+    }
   } else {
     console.log('SMEE_URL is empty; the HTTP endpoint runs alone')
+  }
+  try {
+    await catchUp()
+  } catch (error) {
+    console.error(`Catch-up failed: ${error.message}`)
   }
 })

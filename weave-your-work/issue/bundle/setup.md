@@ -9,7 +9,7 @@ The listener that receives communicate issues and queues them for the next sessi
 - The Node listener in `bundle/tools/`, which holds the smee client and the webhook receiver.
 - A project-specific `bundle/tools/handles.toml` with the team mappings and pending queue path.
 - The session rule generated from `bundle/rules/` into `.agents/rules/rules-pending-communications.md`.
-- The catch-up query for the sessions where the listener was off.
+- A startup scan for open communicate issues missed while the listener was off.
 
 ## Tools
 
@@ -27,7 +27,7 @@ cd <repo>
 SMEE_URL=https://smee.io/<id> node <skill-dir>/bundle/tools/listener.mjs
 ```
 
-One process: the smee client connects to the channel and forwards each event to the local `/webhook`. By default the listener does not verify signatures; queue entries are unauthenticated reminders, not proof of sender identity. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs alone.
+One process: the smee client connects to the channel and forwards each event to the local `/webhook`. The listener then performs its startup scan; it needs authenticated `gh` and a GitHub repository as the project checkout's git `origin`. By default the listener does not verify signatures; queue entries are unauthenticated reminders, not proof of sender identity. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs without a smee connection.
 
 If `WEBHOOK_SECRET` is set to a non-empty value, the listener verifies `X-Hub-Signature-256` against received bytes and rejects missing or invalid signatures. Smee can reserialize JSON, so a valid GitHub signature can fail even with the correct secret. Leave `WEBHOOK_SECRET` unset for the default smee setup; use it only with a transport verified to preserve the signed bytes. Whitespace-only values are rejected at startup.
 
@@ -88,7 +88,7 @@ The checker reads the queue without changing it. With entries it prints their co
    systemctl --user enable --now issue-listener
    ```
 
-   Without a service, run the command in a terminal while you work. Use catch-up to look for issues missed while it was not running.
+   Without a service, run the command in a terminal while you work. The startup scan looks for open issues missed while it was not running.
 
 4. **Handles and queue.** In the project's installed issue skill, use `.agents/skills/issue/bundle/tools/handles.toml`:
 
@@ -109,19 +109,12 @@ The checker reads the queue without changing it. With entries it prints their co
 
    The queue path is relative to the project root. Its directory is local state: add it to `.gitignore`; `pending/` ignores the default. Before updating or reinstalling the skill, preserve the existing handles file outside the directory being replaced; restore it afterward and verify it is unchanged. In `skills` 1.7.6, `skills add --copy` deletes the installed directory before copying; setup runs too late to prevent that deletion. If an update fails, keep the backup and restore it before running the listener or setup again.
 
-5. **Catch-up.** The listener only receives while it runs. When a session starts after the machine was off, run:
-
-   ```bash
-   gh search issues --mentions @me --state open --limit 50 \
-     --json number,title,repository,url
-   ```
-
-   Keep the issues whose body opens with `kind: communicate` and whose `tickets` are local; append the missing ones to the queue using the JSON list-item format in `SKILL.md`. Encode fields with a JSON serializer, not string interpolation. This is a start-of-session check, not a polling loop.
+5. **Startup scan.** After connecting to smee, the listener uses authenticated `gh` to list all pages of open issues in the current project GitHub repository identified by git `origin`. It accepts a single github.com HTTPS or SSH origin and needs `[handles.github]` mappings. It selects issues with `kind: communicate` frontmatter and `to` recipients matching those handles, and queues them with deduplication. Closed issues are excluded. If the scan fails, the listener logs `Catch-up failed` and keeps accepting live events; fix the reported problem and restart to retry. There is no polling or scan on reconnect. The listener only queues reminders; nothing acts on an issue until the person asks.
 
 ## Verify
 
 1. File a communicate issue addressed to yourself.
-2. Watch the listener's log; the queue should gain one line per `to`.
+2. Watch the listener's log; a live event should add one line per `to`. Catch-up adds one per configured GitHub handle.
 3. Open a new session; the rule should surface the count and title.
 4. Reply and close the issue; the queue line stays as the record of what arrived.
 

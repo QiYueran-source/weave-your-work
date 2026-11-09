@@ -48,7 +48,7 @@ The listener review found that remote fields could break the line-based queue fo
 
 ### Catching up after the listener was offline
 
-The first catch-up plan searched open issues mentioning the current account. In two private-repository tests that search missed new issues, although listing the repository's open issues found them. The person limited catch-up to the current project; the proposed replacement lists its open issues at listener startup and filters frontmatter. The test result and proposed plan are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md). The cause of the search misses is not yet known.
+The first catch-up plan searched open issues mentioning the current account. In two private-repository tests that search missed new issues, although listing the repository's open issues found them. The person limited catch-up to the current project and confirmed a startup scan of its open issues, filtered by frontmatter. In a private live test, that scan recovered an issue created while the listener was offline, and a second startup did not duplicate it. The test and its limits are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md); the original search misses remain unexplained.
 
 ### What was rejected: copying the thread
 
