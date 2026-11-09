@@ -38,6 +38,8 @@ Follow the work, not the edit.
 
 **Q's owner applies the two tests when a subtree arrives under a closed map.** An unfinished subtree makes the claim that all children are complete false. For an already-closed subtree, read Q's acceptance direction, Review, and evidence against the changed tree; do not assume the verdict either holds or fails. Use the disposition selected by the tests.
 
+An unfinished P or Q has no verdict to reopen, so use `SKILL.md` on unfinished nodes rather than the reopen rule: the same promise is edited in place, and a different one is retired.
+
 P and Q belong to whoever owns them. When either is not the run's, the run moves N and hands over the reopen decision with the reason — see `SKILL.md` on ownership.
 
 ## Two tests before the write
