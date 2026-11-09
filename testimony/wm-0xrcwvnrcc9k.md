@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:41:22Z
-updated_at: 2026-11-09T05:18:27Z
+updated_at: 2026-11-09T05:21:03Z
 soft_links:
   - wm-hy12yjm0yn9g
 ---
@@ -25,7 +25,7 @@ soft_links:
   - [x] Which verdicts produce a Review section?
   - [x] How are old reviews marked on reopen?
   - [x] Does a struck-through review remain after re-review for a small change?
-  - [ ] What distinguishes small changes from changes that require archive and a new ticket?
+  - [x] What distinguishes small changes from changes that require archive and a new ticket?
   - [x] How are interrupted writes and mismatched status handled?
 - [x] How should a review gap be repaired without violating the frozen child type?
 
@@ -70,3 +70,8 @@ soft_links:
 
 - Q: After re-review, should the struck-through old Review remain in the section, with the new verdict above it?
   A: "小改动留，大的直接archive加新票了". The user chose to retain the old review for small changes and archive the old ticket and add a new one for large changes. The boundary between small and large remains to be clarified.
+
+### Round 7
+
+- Q: By small and large changes, do you mean the existing update tests: same subject with the verdict holding means edit; same subject with the verdict no longer holding means reopen and review; a different subject means archive and replace, regardless of the amount of text changed?
+  A: "我指的就是这个". The user confirmed the existing tests.
