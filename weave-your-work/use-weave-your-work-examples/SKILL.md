@@ -1,7 +1,6 @@
 ---
 name: use-weave-your-work-examples
 description: "Worked examples for weave-your-work: how a target tree is split, how fog arrives as child maps and tasks, how dependencies are set, how the task skills are walked, and how a grill ends with a testimony, a glossary term, and an ADR."
-disable-model-invocation: true
 ---
 
 # Use weave-your-work examples

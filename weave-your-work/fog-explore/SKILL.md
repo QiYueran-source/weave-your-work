@@ -5,15 +5,15 @@ description: "Clear a map's fog: resolve every entry in Not yet specified into a
 
 # Fog explore
 
-A map's `Not yet specified` section holds fog: in-scope content that is not yet specific enough to become a decision, a child, or a right to skip. This skill clears it. When the section is empty, the map's next move is a split, not another round of exploring.
+A map's `Not yet specified` section holds fog: in-scope content that is not yet specific enough to become a decision, a child, or a right to skip. This skill clears it. When no unresolved entry remains, the map's next move is a split, not another round of exploring.
 
 The entries come from `body.md` in the map skill. Explore reads them as written and does not reclassify them.
 
 ## When it runs
 
-The section is not empty. That is the whole trigger.
+The section holds an unresolved entry. That is the whole trigger.
 
-It ends when every entry has been resolved or dropped and the section is empty. When that happens, anything that became splittable is handed to split. The trigger, the completion check, and that hand-off belong to the map operating procedure; this file covers only the clearing.
+It ends when every entry has been resolved or dropped, so no unresolved entry remains. When that happens, anything that became splittable is handed to split. The trigger, the completion check, and that hand-off belong to the map operating procedure; this file covers only the clearing.
 
 ## The skeleton
 

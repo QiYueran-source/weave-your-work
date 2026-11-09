@@ -13,7 +13,7 @@ closed        the review passed, or the direction failed
 Three steps run inside those states:
 
 ```
-open       → explore    while Not yet specified is not empty
+open       → explore    while an unresolved entry remains
 open       → split      when a layer is settled; the first split starts the map
 in_progress→ split      again, as later layers settle
 in_progress→ review     when every child is closed, no fog is left, and coverage is ready to check
@@ -28,17 +28,17 @@ waymark create --category map --title "<the target>" --owner <name> \
   --parent <map> --body-file <the body>
 ```
 
-A root map has no `--parent`. A new map is `open`, has no children, and says as much of its body as the discussion settled: `Target` with its `Why`, and `Acceptance direction` with the default clause and a review point.
+A root map has no `--parent`. A new map is `open`, has no children, and says as much of its body as the discussion settled: `Target` with its `Why`, and `Acceptance direction` with a review point and either the default clause or the specific result the discussion already settled.
 
 Nothing else is required of it at this point. A map that is created and then left alone for a week is in a normal state, not a broken one.
 
 ## Explore
 
-Runs while `Not yet specified` is not empty. `fog-explore` clears it: every entry becomes a decision, a target update, an exclusion, a hand-off to split, or nothing.
+Runs while an unresolved entry remains in `Not yet specified`. `fog-explore` clears it: every entry becomes a decision, a target update, an exclusion, a hand-off to split, or nothing.
 
 Discussion inside that clearing goes through `grill`. Explore calls it; it does not replace it.
 
-Explore is done when the section is empty, and says so in the body. Explore never creates children, so a map can be fully explored and still have nothing under it.
+Explore is done when no unresolved entry remains: every entry is struck through as resolved or deleted, and the body shows it. Explore never creates children, so a map can be fully explored and still have nothing under it.
 
 ## Split
 

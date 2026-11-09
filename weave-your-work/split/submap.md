@@ -6,7 +6,7 @@ A layer splits into child maps when a part cannot be written as one action with 
 
 ## The child body
 
-Write each child body against `body.md` and keep it to what the discussion settled:
+Write each child body against the map skill's `body.md` and keep it to what the discussion settled:
 
 - `Target` is required, with its `Why` line. A child with no `Why` is a title, not a goal.
 - `Acceptance direction` takes the default clause and a review point, unless the discussion produced a specific result the child can be checked against.
@@ -81,6 +81,6 @@ A child written from either one carries a goal nobody agreed to, and its own acc
 ## What this reference does not do
 
 - Choose between child maps and tasks. That is `SKILL.md`.
-- Define a body section. That is `body.md`.
-- Clear the fog a child carries. That is explore, after the split.
+- Define a body section. That is the map skill's `body.md`.
+- Clear the fog a child carries. That is `fog-explore`, after the split.
 - Decide a child's content. That is the grill discussion.

@@ -51,11 +51,11 @@ If a first split is interrupted, inspect status, `split_as`, the recorded plan, 
 - `task.md`: when the parts are executable, and how each task body, field, and parent relation is written.
 - `submap.md`: when the parts are still goals, and how each child map body and parent relation is written.
 
-Both write child bodies against `body.md` in the map skill and field rules in `frontmatter.md`. Neither restates a rule that lives in those files.
+Both write child bodies against the map skill's `body.md` and the field rules in its `frontmatter.md`. Neither restates a rule that lives in those files.
 
 ## What this skill does not do
 
-- Clear fog. That is explore.
+- Clear fog. That is `fog-explore`.
 - Decide a child's content. That is grill.
 - Define a task's body, kind, or fields. That is task design.
 - Move an existing subtree, or change a map that is already settled. That is update.

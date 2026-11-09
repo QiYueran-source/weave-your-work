@@ -1,7 +1,6 @@
 ---
 name: execute-one-task
 description: Advance one task to its end, stopping only where something blocks it.
-disable-model-invocation: true
 ---
 
 # Execute one task

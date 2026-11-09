@@ -6,7 +6,7 @@ A map body says what you want and how someone else will know you got it. This fi
 
 Six sections, in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
 
-A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`. The exception is `Not yet specified`: when its fog has been cleared, its explicit empty marker records that state.
+A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`. The exception is `Not yet specified`: when the fog has been settled and no entry remains, the section carries the marker `(none; the fog is cleared)` instead of being left out.
 
 The body holds the target, decisions, unresolved content, and review evidence; operating instructions live in the procedure.
 
@@ -37,7 +37,7 @@ Why: every new hire currently waits about three weeks, and the teammate who unbl
 Purpose: say how someone other than the owner confirms the target was reached.
 
 Format:
-- When the map has children and no separate observable result exists, use the default clause alone:
+- When completing the children is the whole test, use the default clause alone:
 
   ```
   All children are complete and no further children are needed.
@@ -99,8 +99,9 @@ Purpose: hold the fog — in-scope content that is not yet specific enough to be
 Format:
 - Each entry uses one of the four built-in forms below, or a custom type when none of them fits. Every form carries a second line saying what resolving the entry would change. That line is what tells a reader how much the answer matters; an entry without it is a note, not fog.
 - A resolved entry stays in place, struck through, with a `Resolved on <date>:` line saying what it became and where. The history shows what the map considered before it settled.
+- An entry that is struck through is resolved. A section whose entries are all struck carries no fog even though it still has content; the marker is for a section that ends with no entries.
 - Fog that turned out to be irrelevant may be deleted instead of struck through.
-- When the section is empty, say so: `(none; the fog is cleared)`. A section left out and a section that is empty mean different things, and only one of them is a state worth reporting.
+- When the fog has been settled and no entry remains, say so: `(none; the fog is cleared)`. A section left out and a section that carries the marker mean different things, and only one of them is a state worth reporting.
 
 ### Assumption
 
@@ -260,4 +261,4 @@ Review point: each role's checklist exists and is linked from the first-week pla
 - Changing the hiring bar. Onboarding starts after the offer is accepted.
 ```
 
-The example map has children, so it carries the default clause and no result of its own. A map with no children and a directly checkable target uses the specific result instead.
+The example map carries the default clause because completing its children is the whole test. A map whose target has its own observable outcome states that result instead, whether or not it also has children.
