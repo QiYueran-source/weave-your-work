@@ -3,12 +3,15 @@ schema: 1
 id: wm-0b59r7xfhk73
 title: Map skill
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:25Z
-updated_at: 2026-11-08T10:45:03Z
+updated_at: 2026-11-09T00:28:16Z
+closed_at: 2026-11-09T00:28:16Z
 parent: wm-qhd3twqjzhma
+custom_fields:
+  split_as: submap
 ---
 ## Target
 
@@ -17,7 +20,7 @@ Why: map is the node that answers "what I want"; without this skill the tree has
 
 ## Acceptance direction
 
-All children are complete and no further children are needed: the SKILL.md exists under `weave-your-work/map/`, an example map can be rebuilt from it, and `waymark tree` shows the same structure the example describes.
+All children are complete and no further children are needed: the SKILL.md exists under `weave-your-work/map/`. ~~An example map can be rebuilt from it, and `waymark tree` shows the same structure the example describes.~~ The worked example is the batch the root map names: [Work-weave: general team collaboration skill set](tickets/map/wm-wjwa9081hse1.md).
 
 ## Decisions so far
 
