@@ -44,7 +44,7 @@ A file watcher that pushes messages into a running agent would need a different 
 
 ### Securing the listener and queue
 
-The listener review found that an empty secret disabled signature checks and remote fields could break the line-based queue format. The confirmed fix requires a secret and encodes new records without rewriting existing local queues; the plan and compatibility tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md). The bundled smee client also reserializes forwarded JSON, which can invalidate the original signature. The fix keeps verification strict; a byte-preserving relay remains an open question in the map.
+The listener review found that an empty secret disabled signature checks and remote fields could break the line-based queue format. The confirmed fix requires a secret and encodes new records without rewriting existing local queues; the plan and compatibility tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md). The upstream smee server emits parsed JSON and the bundled client reserializes it, which can invalidate the original signature. The fix keeps verification strict; a byte-preserving relay remains an open question in the map. The [research note](../../../docs/smee-signature-research.md) separates source inspection from live tests and lists candidates to investigate.
 
 ### What was rejected: copying the thread
 
