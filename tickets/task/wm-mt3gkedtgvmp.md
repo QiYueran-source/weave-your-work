@@ -38,6 +38,12 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Check first setup and repeat setup, the preserved mapping, queue resolution from an installed skill, and the listener with a local sample. The live GitHub and smee test remains separate.
 - Do not change the communication protocol or claim to have tested real webhook delivery.
 
+## Session-start queue check (confirmed 2026-11-09)
+
+- Add a read-only Node checker under `bundle/tools/` and its installed copy. Read `handles.toml` beside the script and resolve `[pending].path` from the project root; output the number of queue entries, their titles and links, or nothing for a missing or empty queue. Do not modify the queue or process an issue.
+- Keep the session-start rule as the default. In `bundle/setup.md`, explain that an agent may adapt the checker to a harness's session-start hook only after checking that harness's documentation and verifying the output reaches the agent; otherwise the rule remains the fallback. No harness-specific plugin or file watcher is included.
+- Test missing, empty and populated queues, custom paths, malformed input and read errors; check that the source and installed copies match. Record any harness integration not actually tested.
+
 ## Acceptance signal
 
 `weave-your-work/issue/` holds `SKILL.md`, `github.md`, `gitee.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on GitHub with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. Gitee's write path is a recorded gap.

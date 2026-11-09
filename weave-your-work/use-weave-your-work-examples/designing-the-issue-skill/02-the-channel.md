@@ -38,6 +38,10 @@ A waymark owner is a local name; a GitHub login is a remote one. Guessing the se
 
 The original roster lived under `.waymark/`, although the issue skill rather than waymark reads it. The later discussion chose the installed skill's `bundle/tools/`: each project commits its own copy, and issue setup asks the person responsible for the owner-to-handle mappings. Repeated setup preserves an existing roster. A skill update can replace the installed directory, so the setup guide calls for backing up the roster and restoring it afterward. The migration plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
 
+### Checking the queue at session start
+
+A file watcher that pushes messages into a running agent would need a different integration for each harness. The discussion kept the session-start rule as the default and chose a small read-only Node checker for optional session-start hooks. The checker reports queued items without acting on them; adapting it and verifying that its output reaches an agent remains harness-specific. The scope and tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
+
 ### What was rejected: copying the thread
 
 A local mirror of every comment was considered and dropped for the reason the draft's section 6 gives: it duplicates the remote side, goes stale, and there is no owner for the copy. The ticket holds the decision; the issue holds the conversation.
