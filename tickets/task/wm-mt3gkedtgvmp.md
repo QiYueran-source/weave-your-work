@@ -57,6 +57,13 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Update the listener, tests, source and installed skill instructions and setup. Explain that anyone who knows the channel URL can send or view events, sender identity is not verified, smee is intended for development, and offline listeners may miss events; ask the person to verify uncertain messages on GitHub. Do not configure a real channel or modify the local queue.
 - Test the default path without a secret, including missing or invalid signature headers and reserialized JSON; also test that a configured secret enforces signatures. Retain the queue safety and compatibility tests. Record what has not been verified with a live smee channel or session-start integration.
 
+## Startup catch-up (proposed; repository scope confirmed 2026-11-09)
+
+- On listener startup, use authenticated GitHub access to list all open issues in the current project's repository, with pagination, and filter issue frontmatter for `kind: communicate` and recipients. Do not rely on mention search or scan other repositories. Reuse queue encoding and exact `(url, to)` deduplication; preserve existing entries and the human-approval rule. The current project means the repository identified from its Git remote; do not guess if it cannot be identified.
+- Coordinate the startup scan and live stream to avoid a gap for issues created during startup. If the repository cannot be resolved or the scan fails, report the error clearly rather than claiming catch-up succeeded. Do not add polling or reconnect catch-up; closed issues remain outside this scan.
+- Update the source and installed listener and their setup and skill instructions. Test pagination, filtering, multi-recipient routing, existing entries, repeated startup, scan failure, and an issue arriving during startup in isolated queues. Then test an issue created while offline in a private GitHub repository; leave the existing local queue and persistent configuration unchanged. Session-start notification remains a separate test.
+- The detailed plan is a proposal pending confirmation; the person has confirmed only that catch-up is limited to the current project.
+
 ## Acceptance signal
 
 `weave-your-work/issue/` holds `SKILL.md`, `github.md`, `gitee.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on GitHub with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. Gitee's write path is a recorded gap.

@@ -46,6 +46,10 @@ A file watcher that pushes messages into a running agent would need a different 
 
 The listener review found that remote fields could break the line-based queue format, so new records use JSON encoding without rewriting existing local queues. The first fix also required signature verification, but smee can reserialize JSON and invalidate GitHub's signature; the [research note](../../../docs/smee-signature-research.md) records why. The person chose convenient internal delivery without mandatory signatures instead. The tradeoff is explicit: the channel can be observed or forged by anyone who knows its URL, and queued entries are reminders rather than proof of sender identity. The agent still waits for the person before acting. The current plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
 
+### Catching up after the listener was offline
+
+The first catch-up plan searched open issues mentioning the current account. In two private-repository tests that search missed new issues, although listing the repository's open issues found them. The person limited catch-up to the current project; the proposed replacement lists its open issues at listener startup and filters frontmatter. The test result and proposed plan are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md). The cause of the search misses is not yet known.
+
 ### What was rejected: copying the thread
 
 A local mirror of every comment was considered and dropped for the reason the draft's section 6 gives: it duplicates the remote side, goes stale, and there is no owner for the copy. The ticket holds the decision; the issue holds the conversation.
