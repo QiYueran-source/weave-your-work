@@ -3,11 +3,12 @@ schema: 1
 id: wm-hy12yjm0yn9g
 title: Resolve map skill audit findings
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:42:21Z
-updated_at: 2026-11-09T05:26:15Z
+updated_at: 2026-11-09T05:58:54Z
+closed_at: 2026-11-09T05:58:54Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-0xrcwvnrcc9k
@@ -83,3 +84,10 @@ The design decisions below were confirmed in [the map skill discussion](../../te
 
 - Changing skill files before the design is settled and confirmed.
 - Concurrent issue work.
+
+## Review
+
+passed
+
+- Goal: the discussion `wm-0xrcwvnrcc9k` records the agreed dispositions. The split, map, map-review, update and execution references implement them; `wm-q6477pe7x8tp` records the individual ticket dispositions and checks. The case `weave-your-work/use-weave-your-work-examples/chemistry-research/09-map-improvement-checks.md` separates the real scratch `needs changes` review from static verdict walkthroughs and the untested human-grilled path.
+- Convention: `wm-q6477pe7x8tp` is the actual task child, matching `split_as=task`, and is closed with Result and Review. The map has no explicit dependency edges or unresolved fog; its body has no child index. The older audit fixtures and parallel issue work were not modified. `waymark validate` is reported only as a structural check, not as proof of review.
