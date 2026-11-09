@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url'
 import { parse as parseToml } from 'smol-toml'
 import { parse as parseYaml } from 'yaml'
 import SmeeClient from 'smee-client'
+import { formatEntry, parseQueue } from './queue.mjs'
 
 const DEFAULT_PENDING = 'pending/pending-communications.md'
 const root = process.cwd()
@@ -23,6 +24,11 @@ const toolsDir = path.dirname(fileURLToPath(import.meta.url))
 const port = Number(process.env.PORT || 8765)
 const secret = process.env.WEBHOOK_SECRET || ''
 const smeeUrl = process.env.SMEE_URL || ''
+
+if (!secret.trim()) {
+  console.error('WEBHOOK_SECRET must be set and non-empty')
+  process.exit(1)
+}
 
 function loadConfig() {
   const file = path.join(toolsDir, 'handles.toml')
@@ -60,19 +66,26 @@ function ownerFor(handles, handle) {
   return null
 }
 
-function append(queue, lines) {
-  fs.mkdirSync(path.dirname(queue), { recursive: true })
-  const existing = fs.existsSync(queue)
-    ? fs.readFileSync(queue, 'utf8').split('\n').filter(Boolean)
-    : []
-  const added = lines.filter((line) => {
-    const [head, ...rest] = line.split(' | ')
-    const url = head.replace(/^- /, '')
-    const to = (rest.find((part) => part.startsWith('to=')) || '').split(' ')[0].slice(3)
-    return !existing.some((entry) => entry.includes(url) && entry.includes(`to=${to}`))
-  })
+function append(queue, entries) {
+  let content
+  try {
+    content = fs.readFileSync(queue, 'utf8')
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
+    content = ''
+  }
+  const seen = new Set(parseQueue(content).map(({ url, to }) => JSON.stringify([url, to])))
+  const added = []
+  for (const entry of entries) {
+    const key = JSON.stringify([entry.url, entry.to])
+    if (seen.has(key)) continue
+    seen.add(key)
+    added.push(formatEntry(entry))
+  }
   if (added.length > 0) {
-    fs.appendFileSync(queue, added.join('\n') + '\n')
+    fs.mkdirSync(path.dirname(queue), { recursive: true })
+    const separator = content && !content.endsWith('\n') ? '\n' : ''
+    fs.appendFileSync(queue, separator + added.join('\n') + '\n')
   }
   return added.length
 }
@@ -80,19 +93,23 @@ function append(queue, lines) {
 function queuePayload(payload) {
   if (payload.action !== 'opened') return 0
   const issue = payload.issue || {}
-  const front = parseFrontmatter(issue.body || '')
+  const front = parseFrontmatter(typeof issue.body === 'string' ? issue.body : '')
   if (!front || front.kind !== 'communicate') return 0
-  const recipients = Array.isArray(front.to) ? front.to : [front.to].filter(Boolean)
+  const recipients = Array.isArray(front.to) ? front.to : [front.to]
   const sender = front.from || (issue.user && issue.user.login) || 'unknown'
   const title = issue.title || ''
   const url = issue.html_url || ''
+  if (typeof sender !== 'string' || typeof title !== 'string' || !title.trim() ||
+      typeof url !== 'string' || !url.trim() ||
+      !recipients.length || recipients.some((handle) => typeof handle !== 'string' || !handle.trim())) {
+    throw new Error('Invalid communicate issue fields')
+  }
   const received = new Date().toISOString().slice(0, 16)
   const { handles, pending } = loadConfig()
-  const lines = recipients.map((handle) => {
-    const owner = ownerFor(handles, handle) || 'unknown'
-    return `- ${url} | from=${sender} | to=${handle} (owner=${owner}) | ${title} | ${received}`
-  })
-  return append(queuePath(pending), lines)
+  const entries = recipients.map((handle) => ({
+    url, from: sender, to: handle, owner: ownerFor(handles, handle) || 'unknown', title, received,
+  }))
+  return append(queuePath(pending), entries)
 }
 
 const server = http.createServer((req, res) => {
@@ -101,25 +118,23 @@ const server = http.createServer((req, res) => {
     res.end()
     return
   }
-  let raw = ''
-  req.on('data', (chunk) => {
-    raw += chunk
-  })
+  const chunks = []
+  req.on('data', (chunk) => chunks.push(chunk))
   req.on('end', () => {
-    if (secret) {
-      const signature = req.headers['x-hub-signature-256'] || ''
-      const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(raw).digest('hex')
-      const a = Buffer.from(signature)
-      const b = Buffer.from(expected)
-      if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
-        res.writeHead(401)
-        res.end('bad signature')
-        return
-      }
+    const raw = Buffer.concat(chunks)
+    const signature = req.headers['x-hub-signature-256'] || ''
+    const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(raw).digest('hex')
+    const a = Buffer.from(signature)
+    const b = Buffer.from(expected)
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      res.writeHead(401)
+      res.end('bad signature')
+      return
     }
     let payload
     try {
-      payload = JSON.parse(raw)
+      payload = JSON.parse(raw.toString('utf8'))
+      if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw new Error('bad payload')
     } catch {
       res.writeHead(400)
       res.end('bad json')
@@ -131,9 +146,15 @@ const server = http.createServer((req, res) => {
       res.end('ignored')
       return
     }
-    const queued = queuePayload(payload)
-    res.writeHead(202)
-    res.end(`queued ${queued}\n`)
+    try {
+      const queued = queuePayload(payload)
+      res.writeHead(202)
+      res.end(`queued ${queued}\n`)
+    } catch (error) {
+      console.error(`Cannot queue communication: ${error.message}`)
+      res.writeHead(500)
+      res.end('cannot queue communication\n')
+    }
   })
 })
 

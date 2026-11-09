@@ -27,7 +27,9 @@ cd <repo>
 WEBHOOK_SECRET=<secret> SMEE_URL=https://smee.io/<id> node <skill-dir>/bundle/tools/listener.mjs
 ```
 
-One process: the smee client connects to the channel, forwards each event to the local `/webhook`, and the receiver verifies `X-Hub-Signature-256` before writing. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs alone, which is how the local test works.
+One process: the smee client connects to the channel and forwards each event to the local `/webhook`. `WEBHOOK_SECRET` must be non-empty, including for the endpoint-only local test. The receiver verifies `X-Hub-Signature-256` against the received bytes before writing; missing or invalid signatures are rejected. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs alone.
+
+The bundled smee client reserializes JSON before forwarding it. If this changes the bytes signed by GitHub, signature verification fails and the event is not queued. Do not disable signature verification to work around this; check the listener log and use catch-up for missed messages. Byte-preserving delivery through this relay is not guaranteed.
 
 ## Rules
 
@@ -87,7 +89,7 @@ The checker reads the queue without changing it. With entries it prints their co
    systemctl --user enable --now issue-listener
    ```
 
-   Without a service, run the command in a terminal while you work; the catch-up covers the sessions where it was not running.
+   Without a service, run the command in a terminal while you work. Use catch-up to look for issues missed while it was not running.
 
 4. **Handles and queue.** In the project's installed issue skill, use `.agents/skills/issue/bundle/tools/handles.toml`:
 
@@ -115,7 +117,7 @@ The checker reads the queue without changing it. With entries it prints their co
      --json number,title,repository,url
    ```
 
-   Keep the issues whose body opens with `kind: communicate` and whose `tickets` are local; append the missing ones to the queue. This is a start-of-session check, not a polling loop.
+   Keep the issues whose body opens with `kind: communicate` and whose `tickets` are local; append the missing ones to the queue using the JSON list-item format in `SKILL.md`. Encode fields with a JSON serializer, not string interpolation. This is a start-of-session check, not a polling loop.
 
 ## Verify
 

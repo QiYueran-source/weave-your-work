@@ -97,7 +97,7 @@ gh search issues --mentions @me --state open --limit 50 \
   --json number,title,repository,url
 ```
 
-Keep the issues whose body opens with `kind: communicate` and whose tickets are local; queue the missing ones. `gh api notifications` is the other source: filter by `reason` (`mention`, `assign`, `comment`) and parse the body's frontmatter.
+Keep the issues whose body opens with `kind: communicate` and whose tickets are local; queue the missing ones using the JSON list-item format in `SKILL.md`. Encode fields with a JSON serializer, not string interpolation. `gh api notifications` is the other source: filter by `reason` (`mention`, `assign`, `comment`) and parse the body's frontmatter.
 
 ## What comes back
 

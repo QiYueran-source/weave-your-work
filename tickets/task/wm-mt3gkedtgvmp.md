@@ -69,4 +69,8 @@ The configuration migration is implemented: the tracked installed skill holds th
 
 The read-only Node queue checker is implemented in the source and installed skill. Tests cover missing and empty queues, a custom root-relative path, titles with separators, control-character escaping, unchanged queue contents, invalid entries and configuration, and a queue read error. A copied skill includes the checker. No harness hook or new-session delivery has been tested.
 
-Next: review the skill, decide how to address the listener security issues recorded in the map, and verify session-start notification in the intended harness.
+The security fix now rejects startup without a secret, checks the received bytes, and stores new entries as JSON list items. Seven local integration tests cover missing and invalid signatures, split UTF-8, malicious fields, multiple recipients, redelivery, mixed legacy entries, missing final newlines, and malformed queues. The local test also confirms that signing noncanonical JSON and forwarding a reserialized body causes rejection; it does not contact smee.
+
+The bundled smee client reserializes the forwarded JSON; this can invalidate GitHub's signature even when a delivery is legitimate. Strict verification remains in place, and choosing a byte-preserving relay is an open question in the map. The earlier live test does not prove that all payloads survive reserialization unchanged.
+
+Next: review the skill, resolve the relay limitation, and verify session-start notification in the intended harness.
