@@ -48,10 +48,10 @@ async function freePort() {
   return port
 }
 
-async function startListener(t, f) {
+async function startListener(t, f, webhookSecret = secret) {
   const port = await freePort()
   const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment({ WEBHOOK_SECRET: secret, PORT: String(port) }),
+    cwd: f.root, env: environment({ WEBHOOK_SECRET: webhookSecret ?? undefined, PORT: String(port) }),
     stdio: ['ignore', 'pipe', 'pipe'],
   })
   let output = ''
@@ -126,16 +126,33 @@ function checker(f) {
   })
 }
 
-test('listener refuses missing, empty and whitespace-only secrets', async (t) => {
+test('listener without a secret accepts unsigned and reserialized messages', async (t) => {
   const f = await fixture(t)
-  for (const value of [undefined, '', '   ']) {
-    const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-      cwd: f.root, env: environment({ WEBHOOK_SECRET: value }), encoding: 'utf8', timeout: 5000,
-    })
-    assert.equal(result.status, 1, result.stderr)
-    assert.match(result.stderr, /WEBHOOK_SECRET.*non-empty/)
-    assert.equal(await queueText(f), '')
-  }
+  const port = await startListener(t, f, '')
+  const missing = issue({ url: 'https://example.test/issues/1', title: 'Unsigned' })
+  assert.deepEqual(await request(port, missing, { signature: 'missing' }), { status: 202, body: 'queued 1\n' })
+  const bad = issue({ url: 'https://example.test/issues/2', title: 'Invalid signature' })
+  assert.deepEqual(await request(port, bad, { signature: 'bad' }), { status: 202, body: 'queued 1\n' })
+  const rewritten = issue({ url: 'https://example.test/issues/3', title: 'Reserialized' })
+  const originalBytes = Buffer.from(JSON.stringify(rewritten, null, 2))
+  assert.deepEqual(await request(port, rewritten, { signedRaw: originalBytes }), { status: 202, body: 'queued 1\n' })
+  assert.equal((await queueText(f)).trimEnd().split('\n').length, 3)
+})
+
+test('listener starts when WEBHOOK_SECRET is absent', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f, null)
+  assert.deepEqual(await request(port, issue(), { signature: 'missing' }), { status: 202, body: 'queued 1\n' })
+})
+
+test('listener rejects a whitespace-only configured secret', async (t) => {
+  const f = await fixture(t)
+  const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root, env: environment({ WEBHOOK_SECRET: '   ' }), encoding: 'utf8', timeout: 5000,
+  })
+  assert.equal(result.status, 1, result.stderr)
+  assert.match(result.stderr, /WEBHOOK_SECRET.*whitespace/)
+  assert.equal(await queueText(f), '')
 })
 
 test('listener verifies signatures against the original bytes, including split UTF-8', async (t) => {

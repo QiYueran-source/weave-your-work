@@ -44,7 +44,7 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Keep the session-start rule as the default. In `bundle/setup.md`, explain that an agent may adapt the checker to a harness's session-start hook only after checking that harness's documentation and verifying the output reaches the agent; otherwise the rule remains the fallback. No harness-specific plugin or file watcher is included.
 - Test missing, empty and populated queues, custom paths, malformed input and read errors; check that the source and installed copies match. Record any harness integration not actually tested.
 
-## Listener security fix (confirmed)
+## Earlier listener security fix (superseded in part)
 
 - Require a non-empty `WEBHOOK_SECRET` before the listener binds; reject requests with missing or invalid `X-Hub-Signature-256`, verifying the original request bytes before parsing or queueing. Do not add an unsigned mode.
 - Write new queue records as one structured JSON object per Markdown list line, encoding every remote value so newlines, separators and control characters cannot create extra records. Keep the queue file and path. Update the checker to read both the new records and existing legacy lines without rewriting the existing file; old entries remain untrusted and their integrity cannot be retroactively guaranteed. Update the skill and setup documentation to explain the format and compatibility.
@@ -77,6 +77,6 @@ The read-only Node queue checker is implemented in the source and installed skil
 
 The security fix now rejects startup without a secret, checks the received bytes, and stores new entries as JSON list items. Seven local integration tests cover missing and invalid signatures, split UTF-8, malicious fields, multiple recipients, redelivery, mixed legacy entries, missing final newlines, and malformed queues. The local test also confirms that signing noncanonical JSON and forwarding a reserialized body causes rejection; it does not contact smee.
 
-The upstream smee server emits parsed JSON and the bundled client reserializes it, which can invalidate GitHub's signature even when a delivery is legitimate. Strict verification remains in place. [Research](../../docs/smee-signature-research.md) records the sources, candidate alternatives, and what has not been tested. Choosing a byte-preserving relay remains an open question in the map. The earlier live test does not prove that all payloads survive reserialization unchanged.
+The upstream smee server emits parsed JSON and the bundled client reserializes it, which can invalidate GitHub's signature even when a delivery is legitimate. [Research](../../docs/smee-signature-research.md) records the sources and candidate alternatives. The default smee path now accepts events without verification; a configured secret still enables strict verification. Local tests cover both modes and queue safeguards. This change has not been tested through a live smee channel, and the existing local test queue was not changed.
 
-Next: review the skill, resolve the relay limitation, and verify session-start notification in the intended harness.
+Next: review the skill, verify default delivery through a live smee channel, and verify session-start notification in the intended harness.

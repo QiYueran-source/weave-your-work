@@ -24,12 +24,12 @@ Run it from the repository root:
 
 ```bash
 cd <repo>
-WEBHOOK_SECRET=<secret> SMEE_URL=https://smee.io/<id> node <skill-dir>/bundle/tools/listener.mjs
+SMEE_URL=https://smee.io/<id> node <skill-dir>/bundle/tools/listener.mjs
 ```
 
-One process: the smee client connects to the channel and forwards each event to the local `/webhook`. `WEBHOOK_SECRET` must be non-empty, including for the endpoint-only local test. The receiver verifies `X-Hub-Signature-256` against the received bytes before writing; missing or invalid signatures are rejected. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs alone.
+One process: the smee client connects to the channel and forwards each event to the local `/webhook`. By default the listener does not verify signatures; queue entries are unauthenticated reminders, not proof of sender identity. `PORT` defaults to 8765. With `SMEE_URL` empty, the HTTP endpoint runs alone.
 
-The bundled smee client reserializes JSON before forwarding it. If this changes the bytes signed by GitHub, signature verification fails and the event is not queued. Do not disable signature verification to work around this; check the listener log and use catch-up for missed messages. Byte-preserving delivery through this relay is not guaranteed.
+If `WEBHOOK_SECRET` is set to a non-empty value, the listener verifies `X-Hub-Signature-256` against received bytes and rejects missing or invalid signatures. Smee can reserialize JSON, so a valid GitHub signature can fail even with the correct secret. Leave `WEBHOOK_SECRET` unset for the default smee setup; use it only with a transport verified to preserve the signed bytes. Whitespace-only values are rejected at startup.
 
 ## Rules
 
@@ -51,19 +51,18 @@ The checker reads the queue without changing it. With entries it prints their co
 
 ## External steps
 
-1. **Channel.** Open `https://smee.io`, create a channel, and copy its URL, `https://smee.io/<id>`. The channel id is the secret; anyone who has it can post events to the client, so keep it out of the repository.
+1. **Channel.** Open `https://smee.io`, create a channel, and copy its URL, `https://smee.io/<id>`. Keep the URL private and out of the repository: anyone who knows it can post or view events. Smee is intended for development, not production. With default settings the listener cannot verify who sent an event; if a message is uncertain, check the issue on GitHub before acting.
 
 2. **Webhook.** In the repository: Settings → Webhooks → Add webhook.
    - **Payload URL**: the smee channel URL.
    - **Content type**: `application/json`.
-   - **Secret**: a random string. Keep it as `WEBHOOK_SECRET` for the listener; it is not committed.
+   - **Secret**: leave empty for this default smee setup; the listener does not authenticate the sender.
    - **Events**: Issues, Issue comments.
    - **Active**: yes.
 
 3. **Service.** An environment file outside the repository, `~/.config/work-weave/smee.env` (mode 600):
 
    ```
-   WEBHOOK_SECRET=<secret>
    SMEE_URL=https://smee.io/<id>
    ```
 
@@ -126,4 +125,4 @@ The checker reads the queue without changing it. With entries it prints their co
 3. Open a new session; the rule should surface the count and title.
 4. Reply and close the issue; the queue line stays as the record of what arrived.
 
-If the queue stays empty, check the webhook's Recent Deliveries, the listener's log for the smee connection, the signature check, and the frontmatter's `kind: communicate`.
+If the queue stays empty, check the webhook's Recent Deliveries, the listener's smee connection and log, and the frontmatter's `kind: communicate`. GitHub reporting success at smee does not prove the local listener received the event. If `WEBHOOK_SECRET` is set, also check for signature rejection.

@@ -2,10 +2,10 @@
 // Receive a smee webhook stream and queue communicate issues.
 //
 // Run from the repository root:
-//   WEBHOOK_SECRET=<secret> SMEE_URL=https://smee.io/<id> node <skill>/bundle/tools/listener.mjs
+//   SMEE_URL=https://smee.io/<id> node <skill>/bundle/tools/listener.mjs
 //
-// Without SMEE_URL the HTTP endpoint runs alone, which is how the local test
-// exercises it. The signature is checked before anything is written.
+// Without SMEE_URL the HTTP endpoint runs alone. WEBHOOK_SECRET optionally
+// enables signature verification for transports that preserve request bytes.
 
 import http from 'node:http'
 import crypto from 'node:crypto'
@@ -25,8 +25,8 @@ const port = Number(process.env.PORT || 8765)
 const secret = process.env.WEBHOOK_SECRET || ''
 const smeeUrl = process.env.SMEE_URL || ''
 
-if (!secret.trim()) {
-  console.error('WEBHOOK_SECRET must be set and non-empty')
+if (secret && !secret.trim()) {
+  console.error('WEBHOOK_SECRET must not contain only whitespace')
   process.exit(1)
 }
 
@@ -122,14 +122,16 @@ const server = http.createServer((req, res) => {
   req.on('data', (chunk) => chunks.push(chunk))
   req.on('end', () => {
     const raw = Buffer.concat(chunks)
-    const signature = req.headers['x-hub-signature-256'] || ''
-    const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(raw).digest('hex')
-    const a = Buffer.from(signature)
-    const b = Buffer.from(expected)
-    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
-      res.writeHead(401)
-      res.end('bad signature')
-      return
+    if (secret) {
+      const signature = req.headers['x-hub-signature-256'] || ''
+      const expected = 'sha256=' + crypto.createHmac('sha256', secret).update(raw).digest('hex')
+      const a = Buffer.from(signature)
+      const b = Buffer.from(expected)
+      if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+        res.writeHead(401)
+        res.end('bad signature')
+        return
+      }
     }
     let payload
     try {
@@ -160,6 +162,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(port, '127.0.0.1', () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
+  if (!secret) console.warn('Webhook signatures are not verified; queued messages are untrusted')
   if (smeeUrl) {
     const smee = new SmeeClient({
       source: smeeUrl,
