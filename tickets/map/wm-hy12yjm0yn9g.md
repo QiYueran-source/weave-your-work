@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:42:21Z
-updated_at: 2026-11-09T05:05:19Z
+updated_at: 2026-11-09T05:08:26Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-0xrcwvnrcc9k
@@ -33,6 +33,10 @@ Review point: the discussion records the choices, each affected skill agrees wit
 - An acceptance standard known to be ambiguous before review goes to explore as fog. Ambiguity first discovered during review returns needs discussion and goes to grill, without a guessed standard. (user confirmed)
 - An edge may connect a map that needs another map's output to that producer. Tasks that need the missing output wait until it is available; unrelated tasks may run. Parent-child is not an explicit dependency edge, and tasks carry no dependency edges. (user confirmed)
 
+- A failed closed dependency does not by itself authorize proceeding: check whether the required output exists and is usable. If not, the waiting work cannot execute or be accepted; the owner decides whether to wait for a replacement or adjust the target and dependency, without automatically changing the edge. (user confirmed)
+- Keep the full acceptance direction on the map. Unclear uncovered work stays in Not yet specified; planned tasks in testimony are not completed work. Review requires actual evidence for every acceptance requirement. (user confirmed)
+- When a review gap was already required by a task's acceptance signal, use update to decide whether to reopen, fix, and review that task. When the task met its signal but the parent omitted a new requirement, discuss the target or structure rather than automatically create a task dependent on a sibling's output. (user confirmed)
+
 ## Not yet specified
 
 - ~~Decision to make: which parent writes belong to a first split and later splits?~~
@@ -45,14 +49,14 @@ Review point: the discussion records the choices, each affected skill agrees wit
   Resolved on 2026-11-09: permit a map edge for required output and hold only tasks that actually need it.
 - ~~Decision to make: how do successive task layers cover the parent acceptance direction?~~
   Resolved on 2026-11-09: coverage is cumulative; uncovered work remains visible and prevents premature review.
-- Decision to make: when a dependency closes as failed, may the waiting map proceed?
-  Why it matters: closed is not necessarily a successful producer result.
-- Decision to make: where does uncovered acceptance work stay visible across partial splits?
-  Why it matters: planned work in testimony is not an active child and cannot by itself make a map complete.
-- Decision to make: what evidence and timing does a map reviewer check before recording a verdict?
-  Why it matters: the audit missed a type mismatch, missing task results, and a reopened child.
-- Decision to make: how is a review gap repaired without violating the frozen child type?
-  Why it matters: the audit's second task read a sibling task's output, which the current split rules forbid.
+- ~~Decision to make: when a dependency closes as failed, may the waiting map proceed?~~
+  Resolved on 2026-11-09: check actual output and usability; the owner decides the next disposition without automatic edge changes.
+- ~~Decision to make: where does uncovered acceptance work stay visible across partial splits?~~
+  Resolved on 2026-11-09: keep the complete acceptance direction; unclear work stays as fog, and review requires evidence rather than plans.
+- Decision to make: should map review write a Review section, and what would that cost?
+  Why it matters: persistent evidence may prevent unsupported verdicts but changes the map body and update rules.
+- ~~Decision to make: how is a review gap repaired without violating the frozen child type?~~
+  Resolved on 2026-11-09: use update for a gap already promised by a task; otherwise discuss the new requirement or structure first.
 
 ## Out of scope
 

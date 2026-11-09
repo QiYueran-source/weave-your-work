@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:41:22Z
-updated_at: 2026-11-09T05:05:00Z
+updated_at: 2026-11-09T05:08:26Z
 soft_links:
   - wm-hy12yjm0yn9g
 ---
@@ -19,10 +19,10 @@ soft_links:
 - [x] How should map review inspect child type, outcome, and evidence?
 - [x] How should incomplete or ambiguous acceptance standards reach explore and review?
 - [x] What is the meaning of dependencies when a later map needs an earlier output?
-- [ ] When a dependency closes as failed, may the waiting map proceed?
-- [ ] How is uncovered acceptance work kept visible across partial splits?
-- [ ] What evidence and timing does a map reviewer check before recording a verdict?
-- [ ] How should a review gap be repaired without violating the frozen child type?
+- [x] When a dependency closes as failed, may the waiting map proceed?
+- [x] How is uncovered acceptance work kept visible across partial splits?
+- [ ] What is the cost of adding a map Review section, and should the map have one?
+- [x] How should a review gap be repaired without violating the frozen child type?
 
 ## Discussion
 
@@ -39,3 +39,12 @@ soft_links:
 - Q: Should a standard already known to be ambiguous go to explore before review, while ambiguity first discovered in review returns needs discussion and goes to grill?
 - Q: Should dependency edges allow a later map to require an earlier map's output, with only tasks needing the missing output waiting, while unrelated tasks can run? Parent-child is not a dependency edge; tasks carry no dependency edges.
 - A: "都按推荐吧". The user accepted all five recommendations.
+
+### Round 3
+
+- Q: If a dependency closes as failed, should the owner check whether the required output actually exists and is usable, keeping execution or acceptance waiting when it does not, and decide whether to wait for a replacement or adjust the target and dependency without automatically changing the edge?
+- Q: Should the full acceptance direction remain on the parent, unclear uncovered work remain in Not yet specified, and the reviewer require actual evidence for all requirements rather than count planned tasks as completed?
+- Q: If review finds a gap already required by a task's acceptance signal, should update determine whether to reopen, fix, and review that task; if the task met its own signal but the parent omitted a new requirement, should the owner discuss the target or structure instead of automatically creating a sibling task dependent on its output?
+- A: "其他按推荐". The user accepted these three recommendations.
+- Q: Should the map keep no Review section and report the checks outside its body?
+  A: "9.map如果加review章节，成本如何". The user asked for the cost of adding a Review section; this decision remains open.
