@@ -21,7 +21,7 @@ The owner reviews and closes. A non-owner who has findings reports them to the o
 
 The map: `Target`, `Acceptance direction`, the review point under it, and `Decisions so far` for what changed since the map was split.
 
-The actual children: compare each type with `split_as`, read status and outcome, and inspect failed outcomes and replacements. Read task `Result`, `Review`, and actual deliverables against the map's acceptance direction. Read child maps' Review and supporting evidence; for a legacy child map without Review, inspect its acceptance direction, children, and available evidence without inventing a past review. `waymark validate` checks structure; it does not establish semantic acceptance.
+The actual children: compare each type with `split_as`, read status and outcome, and inspect failed outcomes and replacements. Read task `Result`, `Review`, and actual deliverables against the map's acceptance direction. A task closed before task-review existed may lack Review: inspect its Acceptance signal, Result, and actual deliverables without inventing a past review. Missing evidence is not a pass. Read child maps' Review and supporting evidence; for a legacy child map without Review, inspect its acceptance direction, children, and available evidence without inventing a past review. `waymark validate` checks structure; it does not establish semantic acceptance.
 
 The rules: `body.md` for the body shape, the split skill for the child rules, and `map/frontmatter.md` for dependency readiness and required outputs, including failed dependencies.
 
