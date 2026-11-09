@@ -60,6 +60,8 @@ The first round did not test the three non-passing review verdicts, a child reop
 
 ## Second round: exceptional review paths
 
+The following records the rules in force during the run. The later design moves the task-layer plan to testimony, permits cumulative task-layer coverage, and adds a map Review section. No retroactive review was performed under those new rules; the other recorded defects and limitations still need to be checked against actual evidence.
+
 The [second audit root](map-audit/work/map/wm-91h5dy4pmtem.md) is a sibling of the first root. Its scenarios are deliberately constructed workflow fixtures. Waymark does not select a verdict or enforce map-review rules. The sequence below records the operator's observed command output; the current tickets alone do not preserve every intermediate status, review, or earlier file version.
 
 ### Needs changes
