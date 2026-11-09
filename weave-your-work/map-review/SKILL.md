@@ -9,7 +9,7 @@ A map is not accepted because its owner says the children are done. The review r
 
 ## When it runs
 
-Every child is closed. Moving a map to the point where it can be reviewed belongs to the operating procedure; this file is the check itself.
+The map has at least one child, every child is closed, and each dependency is closed. Check required output availability, including failed blockers, using the map skill's `frontmatter.md` before accepting the map. Moving a map to the point where it can be reviewed belongs to the operating procedure; this file is the check itself.
 
 A map still carrying fog or known uncovered acceptance work is not ready. Send known ambiguity to `fog-explore` first. Completed and planned layers together must cover the full direction, but planned work is not evidence; review requires evidence for every requirement. A gap first discovered during review receives the appropriate verdict below.
 
@@ -31,7 +31,7 @@ The review point is not a checklist to open first. It was written before the wor
 
 **Goal check**: did the map do what its `Acceptance direction` says? Read the direction line by line and the review point with it. Every line has to be answered by what the map and its children delivered.
 
-**Convention check**: was the map built to the rules? Check the six-section body, actual child types against `split_as`, no children index in the body, dependencies against `frontmatter.md`, and ticket write ownership.
+**Convention check**: was the map built to the rules? Check the body shape and applicable sections against `body.md`, actual child types against `split_as`, no children index in the body, dependencies against `frontmatter.md`, and ticket write ownership. Optional empty sections and a legacy Review that never existed are not required retroactively.
 
 Read the two separately and report them separately. One holding does not cover the other, and merging them hides a failing axis behind a passing one.
 
@@ -51,7 +51,7 @@ Every finding names its source: the acceptance direction line it did not meet, t
 
 Write `Review` for all four verdicts, including the verdict, separate goal and convention checks with evidence, and any unresolved question. Cite evidence for passing checks as well as sources for findings. Preserve invalidated struck-through reviews on same-subject re-review, as `map/body.md` and `update` specify.
 
-`passed` and `wrong direction`: close the map. With `wrong direction`, also write `outcome=failed` before closing.
+`passed` and `wrong direction`: close the map. With `wrong direction`, write `outcome=failed` before closing. If a failed outcome remains from an interrupted or invalidated review and the owner has freshly established `passed`, clear it with `waymark field update <map> --clear outcome` before closing; do not clear a failed outcome merely to make the fields match.
 
 `needs changes`: record the gap and its source. If a task's acceptance signal already required the missing work, use `update` to decide whether to reopen, fix, and re-review that task. If the task met its signal but the parent omitted a new requirement, discuss the target or structure first; do not automatically create a task dependent on a sibling's output. Respect the map's frozen child type.
 

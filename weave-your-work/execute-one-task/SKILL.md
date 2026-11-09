@@ -20,7 +20,7 @@ Check the body against its kind: `Action` and `Acceptance signal` are there; `Fa
 
 If `waiting_on` is set, stop. The owner clears it after handling the answer; the run does not guess that the answer arrived.
 
-If `## Review` says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, the ticket should already be closed; stop.
+Read the current, unstruck verdict in `## Review`. If it says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, the ticket should already be closed; stop. A struck-through Review with an invalidation reason is historical, not a current pass: after `update` reopens the task, execute the reopened work and let task review replace the section.
 
 Read the map above it. Its `Target` says why the task matters; its `Acceptance direction` says what the branch is for. Work done correctly against the wrong map is still wrong work.
 
