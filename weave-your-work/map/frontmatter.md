@@ -24,7 +24,7 @@ Waymark checks that a field is declared in `.waymark/config.toml`; it does not c
 | Field | Values | Who writes it | Rule |
 |---|---|---|---|
 | `split_as` | `submap`, `task` | split, at the map's first split | The type is frozen for the map's life. A direction that needs the other type opens a sibling map; this field is never flipped. |
-| `outcome` | `failed` | review, when a node closes as a failed attempt | Absent means the node closed as intended. Only `failed` is written; a passing close is carried by `closed` and needs no field. |
+| `outcome` | `failed` | review, when a node closes as a failed attempt | Only `failed` is written; a passing close needs no outcome field. Absence alone does not establish a pass: inspect the Review, status and evidence. |
 | `task_kind` | `delivery`, `probe` | split, when it creates the task | Task tickets only, written explicitly at creation. What the two kinds mean is task design's `kind.md`. |
 
 Task front matter beyond `task_kind` — `reversibility`, `needs_human`, `waiting_on` — belongs to the task skill. The dependency rules below are about maps; a task never carries an edge, and the task skill says why.
