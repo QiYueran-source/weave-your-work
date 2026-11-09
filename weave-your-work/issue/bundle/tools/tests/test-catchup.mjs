@@ -130,12 +130,12 @@ async function finish(listener, outcome = 'complete') {
   await waitFor(() => listener.output().includes(`Catch-up ${outcome}:`), `catch-up ${outcome}`, listener.output)
 }
 
-function issue(number, { to = ['alice-handle'], title = `Issue ${number}`, body, from = 'sender', ...extra } = {}) {
+function issue(number, { to = 'alice-handle', title = `Issue ${number}`, body, from = 'sender', category = 'request', tickets = ['wm-test'], ...extra } = {}) {
   return {
     html_url: `https://github.com/example/project/issues/${number}`,
     title,
     state: 'open',
-    body: body ?? `---\nkind: communicate\nfrom: ${JSON.stringify(from)}\nto: ${JSON.stringify(to)}\n---\nBody`,
+    body: body ?? `---\nkind: communicate\ncategory: ${category}\nfrom: ${JSON.stringify(from)}\nto: [${JSON.stringify(to)}]\ntickets: ${JSON.stringify(tickets)}\n---\nBody`,
     user: { login: 'author' },
     ...extra,
   }
@@ -180,19 +180,21 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
   const original = `- ${JSON.stringify(existing)}\n`
   await fs.writeFile(f.queue, original)
   const first = [
-    issue(1, { to: ['alice-handle', 'bob-handle', 'bob-handle', 'unmapped', 'gitee-only'] }),
+    issue(1, { to: 'bob-handle' }),
     issue(2, { body: '---\nkind: task\nto: alice-handle\n---\n' }),
     issue(3, { pull_request: { url: 'https://api.github.com/repos/example/project/pulls/3' } }),
     issue(4, { body: '---\nkind: communicate\nto: [broken\n---\n' }),
     issue(5, { title: '' }),
     issue(7, { state: 'closed' }),
-    issue(8, { to: [null] }),
+    issue(8, { body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: [alice-handle, bob-handle]\ntickets: [wm-test]\n---\n' }),
+    issue(9, { body: '---\nkind: communicate\nfrom: sender\nto: [alice-handle]\ntickets: [wm-test]\n---\n' }),
+    issue(12, { to: 'unmapped' }),
     null,
-    ...Array.from({ length: 92 }, (_, index) => issue(100 + index, { body: 'ordinary issue' })),
+    ...Array.from({ length: 90 }, (_, index) => issue(100 + index, { body: 'ordinary issue' })),
   ]
   assert.equal(first.length, 100)
   await stage(f, 1, first)
-  await stage(f, 2, [issue(6, { to: 'alice-handle', title: 'Second page' }), issue(1, { to: ['bob-handle'] })])
+  await stage(f, 2, [issue(6, { to: 'alice-handle', title: 'Second page' }), issue(1, { to: 'bob-handle' })])
   const listener = await start(f)
   await finish(listener)
   assert.ok((await queue(f)).startsWith(original))
@@ -214,19 +216,19 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
 
 test('webhook stays available during a delayed scan and does not duplicate its issue', async (t) => {
   const f = await fixture(t)
-  const live = issue(10, { to: ['alice-handle', 'bob-handle'], title: 'During startup' })
+  const live = issue(10, { to: 'alice-handle', title: 'During startup' })
   await stage(f, 1, [live, issue(11, { title: 'Previously open' })])
   await fs.writeFile(path.join(f.pages, 'block-1'), '')
   const listener = await start(f)
   await waitFor(() => exists(path.join(f.pages, 'started-1')), 'blocked GitHub request', listener.output)
   assert.ok(!listener.output().includes('Catch-up complete:'))
   const response = await webhook(listener.port, { action: 'opened', issue: live })
-  assert.deepEqual(response, { status: 202, body: 'queued 2\n' })
+  assert.deepEqual(response, { status: 202, body: 'queued 1\n' })
   await fs.writeFile(path.join(f.pages, 'release-1'), '')
   await finish(listener)
   const found = await entries(f)
   assert.deepEqual(found.map(({ url, to }) => [url, to]), [
-    [live.html_url, 'alice-handle'], [live.html_url, 'bob-handle'],
+    [live.html_url, 'alice-handle'],
     ['https://github.com/example/project/issues/11', 'alice-handle'],
   ])
 })

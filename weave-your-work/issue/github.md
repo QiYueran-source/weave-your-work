@@ -56,7 +56,7 @@ gh issue create --repo <owner>/<repo> \
 
 The body starts with the frontmatter, then the `@handle` mentions, the ask, the context, and how to reply. Write it to stdin. The command prints the new issue's URL.
 
-Add `--assignee <login>` for each `to`, repeating the flag for several recipients. The assignment puts the issue in each dashboard; the `@handle` in the body is the notification. If an assignment is refused, file without it, keep the mention, and tell the recipient out of band.
+Add `--assignee <login>` for the single `to` handle. The assignment puts the issue in that dashboard; the `@handle` in the body is the notification. If the assignment is refused, file without it, keep the mention, and tell the recipient out of band.
 
 No labels and no title prefix: the frontmatter's `kind: communicate` is the marker.
 
@@ -90,7 +90,7 @@ The closing comment is the pointer the remote side keeps. `--reason completed` i
 
 ## Catch-up
 
-The listener connects to smee first, then at startup uses authenticated `gh` to list all pages of open issues in the current project GitHub repository identified by git `origin`. It selects issues with `kind: communicate` frontmatter and `to` recipients matching configured GitHub handles, and queues them with deduplication. Closed issues are excluded. Errors are logged; the listener does not poll or scan again on reconnect. The scan only queues reminders; a person must ask before an issue is acted on.
+The listener connects to smee first, then at startup uses authenticated `gh` to list all pages of open issues in the current project GitHub repository identified by git `origin`. It queues messages that match the communicate issue format and whose `to` is a configured GitHub handle, deduplicating by issue URL and recipient. Closed issues are excluded. Errors are logged; the listener does not poll or scan again on reconnect. The scan only queues reminders; a person must ask before an issue is acted on.
 
 ## What comes back
 

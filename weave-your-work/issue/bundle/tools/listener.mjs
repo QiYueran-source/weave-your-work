@@ -93,34 +93,48 @@ function append(queue, entries) {
   return added.length
 }
 
-function queuePayload(payload, { mappedGithubOnly = false } = {}) {
+const CATEGORIES = new Set(['request', 'result', 'comment'])
+
+// Returns the protocol fields, or the list of fields that do not match the
+// communicate issue format in communicate-issue.md.
+function communicationFields(front) {
+  if (!front || typeof front !== 'object' || Array.isArray(front)) return ['frontmatter']
+  if (front.kind !== 'communicate') return null
+  const errors = []
+  if (!CATEGORIES.has(front.category)) errors.push('category')
+  if (typeof front.from !== 'string' || !front.from.trim()) errors.push('from')
+  if (!Array.isArray(front.to) || front.to.length !== 1 ||
+      typeof front.to[0] !== 'string' || !front.to[0].trim()) errors.push('to')
+  if (!Array.isArray(front.tickets) || front.tickets.length === 0 ||
+      front.tickets.some((id) => typeof id !== 'string' || !id.trim())) errors.push('tickets')
+  if (errors.length) return errors
+  return { category: front.category, from: front.from, to: front.to[0], tickets: front.tickets }
+}
+
+function queuePayload(payload, { mappedOnly = false, label = 'issue' } = {}) {
   if (payload.action !== 'opened') return 0
   const issue = payload.issue || {}
   const front = parseFrontmatter(typeof issue.body === 'string' ? issue.body : '')
-  if (!front || front.kind !== 'communicate') return 0
-  const recipients = Array.isArray(front.to) ? front.to : [front.to]
-  const sender = front.from || (issue.user && issue.user.login) || 'unknown'
+  const fields = communicationFields(front)
+  if (fields === null) return 0
+  if (Array.isArray(fields)) {
+    console.error(`Skipped ${label}: invalid ${fields.join(', ')}`)
+    return 0
+  }
   const title = issue.title || ''
   const url = issue.html_url || ''
-  if (typeof sender !== 'string' || typeof title !== 'string' || !title.trim() ||
-      typeof url !== 'string' || !url.trim() ||
-      !recipients.length || recipients.some((handle) => typeof handle !== 'string' || !handle.trim())) {
-    if (mappedGithubOnly) {
-      console.error('Catch-up skipped an issue with invalid communicate fields')
-      return 0
-    }
-    throw new Error('Invalid communicate issue fields')
+  if (typeof title !== 'string' || !title.trim() || typeof url !== 'string' || !url.trim()) {
+    console.error(`Skipped ${label}: invalid title or url`)
+    return 0
   }
-  const received = new Date().toISOString().slice(0, 16)
   const { handles, pending } = loadConfig()
   const githubHandles = handles.github || {}
-  const eligible = mappedGithubOnly
-    ? recipients.filter((handle) => Object.values(githubHandles).includes(handle))
-    : recipients
-  const entries = eligible.map((handle) => ({
-    url, from: sender, to: handle, owner: ownerFor(mappedGithubOnly ? { github: githubHandles } : handles, handle) || 'unknown', title, received,
-  }))
-  return append(queuePath(pending), entries)
+  if (mappedOnly && !Object.values(githubHandles).includes(fields.to)) return 0
+  const received = new Date().toISOString().slice(0, 16)
+  const owner = ownerFor(mappedOnly ? { github: githubHandles } : handles, fields.to) || 'unknown'
+  return append(queuePath(pending), [{
+    url, from: fields.from, to: fields.to, owner, title, received,
+  }])
 }
 
 async function catchUp() {
@@ -145,11 +159,24 @@ async function catchUp() {
     if (!Array.isArray(issues)) throw new Error('GitHub returned an invalid issues page')
     for (const issue of issues) {
       if (!issue || typeof issue !== 'object' || issue.pull_request || issue.state !== 'open') continue
-      queued += queuePayload({ action: 'opened', issue }, { mappedGithubOnly: true })
+      queued += queuePayload({ action: 'opened', issue }, { mappedOnly: true, label: `issue ${issue.number || ''}`.trim() })
     }
     if (issues.length < 100) break
   }
   console.log(`Catch-up complete: queued ${queued} entries from ${repo}`)
+}
+
+// The channel URL is a shared secret: anyone who knows it can post or read
+// events. Smee logs the full source URL, so redact it before writing a line.
+const redactedLogger = {
+  info: (message) => console.log(redact(message)),
+  warn: (message) => console.warn(redact(message)),
+  error: (message) => console.error(redact(message)),
+}
+
+function redact(message) {
+  const text = String(message)
+  return smeeUrl ? text.split(smeeUrl).join('<smee channel>') : text
 }
 
 const server = http.createServer((req, res) => {
@@ -207,12 +234,12 @@ server.listen(port, '127.0.0.1', async () => {
     const smee = new SmeeClient({
       source: smeeUrl,
       target: `http://127.0.0.1:${port}/webhook`,
-      logger: console,
+      logger: redactedLogger,
     })
     try {
       await smee.start()
     } catch (error) {
-      console.error(`Cannot connect to smee; catch-up not started: ${error.message || 'connection failed'}`)
+      console.error(redact(`Cannot connect to smee; catch-up not started: ${error.message || 'connection failed'}`))
       await smee.stop()
       server.close()
       process.exitCode = 1

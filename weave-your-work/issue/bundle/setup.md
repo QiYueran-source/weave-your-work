@@ -5,7 +5,7 @@ The listener that receives communicate issues and queues them for the next sessi
 ## What this installs
 
 - A smee.io channel, which gives the repository a public webhook URL.
-- A GitHub webhook for `issues` and `issue_comment`.
+- A GitHub webhook for `issues`.
 - The Node listener in `bundle/tools/`, which holds the smee client and the webhook receiver.
 - A project-specific `bundle/tools/handles.toml` with the team mappings and pending queue path.
 - The session rule generated from `bundle/rules/` into `.agents/rules/rules-pending-communications.md`.
@@ -13,7 +13,7 @@ The listener that receives communicate issues and queues them for the next sessi
 
 ## Tools
 
-The Node tools in `bundle/tools/` include `listener.mjs` and the read-only `check-pending.mjs`. They use `package.json` and `package-lock.json` and need Node 18 or newer.
+The Node tools in `bundle/tools/` include `listener.mjs` and the read-only `check-pending.mjs`. They use `package.json` and `package-lock.json` and need Node 20.18 or newer, or Node 22; the locked `smee-client` and `undici` refuse older releases.
 
 ```bash
 cd <skill-dir>/bundle/tools
@@ -57,7 +57,7 @@ The checker reads the queue without changing it. With entries it prints their co
    - **Payload URL**: the smee channel URL.
    - **Content type**: `application/json`.
    - **Secret**: leave empty for this default smee setup; the listener does not authenticate the sender.
-   - **Events**: Issues, Issue comments.
+   - **Events**: Issues.
    - **Active**: yes.
 
 3. **Service.** An environment file outside the repository, `~/.config/work-weave/smee.env` (mode 600):
@@ -109,13 +109,13 @@ The checker reads the queue without changing it. With entries it prints their co
 
    The queue path is relative to the project root. Its directory is local state: add it to `.gitignore`; `pending/` ignores the default. Before updating or reinstalling the skill, preserve the existing handles file outside the directory being replaced; restore it afterward and verify it is unchanged. In `skills` 1.7.6, `skills add --copy` deletes the installed directory before copying; setup runs too late to prevent that deletion. If an update fails, keep the backup and restore it before running the listener or setup again.
 
-5. **Startup scan.** After connecting to smee, the listener uses authenticated `gh` to list all pages of open issues in the current project GitHub repository identified by git `origin`. It accepts a single github.com HTTPS or SSH origin and needs `[handles.github]` mappings. It selects issues with `kind: communicate` frontmatter and `to` recipients matching those handles, and queues them with deduplication. Closed issues are excluded. If the scan fails, the listener logs `Catch-up failed` and keeps accepting live events; fix the reported problem and restart to retry. There is no polling or scan on reconnect. The listener only queues reminders; nothing acts on an issue until the person asks.
+5. **Startup scan.** After connecting to smee, the listener uses authenticated `gh` to list all pages of open issues in the current project GitHub repository identified by git `origin`. It accepts a single github.com HTTPS or SSH origin and needs `[handles.github]` mappings. It queues messages that match the communicate issue format and whose `to` is one of those handles, deduplicating by issue URL and recipient. A message claiming `kind: communicate` with a missing or malformed `category`, `from`, `to`, or `tickets` is skipped and logged. Closed issues are excluded. If the scan fails, the listener logs `Catch-up failed` and keeps accepting live events; fix the reported problem and restart to retry. There is no polling or scan on reconnect. The listener only queues reminders; nothing acts on an issue until the person asks.
 
 ## Verify
 
-1. File a communicate issue addressed to yourself.
-2. Watch the listener's log; a live event should add one line per `to`. Catch-up adds one per configured GitHub handle.
+1. File a communicate issue addressed to yourself, using `category: request`.
+2. Watch the listener's log; the queue should gain one line for the issue.
 3. Open a new session; the rule should surface the count and title.
-4. Reply and close the issue; the queue line stays as the record of what arrived.
+4. Reply in the thread, then close the issue; the queue line stays as the record of what arrived.
 
 If the queue stays empty, check the webhook's Recent Deliveries, the listener's smee connection and log, and the frontmatter's `kind: communicate`. GitHub reporting success at smee does not prove the local listener received the event. If `WEBHOOK_SECRET` is set, also check for signature rejection.

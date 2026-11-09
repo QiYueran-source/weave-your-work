@@ -38,6 +38,19 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Check first setup and repeat setup, the preserved mapping, queue resolution from an installed skill, and the listener with a local sample. The live GitHub and smee test remains separate.
 - Do not change the communication protocol or claim to have tested real webhook delivery.
 
+## Communicate issue protocol (confirmed 2026-11-09)
+
+- Write `communicate-issue.md` as the single definition of the format, keeping `SKILL.md` as the summary that points to it. A communicate issue is a GitHub issue whose body opens with frontmatter; ordinary issues are not communicate issues and the listener ignores them.
+- Require `kind: communicate`, a `category` of `request`, `result`, or `comment`, a `from` naming the local owner, a `to` list holding exactly one GitHub handle, and a non-empty `tickets` list of existing map or task ids. The first ticket is the main one and the title carries it. All three categories enter the queue.
+- Do not build a tree of issues: link a related issue in the body. A message for several people is several issues.
+- The sender closes a `request` after checking the answer; the recipient closes a `result` or `comment` after reading it. A message that must stay open is not closed before its recipient has seen it, because the startup scan reads open issues only.
+- Confirm referenced tickets before filing; sync the main branch or name the version when the recipient may not have it. On receipt, a missing ticket does not discard the message; confirm the ticket and version before acting.
+- Reject the old format rather than supporting both. No open communicate issue exists in this repository, so nothing needs migrating. Existing queue entries stay untouched.
+- Validate in the listener and log the failing field; do not use the GitHub issue author as `from`. `from` is a format check, not proof of identity.
+- Redact the smee channel URL from the listener's log while keeping connection and error messages.
+- Stop treating `issue_comment` as a listener event: messages travel as issues, and ordinary comments stay in the thread.
+- Do not remove the local Waymark `comment` category in this step; its remaining uses are recorded separately.
+
 ## Test directory (confirmed 2026-11-09)
 
 - Keep the security and catch-up regression tests, but move them from `bundle/tools/` to `bundle/tools/tests/` in both the source skill and the installed copy. Adjust their paths to the listener and dependencies, and update the research note's test link without changing the historical command.
@@ -99,4 +112,6 @@ A later private live test created an issue while the listener was offline, then 
 
 The isolated startup tests cover paginated results, mapped recipients, malformed issues, duplicate entries across restarts, a live webhook during a delayed scan, and GitHub or repository errors. After moving the tests into `tools/tests/`, the installed security and catch-up tests passed, as did the source catch-up tests; both source tests match their installed copies.
 
-Next: review the skill and verify session-start notification in the intended harness.
+The communicate issue protocol is implemented in `communicate-issue.md` and the listener. Tests cover each category, ordinary issues, a missing or unknown `category`, several or non-list `to` values, empty `tickets`, an empty `from`, and a missing title; each invalid message is skipped. The smee channel URL stays out of the log. The source and installed security and catch-up suites pass from `tools/tests/`.
+
+Next: deploy a listener for this repository and verify a full exchange; the session-start rule was reported to work by the owner but has not been recorded in this repository's tests.

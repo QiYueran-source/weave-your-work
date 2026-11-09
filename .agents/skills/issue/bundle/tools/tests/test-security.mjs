@@ -12,8 +12,18 @@ import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 
 const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
-const installedModules = path.join(source, 'node_modules')
+const fallbackModules = path.resolve(source, '../../../../.agents/skills/issue/bundle/tools/node_modules')
 const secret = 'integration-test-secret'
+
+async function modulesDir() {
+  try {
+    await fs.access(path.join(source, 'node_modules'))
+    return path.join(source, 'node_modules')
+  } catch (error) {
+    if (error.code === 'ENOENT') return fallbackModules
+    throw error
+  }
+}
 
 async function fixture(t) {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'issue-security-'))
@@ -28,7 +38,7 @@ async function fixture(t) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   // Use installed dependencies without copying credentials or configuration.
-  await fs.symlink(installedModules, path.join(tools, 'node_modules'), 'dir')
+  await fs.symlink(await modulesDir(), path.join(tools, 'node_modules'), 'dir')
   await fs.writeFile(path.join(tools, 'handles.toml'), '[handles.github]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = "queue/pending.md"\n')
   return { root, tools, queue: path.join(root, 'queue/pending.md') }
 }
@@ -81,13 +91,14 @@ async function startListener(t, f, webhookSecret = secret) {
   return port
 }
 
-function issue({ url = 'https://example.test/issues/42', from = 'sender', to = ['alice-handle'], title = 'A title' } = {}) {
+function issue({ url = 'https://example.test/issues/42', from = 'sender', to = 'alice-handle', title = 'A title', category = 'request', tickets = ['wm-test'] } = {}) {
   return {
     action: 'opened',
     issue: {
       html_url: url,
       title,
-      body: `---\nkind: communicate\nfrom: ${JSON.stringify(from)}\nto: ${JSON.stringify(to)}\n---\nBody`,
+      body: `---\nkind: communicate\ncategory: ${category}\nfrom: ${JSON.stringify(from)}\nto: [${JSON.stringify(to)}]\ntickets: ${JSON.stringify(tickets)}\n---\nBody`,
+      user: { login: 'author' },
     },
   }
 }
@@ -185,40 +196,35 @@ test('listener verifies signatures against the original bytes, including split U
   assert.match(entry.received, /^\d{4}-\d\d-\d\dT\d\d:\d\d$/)
 })
 
-test('malicious remote values stay on one line per recipient and redelivery is deduplicated', async (t) => {
+test('malicious remote values stay on one line and redelivery is deduplicated', async (t) => {
   const f = await fixture(t)
   const port = await startListener(t, f)
   const payload = issue({
     url: 'https://example.test/evil\n- forged | to=bob',
     from: 'sender\n- forged | from=x',
-    to: ['alice-handle', 'bob-handle', 'alice-handle', 'strange\n- forged'],
+    to: 'strange\n- forged',
     title: 'Title | with\n- forged\r\u0001"quoted" <script>&',
   })
-  assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 3\n' })
+  assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
   const content = await queueText(f)
   const lines = content.trimEnd().split('\n')
-  assert.equal(lines.length, 3)
+  assert.equal(lines.length, 1)
   assert.ok(!content.includes('<script>'))
-  const entries = lines.map((line) => {
-    assert.ok(line.startsWith('- {'))
-    return JSON.parse(line.slice(2))
-  })
-  assert.deepEqual(entries.map(({ to, owner }) => [to, owner]), [
-    ['alice-handle', 'alice'], ['bob-handle', 'bob'], ['strange\n- forged', 'unknown'],
-  ])
-  for (const entry of entries) {
-    assert.equal(entry.url, payload.issue.html_url)
-    assert.equal(entry.from, 'sender\n- forged | from=x')
-    assert.equal(entry.title, payload.issue.title)
-    assert.deepEqual(Object.keys(entry), ['url', 'from', 'to', 'owner', 'title', 'received'])
-  }
+  assert.ok(lines[0].startsWith('- {'))
+  const entry = JSON.parse(lines[0].slice(2))
+  assert.equal(entry.to, 'strange\n- forged')
+  assert.equal(entry.owner, 'unknown')
+  assert.equal(entry.url, payload.issue.html_url)
+  assert.equal(entry.from, 'sender\n- forged | from=x')
+  assert.equal(entry.title, payload.issue.title)
+  assert.deepEqual(Object.keys(entry), ['url', 'from', 'to', 'owner', 'title', 'received'])
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 0\n' })
   assert.equal(await queueText(f), content)
   const result = checker(f)
   assert.equal(result.status, 0, result.stderr)
-  assert.match(result.stdout, /Communication queue: 3 entries/)
+  assert.match(result.stdout, /Communication queue: 1 entry/)
   const displayed = result.stdout.trimEnd().split('\n').slice(1).map((line) => JSON.parse(line))
-  assert.deepEqual(displayed, entries.map(({ title, url }) => ({ title, url })))
+  assert.deepEqual(displayed, [{ title: entry.title, url: entry.url }])
   assert.equal(await queueText(f), content)
 })
 
@@ -230,7 +236,7 @@ test('legacy and JSON queue entries survive an append without a trailing newline
   const existing = '- {"url":"https://example.test/issues/99","from":"old","to":"bob-handle","owner":"bob","title":"Existing JSON","received":"2026-01-01T00:00"}'
   const original = `${legacy}\n${existing}`
   await fs.writeFile(f.queue, original)
-  assert.deepEqual(await request(port, issue({ to: ['alice-handle', 'bob-handle'] })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await request(port, issue({ to: 'bob-handle' })), { status: 202, body: 'queued 1\n' })
   const content = await queueText(f)
   assert.ok(content.startsWith(original + '\n- {'))
   assert.ok(content.endsWith('\n'))
@@ -251,13 +257,58 @@ test('legacy and JSON queue entries survive an append without a trailing newline
   assert.equal(await queueText(f), content)
 })
 
+test('messages outside the protocol are not queued', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f)
+  const cases = [
+    ['ordinary issue', { action: 'opened', issue: { html_url: 'https://example.test/issues/1', title: 'Bug', body: 'A bug report' } }],
+    ['missing category', { action: 'opened', issue: { html_url: 'https://example.test/issues/2', title: 'No category', body: '---\nkind: communicate\nfrom: sender\nto: [alice-handle]\ntickets: [wm-1]\n---\n' } }],
+    ['unknown category', issue({ url: 'https://example.test/issues/3', category: 'notice' })],
+    ['several recipients', { action: 'opened', issue: { html_url: 'https://example.test/issues/4', title: 'Two', body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: [alice-handle, bob-handle]\ntickets: [wm-1]\n---\n' } }],
+    ['string recipient', { action: 'opened', issue: { html_url: 'https://example.test/issues/5', title: 'One string', body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: alice-handle\ntickets: [wm-1]\n---\n' } }],
+    ['no tickets', issue({ url: 'https://example.test/issues/6', tickets: [] })],
+    ['no sender', issue({ url: 'https://example.test/issues/7', from: '' })],
+    ['no title', issue({ url: 'https://example.test/issues/8', title: ' ' })],
+    ['closed action', { action: 'closed', issue: issue().issue }],
+  ]
+  for (const [name, payload] of cases) {
+    const response = await request(port, payload)
+    assert.deepEqual(response, { status: 202, body: 'queued 0\n' }, name)
+  }
+  assert.equal(await queueText(f), '')
+})
+
+test('every category of a valid message is queued once', async (t) => {
+  const f = await fixture(t)
+  const port = await startListener(t, f)
+  for (const [index, category] of ['request', 'result', 'comment'].entries()) {
+    const payload = issue({ url: `https://example.test/issues/${20 + index}`, category })
+    assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' }, category)
+  }
+  const lines = (await queueText(f)).trimEnd().split('\n')
+  assert.equal(lines.length, 3)
+  for (const line of lines) assert.ok(line.startsWith('- {'), line)
+})
+
 test('deduplication compares full URLs and recipients', async (t) => {
   const f = await fixture(t)
   const port = await startListener(t, f)
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/10', to: ['alice-handle-long'] }))).body, 'queued 1\n')
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: ['alice-handle-long', 'alice-handle'] }))).body, 'queued 2\n')
-  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: ['alice-handle'] }))).body, 'queued 0\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/10', to: 'alice-handle-long' }))).body, 'queued 1\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: 'alice-handle-long' }))).body, 'queued 1\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: 'alice-handle' }))).body, 'queued 1\n')
+  assert.equal((await request(port, issue({ url: 'https://example.test/issues/1', to: 'alice-handle' }))).body, 'queued 0\n')
   assert.equal((await queueText(f)).trimEnd().split('\n').length, 3)
+})
+
+test('listener keeps the smee channel URL out of its log', async (t) => {
+  const f = await fixture(t)
+  const channel = 'http://127.0.0.1:1/channel-secret-value'
+  const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root, env: { ...environment(), SMEE_URL: channel }, encoding: 'utf8', timeout: 15000,
+  })
+  const output = result.stdout + result.stderr
+  assert.ok(!output.includes('channel-secret-value'), output)
+  assert.match(output, /Cannot connect to smee/)
 })
 
 test('listener refuses to append to a malformed queue', async (t) => {
