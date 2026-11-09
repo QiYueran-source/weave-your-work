@@ -53,6 +53,22 @@ waymark field update <map> --set split_as=submap   # or task
 
 Every later split adds children of that same type. The map's body is not edited by a split, because it holds no list of children.
 
+## The loop
+
+`in_progress` is not one step. It is a loop, and a map stays in it while layers are added:
+
+```
+in_progress ──split──▶ new children
+     ▲                     │
+     └── a layer settles ──┘
+```
+
+A map may split again whenever a layer is settled: when fog that was cleared produced a layer, or when a child closed and showed what comes next. The map does not leave `in_progress` between splits, and how many splits it takes is not fixed when it starts.
+
+The children that are maps are split the same way, one level down. The far end of the loop is a layer of tasks: a task is a leaf, it does not split, and nothing below it changes the map's status.
+
+The type stays the one the map's first split wrote. A map that split into child maps adds child maps; a map that split into tasks adds tasks. Different maps in one tree choose differently, and that is the only place the choice varies.
+
 ## Review
 
 Runs when every child is closed and `Not yet specified` is empty.
@@ -76,9 +92,17 @@ A closed map is a claim: this target was reached, and this is what reaching it c
 
 That is why a failed map is left closed and replaced rather than quietly edited: the record of the attempt stays, and the sibling says what replaced it.
 
-## Changing a map that is already split
+## Changing a map
 
-A map's children are what its target means. So editing the target is not a one-file edit, and the change runs in this order:
+What a change costs depends on how far the map has gone.
+
+| State | What a change is |
+|---|---|
+| `open`, no children | a plain edit. `waymark body replace`, and nothing else moves: no child has been written against the text yet |
+| `in_progress` | a change to its children, in the five steps below. The update skill owns what it does to the nodes that rely on the map |
+| `closed` | the update skill's business. Its second disposition reopens the map and revises it; its third retires it and opens the replacement |
+
+From the first split on, a map's children are what its target means, so editing the target is not a one-file edit. The change runs in this order:
 
 1. **Reopen the map first.** A closed map that is being changed goes back to `in_progress` with the update skill's second disposition, before anything else.
 2. **Change what the map says.** `Target`, `Acceptance direction`, or `Decisions so far`, in the words the discussion settled.

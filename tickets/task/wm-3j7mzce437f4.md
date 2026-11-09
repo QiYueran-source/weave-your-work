@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T00:27:25Z
-updated_at: 2026-11-09T00:27:40Z
-closed_at: 2026-11-09T00:27:40Z
+updated_at: 2026-11-09T00:34:44Z
+closed_at: 2026-11-09T00:34:44Z
 parent: wm-9d7e4c1a2b60
 custom_fields:
   needs_human: false
@@ -41,14 +41,16 @@ Two calls were made on this map's authority rather than the user's, and both are
 - a map with no children is not reviewed, because a target that needs no refinement is a task;
 - a child reopened during a review voids it.
 
+Revised on 2026-11-09, after the first review, when the user stated two things the file was missing: `in_progress` is a loop that can split again and again until the layer is tasks, and a change to a map depends on its state — a plain edit while it is open and has no children, a change to its children while `in_progress`, and the update skill once it is closed. Both are now sections of the file.
+
 What it has not done: no map has been advanced with it. That walk is the worked example the root map defers to one batch.
 
 ## Review
 
 passed
 
-- Goal: the file exists; the lifecycle, the three steps with triggers and hand-offs, the status writes, the four verdicts, the reopened-child rule, and the change rule are all present; `body.md`, `frontmatter.md`, and the update skill are pointed at rather than restated. Read against the acceptance signal line by line.
-- Convention: only `weave-your-work/map/procedure.md` was written by this task; the ticket edits were the run's own `Result`, `Review`, and status, plus the fog resolutions and two decisions written on the parent map.
+- Goal: the file covers the lifecycle, the three steps with their triggers and hand-offs, the loop with tasks at its far end, the status writes, the four verdicts, the reopened-child rule, and how a change depends on the map's state. Read against the acceptance signal: a reader holding a map can tell what to do next at any point, and `body.md`, `frontmatter.md`, and the update skill are pointed at rather than restated.
+- Convention: only `weave-your-work/map/procedure.md` was written in this revision; the ticket writes are its own `Result`, `Review`, and status.
 
 ## Boundaries
 
