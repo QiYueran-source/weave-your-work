@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:43:08Z
-updated_at: 2026-11-09T05:50:43Z
+updated_at: 2026-11-09T06:11:14Z
 parent: wm-6c4f9e2a7b31
 custom_fields:
   needs_human: false
@@ -51,3 +51,5 @@ passed
 ## Progress
 
 Update invalidated the prior passed verdict on the same subject: the acceptance signal forbids workflow rules and front matter fields in the body reference, but the confirmed map Review design now includes Review invalidation and the reference displays front matter. Reassess the signal against the confirmed design before re-review. The fog-empty wording was clarified; the previous Result remains a historical account. Related implementation: wm-q6477pe7x8tp.
+
+Proposed repair for confirmation: keep the six body sections, Review verdict/evidence and struck-through history formats in `weave-your-work/map/body.md`; move operational instructions about who reviews, when invalidation occurs, and how status changes to the existing map-review and update procedures, without changing the agreed Review history behavior. Replace the full-ticket example's front matter with a body-only example, and point field questions to the map frontmatter reference. Check every body section's purpose, format, and example against the original acceptance signal; verify Review history and lifecycle instructions remain consistent, then re-review this task. Do not change update's separate skill-reference question, other map reviews, or the audit.
