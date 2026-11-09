@@ -122,6 +122,8 @@ After: one issue per affected owner. The issue carries three things, and an issu
 
 An archive with no replacement has nothing to say to those owners, which is why retiring a node and naming its successor happen in the same run.
 
+An affected ticket owned by the run's own owner needs no issue; the run is that owner, and the report carries what changed. The issue exists to cross an ownership line, not to log a change.
+
 What the file change does not show, and the issue must: archiving a node a dependent was waiting on changes what that dependent may do. A ticket blocked on the archived node immediately reads `ready`. The diff shows two deleted lines; the owner's plan has moved.
 
 Archive gets its own commit for this reason. A cross-owner edit buried in a commit with five other changes is one nobody finds.
