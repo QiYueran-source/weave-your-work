@@ -32,7 +32,7 @@ The state machine stayed out, but a triage result is still a decision about what
 
 ### The handle is a roster, not a guess
 
-A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The first design read `.waymark/handles.toml`, one table per platform, and verified the account before mentioning or assigning it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name. The sample roster mapped `frank` to the account the probe used.
+A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The first design read `.waymark/handles.toml`, one table per platform, and verified the account before mentioning or assigning it. It also assumed that a login could be inferred from an owner name; setup now reads the repository's actual collaborators and matches them, and asks only about a name with no match. Inventing a login is still out. The sample roster mapped `frank` to the account the probe used.
 
 ### Moving the roster out of waymark
 

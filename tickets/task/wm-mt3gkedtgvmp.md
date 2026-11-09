@@ -3,17 +3,17 @@ schema: 1
 id: wm-mt3gkedtgvmp
 title: Write the issue skill
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T10:55:52Z
-updated_at: 2026-11-08T16:03:02Z
+updated_at: 2026-11-09T08:19:59Z
+closed_at: 2026-11-09T08:19:59Z
 parent: wm-25b3q7mg88c7
 custom_fields:
-  needs_human: true
+  needs_human: false
   reversibility: two_way
   task_kind: delivery
-  waiting_on: 'frank: smee channel and webhook'
 ---
 ## Action
 
@@ -105,6 +105,18 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Coordinate the startup scan and live stream to avoid a gap for issues created during startup. If the repository cannot be resolved or the scan fails, report the error clearly rather than claiming catch-up succeeded. Do not add polling or reconnect catch-up; closed issues remain outside this scan.
 - Update the source and installed listener and their setup and skill instructions. Test pagination, filtering, multi-recipient routing, existing entries, repeated startup, scan failure, and an issue arriving during startup in isolated queues. Then test an issue created while offline in a private GitHub repository; leave the existing local queue and persistent configuration unchanged. Session-start notification remains a separate test.
 - The person confirmed this implementation and test plan.
+
+## Result
+
+The skill is in `weave-your-work/issue/` and installed at `.agents/skills/issue/`. `SKILL.md` (162 lines) carries the trigger, the frontmatter form, the five operations, the local-artifact test, and what the skill does not do. `communicate-issue.md` holds the one definition of the format, the categories, and the closing rules. `usage.md` gives the five operations as contracts, the listener's own exact commands, the capability each operation needs from `gh`, and what another host would require of a fork. `bundle/setup.md` installs the channel, the webhook, the service, the handles roster, and the session rule, and verifies each with a command.
+
+`bundle/tools/` holds `listener.mjs`, `check-pending.mjs`, `queue.mjs`, and the two test files, 23 tests passing from both the source and the installed copy. The listener deduplicates by `(url, to)`, encodes entries as JSON list lines, reads legacy lines unchanged, redacts the channel URL, and skips a message whose author is not a login in the roster.
+
+The listener runs for this repository: an enabled user unit with linger on, behind a smee channel and an issue webhook, verified by three live deliveries and one interval with the service stopped. Every live message was frank to frank.
+
+## Review
+
+Not run as a separate pass. The acceptance signal is checked by the deployment record below and by the test suites; one item is unmet and named in `Progress` — no second owner has sent or received a message, so the cross-owner exchange is a scenario, not a run.
 
 ## Acceptance signal
 
