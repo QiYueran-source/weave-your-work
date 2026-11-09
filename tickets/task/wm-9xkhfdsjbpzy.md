@@ -3,11 +3,12 @@ schema: 1
 id: wm-9xkhfdsjbpzy
 title: Queue only the messages addressed to this machine
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T08:46:13Z
-updated_at: 2026-11-09T08:46:28Z
+updated_at: 2026-11-09T09:10:43Z
+closed_at: 2026-11-09T09:10:43Z
 parent: wm-25b3q7mg88c7
 custom_fields:
   needs_human: false
@@ -29,13 +30,24 @@ Do not add a field to `handles.toml`. That file is tracked and shared, so a per-
 
 ## Result
 
-The listener queues a message only when it is addressed to this machine's owner. A message addressed to another owner, or to a handle outside the roster, is skipped on both paths with a log line. A machine whose git name is not an owner refuses to start and says how to fix it.
+The listener queues a message only when it is addressed to this machine's owner. `resolveMachineOwner` reads `git config user.name` once, before the port opens, and matches it against the `[handles]` keys without regard to case; `queueIssue` keeps a message only when `ownerFor(handles, to)` equals that owner. The `mappedOnly` option is gone, so the webhook and the startup scan apply the same rule: a handle outside the roster used to be queued live and dropped by the scan. A queued entry always carries a real owner; `unknown` no longer occurs.
+
+`queueIssue` takes its configuration and owner from the values `resolveMachineOwner` returns, so the file is read once per process rather than once per message.
+
+Commit `8f86830`.
+
+## Review
+
+- The Node tests pass from both the source skill and the installed copy: 21 security, 8 catch-up. New cases cover a message to another owner, a handle outside the roster, a case-different git name, an unknown git name, an empty git name, and owners that differ only by case.
+- The service restarted and logged `queueing messages addressed to frank`, then `Catch-up complete: queued 0 entries`, unchanged from before the change.
+- A hand-posted message addressed to `stranger-handle` returned `queued 0` and logged `Skipped issue: addressed to stranger-handle, not to frank`. The queue did not grow.
+- Not exercised: a real second machine receiving its own mail. That is the cross-owner exchange, still open in the map.
 
 ## Acceptance signal
 
-- The Node tests assert: a message to this machine's owner queues; a message to another owner does not; a case-different git name still matches; an unknown git name exits non-zero with the roster in the message.
-- The running service restarts and its log shows the catch-up count unchanged.
-- A message to a second owner does not reach this machine's queue.
+- The Node tests assert: a message to this machine's owner queues; a message to another owner does not; a case-different git name still matches; an unknown git name exits non-zero with the roster in the message. **Met.**
+- The running service restarts and its log shows the catch-up count unchanged. **Met: `queued 0 entries`, as before.**
+- A message to a second owner does not reach this machine's queue. **Met with a hand-posted payload; a real second machine is still open.**
 
 ## Boundaries
 
