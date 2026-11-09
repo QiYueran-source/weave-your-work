@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Task
 
-A task is the finest node of the target tree: one action that ends at a result someone can check. This file is the entry to the task skills. It routes; it does not define the task body, the execution steps, or the review.
+A task is the finest node of the target tree: one action that ends at a result someone can check. This file is the entry to the task skills. It routes; it does not define the task body, the execution steps, or the review. `usage.md` gives the reading path; `bundle/setup.md` installs the work-record rule. Once installed, `.agents/rules/rules-task.md` governs when task work must be recorded.
 
 ## Which skill
 

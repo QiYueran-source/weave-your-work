@@ -29,7 +29,7 @@ Relocating a node is the exception to that trigger, and it is not a content chan
 
 Ask them in order and stop at the first one that fails.
 
-1. **Same question?** Does the node still answer the question the tree hung it under? A task named for one action that now describes a different action has changed subject. A map whose Target now names a different destination has changed subject.
+1. **Same question?** Does the node still answer the question the tree hung it under? Judge what the body promises, not whether its title is stale: a title that drifted from unchanged content is repaired with the content, and only a different promise makes a new subject. A task named for one action that now describes a different action has changed subject. A map whose Target now names a different destination has changed subject.
 2. **Does the verdict hold?** Read the recorded acceptance against the new content. Would the same review still pass, on the same evidence, by the same reading?
 
 Both yes is the first disposition. First yes, second no is the second. First no is the third, and the second does not need asking.
@@ -38,19 +38,19 @@ Both yes is the first disposition. First yes, second no is the second. First no 
 
 The second test needs something to read, and where that is depends on the node:
 
-- **A task** — its `## Review` section, when it has one. Many closed tasks do not: the review skill writes that section, and every task closed before the skill existed closed without it. When it is absent, read the `Acceptance signal` and `Result` together instead. The signal is what the work promised and the result is what it delivered; the close is the verdict that the two agreed. Re-reviewing such a task writes a fresh `## Review`; there is no old one to replace.
-- **A map** — its `## Acceptance direction`, and the `Review point` sentence inside it when one is written. A map body has no `## Review` section, so there is no prose verdict to read; the status is the verdict, and the acceptance direction is what it was reached against. Test two is therefore: hold the acceptance direction up against the new content and ask whether the same reviewer, given the same evidence, would still close the map. A closed map whose acceptance direction no longer holds has a false status even though nothing on the ticket says so.
+- **A task** — its `## Review` section, when it has one. Many closed tasks do not: the review skill writes that section, and every task closed before the skill existed closed without it. When it is absent, read the `Acceptance signal`, `Result`, actual evidence, and `outcome` together. A failed outcome is a failed attempt, not a pass; closure alone does not prove the signal and result agreed. Re-reviewing such a task writes a fresh `## Review`; there is no old one to replace.
+- **A map** — its `## Review`, read with `## Acceptance direction`, the review point, and the evidence. A legacy map may have no Review: read the acceptance direction, children, outcome and available evidence against its closed status without inventing a past review or treating a failed outcome as a pass. If Review and status disagree, the owner rechecks children and evidence before the appropriate state change; changed evidence requires a fresh review, not an assumed pass.
 
-**An open node has no verdict**, and that is the whole difference. Nothing ever closed it, so there is nothing to take back and nothing to falsify. Its acceptance direction is a plan rather than a promise: rewriting a plan is an edit, not a broken word. So an open node takes the first or the third disposition, test two never fails on it, and the reopen does not apply.
+**An `open` or `in_progress` node with no valid closed verdict has none to reopen.** A map may nevertheless have a `needs changes` or `needs discussion` Review. Its acceptance direction is still a plan: an unfinished node takes the first or the third disposition, and test two is not asked. Test one still decides between them — the same promise is edited in place, a different promise is retired. Preserve any invalidated map review history and review the changed work when ready. If a passing Review and unfinished status disagree, resolve that mismatch against the evidence first rather than assuming either a pass or no verdict.
 
-Reading still happens, and it is not test two. An open split map's acceptance direction is read for two other reasons: it is what its children refine, so a change there sends every child back through its own two tests; and it is what the map will be reviewed against when it does close, so a change that makes it unreachable leaves a map that cannot be accepted. Neither of those is a verdict being overturned — the map was never accepted in the first place — so both are edits under the first disposition, with the children re-read and the status left alone.
+Reading still happens, and it is not test two. An unfinished split map's acceptance direction is read for two other reasons: it is what its children refine, so a change there sends every child back through its own two tests; and it is what the map will be reviewed against when it does close, so a change that makes it unreachable leaves a map that cannot be accepted. Neither is a closed verdict being overturned, so both are edits under the first disposition, with the children re-read and the status left alone.
 
 ## Three dispositions
 
 | Tests | What happens | Status |
 |---|---|---|
 | Same subject, verdict holds | Edit the ticket. Editorial changes replace the text; substantive ones keep the old text struck through. | Unchanged |
-| Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. A closed node only. | closed → open → closed |
+| Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. A closed node only. Invalidate a map Review and retain it on re-review; see `content.md`. | closed → open → closed |
 | Different subject | Retire the ticket with archive and open a parallel one under the same parent. | archived |
 
 The second disposition exists because a closed child is how its parent counts itself done: a map is accepted when its children are complete. A child left closed on a verdict that no longer holds makes its parent's claim false as well.
@@ -59,13 +59,13 @@ Reopening the child does not reopen the parent. Nothing in waymark walks upward,
 
 If an ancestor is owned by someone else, that is where the branch stops: reopen what the run owns, tell the owner in an issue, and let them decide about theirs.
 
-The third exists because a node that answers a different question is not the same node. Editing it would leave its children refining a subject they never agreed to. Retiring it keeps the old text readable and gives the new one a clean review.
+The third exists because a node that answers a different question is not the same node. Editing it would leave its children refining a subject they never agreed to. Retiring it keeps the old text readable and gives the new one a clean review. An unfinished node with active children is retired bottom-up: each child takes its own disposition first, because waymark refuses to archive a map that still has an unarchived child. When the children must stay, the map is not retired; the work belongs under a new sibling, and the map is closed only through its own review path.
 
 `outcome=failed` is not used for any of this. Failure is a verdict on an attempt; retirement is a verdict on a subject. A node that was completed and then made obsolete by an upstream change is archived with a reason, not marked failed.
 
 ## When the change needs execution
 
-On a map, a change that needs new work is not written into the delivered file by this run. Reopen the map and hang the work as a child. When the map's `split_as` is `submap`, hang a child map first, then the task under it; when it is `task`, hang the task directly. Write the task, then decide whether to execute it now. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
+On a map, a change that needs new work is not written into the delivered file by this run. Apply the two tests before reopening a closed map; a split map that is already unfinished needs no reopen, and one still `open` is started before its next review. `need-execute.md` handles the child shape and the distinction between a gap already required by a task's signal and a new parent requirement. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
 
 `need-execute.md` carries the shape, the order, and the gate.
 
@@ -79,9 +79,9 @@ The scan is not depth-limited. From the node being changed, follow:
 - **soft links**, in either direction;
 - **references in bodies**, in tests, in examples, and in testimony — anything that names the node by id or by title.
 
-All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links`, so the graph half of the scan needs no grep. `waymark --json list` carries the same five per row, split across two levels: `children`, `dependents`, and `blocked_by` at the top, and `item.parent` and `item.soft_links` inside the item. An empty relation is omitted rather than printed as `[]`, so a missing key means none. `list` stops at 100 rows unless you pass a larger `--limit`, which is the one way a sweep silently misses a dependent.
+All five of those come back from one command. `waymark --json show <id>` returns a `relationships` object holding `parent`, `children`, `dependencies`, `dependents`, and `soft_links` — every key present, with `[]` or `null` for an empty relation. `waymark --json list` carries the same five per row, split across two levels: `children`, `dependents`, and `blocked_by` at the top, and `item.parent` and `item.soft_links` inside the item. `--compact` drops the top-level relations, so do not use it for the scan. `list` stops at 100 rows unless you pass a larger `--limit`, which is the one way a sweep silently misses a dependent.
 
-Bodies are the other half, and there are two kinds of them. `waymark search "<text>"` matches titles, front matter, and ticket bodies, which finds the other tickets that quote the node. It searches the ticket store and nothing else — the skill files, the examples, the testimony, and the tests are ordinary Markdown on disk, so those need `grep -rn` over the repository. Run both; a node named only in an example is the reference no ticket-side query will show.
+Bodies are the other half, and there are two kinds of them. `waymark search "<text>"` matches titles, ticket bodies, `owner`, and custom-field names and values — but not `status`, `category`, or a timestamp — which finds the other tickets that quote the node. It searches the ticket store and nothing else — the skill files, the examples, the testimony, and the tests are ordinary Markdown on disk, so those need `grep -rn` over the repository. Run both; a node named only in an example is the reference no ticket-side query will show.
 
 `waymark tree --root <id>` gives the shape below the node when the children list is long enough that reading ids one at a time is useless.
 
@@ -108,7 +108,7 @@ That is not a loophole, it is the shape of the tool: there is no command that re
 
 ## Before a cross-owner write, and after it
 
-Before: `--dry-run`. Every waymark command that writes a ticket takes it, down to `title set` and `owner transfer`. It reports the change it would make, or that there is none — `would create wm-…`, `would be unchanged`, `already has that parent`. For `archive` and `link`, read the affected list and write down, for each ticket in it, whose it is and which relation disappears. The human output names the relation (`removes dependencies`, `removes soft_links`); the JSON `affected` array carries only ids and paths. `no inbound relationships to remove` means nothing outside the node will be touched.
+Before: `--dry-run`. Every waymark command that writes a ticket takes it, down to `title set` and `owner transfer`. It reports the change it would make, or that there is none — `would create wm-…`, `would be unchanged`, `already has that parent`. `body replace --dry-run` reports only the new byte count, so read the body file yourself when the shape of the change matters. For `archive` and `link`, read the affected list and write down, for each ticket in it, whose it is and which relation disappears. The human output names the relation (`removes dependencies`, `removes soft_links`); in JSON, `affected` carries only ids and paths and `removals` carries the relation per id. `no inbound relationships to remove` means nothing outside the node will be touched.
 
 The dry-run computes the blast radius and judges none of it. It warns about the owner of the node being archived, not about the owners of the tickets it is about to rewrite; a run that will edit three other people's files can look completely clean. Comparing each affected id against the tickets the run owns is the step nothing automates, and comparing two owner names is all it takes: every ticket records `owner`, `waymark --json show <id>` prints it, and the run's own tickets are the ones carrying the run's name.
 
@@ -121,6 +121,8 @@ After: one issue per affected owner. The issue carries three things, and an issu
 - the decision the owner has to make — re-point the edge at the replacement, or drop the wait if the archived outcome is enough.
 
 An archive with no replacement has nothing to say to those owners, which is why retiring a node and naming its successor happen in the same run.
+
+An affected ticket owned by the run's own owner needs no issue; the run is that owner, and the report carries what changed. The issue exists to cross an ownership line, not to log a change.
 
 What the file change does not show, and the issue must: archiving a node a dependent was waiting on changes what that dependent may do. A ticket blocked on the archived node immediately reads `ready`. The diff shows two deleted lines; the owner's plan has moved.
 

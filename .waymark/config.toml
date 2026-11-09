@@ -1,10 +1,6 @@
 version = "1.9"
 storage_root = "tickets"
 
-[categories.comment]
-path = "tickets/comment"
-name = "Comment"
-
 [categories.map]
 path = "tickets/map"
 name = "Map"

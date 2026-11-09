@@ -3,12 +3,11 @@ schema: 1
 id: wm-3spf0jbvf9y9
 title: 'Map review skill: accept a map'
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:34:36Z
-updated_at: 2026-11-08T13:13:28Z
-closed_at: 2026-11-08T13:13:28Z
+updated_at: 2026-11-09T05:31:34Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   split_as: task
@@ -28,6 +27,8 @@ All children are complete and no further children are needed.
 Review point: Check that the SKILL.md names who reviews, how the acceptance direction is checked, and the four verdicts. ~~A sample map walks through a review.~~
 
 ## Decisions so far
+
+- Each of the four verdicts records a Review with the goal and convention checks and their evidence. An invalidated map Review is struck through with its reason and retained after re-review. Old maps without one are not backfilled. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
 
 - Review owns reviewing to closed or return; the map skill owns delivering to reviewing (user confirmed).
 - ~~Anyone may review, including the owner reviewing their own work; the earlier "non-executor" rule is dropped.~~ Superseded on 2026-11-08: only the owner reviews and closes; a non-owner reports findings to the owner. This matches `task-review` and `map/frontmatter.md`. (user confirmed)

@@ -7,8 +7,8 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T11:47:59Z
-closed_at: 2026-11-08T11:47:29Z
+updated_at: 2026-11-09T09:56:20Z
+closed_at: 2026-11-09T09:52:53Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: task
@@ -29,6 +29,10 @@ Review point: Check that the skill states the two boundary tests, the three disp
 
 ## Decisions so far
 
+- Update may invoke the `map` skill for its dependency rules; it does not point to files inside another skill. If `map` is unavailable, stop and ask the owner to install it. (user confirmed)
+
+- A reopened map's invalidated Review is struck through with its reason and remains after a same-subject re-review. Old maps without a Review are not backfilled; the three update dispositions still use the two existing tests. This change concerns map Review history, not task Review history. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+
 - It is a standalone skill under `weave-your-work/update/`. The Map operating procedure will point at it when that map is built, and the update rules in its fog are removed then. (user confirmed)
 - advance stays the umbrella for every write an owner makes; update is the narrower operation that changes the content of a node that is already closed or already split into children. (user confirmed)
 - The trigger is the node's state, not the size of the change: update runs on a closed node, or on a map that has already split. An open node with no children is plain advance. (user confirmed)
@@ -42,7 +46,7 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - A branch that needs a foreign node's content changed stops there, not the whole run: the operator finishes the tree it owns and hands the rest over. (user confirmed)
 - ~~A branch cannot continue when the foreign node is the parent whose Children list must change.~~ Superseded on 2026-11-08: the map body no longer carries a Children list, so recording a parent relation writes only the child. A foreign parent stops the branch only when its own content must change — its Target, its acceptance, or its status. (user confirmed)
 - Hand-over to another owner is an issue. The issue's shape and count belong to the communication category; update only names the hand-over and records the link. (user confirmed)
-- Update never hangs a child under a foreign map without consent: the rules for a foreign parent — hang directly when it is open, open an issue and wait when it is closed, and prepare the child as an isolated node meanwhile — belong to [Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md) and update points there instead of restating them. (user confirmed)
+- Update never hangs a child under a foreign map without consent: the rules for a foreign parent — hang directly when it is open, open an issue and wait when it is closed, and prepare the child as an isolated node meanwhile — belong to [Map front matter and dependencies](../map/wm-8zyyyafxbdwr.md) and update points there instead of restating them. (user confirmed)
 - ~~Two waymark writes cross ownership and update must call them out rather than perform them quietly.~~ Superseded on 2026-11-08 by the rule below: they run and the owner is told. What stands: `link add` / `link remove` writes both tickets, and `archive` removes inbound dependencies and soft links from every ticket pointing at the archived node, so retiring a node that others depend on is a write to their files. (verified in waymark 0.1.2)
 - The rule for a cross-owner write is one rule, not two: the write proceeds and the affected owner is told in an issue afterwards. This covers `link add` / `link remove` as well as `archive`. The narrower test that once seemed available — "allow the write only when there is no alternative" — does not survive contact with the archive case, since an archive that others depend on always has the alternative of building the replacement under the foreign tree. Once archive is allowed to write and notify, so is link. (user confirmed)
 - A relocation is chosen by the same two tests as any other change. Content unchanged and only the position wrong → `waymark parent set` writes one file and every dependent keeps working. Content changed as well → the node is retired and rebuilt, so the move does not get its own path. (user confirmed)
@@ -65,23 +69,45 @@ Review point: Check that the skill states the two boundary tests, the three disp
 - A move writes no record field anywhere. `waymark parent set` leaves the old parent in the git diff of the moved node, and `waymark git history --item <id>` prints it; a line saying "moved from X" would be a second copy of something git already holds. (user confirmed)
 - `update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident. (agent decision, revisable)
 - The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`. (verified by installing and checking every relative link in the copy)
+- The map body carries no build index: what was written lives in the build task's `Result` and in the files themselves. This build has one fault worth keeping, and it is recorded here because no other section owns it — the skill was written and the map closed before the build ticket existed, so the ticket was reopened to hang [Write the update skill](../task/wm-4dytqnmy4s47.md) and closed again. The artifacts are unaffected; the record of who wrote what, and when, was made after the fact.
 
 ## Not yet specified
 
-Nothing. The two items that lived here were settled during the build and moved into `Decisions so far`; the third was resolved by running it, and the fourth was too narrow to be a child, so it went to `Out of scope`.
-
-## Built
-
-- `weave-your-work/update/SKILL.md`: the trigger, the two tests, the three dispositions, the impact scan, the decision/write boundary, and the dry-run-then-notify routine.
-- `weave-your-work/update/content.md`: all three dispositions in detail, the retire-and-replace order, and a whole short run.
-- `weave-your-work/update/move.md`: the move, its two tests, which of the three tickets reopen, and why it records nothing.
-- `weave-your-work/update/need-execute.md`: a change that needs execution — the child shape by `split_as`, the order, and the gate; `SKILL.md` and `content.md` point to it.
-- The Map operating procedure and the execution map point at the skill; the glossary defines update and move.
-- Three blind reads, by subagents given only the three files and three real tickets, each found something a check of the skill's facts could not: that the second test pointed at a verdict the skill never located, a `## Review` section that most closed tasks here do not have, an open split map routed into a closed-only disposition, a scan with relations and no way to read them, a `create` command that is not runnable as written, and `waymark search` mistaken for a repository-wide grep. The build ticket carries the record; the fixes are `a866db2` onward.
-- **A sequencing fault in this build:** the skill was written and this map closed before its build ticket existed. The ticket was reopened to hang [Write the update skill](tickets/task/wm-4dytqnmy4s47.md) and close it again. The artifacts are unaffected; the record of who wrote what, and when, was made after the fact.
+- ~~`update` is model-invocable, unlike `execute-all` and `execute-one-task`. The trigger is the state of a node, not a command a person types: a run that finds a closed node whose content no longer holds should reach for the rules, and a person should not have to remember the skill exists. The two execute skills are user-invoked for the opposite reason — they spend an unbounded number of subagents, which nobody should start by accident.~~
+  Resolved on 2026-11-08: settled as a decision, `update` is model-invocable and the two execute skills are not (see Decisions so far).
+- ~~Whether update adds a dependency edge to the communication map. The issue it files is the communication category's to design; update names what the issue must carry and points there. An edge between the two maps would say the update work waits on the issue work, which is false today — the skill can file issues by hand.~~
+  Resolved on 2026-11-08: excluded. No edge is added, and the reason is recorded as the third item in Out of scope.
+- ~~The seven-step retire-and-replace order is written into `content.md` from waymark's constraints, not from a worked run.~~
+  Resolved on 2026-11-08: the order was run end to end in a scratch project and held. A map with two children and a foreign dependent was retired through all seven steps; `validate` reported no findings, the surviving child read under the replacement, the dependent went `blocked` → `ready`, and the dry-run named exactly the ticket the archive would edit. One correction came out of it: the parent field is cleared on the **child**, not the holder — archiving the child while it still points at its parent breaks `validate` once the parent is archived, and an archived child cannot be cleared afterwards (no unarchive command exists; the only repair is a hand edit). That correction is in `content.md`.
+- ~~The skill must stand on its own once installed: `npx skills add` copies only the skill's own directory, so a relative link to a ticket becomes a dead link. The one such link (the foreign-parent rules) is inlined in `content.md`.~~
+  Resolved on 2026-11-08: settled as a decision after installing the copy and checking every relative link (see Decisions so far).
 
 ## Out of scope
 
 - Editing nodes that are still open, which is plain advance.
 - Designing the issue exchange itself, which belongs to the communication category.
 - A dependency edge between this map and the communication map. It would claim the update work waits on the issue work, which is false — the skill can file an issue by hand today. If the edge is ever wanted, it is the communication map's decision, not a fog item left on a closed map.
+
+## Review
+
+passed
+
+- Goal: every line of the `Acceptance direction` still holds, and this is the second reading of it — the first verdict on this map was wrong and was replaced inside the child task, and nothing since then touched the deliverable. The skill is under `weave-your-work/update/` as four files and installs as one skill with no broken local link and no path outside its own directory. The three-node walkthrough is in the child task's `Result` and was re-read here: a closed task and its closed map through strike, reopen, start, a fresh verdict from `task-review` and from `map-review`, and back to closed, with status, review record, and tree agreeing afterwards. The move path is read end to end against `b699d5f`, and `move.md:122` cites that same commit for the same event. The retire-and-replace path was re-run for the previous review in a scratch project with a real dependent, and its facts are re-checked here rather than taken on trust: with a closed split map carrying two closed task children and one dependent outside the subtree, the replacement was created, the old ticket named it, both children re-hung, the old map archived, `waymark validate` reported no findings, and the dependent moved from blocked to ready. The review point's four items are each stated: the two tests in `SKILL.md`, the three dispositions there and in `content.md`, the ownership stop rule in `SKILL.md`, and the seven-step order ending in archive in `content.md`.
+- Convention: the three findings the previous verdict recorded are closed, and the body now matches `body.md`.
+  - `## Built` is gone. The body carries the six sections in the order `body.md` lists them, and the build record lives where it belongs — the child task's `Result` names the four files and what each holds. The one item that had no other home, the sequencing fault where the skill was written before its build ticket existed, is now a `Decisions so far` entry, because it is a fact about how this map's record was made rather than an index of deliverables.
+  - `## Not yet specified` is back in the shape the rule requires: all four entries are restored, struck through, each with a `Resolved on 2026-11-08:` line saying what it became and where it went. Nothing was invented — the entry text is the text from `b6ac57a`, the commit before the section was emptied. One of the four already carried a `Resolved on` line there and it is kept verbatim; the other three are the same entries struck through with a `Resolved on` line naming the decision or the exclusion each became, which the emptied section only described in prose.
+  - Both dead links resolve. `../map/wm-8zyyyafxbdwr.md` and `../task/wm-4dytqnmy4s47.md` are relative to `tickets/map/`, so each opens the ticket it names; every local link in the body was resolved and all of them exist.
+
+The goal axis held at the previous review as well. This verdict is not a second opinion on that axis — what changed is the convention axis, and the evidence was re-read rather than assumed.
+
+~~needs changes~~
+
+~~- Goal: the four lines of the `Acceptance direction` hold. The skill is under `weave-your-work/update/` as four files. The three-node walkthrough was recorded in the child task and re-read here: a closed task and its closed map went through strike, reopen, start, a fresh verdict from each review skill, and back to closed, with status, review record, and tree agreeing afterwards. The move path was read end to end against `b699d5f`, which is the move this map claims — the glossary install task re-hung under the glossary map with its dependency edge removed — and `move.md:122` cites that commit for the same event. The retire-and-replace path was run end to end again for this review in a scratch project with a real dependent: a closed split map with two closed task children, a replacement created, the old ticket naming the replacement, both children re-hung on it, the old map archived, and `waymark validate` reporting no findings; the dependent went from `open` blocked on the archived map to `open` ready, which is the edge change the acceptance direction asks to agree. The review point's four items are all stated in `SKILL.md` and `content.md`: the two tests, the three dispositions, the ownership stop rule, and the seven-step order ending in archive.~~
+~~- Convention: three findings, all in the body and each citable to `body.md`.~~
+~~  - `## Built` is not one of the six sections. `body.md` says a map body holds six sections "in the order this file lists them" and names them: `Target`, `Acceptance direction`, `Decisions so far`, `Not yet specified`, `Out of scope`, `Review`. This map adds a seventh. It is the only map of the 44 in this repository carrying one, and the repair proposal already committed against it (`wm-b75en7eez6tj`) names it as one of the shapes to convert.~~
+~~  - `## Not yet specified` was cleared the one way `body.md` forbids. The rule is that "a resolved entry stays in place, struck through, with a `Resolved on <date>:` line saying what it became and where", and only fog that turned out to be irrelevant may be deleted. The four entries that lived here are gone; `git show b6ac57a` is where they last exist, one of them already carrying a `Resolved on` line that was deleted with it. What remains is prose — `Nothing. The two items that lived here were settled...` — where the file requires the explicit marker `(none; the fog is cleared)`, because a section left out and a section that is empty mean different things.~~
+~~  - Two decision sources do not resolve. Both were written as `](tickets/map/wm-8zyyyafxbdwr.md)` and `](tickets/task/wm-4dytqnmy4s47.md)`, as if the repository root were the link's base, but these tickets live in `tickets/map/`, so they resolve to `tickets/map/tickets/...` and open nothing. `body.md` requires a source "the decision came from" so it "can be traced back when it is questioned"; a link that 404s does not. The other maps that share the style are not this map's to fix, but this one is.~~
+
+~~The goal axis is not what sends the map back. What does is that the body does not match the shape the map skill defines, and one of the three is a traceability defect rather than a cosmetic one.~~
+
+Invalidated on 2026-11-09: the three convention findings it records were repaired in the body, and the goal evidence was re-read against the current files.

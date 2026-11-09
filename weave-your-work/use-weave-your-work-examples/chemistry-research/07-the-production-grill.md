@@ -109,7 +109,7 @@ The case did not exercise the standalone grill path, where there is no work item
 
 The grill map's wording check ran before this case. It found two conflicts, both fixed:
 
-- The grill map and the ADR map carried a `## Review` section. `map-review` and `update` say a map body has no `## Review` section; the map's status is the verdict. The sections were removed.
+- The grill map and the ADR map carried a `## Review` section. At the time, `map-review` and `update` said that a map had no `## Review` section and its status was the verdict, so the sections were removed. The later map-review design adds a Review section; this describes the earlier rule and what the run actually did, not the new rule.
 - The testimony link rule said "link it to the discussion's work item" without allowing a standalone grill. The rule now says "when there is one" in both `SKILL.md` and `testimony.md`.
 
 The grill map itself is still open on the glossary branch. That is a completeness gap, not a wording conflict: the glossary setup and cleanup tasks are not finished. This case does not depend on the glossary map being closed; the chemistry fixture has its own glossary source.

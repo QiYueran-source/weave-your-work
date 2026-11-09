@@ -30,10 +30,12 @@ or, for a rewritten paragraph:
 ```
 ~~The map hands its children one destination at a time and waits for each to close before opening the next.~~
 
-Superseded on 2026-11-08: children are parallel; order comes from dependency edges. See `04-dependencies.md`.
+Superseded on 2026-11-08: children are parallel; order comes from dependency edges, which the map skill defines.
 ```
 
 Do not delete the old text and do not keep both without marking them. A reader who cannot tell which line is current is worse off than one reading a stale ticket, because they do not know to be careful.
+
+An `## Acceptance signal` takes a strike the same way its sibling sections do: the old signal stays visible with its `Superseded on` reason, and the new one is written after it. A signal rewritten in place would leave the earlier review's evidence pointing at a standard the ticket no longer states.
 
 ## The reopen loop
 
@@ -44,7 +46,7 @@ waymark body replace <id> --body-file <path>
 waymark reopen <id>
 ```
 
-Then the node goes through review again, against the new text, by the same rules as the first time, and closes again when it passes.
+For a map, include its invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. The strike happens once: a re-review that reaches a block already struck for that reason does not strike it again. Fresh verdict first and the struck history below it, as `map/body.md` shows. A legacy map without a Review has none to strike; do not fabricate one. For a task, keep its Review unchanged and write in `Progress` that update invalidated that verdict, why, and what must be repaired; task-review replaces it after execution. Write that `Progress` section if the ticket has none. `waymark reopen` puts the node in `open`. A reopened split map is started again before repair or review; keep its existing `split_as`. An unfinished split map that was never closed is not reopened and does not need starting. A reopened task is started by its executor. Then review the node again against the new text and close it when it passes.
 
 When the new content does not exist yet, the run does not write it. On a map, it hangs the work as a child; a task takes no child and rewrites its own `Action`. `need-execute.md` carries the shape, the order, and the gate.
 
@@ -54,9 +56,13 @@ An ancestor owned by someone else is where the write stops. Reopen what the run 
 
 Where the verdict lands depends on the category, and on whether there is one to replace.
 
-**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time.
+`waymark body replace` never moves the status, including on a closed node; `closed_at` also stays. The reopen is a separate command, which is why the order is body first, then status.
 
-**A map** has no `## Review` section — its five sections hold no verdict text — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix. The acceptance direction is not the verdict: it is what the verdict was reached against, which is why test two reads it and then asks about the status.
+**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time. While a reopened task awaits re-review, `Progress` says which prior verdict was invalidated and why; update does not write the Review section. If the review skill is not installed, the repair stops there: leave the task open with that `Progress` note and report it, rather than writing a verdict this skill does not own.
+
+**A map** carries a `## Review` with the verdict and both axes. When reopening invalidates it, retain the struck-through review and its reason alongside the fresh review for the same subject. A legacy map without Review gets its first entry on re-review. The fresh verdict comes from the `map-review` skill, and where that skill is unavailable the run stops with the struck Review retained and the map unfinished, rather than writing a verdict it does not own. A map left unfinished this way carries no placeholder verdict: the struck block and its reason are the whole `## Review` until a real review writes below them. If status and Review disagree, the owner rechecks children and evidence before completing the appropriate state change; changed evidence requires a fresh review.
+
+waymark will close a map that still has an open child. Nothing warns, so the run reads `waymark tree --root <id>` before it closes one: an unfinished child means the map is not ready to close, whatever the Review says. A child that arrives under the map mid-run counts the same way.
 
 An open map's acceptance direction is a plan, not a kept promise. Changing it is the first disposition and the status does not move — but the children still get re-read, because it is the thing they refine, and it is also what the map will be judged against when it closes.
 
@@ -64,7 +70,7 @@ Whichever category, the run reads the acceptance direction before it writes: `##
 
 Two things to keep straight:
 
-- **The old review is not kept in place.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on. The exception is a verdict this skill has to retract rather than supersede — if the review that closed the node was itself wrong, the struck-through verdict is the record that it was, which is what `wm-4dytqnmy4s47` does.
+- **Task review history is unchanged.** The new task review replaces the old one; the only exception is a verdict retracted because the review itself was wrong. For a map, retain each invalidated review struck through and record the reason, so the current review is distinguishable from history. The review skill's own history policy governs the task section, so follow it when it is installed rather than this paragraph.
 - **Reopening is decided by the verdict, never by the size of the edit.** A one-line change that makes the acceptance false reopens the node; a long clarifying paragraph that leaves it true does not. That is the first disposition, and the status never moves.
 
 Writing the changed body before reopening also means the reopen lands on a ticket that already says what it now claims. Reopening first leaves a short window where the tree says "not done" and the ticket still describes the old promise.
@@ -76,7 +82,7 @@ A reopened node is not automatically claimed by the run that reopened it. It goe
 A child refines its parent. When the parent's content changes, each child has to be read again against the new content, and there are three outcomes:
 
 - **Still refines it.** Nothing happens to the child.
-- **Refines it, but its own acceptance no longer holds.** The child goes through the second disposition itself: strike, reopen, review, close. This recurses, which is why the scan has no depth limit.
+- **Refines it, but its own acceptance no longer holds.** A closed child goes through the second disposition itself: strike, reopen, review, close. An unfinished child has no verdict to strike, so its owner changes its `Acceptance signal` and advances it; the update run reports the gap rather than rewriting another owner's task. Either way this recurses, which is why the scan has no depth limit.
 - **No longer refines anything.** The child is retired with archive and a reason. `outcome=failed` is not used: the child did its job, and the parent moved out from under it. If the work is still wanted somewhere else, a replacement is opened where it now belongs.
 
 A map cannot be archived while any child is still active; waymark refuses with `cannot archive <id>: N unarchived child item(s)`. So retiring a subtree runs bottom-up, and each child's own disposition is decided before its parent's.
@@ -140,8 +146,9 @@ Clearing also erases the old position from the ticket, which is why a *move* is 
 ## What lands where
 
 - The changed body, via `waymark body replace`.
+- `title`, via `waymark title set`, when the change is substantive. Put the old title inside the struck replacement in the body, because a title cannot carry a strike-through.
 - `status` via `waymark reopen`, and back to closed through review, when the verdict no longer holds.
-- For a task, `## Review`, replaced by the review skill. For a map, no verdict section exists to replace: a passing review shows only in the status, and a `needs changes` one is written into `Decisions so far` as the gap to close.
+- For a task, `## Review`, replaced by the review skill under its existing history policy. For a map, `## Review` records each verdict; on same-subject reopen and re-review retain the invalidated struck-through review and its reason.
 - `archived_at` and `archive_reason`, by `waymark archive`.
 - The replacement's body opens by naming the node it replaces.
 
@@ -153,8 +160,9 @@ A closed map says the exporter runs weekly. It runs daily now, and one of its tw
 
 - Test one: still the same map, same destination. Pass.
 - Test two: the weekly window task's acceptance says "seven days of data"; daily data still reads as seven days, so its verdict holds. The other task's acceptance says "runs on the weekly schedule", which is now false.
-- First disposition for the map: strike the weekly line, keep the rest, status unchanged.
-- Second disposition for the second task: strike its acceptance line, reopen, review against the new text, close.
-- No archive, no issue, one commit.
+- First disposition for the map's text: strike the weekly line and keep the rest. The map's own verdict still needs an ancestor check after the child reopens.
+- Second disposition for the second task: strike its acceptance line, record the invalidated task verdict in Progress, reopen, fix, and review against the new text.
+- If the map's acceptance counted that task as complete, reopen and start the map too; after the task closes, review the map again. Otherwise leave it closed only if its own acceptance still holds.
+- No archive and no issue are needed for this owned branch; commit the completed changes.
 
 The same map, now told it exports only to the internal warehouse. That is a different question, and the tree hangs a different map under the parent. Third disposition: replacement created, children re-hung or retired, old map archived bottom-up with its children, one issue to whoever depended on it.

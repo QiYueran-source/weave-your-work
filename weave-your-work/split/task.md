@@ -8,7 +8,7 @@ The criterion that sent the layer here lives in `SKILL.md`. This file applies it
 
 ## Read the parent first
 
-Read the parent map's `Acceptance direction` line by line. Every line has to be produced by some task in this layer. A line that nothing produces is either a missing task or a direction the map no longer means; decide which before writing anything.
+Read the parent map's full `Acceptance direction` line by line. Completed and planned task layers together must cover it; the current layer need not cover every line. Keep the full direction on the map and leave unclear uncovered work in `Not yet specified`. Planned tasks are not completed work: review requires actual evidence for every requirement, so uncovered work prevents early review.
 
 ## The six gates
 
@@ -19,13 +19,13 @@ Every task passes all six. A gate that fails sends the part back to grill or tas
 3. **Who does it.** The action marks every step a person has to perform, and `needs_human` agrees with what the action says.
 4. **What breaks if it goes wrong.** The answer sets `reversibility`: work that cannot be undone is `one_way` and carries `Failure recovery`.
 5. **Whether the output can be named.** Yes is a delivery. No is a probe: a question to answer, with both `Next step` lines written before it runs.
-6. **Whether the ticket is writable.** The body carries the sections its kind requires: `Action` and `Acceptance signal`, plus `Failure recovery` for `one_way` and `Next step` for a probe. `needs_human` agrees with the `Person:` steps. The parent is a map, and the ticket carries no `dependencies` block.
+6. **Whether the ticket is writable.** Check its body, kind and fields against task design's `body.md`, `kind.md`, and `properties.md`. A ticket that fails those checks goes back to task design.
 
 Gates 3, 4, 5, and 6 each decide a field, which is why a layer settles them before the ticket exists rather than during the work.
 
 ## The plan
 
-Write the count and one line per task into the parent map's `Decisions so far`, as one entry, before the first ticket is created. That entry is the only record of what this layer is meant to contain; the children themselves, read back with `waymark tree --root <map>`, show what was actually written.
+Write the count and one line per task in the discussion testimony before the first ticket is created. The children themselves, read back with `waymark tree --root <map>`, show what was actually written.
 
 The count comes from the grill discussion, not from the number of decisions. One decision may become three tasks, and three decisions may become one.
 
@@ -43,13 +43,14 @@ It writes no `Result`, no `Progress`, no `Review`, no `waiting_on`, and no `outc
 
 ## Hanging them
 
-At the map's first split, record the child type on the map itself:
+At the map's first split, start the map and record the child type on it:
 
 ```
+waymark start <map>
 waymark field update <map> --set split_as=task
 ```
 
-Then create every ticket before reading anything back:
+On later splits leave status and `split_as` unchanged. Then create every ticket before reading anything back:
 
 ```
 waymark create --category task --title "<the task's result>" --owner <parent owner> \
@@ -74,9 +75,9 @@ A task hangs under one map only. When it is related to another map, add a soft l
 waymark link add <task> <other-map>
 ```
 
-The link says the two are related. It carries no wait and no shared acceptance, so the task stays a unit that can be handed over on its own. A part that really has to wait for another map is not a task; it is a child map carrying a dependency edge.
+The link says the two are related. It carries no wait and no shared acceptance. A map may depend on another map's output; tasks that need that input wait at execution when it is unavailable, while unrelated tasks may run. Load the map skill and read its `frontmatter.md` for the dependency rules.
 
-A part that reads another task's output is not a task either. The two are one action with several steps, or child maps carrying an edge. A sibling task cannot wait on a sibling: the task layer has no dependency edges, and `waiting_on` is for a person, not for another task's result.
+A part that reads another task's output cannot be a separate sibling task. The two may be one action with several steps, or child maps carrying an edge. Check task design's `body.md` and `properties.md` for the task-layer constraints.
 
 Once `split_as` is `task`, every later child of that map is a task too. A part that needs a map of its own opens a sibling map, not a child of this one.
 

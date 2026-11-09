@@ -20,14 +20,15 @@ Read `how-to-grill.md` before the first round. It defines the question tree, the
 
 ## What the grill writes
 
-The grill has three branches. Testimony is a reference file in this skill; glossary and ADR are independent skills. It also hands off work.
+The grill has three record branches and a work hand-off. Testimony is a reference file in this skill; glossary and ADR are independent skills.
 
-- **Testimony**: the record of this grill. `testimony.md` holds the item and body rules.
+- **Testimony**: the record of this grill. `testimony.md` holds the item and body rules. Append what the person said after each round.
+- **Map and task decisions**: as a decision settles, write it into the owning map or task during the discussion. The caller owns that ticket write; testimony preserves what was said, while the ticket carries the current decision.
 - **Glossary terms**: when a term resolves, write it through the `glossary` skill.
 - **ADRs**: when a decision may pass the ADR skill's gates, call the `adr` skill; it decides and writes the record.
 - **Work**: when a question becomes work, write `work: <what>` in the testimony and hand it to the caller. The caller creates the map or task; the grill does not.
 
-Map decisions, split results, and task creation are the caller's. A standalone grill returns the conclusions to the user with the ticket each one should land in, or "no ticket yet".
+Before a project-design grill, the caller finds or creates its map. A standalone grill that is pure consultation needs no work ticket. When a grill settles a project target or produces work, return the owning ticket for each decision or work hand-off; do not leave it only in testimony or chat.
 
 ## The output contract
 

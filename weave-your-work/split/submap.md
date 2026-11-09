@@ -28,7 +28,7 @@ A child that would conflict with its parent or with a sibling is not written as 
 
 ## When the parts must run in order
 
-Sometimes the layer is a sequence: the second part cannot start until the first is done. A map that is waiting on another node may still be split; the parent's edge is not copied to the children. If a child in the sequence needs the blocker's output, add an edge from that child to the blocker. Otherwise it starts on its own.
+Sometimes one map needs another map's output. A waiting map may still be split; the parent's edge is not copied to the children. If a child map needs the blocker's output, add an edge from that child to the blocker. Tasks carry no edges: only tasks needing unavailable input wait at execution. Load the map skill and read its `frontmatter.md` for dependency and failed-output rules.
 
 That sequence is still two child maps, and the order is one dependency edge:
 
@@ -40,13 +40,14 @@ The edge goes on the later child and is the only place the order is recorded. Ne
 
 ## Writing them
 
-At the map's first split, record the child type on the map itself:
+At the map's first split, start the map and record the child type on it:
 
 ```
+waymark start <map>
 waymark field update <map> --set split_as=submap
 ```
 
-Then create every child before reading anything back:
+On later splits leave status and `split_as` unchanged. Then create every child before reading anything back:
 
 ```
 waymark create --category map --title "<the child's target>" --owner <parent owner> \
@@ -60,7 +61,7 @@ Finally read the shape back:
 waymark tree --root <map>
 ```
 
-The parent's body is not edited. It holds no children list, so the split leaves the parent's ticket byte-identical, and its owner is never asked to open it.
+The parent's body is not edited. It holds no children list.
 
 Once `split_as` is `submap`, every later child of that map is a child map too. A part that needs to be a task opens a sibling map instead.
 

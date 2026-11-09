@@ -20,9 +20,11 @@ Check the body against its kind: `Action` and `Acceptance signal` are there; `Fa
 
 If `waiting_on` is set, stop. The owner clears it after handling the answer; the run does not guess that the answer arrived.
 
-If `## Review` says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, the ticket should already be closed; stop.
+Read `## Review` when present. If it says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, stop unless `Progress` explicitly says `update` invalidated that verdict and names why and what must be repaired. For that reopened task, do the named work and let task-review replace the Review; do not infer invalidation merely from an open status.
 
 Read the map above it. Its `Target` says why the task matters; its `Acceptance direction` says what the branch is for. Work done correctly against the wrong map is still wrong work.
+
+Load the map and split skills for their dependency and task-split references; if either is unavailable, stop and ask the owner to install it. Read the parent chain and its maps' dependencies. If this task needs a sibling task's output, hand it back as a split error; read `task.md` in the split skill. For each map output this task actually needs, check that it exists and is usable before starting the task. An unfinished dependency does not stop unrelated tasks; a failed closed dependency does not establish that its output is usable. If a required output is missing or unusable, leave the task's status unchanged and tell the owner which input is unavailable. Follow the map skill's `frontmatter.md` for the owner's disposition. `waymark ready` alone cannot establish input availability.
 
 Check that the task still holds: the action still serves what the map wants, and nothing has made it moot or impossible.
 
@@ -36,9 +38,9 @@ Claim it with `waymark start`. Say one line about where you are starting and wha
 - The task no longer holds.
 - The work lacks an input or a permission it needs.
 
-If the missing input is produced by another task or map, that is a split error, not a wait: hand the ticket back and say which producer it needs. Do not put a task or map in `waiting_on`. If a person must supply or confirm the input, wait on that person.
+If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's `frontmatter.md`. If the missing input is a sibling task's output, hand the ticket back as a split error; read `task.md` in the split skill. If a person must supply or confirm the input, wait on that person.
 
-The waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
+Person waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. For unavailable map output, record the stop and needed input in `Progress` without setting `waiting_on` to a ticket. Preserve any update invalidation marker in `Progress` across these stops until task-review records a new verdict. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
 
 A question about how the work is done is not on this list. Decide it, and say what you decided in `Result`.
 
@@ -50,7 +52,7 @@ Work the `Action` in the order it gives when it is a numbered list, and in any o
 
 Read the `Acceptance signal` against the evidence. The signal is a standard, not a mood: it says what evidence shows the result is there, and the result either meets it or does not.
 
-Write `Result`: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` if an earlier stop left one.
+Write `Result`: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` if an earlier stop left one, except an update invalidation marker: retain that until task-review records a new verdict.
 
 Then invoke `task-review` when the run is the owner's. A run that is not the owner's stops at `Result` and reports; the owner reviews and closes. The review reads the same signal against the same evidence, writes `## Review`, and decides: close the ticket, send the task back with the gap named, or stop it on the owner. A task that comes back has only the named gap to fix.
 
@@ -60,7 +62,7 @@ Report three lines: what the work produced, the verdict and the axis that decide
 
 ## When it stops
 
-Write `Progress`: the step it reached, what it waits for, and what happens next. Set `waiting_on` to the person. Leave the status `in_progress`.
+Write `Progress`: the step it reached, what it waits for, and what happens next. For a person wait, set `waiting_on` to the person. Leave the status `in_progress`.
 
 Report three lines: where it stopped, why, and who picks it up.
 

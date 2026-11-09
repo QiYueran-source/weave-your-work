@@ -10,7 +10,7 @@ The rejected split was one child map per question. It would have produced five m
 
 The split that was considered and rejected was two tasks, one per platform. It fails the size rule in both directions: the neutral rules — trigger, title, body, decision test, write-back, failures — would be written twice or owned by neither, and the acceptance would be two walkthroughs that can each pass while disagreeing about the shape.
 
-One task carries the whole skill and both references. The platform detail is already separated inside the deliverable (`SKILL.md`, `github.md`, `gitee.md`), which is the split that earns its place: a run that files one issue reads one reference, not both.
+One task carried the whole skill. At the time, the platform detail was separated inside the deliverable into `github.md` and `gitee.md`, so a run that filed one issue read one reference. That split did not hold: on 2026-11-09 the two files were replaced by one `usage.md` for GitHub, because the operations are the same on any host and `gh` documents its own syntax. [The two platforms](04-the-two-platforms.md) records why.
 
 ### No dependency edge
 

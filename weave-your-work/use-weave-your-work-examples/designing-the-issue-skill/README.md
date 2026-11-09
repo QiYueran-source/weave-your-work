@@ -1,6 +1,6 @@
 # Designing the issue skill
 
-The third worked example: how the communication map became a skill with two platform references. It is recorded from the tickets and commits of 2026-11-08, while the design was still being verified, so its last page says what is not shown yet.
+The third worked example: how the communication map became a skill with a listener and one GitHub reference. It is recorded from the tickets and commits of 2026-11-08, while the design was still being verified, so its last page says what is not shown yet.
 
 The ticket that holds the design is [Communication skills: issue remote exchange](../../../tickets/map/wm-25b3q7mg88c7.md); the task that builds it is [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md); the skill is `weave-your-work/issue/`.
 
@@ -9,7 +9,7 @@ The ticket that holds the design is [Communication skills: issue remote exchange
 1. [Three callers and one message](01-three-callers.md)
 2. [The channel, not the queue](02-the-channel.md)
 3. [Splitting the map and defining the task](03-splitting-and-the-task.md)
-4. [The two platforms](04-the-two-platforms.md)
+4. [Settling on one host, twice](04-the-two-platforms.md)
 5. [What this example does not show](05-gaps.md)
 
 ## What made this effort different

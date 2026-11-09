@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 A map's tasks are parallel branches, so the normal way to advance a map is to run them together. Take the tasks the run's owner owns, claim them all, send each to its own subagent, and carry each one to a reviewed end. The run's owner is the owner of the chosen map; the local operator is not the owner, and on a shared checkout they can differ.
 
-`execute-one-task` holds the steps of one task; `task-review` holds the judgment. This skill decides which tasks run, how they are sent, and what the main agent does as reports come back.
+`execute-one-task` holds the steps of one task; `task-review` holds the judgment. This skill decides which tasks run, how they are sent, and what the main agent does as reports come back. Load the map and split skills for dependency and task-split checks; if either is unavailable, stop and ask the owner to install it.
 
 ## Which tasks
 
@@ -18,6 +18,8 @@ Left out:
 
 - A task whose `waiting_on` names a person, until the owner clears that value after handling the answer. A task with a value is never selected.
 - A task with `needs_human: true`. It is never sent to a subagent, because the field cannot tell a whole-human task from a partly-human one, so the rule is uniform.
+- A task whose required map output is unavailable or unusable. Check each candidate's actual inputs against the parent chain and its map dependencies as `execute-one-task` directs; unrelated tasks may run. Tell the owner which input is missing and follow the map skill's `frontmatter.md` for failed dependencies and disposition.
+- A task that needs a sibling task's output. Hand it back as a split error; read `task.md` in the split skill.
 
 Claim every chosen task with `waymark start` before any of them goes out. The claim is what keeps two runs from picking up the same task.
 
@@ -37,7 +39,7 @@ When it finished:
 2. Review the task with `task-review`, against the ticket.
 3. Act on the verdict. `passed` closes the ticket. `needs changes` goes to a fresh subagent with the named gap. `needs discussion` stops that task and waits on the person. `wrong direction` closes it as a failed attempt.
 
-When it stopped: the ticket keeps `Progress` and `waiting_on`, the subagent is released, and its slot goes to the next ticket. The owner clears `waiting_on` after handling the answer; the next run re-dispatches and selects the task by the same rule that chose it the first time.
+When it stopped: the ticket keeps `Progress` and, for a person wait, `waiting_on`. The subagent is released and its slot goes to the next ticket. The owner clears `waiting_on` after handling the answer; the next run checks inputs and selects the task by the same rules.
 
 ## Reviewing a large batch
 

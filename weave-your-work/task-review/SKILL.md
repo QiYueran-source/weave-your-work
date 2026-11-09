@@ -37,7 +37,7 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 ## Four verdicts
 
-**passed**: both axes hold and `waiting_on` is empty. The ticket closes. A ticket that still carries a `waiting_on` value is waiting, not passed: return `needs discussion` instead.
+**passed**: both axes hold and `waiting_on` is empty. Recheck any map output required by the task: if it is missing or unusable, do not pass or close the task; record the missing input in Progress and return it to the owner for dependency disposition under the map skill's `frontmatter.md`. A ticket that still carries a `waiting_on` value is waiting, not passed: return `needs discussion` instead. Otherwise the ticket closes.
 
 **needs changes**: an axis names a gap an agent can close, and `waiting_on` is empty. The task goes back to the executor with the gap named, it changes only that, and the task is reviewed again. If `waiting_on` is set, the task is waiting on a person; that is `needs discussion`, not a change.
 
@@ -49,7 +49,7 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 `## Review`, in the shape task design defines: the verdict, then one line per axis with its source.
 
-`outcome=failed`, only with `wrong direction`.
+`outcome=failed`, only with `wrong direction`. If an old failed outcome remains on a reopened task and the owner has freshly established `passed`, clear it with `waymark field update <task> --clear outcome` before closing. Do not clear it merely to make fields match.
 
 `waiting_on`: cleared on every close, and set only with `needs discussion`. A `passed` or `wrong direction` ticket cannot keep a value.
 
@@ -57,7 +57,7 @@ Nothing else. No comment ticket, no edit to `Result`, no rewrite of the `Action`
 
 ## Closing and handing on
 
-`passed` and `wrong direction`: remove `Progress` if a stop left one, clear `waiting_on`, write `## Review`, close the ticket.
+`passed` and `wrong direction`: clear `waiting_on`, write `## Review`, remove `Progress` if a stop or update left one, then close the ticket. Keep an update invalidation marker until the new Review is written, so an interruption cannot turn the old verdict into an apparent current pass.
 
 `needs changes`: write `## Review`, leave the ticket open, hand it back naming only the gap. A ticket with a non-empty `waiting_on` is not `needs changes`; it is `needs discussion`.
 

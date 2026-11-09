@@ -50,7 +50,7 @@ That run is one batch, not one per map: write the worked example each effort nee
 - Which map maintains the shared glossary, and which file it lives in.
 - Installation and distribution: reference matt's skill configuration mechanism, optional.
 - Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.
-- Whether the local comment category stays.
+- ~~Whether the local comment category stays.~~ Resolved 2026-11-09 in the execution map: the category is removed, because the issue skill uses `comment` for a message category. See [Execution skills: map, task, glossary, and explore](wm-qhd3twqjzhma.md).
 - Skills that may join each category later (retro, handoff, and so on); not this round.
 
 ## Out of scope

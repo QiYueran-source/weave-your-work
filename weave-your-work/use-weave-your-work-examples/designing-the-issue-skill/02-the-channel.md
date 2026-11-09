@@ -32,7 +32,23 @@ The state machine stayed out, but a triage result is still a decision about what
 
 ### The handle is a roster, not a guess
 
-A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The skill reads `.waymark/handles.toml`, one table per platform, and verifies the account before it mentions or assigns it. A missing table, owner, or account means ask the run's owner; the skill never derives a login from a name. This repository now carries a sample roster at `.waymark/handles.toml`, mapping `frank` to the account the probe used.
+A waymark owner is a local name; a GitHub login is a remote one. Guessing the second from the first is silent when it is wrong: the mention reaches nobody, or reaches a stranger. The first design read `.waymark/handles.toml`, one table per platform, and verified the account before mentioning or assigning it. It also assumed that a login could be inferred from an owner name; setup now reads the repository's actual collaborators and matches them, and asks only about a name with no match. Inventing a login is still out. The sample roster mapped `frank` to the account the probe used.
+
+### Moving the roster out of waymark
+
+The original roster lived under `.waymark/`, although the issue skill rather than waymark reads it. The later discussion chose the installed skill's `bundle/tools/`: each project commits its own copy, and issue setup asks the person responsible for the owner-to-handle mappings. Repeated setup preserves an existing roster. A skill update can replace the installed directory, so the setup guide calls for backing up the roster and restoring it afterward. The migration plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
+
+### Checking the queue at session start
+
+A file watcher that pushes messages into a running agent would need a different integration for each harness. The discussion kept the session-start rule as the default and chose a small read-only Node checker for optional session-start hooks. The checker reports queued items without acting on them; adapting it and verifying that its output reaches an agent remains harness-specific. The scope and tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
+
+### Securing the listener and queue
+
+The listener review found that remote fields could break the line-based queue format, so new records use JSON encoding without rewriting existing local queues. The first fix also required signature verification, but smee can reserialize JSON and invalidate GitHub's signature; the [research note](../../../docs/smee-signature-research.md) records why. The person chose convenient internal delivery without mandatory signatures instead. The tradeoff is explicit: the channel can be observed or forged by anyone who knows its URL, and queued entries are reminders rather than proof of sender identity. The agent still waits for the person before acting. The current plan is in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
+
+### Catching up after the listener was offline
+
+The first catch-up plan searched open issues mentioning the current account. In two private-repository tests that search missed new issues, although listing the repository's open issues found them. The person limited catch-up to the current project and confirmed a startup scan of its open issues, filtered by frontmatter. In a private live test, that scan recovered an issue created while the listener was offline, and a second startup did not duplicate it. The test and its limits are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md); the original search misses remain unexplained.
 
 ### What was rejected: copying the thread
 

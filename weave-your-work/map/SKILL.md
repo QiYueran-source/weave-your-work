@@ -7,7 +7,7 @@ description: "Write a map and run it: the target a team works toward, what its b
 
 A map is a target. It answers "what do I want", it can hold children that refine it, and it is accepted when its acceptance direction holds. Every target node is a map; the root is the one with no parent.
 
-This is the entry to the map skill. It says what a map is and sends you to the file that answers your question. It writes no rule of its own.
+This is the entry to the map skill. It says what a map is and sends you to the file that answers your question. `usage.md` gives the reading path; `bundle/setup.md` installs the work-record rule. Once installed, `.agents/rules/rules-map.md` governs when map work must be recorded.
 
 ## The three references
 
@@ -17,7 +17,7 @@ This is the entry to the map skill. It says what a map is and sends you to the f
 | What do the fields mean, and who may write which one? | `frontmatter.md` |
 | How does a map move from a stated target to a closed ticket? | `procedure.md` |
 
-`body.md` holds the five sections and the fog entry forms. `frontmatter.md` holds the custom fields, the dependency rules, and the list an accepting party checks. `procedure.md` holds the states, the steps, and what changing a split map does to its children.
+`body.md` holds the six sections and the fog entry forms. `frontmatter.md` holds the custom fields, the dependency rules, and the list an accepting party checks. `procedure.md` holds the states, the steps, and what changing a split map does to its children.
 
 ## The steps are other skills
 
