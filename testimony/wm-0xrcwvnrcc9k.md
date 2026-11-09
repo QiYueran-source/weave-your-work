@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:41:22Z
-updated_at: 2026-11-09T05:08:26Z
+updated_at: 2026-11-09T05:12:41Z
 soft_links:
   - wm-hy12yjm0yn9g
 ---
@@ -21,7 +21,10 @@ soft_links:
 - [x] What is the meaning of dependencies when a later map needs an earlier output?
 - [x] When a dependency closes as failed, may the waiting map proceed?
 - [x] How is uncovered acceptance work kept visible across partial splits?
-- [ ] What is the cost of adding a map Review section, and should the map have one?
+- [x] What is the cost of adding a map Review section, and should the map have one?
+  - [ ] Which verdicts produce a Review section?
+  - [ ] How are old reviews marked on reopen and replaced on re-review?
+  - [ ] How are interrupted writes and mismatched status handled?
 - [x] How should a review gap be repaired without violating the frozen child type?
 
 ## Discussion
@@ -48,3 +51,8 @@ soft_links:
 - A: "其他按推荐". The user accepted these three recommendations.
 - Q: Should the map keep no Review section and report the checks outside its body?
   A: "9.map如果加review章节，成本如何". The user asked for the cost of adding a Review section; this decision remains open.
+
+### Round 4
+
+- Q: Should maps have a short Review section with the verdict, goal and convention checks, and evidence, while status remains the lifecycle state and existing maps are not bulk backfilled?
+  A: "9.可以". The user agreed.

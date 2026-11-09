@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T04:42:21Z
-updated_at: 2026-11-09T05:08:26Z
+updated_at: 2026-11-09T05:12:41Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-0xrcwvnrcc9k
@@ -37,6 +37,8 @@ Review point: the discussion records the choices, each affected skill agrees wit
 - Keep the full acceptance direction on the map. Unclear uncovered work stays in Not yet specified; planned tasks in testimony are not completed work. Review requires actual evidence for every acceptance requirement. (user confirmed)
 - When a review gap was already required by a task's acceptance signal, use update to decide whether to reopen, fix, and review that task. When the task met its signal but the parent omitted a new requirement, discuss the target or structure rather than automatically create a task dependent on a sibling's output. (user confirmed)
 
+- Maps have a short Review section recording the verdict, goal and convention checks, and evidence; status remains the lifecycle state. Do not bulk backfill existing maps or invent past review evidence. (user confirmed)
+
 ## Not yet specified
 
 - ~~Decision to make: which parent writes belong to a first split and later splits?~~
@@ -53,8 +55,12 @@ Review point: the discussion records the choices, each affected skill agrees wit
   Resolved on 2026-11-09: check actual output and usability; the owner decides the next disposition without automatic edge changes.
 - ~~Decision to make: where does uncovered acceptance work stay visible across partial splits?~~
   Resolved on 2026-11-09: keep the complete acceptance direction; unclear work stays as fog, and review requires evidence rather than plans.
-- Decision to make: should map review write a Review section, and what would that cost?
-  Why it matters: persistent evidence may prevent unsupported verdicts but changes the map body and update rules.
+- ~~Decision to make: should map review write a Review section, and what would that cost?~~
+  Resolved on 2026-11-09: add a short Review section; retain lifecycle status and do not bulk backfill old maps.
+- Decision to make: which verdicts write Review, and how are reviews invalidated and replaced?
+  Why it matters: open maps and reopened maps must not present an obsolete pass as current.
+- Decision to make: how should interrupted or inconsistent status and Review writes be handled?
+  Why it matters: separate writes can leave mismatched verdicts.
 - ~~Decision to make: how is a review gap repaired without violating the frozen child type?~~
   Resolved on 2026-11-09: use update for a gap already promised by a task; otherwise discuss the new requirement or structure first.
 
