@@ -11,7 +11,7 @@ import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 
-const source = path.dirname(fileURLToPath(import.meta.url))
+const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const installedModules = path.join(source, 'node_modules')
 const secret = 'integration-test-secret'
 

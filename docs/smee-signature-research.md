@@ -16,7 +16,7 @@ GitHub does not automatically retry failed webhook deliveries; a failed delivery
 
 These source-level findings describe the published upstream repository, not a measurement of the currently deployed `smee.io` service. No live webhook, channel, or public payload was sent or inspected for this note. Live deployed behavior, including whether it matches the current upstream revision or deployment configuration, remains unverified.
 
-A local regression test already recorded in this repository covers signed-body verification with a reserialized JSON body and split UTF-8 input. On 2026-11-09, `node --test --test-name-pattern='original bytes' .agents/skills/issue/bundle/tools/test-security.mjs` passed the matching test using simulated reserialization and a local HTTP server only. This is local evidence; it does not test the live Smee service. [Local security test](../.agents/skills/issue/bundle/tools/test-security.mjs)
+A local regression test already recorded in this repository covers signed-body verification with a reserialized JSON body and split UTF-8 input. On 2026-11-09, `node --test --test-name-pattern='original bytes' .agents/skills/issue/bundle/tools/test-security.mjs` passed the matching test using simulated reserialization and a local HTTP server only. This is local evidence; it does not test the live Smee service. The test has since moved to [the tests directory](../.agents/skills/issue/bundle/tools/tests/test-security.mjs).
 
 ## Alternatives to test
 

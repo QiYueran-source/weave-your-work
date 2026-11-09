@@ -38,6 +38,11 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Check first setup and repeat setup, the preserved mapping, queue resolution from an installed skill, and the listener with a local sample. The live GitHub and smee test remains separate.
 - Do not change the communication protocol or claim to have tested real webhook delivery.
 
+## Test directory (confirmed 2026-11-09)
+
+- Keep the security and catch-up regression tests, but move them from `bundle/tools/` to `bundle/tools/tests/` in both the source skill and the installed copy. Adjust their paths to the listener and dependencies, and update the research note's test link without changing the historical command.
+- Run both test suites from their new locations, verify the two copies match, and leave the runtime tools, configuration, and queue unchanged.
+
 ## Session-start queue check (confirmed 2026-11-09)
 
 - Add a read-only Node checker under `bundle/tools/` and its installed copy. Read `handles.toml` beside the script and resolve `[pending].path` from the project root; output the number of queue entries, their titles and links, or nothing for a missing or empty queue. Do not modify the queue or process an issue.
@@ -92,6 +97,6 @@ On 2026-11-09, two private test issues were opened while the listener was offlin
 
 A later private live test created an issue while the listener was offline, then started the listener with a temporary smee channel and isolated Git configuration and queue. Startup catch-up recovered the issue with the expected sender, recipient, owner, and URL. A second startup added no duplicate; the checker reported the recovered entry. The test issue was closed, its webhook removed, the private repository archived, and the isolated files removed. This tests one self-addressed issue, not cross-account delivery, closed issues, or reconnect recovery.
 
-The isolated startup tests cover paginated results, mapped recipients, malformed issues, duplicate entries across restarts, a live webhook during a delayed scan, and GitHub or repository errors. The source and installed catch-up tests passed, as did the installed security tests.
+The isolated startup tests cover paginated results, mapped recipients, malformed issues, duplicate entries across restarts, a live webhook during a delayed scan, and GitHub or repository errors. After moving the tests into `tools/tests/`, the installed security and catch-up tests passed, as did the source catch-up tests; both source tests match their installed copies.
 
 Next: review the skill and verify session-start notification in the intended harness.

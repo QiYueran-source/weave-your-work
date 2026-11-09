@@ -10,7 +10,7 @@ import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 
-const source = path.dirname(fileURLToPath(import.meta.url))
+const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const fallbackModules = path.resolve(source, '../../../../.agents/skills/issue/bundle/tools/node_modules')
 const timeout = 8000
 
