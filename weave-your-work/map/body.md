@@ -189,11 +189,11 @@ Example:
 
 ## Review
 
-Purpose: record the verdict and evidence for both review axes. Status remains the lifecycle state.
+Purpose: record the verdict and evidence for both review axes.
 
-Write a short entry for every verdict: `passed`, `needs changes`, `needs discussion`, or `wrong direction`. Name the goal check and convention check separately, with their findings and evidence. A needs-discussion entry records the unresolved question without deciding it. `map-review` owns the check and disposition.
+Write a short entry for every verdict: `passed`, `needs changes`, `needs discussion`, or `wrong direction`. Name the goal check and convention check separately, with their findings and evidence. A needs-discussion entry records the unresolved question without deciding it.
 
-On reopen, strike through each line of the invalidated review with `~~` and record why it no longer holds. Keep it alongside the fresh review after re-review of the same subject. A legacy map without a Review has no old entry to invalidate; do not invent or backfill one.
+A verdict that no longer holds stays in place, struck through, with a line saying why it was invalidated. The fresh verdict is written above it.
 
 Example after a same-subject re-review:
 
@@ -212,11 +212,11 @@ Invalidated on 2026-11-09: a checklist task reopened when its link stopped worki
 
 ## Keeping a body short
 
-`Target` and `Acceptance direction` are required from creation; `Review` is written when review occurs. The other sections record settled decisions, fog, and exclusions when they exist.
+`Target` and `Acceptance direction` are required from creation. The other sections record settled decisions, fog, exclusions, and review evidence when they exist.
 
 ## A whole map
 
-A map as waymark stores it before review. Waymark writes the id, ownership, status, and timestamps. What matters to this file is the body and, in the front matter, `split_as`.
+A map as waymark stores it before review. The front matter is shown because this is the artifact a reader receives; what this file defines is the body.
 
 ```markdown
 ---
@@ -260,4 +260,4 @@ Review point: each role's checklist exists and is linked from the first-week pla
 - Changing the hiring bar. Onboarding starts after the offer is accepted.
 ```
 
-The example map has children, so it carries the default clause and no result of its own. A map with no children and a directly checkable target uses the specific result instead, and its `split_as` stays unset until the first split writes it.
+The example map has children, so it carries the default clause and no result of its own. A map with no children and a directly checkable target uses the specific result instead.
