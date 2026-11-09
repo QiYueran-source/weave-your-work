@@ -41,7 +41,7 @@ Commit `8f86830`.
 - The Node tests pass from both the source skill and the installed copy: 21 security, 8 catch-up. New cases cover a message to another owner, a handle outside the roster, a case-different git name, an unknown git name, an empty git name, and owners that differ only by case.
 - The service restarted and logged `queueing messages addressed to frank`, then `Catch-up complete: queued 0 entries`, unchanged from before the change.
 - A hand-posted message addressed to `stranger-handle` returned `queued 0` and logged `Skipped issue: addressed to stranger-handle, not to frank`. The queue did not grow.
-- Not exercised: a real second machine receiving its own mail. That is the cross-owner exchange, still open in the map.
+- Not exercised here: a second owner's machine receiving its own mail. That was the cross-owner exchange, run on 2026-11-09 after this task closed and recorded in the map: a second clone with `git config --local user.name archived` queued the message addressed to it, the frank machine logged `Skipped issue 6: addressed to QiYueran-archived, not to frank` and did not grow, and the reply in the opposite direction reached the frank machine only.
 
 ## Acceptance signal
 
