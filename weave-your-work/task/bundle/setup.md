@@ -16,9 +16,10 @@ Unix, from the project root:
 
 ```sh
 mkdir -p .agents/rules
+TASK_SKILL_DIR='/path/to/installed/task-skill'
 if [ ! -e .agents/rules/rules-task.md ]; then
-  cp <task-skill>/bundle/rules/rules-task.md .agents/rules/rules-task.md
-elif cmp -s <task-skill>/bundle/rules/rules-task.md .agents/rules/rules-task.md; then
+  cp "$TASK_SKILL_DIR/bundle/rules/rules-task.md" .agents/rules/rules-task.md
+elif cmp -s "$TASK_SKILL_DIR/bundle/rules/rules-task.md" .agents/rules/rules-task.md; then
   printf '%s\n' 'Already installed: .agents/rules/rules-task.md'
 else
   printf '%s\n' 'Conflict: .agents/rules/rules-task.md differs. Ask the person; do not overwrite.' >&2
@@ -41,7 +42,7 @@ if (-not (Test-Path $target)) {
 }
 ```
 
-Replace `<task-skill>` with the installed task skill directory. If the target differs, stop and ask the person whether to keep it, reconcile it, or replace it.
+Set `TASK_SKILL_DIR` to the installed task skill directory before running the Unix commands. In PowerShell, replace `<task-skill>` with that directory. If the target differs, stop and ask the person whether to keep it, reconcile it, or replace it. Do not remove the target before the person decides.
 
 ## External steps
 
@@ -49,4 +50,4 @@ None.
 
 ## Verify
 
-Check that `.agents/rules/rules-task.md` exists and matches `bundle/rules/rules-task.md`. Confirm that the project's `AGENTS.md` tells agents to read `.agents/rules/`.
+Check that `.agents/rules/rules-task.md` exists and matches `$TASK_SKILL_DIR/bundle/rules/rules-task.md` (or the corresponding PowerShell source path). Confirm that the project's `AGENTS.md` tells agents to read `.agents/rules/`.

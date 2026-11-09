@@ -16,9 +16,10 @@ Unix, from the project root:
 
 ```sh
 mkdir -p .agents/rules
+MAP_SKILL_DIR='/path/to/installed/map-skill'
 if [ ! -e .agents/rules/rules-map.md ]; then
-  cp <map-skill>/bundle/rules/rules-map.md .agents/rules/rules-map.md
-elif cmp -s <map-skill>/bundle/rules/rules-map.md .agents/rules/rules-map.md; then
+  cp "$MAP_SKILL_DIR/bundle/rules/rules-map.md" .agents/rules/rules-map.md
+elif cmp -s "$MAP_SKILL_DIR/bundle/rules/rules-map.md" .agents/rules/rules-map.md; then
   printf '%s\n' 'Already installed: .agents/rules/rules-map.md'
 else
   printf '%s\n' 'Conflict: .agents/rules/rules-map.md differs. Ask the person; do not overwrite.' >&2
@@ -41,7 +42,7 @@ if (-not (Test-Path $target)) {
 }
 ```
 
-Replace `<map-skill>` with the installed map skill directory. If the target differs, stop and ask the person whether to keep it, reconcile it, or replace it. Do not remove the target before the person decides.
+Set `MAP_SKILL_DIR` to the installed map skill directory before running the Unix commands. In PowerShell, replace `<map-skill>` with that directory. If the target differs, stop and ask the person whether to keep it, reconcile it, or replace it. Do not remove the target before the person decides.
 
 ## External steps
 
@@ -49,4 +50,4 @@ None.
 
 ## Verify
 
-Check that `.agents/rules/rules-map.md` exists and matches `bundle/rules/rules-map.md`. Confirm that the project's `AGENTS.md` tells agents to read `.agents/rules/`.
+Check that `.agents/rules/rules-map.md` exists and matches `$MAP_SKILL_DIR/bundle/rules/rules-map.md` (or the corresponding PowerShell source path). Confirm that the project's `AGENTS.md` tells agents to read `.agents/rules/`.
