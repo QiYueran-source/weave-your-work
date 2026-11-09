@@ -3,12 +3,15 @@ schema: 1
 id: wm-8zyyyafxbdwr
 title: Map front matter and dependencies
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:53:00Z
-updated_at: 2026-11-09T05:31:42Z
+updated_at: 2026-11-09T15:10:25Z
+closed_at: 2026-11-09T15:10:25Z
 parent: wm-0b59r7xfhk73
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -68,3 +71,10 @@ Review point: Check that the reference covers the custom fields with their write
 - Map lifecycle workflow (the operating procedure reference).
 - Task front matter fields and task-level dependency rules (task skill).
 - The review skill's acceptance rules (who accepts, when review runs).
+
+## Review
+
+passed
+
+- Goal: `weave-your-work/map/frontmatter.md` exists. It points at `waymark --help` and `waymark agent-doc` for the core fields instead of repeating them; it defines `split_as`, `outcome`, and `task_kind` with their value sets and who writes each; it states that every field change goes through a waymark command and why a hand edit leaves `updated_at` stale; it gives the dependency direction and timing rules with the read-back commands; and it ends with the machine-checked and person-checked violation list. The sample check was performed on this map: its `split_as` was read from the custom-field table and written with `waymark field update`, which is what the table prescribes.
+- Convention: the body carries the sections `body.md` lists, in order, and every Decisions entry carries a source. The one child is a task, matching `split_as: task`, and the body holds no children index. The map carried that child while still `open` and without the field; both were recorded at this review, so the record was behind the work rather than the work behind the record. `waymark validate` reports no findings.

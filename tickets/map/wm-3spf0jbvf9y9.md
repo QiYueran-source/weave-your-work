@@ -3,11 +3,12 @@ schema: 1
 id: wm-3spf0jbvf9y9
 title: 'Map review skill: accept a map'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:34:36Z
-updated_at: 2026-11-09T05:31:34Z
+updated_at: 2026-11-09T15:10:31Z
+closed_at: 2026-11-09T15:10:31Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   split_as: task
@@ -51,3 +52,10 @@ Review point: Check that the SKILL.md names who reviews, how the acceptance dire
 
 - Split and explore.
 - Task-level acceptance. That is `task-review`.
+
+## Review
+
+passed
+
+- Goal: `weave-your-work/map-review/SKILL.md` exists. It states who reviews — the owner, with a non-owner reporting findings — how the acceptance direction and review point are read as the goal axis, how the convention axis reads `body.md` and the split rules, and the four verdicts with what each does to status and outcome. The sample-review clause was struck when the worked example was deferred to the root map's batch, so it is not part of this check.
+- Convention: the body carries the sections `body.md` lists, in order, and every Decisions entry carries a source. `split_as: task` matches the one child, which is a task, and the body holds no children index. The map stayed `open` after its child was hung; it is started at this review so the record matches the work. `waymark validate` reports no findings.
