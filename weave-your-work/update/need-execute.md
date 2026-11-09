@@ -34,11 +34,11 @@ The child map in the `submap` row is a real map with its own Target and Acceptan
 
 1. Apply the two tests and write the confirmed decision and acceptance. When reopening a map, invalidate its existing Review as `content.md` directs; do not fabricate one for a legacy map.
 2. Reopen a closed map if its verdict fails, then start the reopened map to resume `in_progress`, keeping its existing `split_as`. An already `in_progress` split map needs no reopen; start an `open` split map before resuming. A different subject requires retire-and-replace. If a closed map's verdict still holds, leave it closed and stop to discuss the proposed new work before adding a child.
-3. Read `split_as` and invoke `split` to hang the child according to the shape above; task bodies follow `task-design`.
+3. Read `split_as` and invoke `split` to hang the child according to the shape above; task bodies follow `task-design`. When an existing child already carries the new requirement, nothing is hung: that child takes its own disposition instead — a closed one reopens, an open one has its acceptance changed by its owner.
 4. Check the ticket is writable: the body carries the sections its kind requires, `needs_human` agrees with the `Person:` steps, the parent is a map, and there is no `dependencies` block. A failure stops here and goes back to the owner; do not execute a malformed ticket.
 5. Read the task's `reversibility`, `needs_human`, and the impact scan from `SKILL.md`. Decide whether to execute now.
-6. If the gate allows, load `execute-one-task`, then the owner's `task-review`. Close the task only when its review calls for closing; otherwise follow its verdict.
-7. Review the map against the new content. Close it only if the verdict calls for closing.
+6. If the gate allows, load `execute-one-task`, then the owner's `task-review`. The verdict decides whether the ticket closes; both skills agree that `passed` and `wrong direction` close it, so one `waymark close` completes the hand-back.
+7. Review the map against the new content with `map-review`. Its verdict decides whether the map closes; the run issues the close when the verdict calls for it.
 
 The task closes before the map that reopened. The reopened map's acceptance counts the child; closing the map first leaves a closed map with unfinished work under it.
 
