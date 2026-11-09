@@ -53,7 +53,7 @@ Stop after writing the task when any of these holds:
 - The impact scan reaches a node owned by someone else whose content must change. The branch stops there, and that owner is told in an issue.
 - The change rewrites the map's `Target` or `Acceptance direction`, or the task's `Action` or `Acceptance signal`, and the owner has not confirmed the new promise. Confirmation addressed to the run counts, whether the run reads it in the ticket, in the issue that carried the decision, or in a message to an agent speaking for the owner.
 
-Otherwise, run the task in the same pass: `execute-one-task`, then `task-review`. A task stopped at the gate stays open; set `waiting_on` to the person who holds the answer. If it was already started, keep `Progress` as well.
+Otherwise, run the task in the same pass: `execute-one-task`, then `task-review`. A task stopped at the gate stays open; set `waiting_on` to the person who holds the answer. If it was already started, keep `Progress` as well. `waiting_on` has to be a declared custom field in the project — `waymark config add field waiting_on string` once if it is not — and where the project cannot hold it, `Progress` names the holder instead. When `execute-one-task` or `task-review` is not installed, the run stops at the task it wrote: the task stays open with that note, and the report says which skill was missing.
 
 ## What this file does not do
 
