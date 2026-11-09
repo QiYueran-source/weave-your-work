@@ -28,13 +28,13 @@ Read the parent map's `split_as` before creating anything. It is the type the pa
 
 The child map in the `submap` row is a real map with its own Target and Acceptance direction. It is small because it holds one task, not because it is a placeholder. Its `split_as` is `task`; the task under it is written by `task-design`.
 
-`split` owns the type decision and the freeze. This table is the check the update run does before it calls `split`; it does not replace `submap.md` or `task.md`.
+`split` owns the type decision and the freeze. This table is the check the update run does before it invokes `split`; it does not replace that skill.
 
 ## The order
 
 1. Apply the two tests and write the confirmed decision and acceptance. When reopening a map, invalidate its existing Review as `content.md` directs; do not fabricate one for a legacy map.
 2. Reopen a closed map if its verdict fails, then start the reopened map to resume `in_progress`, keeping its existing `split_as`. An already `in_progress` split map needs no reopen; start an `open` split map before resuming. A different subject requires retire-and-replace. If a closed map's verdict still holds, leave it closed and stop to discuss the proposed new work before adding a child.
-3. Read `split_as` and hang the child according to the shape above. The child map's body is written by `submap.md`; the task's body by `task-design`.
+3. Read `split_as` and invoke `split` to hang the child according to the shape above; task bodies follow `task-design`.
 4. Check the ticket is writable: the body carries the sections its kind requires, `needs_human` agrees with the `Person:` steps, the parent is a map, and there is no `dependencies` block. A failure stops here and goes back to the owner; do not execute a malformed ticket.
 5. Read the task's `reversibility`, `needs_human`, and the impact scan from `SKILL.md`. Decide whether to execute now.
 6. If the gate allows, load `execute-one-task`, then the owner's `task-review`. Close the task only when its review calls for closing; otherwise follow its verdict.
