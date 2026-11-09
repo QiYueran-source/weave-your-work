@@ -1,16 +1,16 @@
 ---
 name: issue
 description: >-
-  Carry a communicate issue to a GitHub recipient and bring it back: write the
+  Carry a communicate issue to a remote recipient and bring it back: write the
   frontmatter and the ask, receive it through the smee listener, land the
   decision that changes local work, and close it.
 ---
 
 # Issue
 
-A **communicate issue** is a GitHub issue that carries a message between owners in this project's format. Its body opens with YAML frontmatter naming the sender, the recipient, the related tickets, and the message category. The issue is the message and its thread; a local map or task is the record of whatever the message changes.
+A **communicate issue** is a remote issue that carries a message between owners in this project's format. Its body opens with YAML frontmatter naming the sender, the recipient, the related tickets, and the message category. The issue is the message and its thread; a local map or task is the record of whatever the message changes.
 
-Ordinary GitHub issues are not communicate issues; the listener ignores them. The full format, categories, and closing rules are in [communicate-issue.md](communicate-issue.md).
+Ordinary issues are not communicate issues; the listener ignores them. The full format, categories, and closing rules are in [communicate-issue.md](communicate-issue.md). The operations, the queue, and the listener's commands are in [usage.md](usage.md).
 
 The skill has a listener: a smee webhook receives the issue, a local listener routes it by `to`, and the next session surfaces it from the pending queue. Filing, reading, landing, and closing are the human side.
 
@@ -37,9 +37,9 @@ Reply here with which one; the ticket is yours to change.
 
 - `kind: communicate` marks the issue. Without it the listener skips it.
 - `category` is `request`, `result`, or `comment`. A request asks for work or a decision; a result reports an outcome; a comment adds information. All three enter the queue.
-- `to` is a list with exactly one GitHub handle. A message for several people is several issues.
+- `to` is a list with exactly one remote handle. A message for several people is several issues.
 - `tickets` is a non-empty list of existing map or task ids. The first is the main ticket: the title carries it and the answer lands there.
-- `from` is the local owner sending, written as the name in `handles.toml`. The GitHub account holding the token is not the sender.
+- `from` is the local owner sending, written as the name in `handles.toml`. The remote account holding the token is not the sender.
 
 The title is `[<main ticket id>] <the point>`. Link an earlier issue in the body; issues are not organized as a tree.
 
@@ -52,7 +52,7 @@ The title is `[<main ticket id>] <the point>`. Link an earlier issue in the body
 ## The five actions
 
 1. **File** — write the frontmatter and the body, resolve the handles, and open the issue.
-2. **Listen** — the listener connects to smee, then scans open GitHub issues at startup and queues matching recipients. It also queues live webhook events; the session rule surfaces the queue.
+2. **Listen** — the listener connects to smee, then scans open issues at startup and queues matching recipients. It also queues live webhook events; the session rule surfaces the queue.
 3. **Read and reply** — open the issue, read the thread, and answer in it.
 4. **Land** — decide whether the thread produced a local artifact, and write it on the owning ticket.
 5. **Close** — the sender closes a request after checking the answer; the recipient closes a result or comment after reading it.
@@ -63,7 +63,7 @@ A run is one pass through the human actions. Filing and landing can be days apar
 
 The owner of the run files it; an agent acting for the owner may file on their behalf.
 
-**Handles.** A waymark owner is a local name, not a remote login. Resolve the handle from `bundle/tools/handles.toml` beside this skill's listener, in the table for the platform:
+**Handles.** A waymark owner is a local name, not a remote login. Resolve the handle from `bundle/tools/handles.toml` beside this skill's listener, in the table for the host:
 
 ```toml
 [handles.github]
@@ -71,11 +71,11 @@ frank = "QiYueran-source"
 hanjiang = "hanjiang-gh"
 ```
 
-Verify the account exists (`gh api users/<handle> --jq .login`). A missing table, missing owner, or missing account means ask the run's owner; never guess a login from the waymark name.
+Verify the account exists with the host's CLI. A missing table, missing owner, or missing account means ask the run's owner; never guess a login from the waymark name.
 
-The `to` handle is used twice: in the frontmatter for the listener, and as the `@handle` in the body for the platform notification. On GitHub, add `--assignee <login>` as well; the assignment puts the issue in the recipient's dashboard.
+The `to` handle is used twice: in the frontmatter for the listener, and as the `@handle` in the body for the host's notification. Assign the issue to that account as well; the assignment puts it in the recipient's dashboard.
 
-**Before.** Know the platform and the repository. Confirm each ticket in `tickets` exists before filing; when one exists only on a branch the recipient may not have, sync the main branch first or name the version in the body. Search for an open issue whose title carries the main ticket id; a closed thread is the record of an earlier event, so a new message gets a new issue. If the repository is public, read the draft to the run's owner and get a yes. Keep tokens, secrets, local paths, and other people's data out of the body.
+**Before.** Know the host and the repository. Confirm each ticket in `tickets` exists before filing; when one exists only on a branch the recipient may not have, sync the main branch first or name the version in the body. Search for an open issue whose title carries the main ticket id; a closed thread is the record of an earlier event, so a new message gets a new issue. If the repository is public, read the draft to the run's owner and get a yes. Keep tokens, secrets, local paths, and other people's data out of the body.
 
 **After.** The listener writes the queue; the ticket records the issue URL where the wait lives:
 
@@ -89,7 +89,7 @@ The `to` handle is used twice: in the frontmatter for the listener, and as the `
 
 The listener is part of this skill. `bundle/setup.md` covers the channel, webhook, Node listener in `bundle/tools/`, and session rule in `bundle/rules/`.
 
-The default smee setup does not verify signatures. Anyone who knows the channel URL can send or view events, so keep the URL private; the listener redacts it from its log. The queue is a reminder, not proof of sender identity; if a message is uncertain, check the issue on GitHub. Each valid message appends one JSON object; catch-up includes only messages whose `to` matches a configured GitHub handle. Each object occupies a Markdown list line:
+The default smee setup does not verify signatures. Anyone who knows the channel URL can send or view events, so keep the URL private; the listener redacts it from its log. The queue is a reminder, not proof of sender identity; if a message is uncertain, check the issue on the remote repo. Each valid message appends one JSON object; catch-up includes only messages whose `to` matches a configured handle. Each object occupies a Markdown list line:
 
 ```text
 - {"url":"https://example.test/issues/1","from":"frank","to":"kim-dev","owner":"kim","title":"The ask","received":"2026-11-09T02:13"}
@@ -99,7 +99,9 @@ Use a JSON serializer when adding catch-up entries; never interpolate remote tex
 
 The queue path is `[pending].path` in this skill's `bundle/tools/handles.toml`, resolved from the project root; it defaults to `pending/pending-communications.md`. The queue is local state and gitignored; the handles file is shared.
 
-At startup, the listener connects to smee first, then uses authenticated `gh` to list open issues from the current project GitHub repository identified by git `origin`, following all pages. It queues messages that match the communicate issue format and whose `to` is a configured GitHub handle, deduplicating by issue URL and recipient. Closed issues are excluded. Scan errors are logged; there is no polling or scan on reconnect. The session rule reads the queue at the start of a session and surfaces the count and titles. Nothing acts on an entry until the person asks.
+At startup, the listener connects to smee first, then lists open issues from the current project's remote repo identified by git `origin`, following all pages. It queues messages that match the communicate issue format and whose `to` is a configured handle, deduplicating by issue URL and recipient. Closed issues are excluded. Scan errors are logged; there is no polling or scan on reconnect. The session rule reads the queue at the start of a session and surfaces the count and titles. Nothing acts on an entry until the person asks.
+
+The listener speaks one host: GitHub. A project on another host can still use this skill's format and the checker, but its webhook and issue listing need a second adapter. `usage.md` names the two places that would change.
 
 ## Read and reply
 
@@ -125,7 +127,7 @@ An artifact is a change to a map or task — its text, status, relations, or a f
 
 A run that is not the owner stops at the issue. It replies and records on its own ticket what it is waiting for; it does not write the foreign ticket.
 
-**Close.** The sender closes a `request` after checking that its ask is satisfied; the recipient closes a `result` or `comment` after reading it. The closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." A thread that settled into a map's `Out of scope` closes with that line instead: "Declined for `<map id>` `<title>`: <one line>." Close as completed on GitHub.
+**Close.** The sender closes a `request` after checking that its ask is satisfied; the recipient closes a `result` or `comment` after reading it. The closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." A thread that settled into a map's `Out of scope` closes with that line instead: "Declined for `<map id>` `<title>`: <one line>." Close as completed.
 
 **Done when** the issue is closed, the closing comment names the ticket or the map, and the ticket or the map's `Out of scope` carries the artifact — or the comment says why none was written.
 
@@ -135,7 +137,6 @@ A run that is not the owner stops at the issue. It replies and records on its ow
 - The account cannot be assigned: it is not a collaborator, or the repository refuses it. File without the assignment, keep the mention, and tell the recipient out of band.
 - No smee channel or webhook. The issue is still filed; the startup scan can queue matching open issues.
 - A bad signature when `WEBHOOK_SECRET` is configured, or a message whose `category`, `from`, `to`, or `tickets` does not match the format. The listener writes nothing and logs the failing field.
-- Gitee's write path is not built yet; the reference marks it deferred.
 
 ## Reporting
 
@@ -146,13 +147,12 @@ Three lines: what was filed or read, what changed on the ticket, and what is sti
 - Triage incoming work issues. That is the triage skill; this skill carries messages between people.
 - Act on a queued issue without the person asking. The queue is a prompt, not a dispatcher.
 - File, reply, or land from the listener. The listener only queues; the human side does the rest.
-- Gitee writes for now.
+- A second host adapter. The bundled listener connects to GitHub only.
 
 ## Where the details live
 
 - `communicate-issue.md`: the format, the three categories, and the closing rules.
-- `github.md`: the `gh` commands, the mention and assignee, and the startup scan.
-- `gitee.md`: the reads; the writes are marked deferred.
+- `usage.md`: the five operations as contracts, the queue, and the listener's own commands.
 - `bundle/setup.md`: the install steps, the channel, the webhook, the listener service, and the session rule.
 - `bundle/tools/listener.mjs`: the webhook receiver that parses the frontmatter and appends to the queue.
 - `bundle/rules/`: the session rule Markdown that the setup installs into `.agents/rules/`.

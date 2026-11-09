@@ -20,8 +20,8 @@ custom_fields:
 Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 
 1. `SKILL.md`: the trigger, the frontmatter form, the five actions — file, listen, read and reply, land, close — and the local-artifact test.
-2. `github.md`: the commands for file, search/view, comment, close, the mention and assignee, the frontmatter, and the catch-up query.
-3. `gitee.md`: the reads; the writes marked deferred.
+2. `communicate-issue.md`: the single definition of the format, the categories, and the closing rules.
+3. `usage.md`: the five operations as contracts, the queue, and the listener's own commands. Host-neutral; it names no host product.
 4. `bundle/setup.md`: the install steps, the channel, the webhook, the secret, the smee client, the listener, the session rule, and the catch-up.
 5. The Node bundle `bundle/tools/`: the smee client, the webhook receiver, the frontmatter parse, the `to` routing through the installed skill's `bundle/tools/handles.toml`, and the append to `[pending].path`.
 6. In this repository: the installed skill's handles file contains `[pending].path`; `.gitignore` includes `pending/`; the rule file is `bundle/rules/rules-pending-communications.md`, and its installed copy is `.agents/rules/rules-pending-communications.md`.
@@ -50,6 +50,14 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Redact the smee channel URL from the listener's log while keeping connection and error messages.
 - Stop treating `issue_comment` as a listener event: messages travel as issues, and ordinary comments stay in the thread.
 - Do not remove the local Waymark `comment` category in this step; its remaining uses are recorded separately.
+
+## Host-neutral references (confirmed 2026-11-09)
+
+- Replace `github.md` and `gitee.md` with one `usage.md`. The skill names no host product: the remote side is "the remote repo", and the five operations are contracts, not commands.
+- `usage.md` has three boundaries: what each operation must produce; exact commands for this skill's own tools (the listener and the checker, which no `--help` documents); and capability requirements for the host CLI rather than its syntax, because a run can read that CLI's own help.
+- The bundled listener is still GitHub-only. Ship it as one listener, not one per host: the HTTP service, signature check, queue, deduplication, and log redaction are host-neutral and would otherwise be copied. Collect the host-specific code into two named functions — reading a webhook event, and listing a repository's open issues — and say in the docs that only GitHub is connected. Do not add a `platform` config key or a plugin mechanism until a second host is actually built.
+- The listener is one process per project, because it reads the project's `handles.toml` and queue path. That is per project, not per host.
+- The Gitee research stays in the worked example; deleting the reference does not delete the findings.
 
 ## Test directory (confirmed 2026-11-09)
 
@@ -84,14 +92,14 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 
 ## Acceptance signal
 
-`weave-your-work/issue/` holds `SKILL.md`, `github.md`, `gitee.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on GitHub with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. Gitee's write path is a recorded gap.
+`weave-your-work/issue/` holds `SKILL.md`, `communicate-issue.md`, `usage.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on a remote repo with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. The bundled listener connects to GitHub only; another host needs its own event and listing adapters.
 
 ## Boundaries
 
 - No triage state machine; triage remains its own skill.
 - No action on a queued issue without the person asking.
 - The listener only queues and surfaces; it does not file, reply, or land.
-- Gitee writes deferred.
+- No second host adapter. GitHub is the only connected host until one is built.
 
 ## Progress
 

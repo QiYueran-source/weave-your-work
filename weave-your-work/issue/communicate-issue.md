@@ -1,8 +1,8 @@
 # Communicate issue
 
-A **communicate issue** is a GitHub issue that carries a message between owners in this project's format. Its body opens with YAML frontmatter; the frontmatter names the sender, the single recipient, the related tickets, and what kind of message it is. The issue is the message and its thread; a local map or task is the record of whatever the message changes.
+A **communicate issue** is a remote issue that carries a message between owners in this project's format. Its body opens with YAML frontmatter; the frontmatter names the sender, the single recipient, the related tickets, and what kind of message it is. The issue is the message and its thread; a local map or task is the record of whatever the message changes.
 
-Ordinary GitHub issues are not communicate issues. The listener ignores them, and nothing in this file applies to them.
+Ordinary issues are not communicate issues. The listener ignores them, and nothing in this file applies to them.
 
 ## Frontmatter
 
@@ -27,11 +27,11 @@ Reply in this thread with which one you choose.
 
 - `kind` is always `communicate`. It marks the issue; without it the listener ignores the issue.
 - `category` is one of `request`, `result`, or `comment`. It is required.
-- `from` is the local owner who sends the message, written as the name in `handles.toml`. It is not the GitHub account that holds the token.
-- `to` is a list with exactly one GitHub handle. A message for several people is several issues, one per recipient.
+- `from` is the local owner who sends the message, written as the name in `handles.toml`. It is not the remote account that holds the token.
+- `to` is a list with exactly one remote handle. A message for several people is several issues, one per recipient.
 - `tickets` is a non-empty list of existing map or task ids. The first is the main ticket: the title carries it and the answer lands there. A message may name tickets on either side of the exchange.
 
-The recipient handle and the `@mention` in the body use the GitHub login from `handles.toml`. Resolve it there; never derive a login from the owner name. Verify the account exists before filing.
+The recipient handle and the `@mention` in the body use the remote login from `handles.toml`. Resolve it there; never derive a login from the owner name. Verify the account exists before filing.
 
 ## Categories
 
@@ -41,7 +41,7 @@ The recipient handle and the `@mention` in the body use the GitHub login from `h
 
 All three enter the pending queue. A message that needs no action from the recipient is still a communicate issue, because the queue is how the recipient's agent hears about it.
 
-`result` and `comment` are remote message categories. They are not GitHub comments and not local Waymark records. A `result` or `comment` issue keeps its own URL and frontmatter; it does not live inside the issue it reports on.
+`result` and `comment` are remote message categories. They are not comments on the remote issue and not local Waymark records. A `result` or `comment` issue keeps its own URL and frontmatter; it does not live inside the issue it reports on.
 
 ## Title and body
 
@@ -67,7 +67,7 @@ Link the earlier issue in the body when the message answers or follows one. Ther
 
 - The listener queues a message when `kind`, `category`, `from`, `to`, and `tickets` match this format. A message that claims `kind: communicate` but fails these checks is not queued, and the listener logs which field failed.
 - A recipient whose checkout does not yet contain a referenced ticket still receives the message. Before acting, confirm the ticket and the version: sync the main branch, or check whether the referenced version is the right base. Ask the sender when it is unclear.
-- `from` is not proof of identity. Unsigned smee delivery can be forged by anyone who knows the channel URL, so check the issue on GitHub when the sender or the request is uncertain.
+- `from` is not proof of identity. Unsigned smee delivery can be forged by anyone who knows the channel URL, so check the issue on the remote repo when the sender or the request is uncertain.
 - The recipient confirms what it did in the issue thread, then opens a `result` issue when the sender needs to know the work is finished. A `result` is only needed when the sender has to check or decide something.
 - The sender closes a `request` after checking that its ask is satisfied. The recipient closes a `result` or `comment` after reading it.
 - A message to keep open must not be closed before its recipient has seen it: the startup scan reads open issues only.

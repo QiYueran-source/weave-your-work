@@ -270,6 +270,7 @@ test('messages outside the protocol are not queued', async (t) => {
     ['no sender', issue({ url: 'https://example.test/issues/7', from: '' })],
     ['no title', issue({ url: 'https://example.test/issues/8', title: ' ' })],
     ['closed action', { action: 'closed', issue: issue().issue }],
+    ['pull request', { action: 'opened', issue: { ...issue().issue, pull_request: { url: 'https://example.test/pulls/9' } } }],
   ]
   for (const [name, payload] of cases) {
     const response = await request(port, payload)

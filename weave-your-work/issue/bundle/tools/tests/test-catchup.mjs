@@ -189,8 +189,9 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
     issue(8, { body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: [alice-handle, bob-handle]\ntickets: [wm-test]\n---\n' }),
     issue(9, { body: '---\nkind: communicate\nfrom: sender\nto: [alice-handle]\ntickets: [wm-test]\n---\n' }),
     issue(12, { to: 'unmapped' }),
+    issue(13, { to: 'gitee-only' }),
     null,
-    ...Array.from({ length: 90 }, (_, index) => issue(100 + index, { body: 'ordinary issue' })),
+    ...Array.from({ length: 89 }, (_, index) => issue(100 + index, { body: 'ordinary issue' })),
   ]
   assert.equal(first.length, 100)
   await stage(f, 1, first)
@@ -202,9 +203,12 @@ test('catch-up paginates, filters and deduplicates mapped recipients across rest
   assert.deepEqual(found.map(({ url, to, owner }) => [url, to, owner]), [
     [existing.url, 'alice-handle', 'alice'],
     [existing.url, 'bob-handle', 'bob'],
+    // A handle from another host's table is still a mapped recipient: the
+    // live path routes it, so catch-up must not drop it and disagree.
+    ['https://github.com/example/project/issues/13', 'gitee-only', 'carol'],
     ['https://github.com/example/project/issues/6', 'alice-handle', 'alice'],
   ])
-  assert.equal(found[2].title, 'Second page')
+  assert.equal(found[3].title, 'Second page')
   assert.deepEqual((await calls(f)).map((args) => args.at(-1)), ['page=1', 'page=2'])
   const beforeRestart = await queue(f)
   await stop(listener)

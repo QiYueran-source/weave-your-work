@@ -111,57 +111,96 @@ function communicationFields(front) {
   return { category: front.category, from: front.from, to: front.to[0], tickets: front.tickets }
 }
 
-function queuePayload(payload, { mappedOnly = false, label = 'issue' } = {}) {
-  if (payload.action !== 'opened') return 0
+// ---- host adapter ---------------------------------------------------------
+// Everything below this block is host-neutral: the HTTP endpoint, the
+// signature check, the queue, the deduplication and the log redaction. These
+// two functions are the only place that knows which product the events come
+// from. They currently speak GitHub. A second host replaces this block and
+// nothing else.
+
+// Normalises one webhook body, or returns null when it is not an event this
+// listener acts on.
+function readIssueEvent(payload, event) {
+  if (event && event !== 'issues') return null
+  if (!payload || payload.action !== 'opened') return null
   const issue = payload.issue || {}
-  const front = parseFrontmatter(typeof issue.body === 'string' ? issue.body : '')
+  if (issue.pull_request) return null
+  return {
+    url: typeof issue.html_url === 'string' ? issue.html_url : '',
+    title: typeof issue.title === 'string' ? issue.title : '',
+    body: typeof issue.body === 'string' ? issue.body : '',
+    state: issue.state,
+  }
+}
+
+// Yields the repository's open issues one page at a time, so a later page
+// failing does not discard what the earlier pages already queued.
+async function* listOpenIssues(root) {
+  const { stdout } = await run('git', ['remote', 'get-url', '--all', 'origin'], { cwd: root, timeout: 15000 })
+  const remotes = stdout.trim().split(/\r?\n/)
+  if (remotes.length !== 1) throw new Error('origin must have exactly one fetch URL')
+  const match = /^(?:git@github\.com:|ssh:\/\/git@github\.com\/|https:\/\/github\.com\/)([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/.exec(remotes[0])
+  if (!match) throw new Error('origin is not a supported github.com repository URL')
+  const repo = `${match[1]}/${match[2]}`
+  for (let page = 1; ; page++) {
+    const result = await run('gh', [
+      'api', '--hostname', 'github.com', '--method', 'GET', `repos/${repo}/issues`,
+      '-f', 'state=open', '-F', 'per_page=100', '-F', `page=${page}`,
+    ], { cwd: root, timeout: 30000, maxBuffer: 32 * 1024 * 1024 })
+    const records = JSON.parse(result.stdout)
+    if (!Array.isArray(records)) throw new Error('GitHub returned an invalid issues page')
+    const issues = []
+    for (const record of records) {
+      if (!record || typeof record !== 'object' || record.pull_request) continue
+      issues.push({
+        url: typeof record.html_url === 'string' ? record.html_url : '',
+        title: typeof record.title === 'string' ? record.title : '',
+        body: typeof record.body === 'string' ? record.body : '',
+        state: record.state,
+        label: `issue ${record.number || ''}`.trim(),
+      })
+    }
+    yield { repo, issues }
+    if (records.length < 100) return
+  }
+}
+
+// ---- end of host adapter --------------------------------------------------
+
+// Host-neutral: decides from the format alone whether an issue is a message
+// and, when it is, appends one queue entry.
+function queueIssue(issue, { mappedOnly = false, label = 'issue' } = {}) {
+  const front = parseFrontmatter(issue.body)
   const fields = communicationFields(front)
   if (fields === null) return 0
   if (Array.isArray(fields)) {
     console.error(`Skipped ${label}: invalid ${fields.join(', ')}`)
     return 0
   }
-  const title = issue.title || ''
-  const url = issue.html_url || ''
-  if (typeof title !== 'string' || !title.trim() || typeof url !== 'string' || !url.trim()) {
+  if (!issue.title.trim() || !issue.url.trim()) {
     console.error(`Skipped ${label}: invalid title or url`)
     return 0
   }
   const { handles, pending } = loadConfig()
-  const githubHandles = handles.github || {}
-  if (mappedOnly && !Object.values(githubHandles).includes(fields.to)) return 0
+  if (mappedOnly && !ownerFor(handles, fields.to)) return 0
   const received = new Date().toISOString().slice(0, 16)
-  const owner = ownerFor(mappedOnly ? { github: githubHandles } : handles, fields.to) || 'unknown'
+  const owner = ownerFor(handles, fields.to) || 'unknown'
   return append(queuePath(pending), [{
-    url, from: fields.from, to: fields.to, owner, title, received,
+    url: issue.url, from: fields.from, to: fields.to, owner, title: issue.title, received,
   }])
 }
 
 async function catchUp() {
-  const { stdout } = await run('git', ['remote', 'get-url', '--all', 'origin'], { cwd: root, timeout: 15000 })
-  const remotes = stdout.trim().split(/\r?\n/)
-  if (remotes.length !== 1) throw new Error('origin must have exactly one fetch URL')
-  const remote = remotes[0]
-  const match = /^(?:git@github\.com:|ssh:\/\/git@github\.com\/|https:\/\/github\.com\/)([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+?)(?:\.git)?\/?$/.exec(remote)
-  if (!match) throw new Error('origin is not a supported github.com repository URL')
-  const repo = `${match[1]}/${match[2]}`
   const { handles } = loadConfig()
-  if (!handles.github || !Object.keys(handles.github).length) {
-    throw new Error('no GitHub handles configured for catch-up')
-  }
+  if (!Object.keys(handles).length) throw new Error('no handles configured for catch-up')
   let queued = 0
-  for (let page = 1; ; page++) {
-    const result = await run('gh', [
-      'api', '--hostname', 'github.com', '--method', 'GET', `repos/${repo}/issues`,
-      '-f', 'state=open', '-F', 'per_page=100', '-F', `page=${page}`,
-    ], { cwd: root, timeout: 30000, maxBuffer: 32 * 1024 * 1024 })
-    const issues = JSON.parse(result.stdout)
-    if (!Array.isArray(issues)) throw new Error('GitHub returned an invalid issues page')
-    for (const issue of issues) {
-      if (!issue || typeof issue !== 'object' || issue.pull_request || issue.state !== 'open') continue
-      queued += queuePayload({ action: 'opened', issue }, { mappedOnly: true, label: `issue ${issue.number || ''}`.trim() })
+  let repo = ''
+  for await (const page of listOpenIssues(root)) {
+    repo = page.repo
+    for (const issue of page.issues) {
+      if (issue.state !== 'open') continue
+      queued += queueIssue(issue, { mappedOnly: true, label: issue.label })
     }
-    if (issues.length < 100) break
   }
   console.log(`Catch-up complete: queued ${queued} entries from ${repo}`)
 }
@@ -210,13 +249,14 @@ const server = http.createServer((req, res) => {
       return
     }
     const event = req.headers['x-github-event']
-    if (event && event !== 'issues') {
+    const issue = readIssueEvent(payload, event)
+    if (!issue) {
       res.writeHead(202)
-      res.end('ignored')
+      res.end(event && event !== 'issues' ? 'ignored' : 'queued 0\n')
       return
     }
     try {
-      const queued = queuePayload(payload)
+      const queued = queueIssue(issue)
       res.writeHead(202)
       res.end(`queued ${queued}\n`)
     } catch (error) {
