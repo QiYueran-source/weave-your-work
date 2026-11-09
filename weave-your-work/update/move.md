@@ -110,13 +110,13 @@ If the project is not a git repository, `waymark git history` and a commit are u
 
 ## A run, short
 
-A task that installs the glossary sits under the setup map. It belongs to the glossary map: the setup map is about provisioning an environment, and installing a glossary is not that.
+A task that initializes the glossary sits under the setup map. It belongs to the glossary map: the setup map is about provisioning an environment, and installing a glossary is not that.
 
 - Test one: does the task advance the glossary map's Target? Yes, it is the last step of it.
-- Test two: does setup's Target still hold without it? Yes — setup has five other children and its Target never mentioned the glossary.
-- N does not reopen. P does not reopen. Q is open, so it does not reopen either.
-- `waymark parent set <task> <glossary map>`. One file written.
-- Read back: the task appears under the glossary map, setup is unchanged, nothing became blocked.
-- One commit: "Install task moved to the glossary map; it advances nothing in setup."
+- Test two: does setup's Target still hold without it? No, and that is the part worth reading. Setup's body named `GLOSSARY.md` in its target, and its `Decisions so far` named glossary initialization as a setup child, so removing the task changes what setup promised.
+- N does not reopen. P does not reopen: its body is edited, its status is not, because a body edit on an open map is plain advance. Q is open, so it does not reopen either.
+- `waymark parent set <task> <glossary map>`. One file written for the move itself.
+- Read back: the task appears under the glossary map, setup has no children left, and nothing became blocked.
+- The same commit edits both map bodies: P's, to drop the glossary claim, and Q's, to take the child.
 
-This is what happened in this repository on 2026-11-06 (`b699d5f`), except the task also carried a dependency edge on the glossary map, which was removed in the same commit: a child does not wait for its parent.
+This is what happened in this repository on 2026-11-06 (`b699d5f`), with one addition: the task also carried a dependency edge on the glossary map, which was removed in the same commit, because a child does not wait for its parent.
