@@ -54,9 +54,13 @@ An ancestor owned by someone else is where the write stops. Reopen what the run 
 
 Where the verdict lands depends on the category, and on whether there is one to replace.
 
-**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time. While a reopened task awaits re-review, `Progress` says which prior verdict was invalidated and why; update does not write the Review section.
+`waymark body replace` never moves the status, including on a closed node; `closed_at` also stays. The reopen is a separate command, which is why the order is body first, then status.
+
+**A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time. While a reopened task awaits re-review, `Progress` says which prior verdict was invalidated and why; update does not write the Review section. If the review skill is not installed, the repair stops there: leave the task open with that `Progress` note and report it, rather than writing a verdict this skill does not own.
 
 **A map** carries a `## Review` with the verdict and both axes. When reopening invalidates it, retain the struck-through review and its reason alongside the fresh review for the same subject. A legacy map without Review gets its first entry on re-review. If status and Review disagree, the owner rechecks children and evidence before completing the appropriate state change; changed evidence requires a fresh review.
+
+waymark will close a map that still has an open child. Nothing warns, so the run reads `waymark tree --root <id>` before it closes one: an unfinished child means the map is not ready to close, whatever the Review says. A child that arrives under the map mid-run counts the same way.
 
 An open map's acceptance direction is a plan, not a kept promise. Changing it is the first disposition and the status does not move — but the children still get re-read, because it is the thing they refine, and it is also what the map will be judged against when it closes.
 
