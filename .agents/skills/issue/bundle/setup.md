@@ -149,7 +149,7 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
      gh api user --jq .login
      ```
 
-     Match each owner to a login from what you find, and write the file. When a name has no obvious match, that is the question to ask, and it is one question with the candidates you found, not an empty request. Say what the list does when you ask: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Use `pending/pending-communications.md` unless the project already ignores another path. If an older `.waymark/handles.toml` exists, its mappings are the answer for the names it holds; confirm only the ones you cannot match. Translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
+     Match each owner to a login from what you find, and write the file. When a name has no obvious match, that is the question to ask, and it is one question with the candidates you found, not an empty request. Say what the list does when you ask: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Use `pending/pending-communications.md`; when the project already ignores another directory, put the queue inside that one instead of adding a second entry. If an older `.waymark/handles.toml` exists, its mappings are the answer for the names it holds; confirm only the ones you cannot match. Translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
    - Track the new file in Git alongside the installed skill. Do not put credentials or secrets in it.
 
    Example:
@@ -163,7 +163,15 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
    path = "pending/pending-communications.md"
    ```
 
-   The queue path is relative to the project root. Its directory is local state: add it to `.gitignore`; `pending/` ignores the default. Before updating or reinstalling the skill, preserve the existing handles file outside the directory being replaced; restore it afterward and verify it is unchanged. In `skills` 1.7.6, `skills add --copy` deletes the installed directory before copying; setup runs too late to prevent that deletion. If an update fails, keep the backup and restore it before running the listener or setup again.
+   The queue path is relative to the project root. Its directory is local state and has to be ignored, or the next `git add -A` commits other people's messages. Add the directory, not the file:
+
+   ```bash
+   printf '\n# Issue listener queue (local state)\npending/\n' >> .gitignore
+   ```
+
+   Replace `pending/` with the queue's directory when `[pending].path` points somewhere else.
+
+   Before updating or reinstalling the skill, preserve the existing handles file outside the directory being replaced; restore it afterward and verify it is unchanged. In `skills` 1.7.6, `skills add --copy` deletes the installed directory before copying; setup runs too late to prevent that deletion. If an update fails, keep the backup and restore it before running the listener or setup again.
 
    The listener also needs to know which owner this machine is, because it queues only the messages addressed to that owner. It reads `git config user.name` in the project root and matches it against the `[handles]` keys without regard to case, so a one-owner file needs nothing more. On a machine that belongs to another owner, set the name in the clone, which is untracked and conflicts with nobody:
 
@@ -193,9 +201,11 @@ Each step is a command, so a run can check the install without asking the person
 
    `<login>` is the login of this machine's owner, not just any handle in the table: a message addressed to another owner is skipped on purpose. The queue gains one line within a few seconds. Close the issue afterwards; the queue line stays as the record of what arrived.
 
-4. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete: queued 1 entries` and the new line. This is the only step that proves the startup scan works; the live path and the scan are separate code.
+4. **The queue is ignored.** `git check-ignore -v pending/pending-communications.md` prints a matching `.gitignore` line. No output means the queue is tracked state, and the first `git add -A` publishes what arrived.
 
-5. **Open a new session.** The rule should surface the count and title. This is the one step no command verifies: whether the harness delivers the checker's output to the agent is outside this setup.
+5. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete: queued 1 entries` and the new line. This is the only step that proves the startup scan works; the live path and the scan are separate code.
+
+6. **Open a new session.** The rule should surface the count and title. This is the one step no command verifies: whether the harness delivers the checker's output to the agent is outside this setup.
 
 If the queue stays empty, check the webhook's recent deliveries, the listener's smee connection and log, and the frontmatter's `kind: communicate`. GitHub reporting success at smee does not prove the local listener received the event. An issue whose author is not in `handles.toml`, or whose `to` is another owner, is skipped on purpose; its log line names which.
 
