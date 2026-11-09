@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:07Z
-updated_at: 2026-11-06T12:01:35Z
+updated_at: 2026-11-09T16:00:46Z
 parent: wm-wjwa9081hse1
 ---
 ## Destination
@@ -17,7 +17,7 @@ Design the ask-me skill: when the user asks "what should I do now, which skill f
 ## Notes
 
 - Category: entry. Answers "what should I do now".
-- Trigger: user-invoked.
+- Trigger: a person starts it by name.
 - Delivery location: weave-your-work/ask-me/ (directory already created by the user).
 - Borrowed from: .inbox/skills ask-matt, grilling, domain-modeling, to-spec (decision records).
 

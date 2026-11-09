@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:11:26Z
-updated_at: 2026-11-09T15:57:36Z
+updated_at: 2026-11-09T16:00:36Z
 closed_at: 2026-11-08T13:10:12Z
 parent: wm-qhd3twqjzhma
 custom_fields:
@@ -61,11 +61,12 @@ Reopened on 2026-11-08: the chemistry walk found conflicts in the batch and revi
 
 ## Not yet specified
 
-- (none; the chemistry walk's findings are closed or recorded as rejected.)
-
-- Align `map/frontmatter.md` and the batch skills with the acceptance-gate model recorded in `GLOSSARY.md`.
-- Whether `execute-all` selects tasks owned by the chosen map's owner or by the local operator.
-- The wording of the `Result` line that records why a task started while an ancestor waits.
+- ~~Align `map/frontmatter.md` and the batch skills with the acceptance-gate model recorded in `GLOSSARY.md`.~~
+  Resolved on 2026-11-09: the model is written in the map skill's `frontmatter.md` under Dependencies, in `execute-one-task`'s input check, and in the split skill's dependency rules.
+- ~~Whether `execute-all` selects tasks owned by the chosen map's owner or by the local operator.~~
+  Resolved on 2026-11-09: the chosen map's owner, decided in Decisions so far on 2026-11-08.
+- ~~The wording of the `Result` line that records why a task started while an ancestor waits.~~
+  Resolved on 2026-11-09: no wording is fixed; the run states the reason in its own words.
 
 - ~~Whether the Task skill's own entry document carries anything beyond routing into the two children.~~ Resolved on 2026-11-08: nothing. The answer is that there is no such document; routing is what `ask-me` and the skills' own names do.
   Resolved again on 2026-11-08: the entry exists, and its scope is settled in [Task skill entry](tickets/map/wm-aya8m15vkvkj.md).
