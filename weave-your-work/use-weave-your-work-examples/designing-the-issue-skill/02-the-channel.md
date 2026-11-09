@@ -42,6 +42,10 @@ The original roster lived under `.waymark/`, although the issue skill rather tha
 
 A file watcher that pushes messages into a running agent would need a different integration for each harness. The discussion kept the session-start rule as the default and chose a small read-only Node checker for optional session-start hooks. The checker reports queued items without acting on them; adapting it and verifying that its output reaches an agent remains harness-specific. The scope and tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
 
+### Securing the listener and queue
+
+The listener review found that an empty secret disabled signature checks and remote fields could break the line-based queue format. The proposed fix requires a secret and encodes new records without rewriting existing local queues; the plan and compatibility tests are in [Write the issue skill](../../../tickets/task/wm-mt3gkedtgvmp.md).
+
 ### What was rejected: copying the thread
 
 A local mirror of every comment was considered and dropped for the reason the draft's section 6 gives: it duplicates the remote side, goes stale, and there is no owner for the copy. The ticket holds the decision; the issue holds the conversation.

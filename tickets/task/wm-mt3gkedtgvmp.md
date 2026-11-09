@@ -44,6 +44,13 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Keep the session-start rule as the default. In `bundle/setup.md`, explain that an agent may adapt the checker to a harness's session-start hook only after checking that harness's documentation and verifying the output reaches the agent; otherwise the rule remains the fallback. No harness-specific plugin or file watcher is included.
 - Test missing, empty and populated queues, custom paths, malformed input and read errors; check that the source and installed copies match. Record any harness integration not actually tested.
 
+## Proposed listener security fix (awaiting confirmation)
+
+- Require a non-empty `WEBHOOK_SECRET` before the listener binds; reject requests with missing or invalid `X-Hub-Signature-256`, verifying the original request bytes before parsing or queueing. Do not add an unsigned mode.
+- Write new queue records as one structured JSON object per Markdown list line, encoding every remote value so newlines, separators and control characters cannot create extra records. Keep the queue file and path. Update the checker to read both the new records and existing legacy lines without rewriting the existing file; old entries remain untrusted and their integrity cannot be retroactively guaranteed. Update the skill and setup documentation to explain the format and compatibility.
+- Test listener startup with a missing or empty secret; missing, incorrect and valid signatures; Unicode payloads; malicious delimiters and line breaks in remote fields; multiple recipients and redelivery. Check that each new record remains one line and the checker reports existing and new entries. Run tests against temporary queues without altering this repository's queue, and keep the source and installed copies consistent.
+- Do not install a persistent webhook or service, change unrelated delivery behavior, or claim a new live smee test unless one is performed.
+
 ## Acceptance signal
 
 `weave-your-work/issue/` holds `SKILL.md`, `github.md`, `gitee.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on GitHub with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. Gitee's write path is a recorded gap.
