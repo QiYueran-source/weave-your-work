@@ -68,7 +68,7 @@ Whichever category, the run reads the acceptance direction before it writes: `##
 
 Two things to keep straight:
 
-- **Task review history is unchanged.** The new task review replaces the old one; a verdict retracted because the review itself was wrong is the existing exception. For a map, retain each invalidated review struck through and record the reason, so the current review is distinguishable from history.
+- **Task review history is unchanged.** The new task review replaces the old one; the only exception is a verdict retracted because the review itself was wrong. For a map, retain each invalidated review struck through and record the reason, so the current review is distinguishable from history. The review skill's own history policy governs the task section, so follow it when it is installed rather than this paragraph.
 - **Reopening is decided by the verdict, never by the size of the edit.** A one-line change that makes the acceptance false reopens the node; a long clarifying paragraph that leaves it true does not. That is the first disposition, and the status never moves.
 
 Writing the changed body before reopening also means the reopen lands on a ticket that already says what it now claims. Reopening first leaves a short window where the tree says "not done" and the ticket still describes the old promise.
