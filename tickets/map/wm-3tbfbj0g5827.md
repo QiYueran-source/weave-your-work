@@ -3,11 +3,12 @@ schema: 1
 id: wm-3tbfbj0g5827
 title: Map and task reference repair
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T15:55:06Z
-updated_at: 2026-11-09T15:55:08Z
+updated_at: 2026-11-09T15:58:13Z
+closed_at: 2026-11-09T15:58:13Z
 parent: wm-wjwa9081hse1
 custom_fields:
   split_as: task
@@ -34,3 +35,10 @@ Review point: for each pair named in the child task, the two lines say one thing
 
 - Redesigning the map or task lifecycle. This round removes contradictions in what is already written.
 - Reopening and re-reviewing the design tickets. Their verdicts are about what the files define, and that does not change.
+
+## Review
+
+passed
+
+- Goal: the child task carries each of the ten pairs in its `Result`, with the searches and `waymark validate` run after the last write. The review point's three checks return nothing.
+- Convention: the body carries `Target`, `Acceptance direction`, `Decisions so far`, and `Out of scope`, in that order; the single child is a task, matching `split_as: task`; every decision carries a source; the body holds no children index and the map no dependency edge. `waymark validate` reports no findings.

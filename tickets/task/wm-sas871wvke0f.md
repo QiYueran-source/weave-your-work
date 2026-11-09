@@ -3,11 +3,12 @@ schema: 1
 id: wm-sas871wvke0f
 title: Repair the map and task references against the audit findings
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T15:55:18Z
-updated_at: 2026-11-09T15:55:18Z
+updated_at: 2026-11-09T15:58:07Z
+closed_at: 2026-11-09T15:58:07Z
 parent: wm-3tbfbj0g5827
 custom_fields:
   needs_human: false
@@ -32,6 +33,35 @@ Make the two reference families agree, one rule at a time. Change wording where 
 ## Acceptance signal
 
 For every pair named above, the two lines read as one rule together. A search of the repository finds no bare `body.md`, `frontmatter.md`, `explore`, or `review` outside `weave-your-work/map/`, and no `SKILL.md` carrying `disable-model-invocation`. `waymark validate` reports no findings.
+
+## Result
+
+Every pair named in `Action` now reads as one rule. The changed files are under `weave-your-work/` in commit `3e73296`; the ticket records, including the root map decision and the four superseded bullets, are in `d0c58f8`.
+
+Read the pairs directly: `task-design/body.md` (`:7`, `:23`, and the two kind lists), `map/body.md` (`:9`, `:100`-`:104`, `:40`, the closing note), `map/procedure.md` (`:19`, `:31`, `:38`, `:41`), `fog-explore/SKILL.md` (`:8`, `:14`, `:16`), `task-review/SKILL.md` (`:35`), `map-review/SKILL.md` (`:26`, `:34`, `:38`, `:52`, `:71`, `:72`), `split/SKILL.md` (`:23`, `:54`, `:58`), `split/submap.md` (`:9`, `:84`, `:85`), `grill/SKILL.md` (`:13`), `task-design/properties.md` (`:33`), `update/SKILL.md` (`:82`), `execute-all/dispatch.md` (`:22`), `execute-all/SKILL.md`, and the five `SKILL.md` front matters.
+
+The checks:
+
+- `grep -rn 'disable-model-invocation' weave-your-work` returns nothing.
+- `grep -rn -E '\`(explore|review)\`'` outside `node_modules` returns nothing.
+- A search for `body.md` and `frontmatter.md` in the seven skills that do not own them finds no unqualified name; every one names the skill or follows a sentence that loaded it.
+- `waymark validate` reports no findings, run after the last write.
+- All fifteen `SKILL.md` front matters parse as YAML and carry `name` and `description`.
+
+Three deviations from the written `Action`:
+
+- Item 2 needed one more line than listed. Tying the marker to "the section holds no entries" made a freshly created map owe `(none; the fog is cleared)`, which it cannot honestly write, because `procedure.md:31` requires only `Target` and `Acceptance direction` at creation. The marker is now tied to "the fog has been settled", and `body.md:9`, `:102`, and `:104` say so.
+- Item 3 also changed `procedure.md:31`, which now lets a created map state a specific result the discussion already settled.
+- Item 5 also struck four decision bullets on closed tickets, in `d0c58f8`. They are ticket records, not reference text.
+
+The acceptance signal asks for no bare `body.md` outside `weave-your-work/map/`. Taken literally that cannot hold: `task-design` owns its own `body.md`, and its references say so correctly. The check was applied as "no unqualified reference to another skill's file", and it returns nothing.
+
+## Review
+
+passed
+
+- Goal: the ten pairs named in `Action` read as one rule each. A search for `disable-model-invocation` and for backticked `explore` and `review` returns nothing, no unqualified `body.md` or `frontmatter.md` remains in the seven skills that do not own them, and `waymark validate` reports no findings. All run after the last write.
+- Convention: no heading, section, verdict name, or field changed, and the task's own body runs Action, Acceptance signal, Result, Review, Boundaries as `task-design/body.md` states. The run stayed inside `Boundaries` and wrote only the reference files, this ticket, and the records in `d0c58f8`.
 
 ## Boundaries
 
