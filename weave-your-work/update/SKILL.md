@@ -65,7 +65,7 @@ The third exists because a node that answers a different question is not the sam
 
 ## When the change needs execution
 
-On a map, a change that needs new work is not written into the delivered file by this run. Apply the two tests before reopening a closed map; an open split map needs no reopen. `need-execute.md` handles the child shape and the distinction between a gap already required by a task's signal and a new parent requirement. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
+On a map, a change that needs new work is not written into the delivered file by this run. Apply the two tests before reopening a closed map; a split map that is already unfinished needs no reopen, and one still `open` is started before its next review. `need-execute.md` handles the child shape and the distinction between a gap already required by a task's signal and a new parent requirement. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
 
 `need-execute.md` carries the shape, the order, and the gate.
 
