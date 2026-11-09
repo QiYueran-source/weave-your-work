@@ -51,6 +51,12 @@ Build the communicate-issue skill and its listener from the 2026-11-08 grill.
 - Test listener startup with a missing or empty secret; missing, incorrect and valid signatures; Unicode payloads; malicious delimiters and line breaks in remote fields; multiple recipients and redelivery. Check that each new record remains one line and the checker reports existing and new entries. Run tests against temporary queues without altering this repository's queue, and keep the source and installed copies consistent.
 - Do not install a persistent webhook or service, change unrelated delivery behavior, or claim a new live smee test unless one is performed.
 
+## Internal smee delivery (confirmed 2026-11-09)
+
+- Default to receiving smee events without a webhook secret or signature verification. If `WEBHOOK_SECRET` is set, retain strict signature verification for a byte-preserving transport; smee reserialization may cause valid signatures to fail. Keep JSON queue encoding, deduplication, legacy queue compatibility, and the rule that the agent does not act on entries until the person asks.
+- Update the listener, tests, source and installed skill instructions and setup. Explain that anyone who knows the channel URL can send or view events, sender identity is not verified, smee is intended for development, and offline listeners may miss events; ask the person to verify uncertain messages on GitHub. Do not configure a real channel or modify the local queue.
+- Test the default path without a secret, including missing or invalid signature headers and reserialized JSON; also test that a configured secret enforces signatures. Retain the queue safety and compatibility tests. Record what has not been verified with a live smee channel or session-start integration.
+
 ## Acceptance signal
 
 `weave-your-work/issue/` holds `SKILL.md`, `github.md`, `gitee.md`, and `bundle/` with `setup.md`, `rules/`, and `tools/`. A communicate issue filed on GitHub with the frontmatter reaches the queue through smee; the session rule surfaces the count and titles at the next session; a decision that changes a map or task lands there; a rejection lands in the map's `Out of scope`; the issue closes. The listener queues a sample payload locally. Gitee's write path is a recorded gap.
