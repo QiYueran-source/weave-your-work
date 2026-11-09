@@ -17,7 +17,7 @@ This is the entry to the map skill. It says what a map is and sends you to the f
 | What do the fields mean, and who may write which one? | `frontmatter.md` |
 | How does a map move from a stated target to a closed ticket? | `procedure.md` |
 
-`body.md` holds the five sections and the fog entry forms. `frontmatter.md` holds the custom fields, the dependency rules, and the list an accepting party checks. `procedure.md` holds the states, the steps, and what changing a split map does to its children.
+`body.md` holds the six sections and the fog entry forms. `frontmatter.md` holds the custom fields, the dependency rules, and the list an accepting party checks. `procedure.md` holds the states, the steps, and what changing a split map does to its children.
 
 ## The steps are other skills
 

@@ -39,9 +39,9 @@ Both yes is the first disposition. First yes, second no is the second. First no 
 The second test needs something to read, and where that is depends on the node:
 
 - **A task** — its `## Review` section, when it has one. Many closed tasks do not: the review skill writes that section, and every task closed before the skill existed closed without it. When it is absent, read the `Acceptance signal` and `Result` together instead. The signal is what the work promised and the result is what it delivered; the close is the verdict that the two agreed. Re-reviewing such a task writes a fresh `## Review`; there is no old one to replace.
-- **A map** — its `## Acceptance direction`, and the `Review point` sentence inside it when one is written. A map body has no `## Review` section, so there is no prose verdict to read; the status is the verdict, and the acceptance direction is what it was reached against. Test two is therefore: hold the acceptance direction up against the new content and ask whether the same reviewer, given the same evidence, would still close the map. A closed map whose acceptance direction no longer holds has a false status even though nothing on the ticket says so.
+- **A map** — its `## Review`, read with `## Acceptance direction`, the review point, and the evidence. A legacy map may have no Review: read the acceptance direction, children, and available evidence against its closed status without inventing a past review. If Review and status disagree, the owner rechecks children and evidence before the appropriate state change; changed evidence requires a fresh review, not an assumed pass.
 
-**An open node has no verdict**, and that is the whole difference. Nothing ever closed it, so there is nothing to take back and nothing to falsify. Its acceptance direction is a plan rather than a promise: rewriting a plan is an edit, not a broken word. So an open node takes the first or the third disposition, test two never fails on it, and the reopen does not apply.
+**An open node has no closed verdict to reopen.** A map may nevertheless have a `needs changes` or `needs discussion` Review. Its acceptance direction is still a plan: an open node takes the first or the third disposition, and reopening does not apply. Preserve any invalidated map review history and review the changed work when ready.
 
 Reading still happens, and it is not test two. An open split map's acceptance direction is read for two other reasons: it is what its children refine, so a change there sends every child back through its own two tests; and it is what the map will be reviewed against when it does close, so a change that makes it unreachable leaves a map that cannot be accepted. Neither of those is a verdict being overturned — the map was never accepted in the first place — so both are edits under the first disposition, with the children re-read and the status left alone.
 
@@ -50,7 +50,7 @@ Reading still happens, and it is not test two. An open split map's acceptance di
 | Tests | What happens | Status |
 |---|---|---|
 | Same subject, verdict holds | Edit the ticket. Editorial changes replace the text; substantive ones keep the old text struck through. | Unchanged |
-| Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. A closed node only. | closed → open → closed |
+| Same subject, verdict fails | Strike the old text with a `Superseded on <date>: <reason>` line, reopen, review again, close again. A closed node only. Invalidate a map Review and retain it on re-review; see `content.md`. | closed → open → closed |
 | Different subject | Retire the ticket with archive and open a parallel one under the same parent. | archived |
 
 The second disposition exists because a closed child is how its parent counts itself done: a map is accepted when its children are complete. A child left closed on a verdict that no longer holds makes its parent's claim false as well.
@@ -65,7 +65,7 @@ The third exists because a node that answers a different question is not the sam
 
 ## When the change needs execution
 
-On a map, a change that needs new work is not written into the delivered file by this run. Reopen the map and hang the work as a child. When the map's `split_as` is `submap`, hang a child map first, then the task under it; when it is `task`, hang the task directly. Write the task, then decide whether to execute it now. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
+On a map, a change that needs new work is not written into the delivered file by this run. Apply the two tests before reopening a closed map; an open split map needs no reopen. `need-execute.md` handles the child shape and the distinction between a gap already required by a task's signal and a new parent requirement. A task takes no child: its new work is its own `Action`, and a different task is a retire-and-replace.
 
 `need-execute.md` carries the shape, the order, and the gate.
 

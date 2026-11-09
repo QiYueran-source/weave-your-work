@@ -1,14 +1,20 @@
 # Need execution
 
-A change sometimes needs more than new text on the ticket: a new skill, a new reference, a section that does not exist. For a map, the update run does not write that work into the delivered file. It reopens the map, hangs the work as a child, and hands the child to the execution skills. A task takes no child; the next section covers that case.
+A change sometimes needs more than new text on the ticket: a new skill, a new reference, a section that does not exist. Apply the two tests to each affected node. For a map that needs new work, hand the work to the execution skills rather than writing the delivered file in the update run. A task takes no child; the next section covers that case.
 
 `SKILL.md` carries the two tests and the three dispositions. This file is the case where a change needs new work, not only new words.
 
 ## When the node is a task
 
-A task takes no child. If the change is to a task and its verdict fails, the work is the task's own `Action`: reopen the task, rewrite `Action` and `Acceptance signal`, then execute the task again and review it. A change that needs a different task is a retire-and-replace under the task's map, not a child hang.
+A task takes no child. If the change is to a task and its verdict fails, reopen the task, update `Action` and `Acceptance signal` only if the confirmed promise changes, then execute and review it again. A gap already covered by the signal does not by itself change that signal. A change that needs a different task is a retire-and-replace under the task's map, not a child hang.
 
-The rest of this file is about a map that needs a child.
+## A gap found in map review
+
+If the gap was already required by a task's acceptance signal, use the two tests on that task to decide whether to reopen, fix, and re-review it. Do not assume a new task is needed.
+
+If the task met its signal but the parent omitted a new requirement, discuss the target or structure before deciding the work. Do not automatically create a task dependent on a sibling's output. Any resulting split must respect the frozen child type and the dependency rules in `map/frontmatter.md`.
+
+The rest of this file is about a map that needs a child after that decision.
 
 ## The shape
 
@@ -26,13 +32,13 @@ The child map in the `submap` row is a real map with its own Target and Acceptan
 
 ## The order
 
-1. Write the new decision and acceptance on the map that will reopen.
-2. Reopen the map. A closed map takes no child; an open split map needs no reopen.
+1. Apply the two tests and write the confirmed decision and acceptance. When reopening a map, invalidate its existing Review as `content.md` directs; do not fabricate one for a legacy map.
+2. Reopen a closed map if its verdict fails. An open split map needs no reopen; a different subject requires retire-and-replace. If a closed map's verdict still holds, leave it closed and stop to discuss the proposed new work before adding a child.
 3. Read `split_as` and hang the child according to the shape above. The child map's body is written by `submap.md`; the task's body by `task-design`.
 4. Check the ticket is writable: the body carries the sections its kind requires, `needs_human` agrees with the `Person:` steps, the parent is a map, and there is no `dependencies` block. A failure stops here and goes back to the owner; do not execute a malformed ticket.
 5. Read the task's `reversibility`, `needs_human`, and the impact scan from `SKILL.md`. Decide whether to execute now.
 6. If the gate allows, load `execute-one-task`, then the owner's `task-review`. Close the task.
-7. Review the reopened map against the new content and close it.
+7. Review the map against the new content. Close it only if the verdict calls for closing.
 
 The task closes before the map that reopened. The reopened map's acceptance counts the child; closing the map first leaves a closed map with unfinished work under it.
 

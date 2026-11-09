@@ -16,7 +16,7 @@ Three steps run inside those states:
 open       → explore    while Not yet specified is not empty
 open       → split      when a layer is settled; the first split starts the map
 in_progress→ split      again, as later layers settle
-in_progress→ review     when every child is closed and no fog is left
+in_progress→ review     when every child is closed, no fog is left, and coverage is ready to check
 ```
 
 `reviewing` is not a status. Waymark has three, and a map under review stays `in_progress` until the verdict lands.
@@ -65,30 +65,32 @@ in_progress ──split──▶ new children
 
 A map may split again whenever a layer is settled: when fog that was cleared produced a layer, or when a child closed and showed what comes next. The map does not leave `in_progress` between splits, and how many splits it takes is not fixed when it starts.
 
+Keep the entire acceptance direction on the map. Completed and planned task layers together cover it; uncovered unclear work stays visible as fog. Planned work is not evidence, and uncovered acceptance prevents early review.
+
 The children that are maps are split the same way, one level down. The far end of the loop is a layer of tasks: a task is a leaf, it does not split, and nothing below it changes the map's status.
 
 The type stays the one the map's first split wrote. A map that split into child maps adds child maps; a map that split into tasks adds tasks. Different maps in one tree choose differently, and that is the only place the choice varies.
 
 ## Review
 
-Runs when every child is closed and `Not yet specified` is empty.
+Runs when every child is closed, `Not yet specified` is empty, and the acceptance direction has no known uncovered work. Known ambiguous standards go to `fog-explore` before review; a gap first discovered during review receives the appropriate verdict.
 
 A map with no children is not reviewed. A target that needs no refinement is a task, not a map: the split skill prefers a task, and a map whose verdict has nothing behind it could be closed without any work having been done.
 
-`map-review` reads the map, its children, and the rules, and returns one verdict. Because a map has no `Review` section, the verdict is written as the status:
+`map-review` reads the map, its children, deliverables, and the rules. It writes each verdict and evidence for both axes in `Review`; status remains the lifecycle state:
 
 | Verdict | What is written |
 |---|---|
 | passed | `waymark close <map>` |
-| needs changes | the gap goes into `Decisions so far`; the map stays `in_progress` and is reviewed again after the fix |
-| needs discussion | the map stays `in_progress` and the question goes to `grill` |
+| needs changes | the map stays `in_progress`; repair the gap as `map-review` directs, then review again |
+| needs discussion | the map stays `in_progress` and the recorded question goes to `grill` |
 | wrong direction | `outcome=failed`, then `waymark close`; the owner opens the sibling that replaces it and the two are soft-linked |
 
-A child reopened while the review is running voids it. The verdict was being read against a tree that no longer exists; review again once that child closes.
+A child reopened while the review is running voids it. Review again once that child closes. If status and Review disagree, the owner rechecks children and evidence before the appropriate state change; changed evidence requires a fresh review. Do not infer a pass from status alone.
 
 ## After the verdict
 
-A closed map is a claim: this target was reached, and this is what reaching it consisted of. Anyone reading the tree later takes it at face value, so a verdict that no longer holds is worse than no verdict.
+A closed map records either a passed target or a failed attempt. A passed verdict that no longer holds must be invalidated, so readers do not mistake it for current evidence.
 
 That is why a failed map is left closed and replaced rather than quietly edited: the record of the attempt stays, and the sibling says what replaced it.
 

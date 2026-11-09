@@ -1,14 +1,14 @@
 # Map body
 
-A map body says what you want and how someone else will know you got it. This file defines the five sections, what each one holds, and the shape of every entry in them. Field rules live in `frontmatter.md`. Who may write which section, and when a map moves between statuses, belongs to the operating procedure reference.
+A map body says what you want and how someone else will know you got it. This file defines the six sections, what each one holds, and the shape of every entry in them. Field rules live in `frontmatter.md`. Who may write which section, and when a map moves between statuses, belongs to the operating procedure reference.
 
 ## How a body is laid out
 
-Five sections, in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
+Six sections, in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
 
 A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`.
 
-The body holds content, not process. Every entry answers "what is decided" or "what is still unclear"; it never states who may change it or what happens next.
+The body holds the target, decisions, unresolved content, and review evidence; operating instructions live in the procedure.
 
 A map body holds no list of its children. The `parent` field in each child's front matter is the structure, and `waymark tree --root <id>` reads the shape back. A reader who cannot tell what a child is for from that child's own `Target` is looking at a split that was never stated, not at a missing index.
 
@@ -46,6 +46,7 @@ Format:
 - When the target can be checked directly, state the specific observable result instead: a state that is reached, a number that holds, a document that exists and says what.
 - Follow either one with a `Review point:` line. It is required in both cases. It names what a reviewer looks at and what evidence they see, as checkable items rather than a summary of the goal.
 - Keep the section short. It carries the goal; the review point carries the detail.
+- Keep the full acceptance direction across successive task layers. Completed and planned layers together cover it; plans are not evidence of completion. Unclear uncovered work stays in `Not yet specified`.
 - A review point that cannot be written as checkable items means the goal is not settled yet. That is fog, not a review to get through.
 - "Best effort", "as good as possible", and "reasonable progress" are not results.
 
@@ -186,13 +187,21 @@ Example:
 - Putting the checklist into a tool. A document is enough to test whether the idea works.
 ```
 
+## Review
+
+Purpose: record the verdict and evidence for both review axes. Status remains the lifecycle state.
+
+Write a short entry for every verdict: `passed`, `needs changes`, `needs discussion`, or `wrong direction`. Name the goal check and convention check separately, with their findings and evidence. A needs-discussion entry records the unresolved question without deciding it. `map-review` owns the check and disposition.
+
+On reopen, strike through each line of the invalidated review with `~~` and record why it no longer holds. Keep it alongside the fresh review after re-review of the same subject. A legacy map without a Review has no old entry to invalidate; do not invent or backfill one.
+
 ## Keeping a body short
 
-`Target` and `Acceptance direction` are the only sections every map needs. Each of the others answers a question a reader would otherwise have to guess: what is already settled, what is still unclear, and what is deliberately not being done. Write the section when that question is real, and leave it out when it is not.
+`Target` and `Acceptance direction` are required from creation; `Review` is written when review occurs. The other sections record settled decisions, fog, and exclusions when they exist.
 
 ## A whole map
 
-A map as waymark stores it. Waymark writes the id, ownership, status, and timestamps. What matters to this file is the five sections and, in the front matter, `split_as`.
+A map as waymark stores it before review. Waymark writes the id, ownership, status, and timestamps. What matters to this file is the body and, in the front matter, `split_as`.
 
 ```markdown
 ---

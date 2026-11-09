@@ -44,7 +44,7 @@ waymark body replace <id> --body-file <path>
 waymark reopen <id>
 ```
 
-Then the node goes through review again, against the new text, by the same rules as the first time, and closes again when it passes.
+Include the map's invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. A legacy map without a Review has none to strike; do not fabricate one. Then review the node again against the new text and close it when it passes.
 
 When the new content does not exist yet, the run does not write it. On a map, it hangs the work as a child; a task takes no child and rewrites its own `Action`. `need-execute.md` carries the shape, the order, and the gate.
 
@@ -56,7 +56,7 @@ Where the verdict lands depends on the category, and on whether there is one to 
 
 **A task** carries a `## Review` section when the review skill wrote one. It does not always — a task closed before that section existed carries `Result` and no `Review`. If the section is there, the review replaces it rather than appending. If it is not, the `Acceptance signal` and `Result` are the record, and the re-review writes `## Review` for the first time.
 
-**A map** has no `## Review` section — its five sections hold no verdict text — so a passing review shows only in the status, and a `needs changes` verdict is written into the map's `Decisions so far` as the gap to fix. The acceptance direction is not the verdict: it is what the verdict was reached against, which is why test two reads it and then asks about the status.
+**A map** carries a `## Review` with the verdict and both axes. When reopening invalidates it, retain the struck-through review and its reason alongside the fresh review for the same subject. A legacy map without Review gets its first entry on re-review. If status and Review disagree, the owner rechecks children and evidence before completing the appropriate state change; changed evidence requires a fresh review.
 
 An open map's acceptance direction is a plan, not a kept promise. Changing it is the first disposition and the status does not move — but the children still get re-read, because it is the thing they refine, and it is also what the map will be judged against when it closes.
 
@@ -64,7 +64,7 @@ Whichever category, the run reads the acceptance direction before it writes: `##
 
 Two things to keep straight:
 
-- **The old review is not kept in place.** It is replaced by the new one, because a ticket carries one verdict. What the earlier review read survives in git, which is where a reader goes when they need it. Striking the old verdict in place would leave two verdicts on one ticket and no way to tell which the close was based on. The exception is a verdict this skill has to retract rather than supersede — if the review that closed the node was itself wrong, the struck-through verdict is the record that it was, which is what `wm-4dytqnmy4s47` does.
+- **Task review history is unchanged.** The new task review replaces the old one; a verdict retracted because the review itself was wrong is the existing exception. For a map, retain each invalidated review struck through and record the reason, so the current review is distinguishable from history.
 - **Reopening is decided by the verdict, never by the size of the edit.** A one-line change that makes the acceptance false reopens the node; a long clarifying paragraph that leaves it true does not. That is the first disposition, and the status never moves.
 
 Writing the changed body before reopening also means the reopen lands on a ticket that already says what it now claims. Reopening first leaves a short window where the tree says "not done" and the ticket still describes the old promise.
@@ -141,7 +141,7 @@ Clearing also erases the old position from the ticket, which is why a *move* is 
 
 - The changed body, via `waymark body replace`.
 - `status` via `waymark reopen`, and back to closed through review, when the verdict no longer holds.
-- For a task, `## Review`, replaced by the review skill. For a map, no verdict section exists to replace: a passing review shows only in the status, and a `needs changes` one is written into `Decisions so far` as the gap to close.
+- For a task, `## Review`, replaced by the review skill under its existing history policy. For a map, `## Review` records each verdict; on same-subject reopen and re-review retain the invalidated struck-through review and its reason.
 - `archived_at` and `archive_reason`, by `waymark archive`.
 - The replacement's body opens by naming the node it replaces.
 
