@@ -3,11 +3,11 @@ schema: 1
 id: wm-9sfmaphskg0c
 title: 'Update skill: change a closed map or task'
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-09T06:11:37Z
+updated_at: 2026-11-09T09:28:33Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: task
@@ -88,3 +88,15 @@ Nothing. The two items that lived here were settled during the build and moved i
 - Editing nodes that are still open, which is plain advance.
 - Designing the issue exchange itself, which belongs to the communication category.
 - A dependency edge between this map and the communication map. It would claim the update work waits on the issue work, which is false — the skill can file an issue by hand today. If the edge is ever wanted, it is the communication map's decision, not a fog item left on a closed map.
+
+## Review
+
+needs changes
+
+- Goal: the four lines of the `Acceptance direction` hold. The skill is under `weave-your-work/update/` as four files. The three-node walkthrough was recorded in the child task and re-read here: a closed task and its closed map went through strike, reopen, start, a fresh verdict from each review skill, and back to closed, with status, review record, and tree agreeing afterwards. The move path was read end to end against `b699d5f`, which is the move this map claims — the glossary install task re-hung under the glossary map with its dependency edge removed — and `move.md:122` cites that commit for the same event. The retire-and-replace path was run end to end again for this review in a scratch project with a real dependent: a closed split map with two closed task children, a replacement created, the old ticket naming the replacement, both children re-hung on it, the old map archived, and `waymark validate` reporting no findings; the dependent went from `open` blocked on the archived map to `open` ready, which is the edge change the acceptance direction asks to agree. The review point's four items are all stated in `SKILL.md` and `content.md`: the two tests, the three dispositions, the ownership stop rule, and the seven-step order ending in archive.
+- Convention: three findings, all in the body and each citable to `body.md`.
+  - `## Built` is not one of the six sections. `body.md` says a map body holds six sections "in the order this file lists them" and names them: `Target`, `Acceptance direction`, `Decisions so far`, `Not yet specified`, `Out of scope`, `Review`. This map adds a seventh. It is the only map of the 44 in this repository carrying one, and the repair proposal already committed against it (`wm-b75en7eez6tj`) names it as one of the shapes to convert.
+  - `## Not yet specified` does not carry the required empty marker. `body.md` says "when the section is empty, say so: `(none; the fog is cleared)`", because a section left out and a section that is empty mean different things. This one says `Nothing.` and then explains where the items went, which leaves a reader unable to tell the marker from prose.
+  - Two decision sources do not resolve. `[Map front matter and dependencies](tickets/map/wm-8zyyyafxbdwr.md)` and `[Write the update skill](tickets/task/wm-4dytqnmy4s47.md)` are written as if the repository root were the link's base, but these tickets live in `tickets/map/`, so they resolve to `tickets/map/tickets/...` and open nothing. `body.md` requires a source "the decision came from" so it "can be traced back when it is questioned"; a link that 404s does not. The other maps that share the style are not this map's to fix, but this one is.
+
+The goal axis is not what sends the map back. What does is that the body does not match the shape the map skill defines, and one of the three is a traceability defect rather than a cosmetic one.
