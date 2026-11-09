@@ -3,12 +3,11 @@ schema: 1
 id: wm-8zyyyafxbdwr
 title: Map front matter and dependencies
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:53:00Z
-updated_at: 2026-11-09T05:30:49Z
-closed_at: 2026-11-08T13:10:12Z
+updated_at: 2026-11-09T05:31:42Z
 parent: wm-0b59r7xfhk73
 ---
 ## Target

@@ -3,12 +3,11 @@ schema: 1
 id: wm-9sfmaphskg0c
 title: 'Update skill: change a closed map or task'
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-08T06:50:43Z
-updated_at: 2026-11-08T11:47:59Z
-closed_at: 2026-11-08T11:47:29Z
+updated_at: 2026-11-09T05:31:34Z
 parent: wm-qhd3twqjzhma
 custom_fields:
   split_as: task
@@ -28,6 +27,8 @@ All children are complete and no further children are needed.
 Review point: Check that the skill states the two boundary tests, the three dispositions, the ownership stop rule, and the order that ends in archive.
 
 ## Decisions so far
+
+- A reopened map's invalidated Review is struck through with its reason and remains after a same-subject re-review. Old maps without a Review are not backfilled; the three update dispositions still use the two existing tests. This change concerns map Review history, not task Review history. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
 
 - It is a standalone skill under `weave-your-work/update/`. The Map operating procedure will point at it when that map is built, and the update rules in its fog are removed then. (user confirmed)
 - advance stays the umbrella for every write an owner makes; update is the narrower operation that changes the content of a node that is already closed or already split into children. (user confirmed)

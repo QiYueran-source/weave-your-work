@@ -3,12 +3,11 @@ schema: 1
 id: wm-3nhrhmds8rqd
 title: 'Split skills: choose child maps or tasks'
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T14:59:53Z
-updated_at: 2026-11-09T05:30:50Z
-closed_at: 2026-11-09T00:43:56Z
+updated_at: 2026-11-09T05:31:42Z
 parent: wm-0b59r7xfhk73
 custom_fields:
   split_as: submap

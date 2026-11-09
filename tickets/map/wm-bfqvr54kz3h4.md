@@ -3,12 +3,11 @@ schema: 1
 id: wm-bfqvr54kz3h4
 title: 'Task reference: how to split a map into tasks'
 category: map
-status: closed
+status: open
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:03:36Z
-updated_at: 2026-11-09T05:30:49Z
-closed_at: 2026-11-08T10:49:33Z
+updated_at: 2026-11-09T05:31:34Z
 parent: wm-3nhrhmds8rqd
 ---
 ## Target
