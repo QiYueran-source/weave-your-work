@@ -3,11 +3,12 @@ schema: 1
 id: wm-vz22et2b7gja
 title: Write the map review skill
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-08T12:03:16Z
-updated_at: 2026-11-09T05:40:18Z
+updated_at: 2026-11-09T05:42:33Z
+closed_at: 2026-11-09T05:42:33Z
 parent: wm-3spf0jbvf9y9
 custom_fields:
   needs_human: false
@@ -34,6 +35,10 @@ Superseded on 2026-11-09: The file exists and names the owner, both separately r
 
 ## Result
 
+The changed deliverable `weave-your-work/map-review/SKILL.md` was revised by task `wm-q6477pe7x8tp`: it records four verdicts, separate goal and convention evidence, checks child type and output, and handles dependency readiness, ambiguity and mismatches. The scratch check in `weave-your-work/use-weave-your-work-examples/chemistry-research/09-map-improvement-checks.md` recorded a non-passing verdict; the other verdict branches were statically walked, not executed.
+
+Previous result before the revised design:
+
 `weave-your-work/map-review/SKILL.md` is written. It states when a review runs (every child closed, and no fog left, because fog says another child may still be needed), who reviews, what it reads, the two axes with the rule that every finding cites its source, the four verdicts with what each one writes, and the report shape. It says the verdict is the map's status, because a map has no `Review` section.
 
 What it has not done: no map has been reviewed with it. The sample review its map's acceptance originally named is the worked example the root map defers to one batch.
@@ -42,15 +47,11 @@ What it has not done: no map has been reviewed with it. The sample review its ma
 
 passed
 
-- Goal: the file exists; it names who reviews, the two axes and their separate reporting, the four verdicts with their writes, and the status-is-the-verdict rule; `body.md` and the split skill are named rather than restated. Read against the acceptance signal line by line.
-- Convention: only `weave-your-work/map-review/SKILL.md` was written by this task; the ticket edits were the run's own `Result`, `Review`, and status, plus the naming and sample-clause changes this split made to the parent map.
+- Goal: The skill names the owner, two separately reported checks, four verdicts and their Review, status and outcome writes; it requires child and actual evidence checks and has instructions for ambiguity and inconsistent state. Read `weave-your-work/map-review/SKILL.md` against the revised Acceptance signal.
+- Convention: The skill points to the map body, split and dependency rules; the change was implemented together with the related skill files under `wm-q6477pe7x8tp`, not as a new isolated original-task run. No task acceptance or split was performed by map-review.
 
 ## Boundaries
 
 - No task acceptance. That is `task-review`.
 - No splitting and no fog clearing.
 - No definition of a map body section. That is `body.md`.
-
-## Progress
-
-Update invalidated the prior verdict: its acceptance signal required status-only map verdicts, which the confirmed design replaces with Review evidence. The matching deliverable is being revised by `wm-q6477pe7x8tp`; inspect it against the new signal and re-review before closing.

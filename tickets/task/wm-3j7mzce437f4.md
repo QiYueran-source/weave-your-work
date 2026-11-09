@@ -3,11 +3,12 @@ schema: 1
 id: wm-3j7mzce437f4
 title: Write the map operating procedure
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-09T00:27:25Z
-updated_at: 2026-11-09T05:40:18Z
+updated_at: 2026-11-09T05:42:33Z
+closed_at: 2026-11-09T05:42:33Z
 parent: wm-9d7e4c1a2b60
 custom_fields:
   needs_human: false
@@ -35,6 +36,10 @@ Superseded on 2026-11-09: The file names lifecycle steps, triggers, hand-offs, s
 
 ## Result
 
+The changed deliverable `weave-your-work/map/procedure.md` was revised by task `wm-q6477pe7x8tp`: it records map Review writes and status actions, split state, review prerequisites and update routing. `weave-your-work/update/content.md` describes how a reopened split map resumes. The scratch check in `weave-your-work/use-weave-your-work-examples/chemistry-research/09-map-improvement-checks.md` ran first and later splits, not every lifecycle branch.
+
+Previous result before the revised design:
+
 `weave-your-work/map/procedure.md` is written. It carries the three states, the three steps with their triggers and hand-offs, the two commands that move a status, the four verdicts and what each writes, the rule that a reopened child voids a review, and the five-step change rule for a map that is already split.
 
 Two calls were made on this map's authority rather than the user's, and both are recorded in the parent map:
@@ -50,8 +55,8 @@ What it has not done: no map has been advanced with it. That walk is the worked 
 
 passed
 
-- Goal: the file covers the lifecycle, the three steps with their triggers and hand-offs, the loop with tasks at its far end, the status writes, the four verdicts, the reopened-child rule, and how a change depends on the map's state. Read against the acceptance signal: a reader holding a map can tell what to do next at any point, and `body.md`, `frontmatter.md`, and the update skill are pointed at rather than restated.
-- Convention: only `weave-your-work/map/procedure.md` was written in this revision; the ticket writes are its own `Result`, `Review`, and status.
+- Goal: The procedure names lifecycle steps, triggers and hand-offs, status changes and each verdict's Review write; it points to update for changes. Read `weave-your-work/map/procedure.md` and the reopened-map rule in `update/content.md` against the revised Acceptance signal.
+- Convention: The deliverable stays within procedure and points to front matter, update and map-review for their owned rules. The actual change was part of the related skill batch `wm-q6477pe7x8tp`, not a second isolated original-task run.
 
 ## Boundaries
 
@@ -59,7 +64,3 @@ passed
 - No field or dependency rules. Those are `frontmatter.md`.
 - No fog clearing, splitting, or accepting. Those are their own skills.
 - No description of what a change does to a node others rely on. That is the update skill.
-
-## Progress
-
-Update invalidated the prior verdict: its acceptance signal required status-only map verdicts, which the confirmed design replaces with Review evidence. The matching deliverable is being revised by `wm-q6477pe7x8tp`; inspect it against the new signal and re-review before closing.
