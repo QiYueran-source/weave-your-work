@@ -29,7 +29,7 @@ Relocating a node is the exception to that trigger, and it is not a content chan
 
 Ask them in order and stop at the first one that fails.
 
-1. **Same question?** Does the node still answer the question the tree hung it under? A task named for one action that now describes a different action has changed subject. A map whose Target now names a different destination has changed subject.
+1. **Same question?** Does the node still answer the question the tree hung it under? Judge what the body promises, not whether its title is stale: a title that drifted from unchanged content is repaired with the content, and only a different promise makes a new subject. A task named for one action that now describes a different action has changed subject. A map whose Target now names a different destination has changed subject.
 2. **Does the verdict hold?** Read the recorded acceptance against the new content. Would the same review still pass, on the same evidence, by the same reading?
 
 Both yes is the first disposition. First yes, second no is the second. First no is the third, and the second does not need asking.

@@ -97,10 +97,14 @@ The same goes for changing what a node is for. If N is moving because it now ans
 3. Check ownership of P and Q. A foreign one gets an issue with the reopen decision, not an edit.
 4. `waymark parent set <N> <Q>`.
 5. Read back: `waymark tree --root <Q>` and `--root <P>` for the shape, then walk Q's parent chain and check needed inputs. `waymark ready` and `waymark blocked` do not inspect ancestor dependencies or output usability.
-6. Reopen P or Q where step 2 said so, each with its own review.
+6. Reopen P or Q where the two tests say so, each with its own review.
 7. One commit naming N, P, and Q. The message says where it came from and why.
 
 Step 4 can be one command for a whole subtree only because the subtree hangs from N. Moving several unrelated nodes is several moves, and each gets its own decision about its own P and Q.
+
+A soft link between N and Q repeats what the new parent already says, and the move is when it can go: remove it with `waymark link remove <N> <Q>`, which writes both ends. Report that second write with the move; leaving the link is also allowed when the relation means more than placement.
+
+If the project is not a git repository, `waymark git history` and a commit are unavailable. The old parent then survives only in whatever copy the operator keeps, so say that in the report instead of promising a history line that does not exist.
 
 ## A run, short
 

@@ -44,7 +44,7 @@ waymark body replace <id> --body-file <path>
 waymark reopen <id>
 ```
 
-For a map, include its invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. A legacy map without a Review has none to strike; do not fabricate one. For a task, keep its Review unchanged and write in `Progress` that update invalidated that verdict, why, and what must be repaired; task-review replaces it after execution. `waymark reopen` puts the node in `open`. For an already-split map, use `waymark start <id>` to resume `in_progress` before repair or review; keep its existing `split_as`. A reopened task is started by its executor. Then review the node again against the new text and close it when it passes.
+For a map, include its invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. A legacy map without a Review has none to strike; do not fabricate one. For a task, keep its Review unchanged and write in `Progress` that update invalidated that verdict, why, and what must be repaired; task-review replaces it after execution. Write that `Progress` section if the ticket has none. `waymark reopen` puts the node in `open`. For an already-split map, use `waymark start <id>` to resume `in_progress` before repair or review; keep its existing `split_as`. A reopened task is started by its executor. Then review the node again against the new text and close it when it passes.
 
 When the new content does not exist yet, the run does not write it. On a map, it hangs the work as a child; a task takes no child and rewrites its own `Action`. `need-execute.md` carries the shape, the order, and the gate.
 
@@ -140,6 +140,7 @@ Clearing also erases the old position from the ticket, which is why a *move* is 
 ## What lands where
 
 - The changed body, via `waymark body replace`.
+- `title`, via `waymark title set`, when the change is substantive. Put the old title inside the struck replacement in the body, because a title cannot carry a strike-through.
 - `status` via `waymark reopen`, and back to closed through review, when the verdict no longer holds.
 - For a task, `## Review`, replaced by the review skill under its existing history policy. For a map, `## Review` records each verdict; on same-subject reopen and re-review retain the invalidated struck-through review and its reason.
 - `archived_at` and `archive_reason`, by `waymark archive`.
