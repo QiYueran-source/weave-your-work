@@ -4,16 +4,11 @@ The glossary has two front ends over the same sources: an MCP server with four t
 
 `<skill>` is the directory that holds this file. `<root>` is the project root, the directory with `.waymark/config.toml`.
 
-## Install and check
+## After install
 
-1. Run `bundle/setup.md` once; it installs the dependencies, the rule, and the post-merge hook. To install by hand:
+Run `bundle/setup.md` once. It creates `glossary/`, installs the dependencies and the rule, walks you through registering the MCP server, and offers the post-merge hook. The rest of this file assumes it is done.
 
-   ```bash
-   cd <skill>/bundle/tools
-   npm install
-   ```
-
-2. Check the CLI against the project:
+1. Check the CLI against the project:
 
    ```bash
    node <skill>/bundle/tools/glossary.js --project <root> list
@@ -21,24 +16,9 @@ The glossary has two front ends over the same sources: an MCP server with four t
 
    It prints one JSON object per merged term. When the current directory is the project root, `--project` can be left out.
 
-3. Register the MCP server in the harness's MCP config:
+2. Call `glossary_list`. It returns the same terms as the CLI.
 
-   ```json
-   {
-     "mcpServers": {
-       "glossary": {
-         "command": "node",
-         "args": ["<skill>/bundle/tools/server.js", "--project", "<root>"]
-       }
-     }
-   }
-   ```
-
-   Restart the harness. The four tools should be listed.
-
-4. Call `glossary_list`. It returns the same terms as the CLI.
-
-5. Write one term, then merge:
+3. Write one term, then merge:
 
    ```text
    glossary_write(term="pricing model", definition="The rules that turn usage into a price.", group="billing")
@@ -82,7 +62,7 @@ The CLI needs no dependencies. The MCP server does.
 
 ## Troubleshooting
 
-- `Cannot find module '@modelcontextprotocol/sdk'`: run `npm install` in `<skill>/bundle/tools/`.
+- `Cannot find module '@modelcontextprotocol/sdk'`: the MCP server is not installed; follow `bundle/setup.md`.
 - `not found`: the term may carry a parenthetical note; try the part before ` (`.
-- `GLOSSARY.md` is stale: run `merge`, or install the post-merge hook with `bundle/setup.md`.
+- `GLOSSARY.md` is stale: run `merge`, or install the recommended post-merge hook from `bundle/setup.md`.
 - A write went to the wrong operator: check `.waymark/user.toml` or `git config user.name`. The server resolves the operator at startup, so restart it after a change.
