@@ -35,6 +35,8 @@ Superseded on 2026-11-08: children are parallel; order comes from dependency edg
 
 Do not delete the old text and do not keep both without marking them. A reader who cannot tell which line is current is worse off than one reading a stale ticket, because they do not know to be careful.
 
+An `## Acceptance signal` takes a strike the same way its sibling sections do: the old signal stays visible with its `Superseded on` reason, and the new one is written after it. A signal rewritten in place would leave the earlier review's evidence pointing at a standard the ticket no longer states.
+
 ## The reopen loop
 
 A closed node carries a verdict. When the change makes that verdict false, the verdict has to be taken back before anything else happens, because a closed ticket is read as "done" by everything above it: a map is accepted when its children are complete, so a child left closed on a false verdict makes its parent's claim false too.
