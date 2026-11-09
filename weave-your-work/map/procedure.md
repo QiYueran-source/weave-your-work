@@ -5,8 +5,8 @@
 ## The life of a map
 
 ```
-open          a target, written and discussed, with no children yet
-in_progress   from the first split until a verdict lands
+open          a new target before its first split, or work reopened by update
+in_progress   from the first split, or resumed after reopening, until a verdict lands
 closed        the review passed, or the direction failed
 ```
 
