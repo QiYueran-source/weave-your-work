@@ -146,16 +146,29 @@ for base, dirs, files in os.walk('.'):
         names = {e for e in os.listdir(p) if os.path.isfile(os.path.join(p, e, 'SKILL.md'))}
         if names:
             roots.append((p, names))
+home = os.path.expanduser('~/.agents/skills')
+if os.path.isdir(home):
+    names = {e for e in os.listdir(home) if os.path.isfile(os.path.join(home, e, 'SKILL.md'))}
+    if names:
+        roots.append((home, names))
 if not roots:
     raise SystemExit('no skills directory holding <name>/SKILL.md')
 bad = False
 known = set()
+scope = os.path.realpath('.')
 for p, names in roots:
     fresh = [n for n in names if os.path.realpath(os.path.join(p, n)) not in known]
     for n in names:
         known.add(os.path.realpath(os.path.join(p, n)))
     if not fresh:
         print(f'{p}: {len(names)} skills, all reached again through another root, nothing new to compare')
+        continue
+    try:
+        outside = os.path.commonpath([os.path.realpath(p), scope]) != scope
+    except ValueError:
+        outside = True
+    if outside:
+        print(f'{p}: {len(names)} skills (global install)')
         continue
     tracked = subprocess.run(['git', 'ls-files', p], capture_output=True, text=True).stdout.split()
     seen = {line.split('/')[2] for line in tracked if line.count('/') >= 2}
@@ -169,18 +182,21 @@ raise SystemExit(1 if bad else 0)
 "
 ```
 
-Passes when every root it prints says `missing: none`, `none tracked yet` for a set that has not been committed, or `all reached again through another root` for a directory holding the same skills a second time. It finds the roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, so `.agents/skills` and an agent's own directory are both covered without naming either. A skill already counted under an earlier root is not counted again, compared by real path: `skills add` without `-a` writes copies into `.agents/skills` and symlinks to them in `.claude/skills`, and the second root would otherwise look like a set with no manifest. The manifest is what Git tracks under that root, not `skills-lock.json`: the lock file records only what `skills add` wrote, which was two entries when the set held 41 skills.
+Passes when every project root it prints says `missing: none`, `none tracked yet` for a set that has not been committed, or `all reached again through another root` for a directory holding the same skills a second time; a global root prints `(global install)` and is listed without a Git manifest. It finds project roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, and then adds `$HOME/.agents/skills`, the `skills` CLI's global target. A skill already counted under an earlier root is not counted again, compared by real path: `skills add` without `-a` writes copies into `.agents/skills` and symlinks to them in `.claude/skills`, and the second root would otherwise look like a set with no manifest. The project manifest is what Git tracks under that root, not `skills-lock.json`.
 
 **13. Every bundle's rules are registered.** *
 
 ```sh
-for f in .agents/skills/*/bundle/rules/*.md; do
-  [ -e "$f" ] || continue
-  cmp -s "$f" ".agents/rules/$(basename "$f")" || echo "NOT REGISTERED: $f"
+for root in .agents/skills "$HOME/.agents/skills"; do
+  [ -d "$root" ] || continue
+  for f in "$root"/*/bundle/rules/*.md; do
+    [ -e "$f" ] || continue
+    cmp -s "$f" ".agents/rules/$(basename "$f")" || echo "NOT REGISTERED: $f"
+  done
 done
 ```
 
-Passes when it prints nothing. This walks whatever bundles are installed, so a bundle that gains, loses, or renames a rule needs no edit here.
+Passes when it prints nothing. It walks the project install and the global install, so a globally installed set is checked even when the project has no `.agents/skills/`. A bundle that gains, loses, or renames a rule needs no edit here.
 
 **14. `AGENTS.md` points at the rules.** *
 
@@ -205,13 +221,16 @@ Passes when it prints `4`, for `glossary_lookup`, `glossary_list`, `glossary_wri
 **16. The listener runs and the webhook reaches it.**
 
 ```sh
-systemctl --user is-active issue-listener
-systemctl --user show issue-listener -p WorkingDirectory --value
+unit=$(basename "$(ls .work-weave/local/work-weave-issue-*.service 2>/dev/null | head -1)")
+[ -n "$unit" ] || { echo 'no generated unit under .work-weave/local'; exit 1; }
+systemctl --user is-active "$unit"
+systemctl --user show "$unit" -p WorkingDirectory --value
 R=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
 gh api "repos/$R/hooks" --jq '.[].config.url'
+sed -n 's/^SMEE_URL="\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' .work-weave/local/issue-listener.env
 ```
 
-Passes when the first prints `active`, the second prints this project's root, and the fourth prints the `SMEE_URL` from `~/.config/work-weave/smee.env`. Compare the second against `git rev-parse --show-toplevel`; `active` alone does not say which checkout the service serves. The queue path resolves from the listener's working directory, so a unit bound to another clone is `active` while this project's queue never grows. A 404 on the hooks read is not a failure by itself: read the account's permissions first.
+Passes when the second command prints `active`, the third prints the physical project root (`pwd -P`), and the fourth prints the channel that the fifth reads from `.work-weave/local/issue-listener.env`. The unit name is the one generated for this checkout, not a fixed name. `active` alone does not say which checkout the service serves; the queue path resolves from the listener's project root, so a unit bound to another clone is `active` while this project's queue never grows. A 404 on the hooks read is not a failure by itself: read the account's permissions first.
 
 ```sh
 R=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)

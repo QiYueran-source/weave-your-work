@@ -3,11 +3,12 @@ schema: 1
 id: wm-64g4rd45j7hm
 title: Make setup flows and checks work from a global install
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T11:50:13Z
-updated_at: 2026-11-10T11:50:13Z
+updated_at: 2026-11-10T11:52:54Z
+closed_at: 2026-11-10T11:52:54Z
 parent: wm-xgvfgs1mz7jd
 custom_fields:
   needs_human: false
@@ -27,6 +28,21 @@ Deliver setup flows and checks that work when the skill set is installed globall
 ## Acceptance signal
 
 `node --test` in `weave-your-work/setup/bundle/tools/` passes, including the copy test. The three documents contain no `git rev-parse --show-toplevel || pwd` root inference, no fixed `issue-listener.service`, no `~/.config/work-weave/smee.env`, and no `npm install` under a skill directory. The checks name both skill roots and the project-local runtime paths.
+
+## Result
+
+Updated `setup/start-a-project.md` to use the confirmed first-time root rule instead of `git rev-parse --show-toplevel || pwd`, and to create `.work-weave/.gitignore`, the two project runtimes, and the root `/GLOSSARY.md` rule. Updated `setup/join-a-project.md` to run the four bundle setups before the hook and view, skip `.work-weave` in the dependency search, install the hook from the project runtime, and read the listener settings and unit from `.work-weave/local/`.
+
+Updated `rules-checklist.md`: check 12 lists both `.agents/skills` and `$HOME/.agents/skills`; check 13 compares every bundle's rules from both roots; check 16 derives the hashed unit, compares `WorkingDirectory` with the physical root, and reads the channel from the local settings file. Added `setup/bundle/tools/project-root-copies.test.cjs`, which fails on a differing setup, issue, or glossary resolver copy.
+
+`node --test` in `weave-your-work/setup/bundle/tools/` passed 15 tests. Check 12 lists the project and global roots; check 13 prints nothing after the stale installed issue rule was refreshed; check 17 prints 3. No listener service is installed in this checkout, so check 16 remains a deployment check rather than a passing local check.
+
+## Review
+
+passed
+
+- Goal: the three setup documents contain no silent Git-root inference, no fixed `issue-listener.service`, no `~/.config/work-weave/smee.env`, and no install under a skill directory. The copy test passes, and the checks name both skill roots and the project-local runtime paths.
+- Convention: the checklist still has seventeen items; no service, webhook, or macOS verification was claimed.
 
 ## Boundaries
 

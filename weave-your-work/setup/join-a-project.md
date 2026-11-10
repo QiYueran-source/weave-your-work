@@ -67,19 +67,21 @@ The roster is also the listener's admission list: it queues an issue only when t
 
 Check 11.
 
-## 4. Install the dependencies that are not committed
+## 4. Install the project-local runtimes and other dependencies
 
-`node_modules` is gitignored, so every clone starts without it. Find what needs installing rather than assuming where it lives:
+`node_modules` under `.work-weave/runtime/` is gitignored, so every clone starts without it. The bundle setups create those runtimes; they are not a project dependency you install by hand.
+
+Run the four bundle setups from the installed skill set in the same order as `start-a-project.md` step 8: `map`, `task`, `glossary`, `issue`. The glossary and issue setups copy their tools into `.work-weave/runtime/glossary/` and `.work-weave/runtime/issue/` and run `npm ci --omit=dev` there. Read each exit status and stop on a non-zero one.
+
+Then install any other project dependencies the clone needs. Find them outside the runtimes and Git:
 
 ```sh
-find . -name package.json -not -path '*/node_modules/*' -not -path './.git/*'
+find . -name package.json -not -path '*/node_modules/*' -not -path './.git/*' -not -path './.work-weave/*'
 ```
 
-Run `npm install` in each directory that comes back, and skip any directory whose `package.json` declares no dependencies. When nothing comes back, report "this project has no dependencies to install" and move on; do not run `npm install` at the root, because a root `package.json` may not be what the tools use.
+Run `npm install` in each directory that comes back, and skip a directory whose `package.json` declares no dependencies. When nothing comes back, report "this project has no other dependencies to install" and move on; do not run `npm install` at the root, because a root `package.json` may not be what the project uses.
 
-Read each install's exit status, and stop on a non-zero one. A failed install can still leave a partial `node_modules`, so a directory that exists proves nothing: an unwritable npm cache leaves the directory holding some of the packages the file asks for, and the tool then fails at import.
-
-Running the tool is not proof either, for the same reason the exit status matters: an import that cannot resolve prints `ERR_MODULE_NOT_FOUND` and exits 0, so a missing dependency reads as a silent success. Check 15 is the exception — it starts the glossary MCP server and counts the tools it answers with, so it fails when that bundle's dependencies are incomplete.
+A failed install can still leave a partial `node_modules`, so a directory that exists proves nothing. An unwritable npm cache is the usual cause; use `--cache <a directory you own>` for `npm ci` or `npm install`. Running the tool is not proof either: an import that cannot resolve prints `ERR_MODULE_NOT_FOUND` and exits 0. Check 15 is the exception — it starts the glossary MCP server and counts the tools it answers with.
 
 Check 3 first if this is a new machine; the tools need Node 22.20 or newer.
 
@@ -126,9 +128,9 @@ Check 15 proves the MCP server, which reads the same data. If the merge reports 
 
 Both are outside the repository, and both need an account or a service.
 
-**The MCP server registration.** The harness config that lists MCP servers is per-machine and outside the project. Read `<skill>/bundle/setup.md` for the snippet and hand it over; do not write into a harness config you were not told to touch.
+**The MCP server registration.** The harness config that lists MCP servers is per-machine and outside the project. Read the glossary bundle's `bundle/setup.md` for the snippet and hand it over; do not write into a harness config you were not told to touch.
 
-**The listener's channel, webhook, and service.** The channel and webhook are repository state and survive the clone: if the project already has a listener, the `gh` reads in check 16 find them, and creating a second one is wrong. What does not survive is this machine's half — `~/.config/work-weave/smee.env` and the service.
+**The listener's channel, webhook, and service.** The channel and webhook are repository state and survive the clone: if the project already has a listener, the `gh` reads in check 16 find them, and creating a second one is wrong. What does not survive is this machine's half: `.work-weave/local/issue-listener.env`, the generated unit under `.work-weave/local/`, and the user-manager link. The issue setup writes the settings and unit; the platform guide under `issue/bundle/service/` links and starts it.
 
 On Linux, the unit needs `WorkingDirectory` set to this clone; check 16 compares it. On macOS and Windows there is no `systemctl` step: run the listener in a terminal while you work, and say that the queue still fills. A launch agent or a scheduled task would have to be written by the person; do not invent one.
 
