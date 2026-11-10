@@ -3,11 +3,12 @@ schema: 1
 id: wm-4t2jjm21af74
 title: Write the wait-what skill
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:52:28Z
-updated_at: 2026-11-10T06:52:28Z
+updated_at: 2026-11-10T06:59:26Z
+closed_at: 2026-11-10T06:59:26Z
 parent: wm-s4tvr121g3tv
 custom_fields:
   needs_human: false
@@ -33,3 +34,18 @@ Both files exist and `npx skills add` parses the front matter without a skip. `S
 
 - No change to any other skill.
 - No new ticket, and no status change, while reporting.
+
+## Result
+
+`weave-your-work/wait-what/SKILL.md` and `weave-your-work/wait-what/usage.md` are in place.
+
+`SKILL.md` holds the trigger, the source rule (the tickets, with `waymark tree`, `waymark list --parent`, and `waymark show`), the four fixed columns with what fills each, the output shape with closed work left out, and the four things it does not do. `usage.md` walks one report over this repository: six live rows out of fourteen children under the root, ten closed rows left out, and the two lines under the table.
+
+`npx skills add ./weave-your-work/wait-what --agent claude-code -y` reported `Installed 1 skill` / `wait-what (copied)` with no skip. The copy and the lock-file write were removed afterwards.
+
+## Review
+
+passed
+
+- Goal: the `Acceptance signal` names the four columns, the commands that fill them, the exclusion of closed work, and the no-resume rule. `SKILL.md` has all four, and every row of `usage.md`'s table matches a ticket that exists.
+- Convention: `Boundaries` held — no other skill was touched, and no ticket was created or reopened while reporting. `rules-bundles.md` is satisfied: no `bundle/`, one `usage.md`.

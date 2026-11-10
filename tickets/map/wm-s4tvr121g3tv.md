@@ -3,11 +3,12 @@ schema: 1
 id: wm-s4tvr121g3tv
 title: 'Session skills: show where the work stands, and hand off the session'
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:26:41Z
-updated_at: 2026-11-10T06:52:36Z
+updated_at: 2026-11-10T06:59:58Z
+closed_at: 2026-11-10T06:59:58Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-tky1bkwh57xp
@@ -62,3 +63,10 @@ Review point: each of the two skills carries a `SKILL.md` under `weave-your-work
 
 - Matt's writing skills (`writing-fragments`, `writing-beats`, `writing-shape`): this set covers wording through `talk-like-a-human` and does not cover writing an article.
 - Codebase-specific sessions (TDD, code review, debugging): the root map already excludes software-specific workflows.
+
+## Review
+
+passed
+
+- Goal: the review point asks for two `SKILL.md` files whose descriptions quote and name their trigger, `name` and `description` only, a `usage.md` beside each, and no reference to a file this project does not have. Both skills carry exactly those two front matter keys, both descriptions are quoted and name the state that triggers them, both carry `usage.md`, and neither names `GLOSSARY-MAP.md`, `argument-hint`, `agents/openai.yaml`, or `claude --bg`.
+- Convention: `split_as` is `task` and both children are tasks. The body holds no children index. The two tasks were closed by `task-review` with evidence, and their deliverables — `weave-your-work/handoff/` and `weave-your-work/wait-what/` — are the files the acceptance direction names. `waymark validate` reports no findings.

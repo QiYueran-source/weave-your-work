@@ -3,11 +3,12 @@ schema: 1
 id: wm-v2trg1ekayxp
 title: Write the handoff skill
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:52:20Z
-updated_at: 2026-11-10T06:52:20Z
+updated_at: 2026-11-10T06:59:26Z
+closed_at: 2026-11-10T06:59:26Z
 parent: wm-s4tvr121g3tv
 custom_fields:
   needs_human: false
@@ -35,3 +36,18 @@ Both files exist and `npx skills add` parses the front matter without a skip. `S
 
 - No change to any other skill.
 - The hand-off document itself is not written into the repository.
+
+## Result
+
+`weave-your-work/handoff/SKILL.md` and `weave-your-work/handoff/usage.md` are in place.
+
+`SKILL.md` holds the trigger, the temporary-directory rule (`$TMPDIR`, else `/tmp`, `%TEMP%` on Windows) with the reason the workspace and the tickets are both wrong, the five things the document carries, the cite-don't-restate rule, redaction, the tailoring rule, and the three things it does not do. `usage.md` walks one document written for this repository, with every id it cites resolved: `wm-s4tvr121g3tv`, `wm-v2trg1ekayxp`, `wm-4t2jjm21af74`, `wm-tky1bkwh57xp`.
+
+`npx skills add ./weave-your-work/handoff --agent claude-code -y` reported `Installed 1 skill` / `handoff (copied)` with no skip, so the front matter parses. The copy and the `skills-lock.json` write were removed afterwards, so the tree carries the skill and nothing else.
+
+## Review
+
+passed
+
+- Goal: the `Acceptance signal` names the temporary-directory rule, the cite-don't-restate rule, the five things carried, redaction, and the "starts nothing" line. All five are in `SKILL.md`, and `usage.md`'s every citation resolves to a ticket in `tickets/`.
+- Convention: `Boundaries` held — no other skill was touched, and the hand-off document itself was written to `/tmp` in the walk, not into the repository. `rules-bundles.md` is satisfied: no `bundle/`, because there is nothing to install, and one `usage.md` for one flow.
