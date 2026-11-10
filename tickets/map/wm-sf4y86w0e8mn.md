@@ -22,20 +22,20 @@ Why: five of its seven entries are records of finished work rather than examples
 
 `weave-your-work/use-weave-your-work-examples/` holds `SKILL.md` and two directories: `chemistry-research/` and `data-analysis/`.
 
-Review point: `ls` on the skill directory prints exactly those three entries; `SKILL.md` names no path outside them; every relative link in the skill resolves on disk; each removed file's path survives only in a sentence recording its removal; the three facts that existed nowhere else are readable in their new home; `waymark validate` reports no findings.
+Review point: `ls` on the skill directory prints exactly those three entries; `SKILL.md` names no path outside them; every relative link in the skill resolves on disk; each removed file's path survives only in a sentence recording its removal; the three facts that existed nowhere else are readable in their new home under `docs/`; `waymark validate` reports no findings.
 
 ## Decisions so far
 
 - Two scenarios stay: `chemistry-research/` and `data-analysis/`. The rest of the skill's entries are removed in one pass, not repaired. (user confirmed, 2026-11-10)
 - ~~`building-work-weave/` stays although the request named it too. `.agents/rules/04-record-examples.md` requires this skill set's construction run kept as a worked example and names that directory, so the instruction conflicts with the rule and the rule wins until the person changes it.~~ Superseded on 2026-11-10: the rule is deleted, so nothing keeps the directory. `building-work-weave/` is removed with the other entries. (user confirmed, 2026-11-10)
 - Rule 04 is deleted rather than amended. Keeping the construction run as a worked example meant rewriting it on every change to the skill set, and that upkeep grew past what the example was worth; the example retold decisions the tickets already hold. The two scenarios that stay are examples of the method, not of this project's build, so the rule's premise does not apply to them. (user confirmed, 2026-11-10)
-- Three facts held only by the pages being deleted are moved before deletion: the three Gitee API differences into `issue/usage.md`, and the two "paths not exercised" lists into one `docs/gaps.md`. (user confirmed, 2026-11-10)
+- Three facts held only by the pages being deleted are moved before deletion: the three Gitee API differences into their own note under `docs/`, and the two "paths not exercised" lists into one `docs/gaps.md`. The Gitee note is parked rather than wired into the issue skill: that skill supports GitHub only by decision, and adding a host's API details to its document would read as support it does not have. (user confirmed, 2026-11-10)
 - One task carries the change: five removals, one rule deletion, and the moves that must land before them are one pass over one directory, read back by one listing and one link scan. (derived from task-design's size rule; this map had no grill to hold a testimony)
 
 ## Not yet specified
 
 - ~~Whether rule 04 should be amended so the skill holds only the two scenarios.~~ Resolved on 2026-11-10: the rule is deleted outright, and `building-work-weave/` goes with it.
-- ~~Decision to make: whether the three Gitee API differences recorded in `designing-the-issue-skill/04-the-two-platforms.md` move into `issue/usage.md` before that page is deleted.~~ Resolved on 2026-11-10: they move. That page is the only record of them, and `usage.md`'s "Other hosts" section is where a fork looks.
+- ~~Decision to make: whether the three Gitee API differences recorded in `designing-the-issue-skill/04-the-two-platforms.md` move into `issue/usage.md` before that page is deleted.~~ Resolved on 2026-11-10: they move into their own note under `docs/`, not into the issue skill. That page is the only record of them, so they have to land somewhere; `usage.md` is not that place while the skill claims one host.
 
 ## Out of scope
 
