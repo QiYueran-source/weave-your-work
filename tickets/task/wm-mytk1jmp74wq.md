@@ -3,11 +3,12 @@ schema: 1
 id: wm-mytk1jmp74wq
 title: Implement and test project root resolution
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:51:22Z
-updated_at: 2026-11-10T10:51:22Z
+updated_at: 2026-11-10T11:10:44Z
+closed_at: 2026-11-10T11:10:44Z
 parent: wm-tmjgw2zn143y
 custom_fields:
   needs_human: false
@@ -26,6 +27,19 @@ Deliver a project-root resolver and written installation contract that apply the
 ## Acceptance signal
 
 The resolver and command return the same validated absolute root for a valid project and fail without returning an enclosing or unrelated project for invalid input. `node --test` runs the new tests successfully and their fixtures demonstrate the cases named in Action. The installation rule states the confirmed layout and no longer asserts that an enclosing Git root is automatically the intended project.
+
+## Result
+
+Delivered `weave-your-work/setup/bundle/tools/project-root.cjs` and `project-root-cli.cjs`. The module exports `resolveProjectRoot({ cwd?, project? })`; the CLI accepts `--project` and otherwise discovers from the working directory. The setup bundle guide documents both. Validation rejects markers that resolve outside their project, while allowing a Git worktree's `.git` file.
+
+The source installation rule now states the confirmed root and directory decisions. The existing installed rule was not replaced. `node --test` in `weave-your-work/setup/bundle/tools/` passed 14 tests on Linux, including a real linked worktree, nested, invalid, and overlapping markers, explicit paths, redirected Git environment, CLI behavior, and execution under a `type=module` package. Windows and macOS have not been tested. Issue, glossary, and setup flows do not yet use the resolver.
+
+## Review
+
+passed
+
+- Goal: `node --test` passed all 14 cases on Linux. The module and CLI use the same resolver; the tests cover the cases in the acceptance signal. The source rule states the project boundary and first-time confirmation. Windows and macOS remain unverified.
+- Convention: the delivered module, CLI, tests, source rule, and bundle tool documentation stay within the task boundaries. Existing issue, glossary, setup flows, and installed rules were not modified.
 
 ## Boundaries
 

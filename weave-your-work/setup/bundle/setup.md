@@ -10,7 +10,11 @@ Three rules into `.agents/rules/`:
 
 ## Tools
 
-No additional tools are required.
+The bundle includes `tools/project-root.cjs` and `tools/project-root-cli.cjs`. They require Node and Git, but no npm install. Run `node <setup-skill>/bundle/tools/project-root-cli.cjs` to find and validate the nearest project, or add `--project <directory>` to validate that exact directory. The command prints the physical root on success and reports an error on failure. It validates initialized projects; first-time root confirmation and creation belong to the setup flow.
+
+Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`; it returns the physical root or throws. A relative `project` is resolved from `cwd`, which defaults to the current working directory. Run `node --test` in `bundle/tools/` to check the resolver.
+
+The existing issue and glossary tools do not yet use this resolver.
 
 ## Rules
 
