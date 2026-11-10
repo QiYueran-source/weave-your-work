@@ -9,7 +9,7 @@ Run these checks at the start of a session, and run every one of them when a fea
 3. Report the failures. Name the check and the command that repairs it. Do not run the repair, do not edit a config, and do not install anything. Repairing the setup is the person's decision; this rule only reports.
 4. Mark a check not applicable only where the check says so. A missing remote covers two of them, checks 9 and 16. Never mark a check passed without running it.
 
-Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are, except for the one spot in check 15 marked `<skill>`, which takes the installed skill's directory.
+Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are from the project root.
 
 ## Tools
 

@@ -9,7 +9,7 @@ Run these checks at the start of a session, and run every one of them when a fea
 3. Report the failures. Name the check and the command that repairs it. Do not run the repair, do not edit a config, and do not install anything. Repairing the setup is the person's decision; this rule only reports.
 4. Mark a check not applicable only where the check says so. A missing remote covers two of them, checks 9 and 16. Never mark a check passed without running it.
 
-Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are, except for the one spot in check 15 marked `<skill>`, which takes the installed skill's directory.
+Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are from the project root.
 
 ## Tools
 
@@ -195,12 +195,12 @@ Passes when it prints a number above zero.
 **15. The glossary MCP server answers.**
 
 ```sh
-node <skill>/bundle/tools/server.js --project . \
+node .work-weave/runtime/glossary/server.js --project . \
   <<< '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' 2>/dev/null \
   | grep -o '"name":"glossary_[a-z]*"' | wc -l
 ```
 
-Passes when it prints `4`, for `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. This starts the server directly, so it needs no MCP client and no harness restart. Replace `<skill>` with the installed glossary skill directory.
+Passes when it prints `4`, for `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. Run it from the project root: the server comes from the project runtime, and its dependencies are installed there. This starts the server directly, so it needs no MCP client and no harness restart.
 
 **16. The listener runs and the webhook reaches it.**
 

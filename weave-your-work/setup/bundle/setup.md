@@ -14,7 +14,7 @@ The bundle includes `tools/project-root.cjs` and `tools/project-root-cli.cjs`. T
 
 Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`; it returns the physical root or throws. A relative `project` is resolved from `cwd`, which defaults to the current working directory. Run `node --test` in `bundle/tools/` to check the resolver.
 
-The existing issue and glossary tools do not yet use this resolver.
+The issue and glossary tools each carry their own byte-identical copy of `project-root.cjs`. The setup integration checks that the copies still match.
 
 ## Rules
 

@@ -85,24 +85,26 @@ Check 3 first if this is a new machine; the tools need Node 22.20 or newer.
 
 ## 5. Install the post-merge hook
 
-The glossary rebuilds `GLOSSARY.md` from `glossary/*.jsonl` after a pull, and the hook is what runs it. The hook lives in `.git/hooks`, which is not committed, so a clone has none.
+The glossary rebuilds `GLOSSARY.md` from `.work-weave/glossary/*.jsonl` after a pull, and the hook is what runs it. The hook lives in `.git/hooks`, which is not committed, so a clone has none.
 
 ```sh
 hook=$(git rev-parse --git-path hooks/post-merge)
 if [ ! -e "$hook" ]; then
-  sed "s#@GLOSSARY_SKILL@#<skill>#g" <skill>/bundle/tools/post-merge.sh > "$hook"
+  runtime=$(cd .work-weave/runtime/glossary && pwd)
+  sed "s#@GLOSSARY_RUNTIME@#$runtime#g" "$runtime/post-merge.sh" > "$hook"
   chmod +x "$hook"
 fi
 ```
 
-Replace `<skill>` with the installed glossary skill directory. Never overwrite an existing hook: a clone of a project that customized it would lose that work.
+The template lives in the project runtime at `<root>/.work-weave/runtime/glossary/post-merge.sh`, and `@GLOSSARY_RUNTIME@` becomes that directory's absolute path. Never overwrite an existing hook: a clone of a project that customized it would lose that work.
 
 Windows PowerShell:
 
 ```powershell
 $hook = git rev-parse --git-path hooks/post-merge
 if (-not (Test-Path $hook)) {
-  (Get-Content <skill>\bundle\tools\post-merge.sh) -replace '@GLOSSARY_SKILL@', '<skill>' | Set-Content $hook
+  $runtime = (Resolve-Path .work-weave\runtime\glossary).Path
+  (Get-Content "$runtime\post-merge.sh") -replace '@GLOSSARY_RUNTIME@', $runtime | Set-Content $hook
 }
 ```
 
@@ -115,7 +117,7 @@ Without the hook, run the merge command after every pull instead. Say that when 
 `GLOSSARY.md` is gitignored and generated, so a clone starts without it:
 
 ```sh
-node <skill>/bundle/tools/glossary.js merge --project .
+node .work-weave/runtime/glossary/glossary.js merge --project .
 ```
 
 Check 15 proves the MCP server, which reads the same data. If the merge reports no glossary entries, that is not a failure: the project has none yet.
@@ -124,7 +126,7 @@ Check 15 proves the MCP server, which reads the same data. If the merge reports 
 
 Both are outside the repository, and both need an account or a service.
 
-**The MCP server registration.** The harness config that lists MCP servers is per-machine and outside the project. Read `glossary/bundle/setup.md` for the snippet and hand it over; do not write into a harness config you were not told to touch.
+**The MCP server registration.** The harness config that lists MCP servers is per-machine and outside the project. Read `<skill>/bundle/setup.md` for the snippet and hand it over; do not write into a harness config you were not told to touch.
 
 **The listener's channel, webhook, and service.** The channel and webhook are repository state and survive the clone: if the project already has a listener, the `gh` reads in check 16 find them, and creating a second one is wrong. What does not survive is this machine's half — `~/.config/work-weave/smee.env` and the service.
 

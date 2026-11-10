@@ -1,0 +1,4 @@
+# Checkout-local state; the shared roster and glossary sources are tracked.
+pending/
+runtime/
+local/

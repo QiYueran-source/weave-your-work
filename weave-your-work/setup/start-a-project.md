@@ -119,7 +119,7 @@ Check 11.
 
 ## 7. Write `.gitignore`
 
-Do this before step 8. Two of the bundle setups run `npm install`, and a `node_modules` that is already staged stays staged after `.gitignore` is written, so the order matters.
+Do this before step 8. Two of the bundle setups install dependencies: the glossary runtime runs `npm ci --omit=dev` and the issue listener runs `npm install`. A `node_modules` that is already staged stays staged after `.gitignore` is written, so the order matters.
 
 Write the file when it does not exist, and add each line only when it is absent, so a re-run adds nothing twice:
 
@@ -127,7 +127,7 @@ Unix:
 
 ```sh
 touch .gitignore
-for line in 'node_modules/' 'GLOSSARY.md' 'pending/'; do
+for line in 'node_modules/' '/GLOSSARY.md' 'pending/'; do
   grep -qxF "$line" .gitignore || printf '%s\n' "$line" >> .gitignore
 done
 ```
@@ -136,7 +136,7 @@ Windows PowerShell:
 
 ```powershell
 if (-not (Test-Path .gitignore)) { New-Item -ItemType File .gitignore | Out-Null }
-foreach ($line in 'node_modules/', 'GLOSSARY.md', 'pending/') {
+foreach ($line in 'node_modules/', '/GLOSSARY.md', 'pending/') {
   if (-not (Select-String -Path .gitignore -Pattern ([regex]::Escape($line)) -Quiet -ErrorAction SilentlyContinue)) {
     Add-Content .gitignore $line
   }
@@ -145,7 +145,7 @@ foreach ($line in 'node_modules/', 'GLOSSARY.md', 'pending/') {
 
 The guard is the point. The issue bundle appends its own `pending/` without one, so running that setup twice leaves the line twice; this step must not copy that shape.
 
-The glossary and issue bundles also write these same lines when they run in step 8. The glossary append is guarded and skips a line that is already there. The issue append is not, so after step 8 the file carries `pending/` once from this step and once inside the bundle's own commented block. Neither is a problem: the rule matches either way, and check 17 counts matched paths rather than lines. Writing the three lines here as well is what makes the ignore state complete before any bundle runs.
+The glossary and issue bundles also write ignore entries when they run in step 8. The glossary writes `/GLOSSARY.md` to the root file and creates `.work-weave/.gitignore` for `pending/`, `runtime/`, and `local/`; those appends are guarded and skip a line that is already there. The issue append is not, so after step 8 the file carries `pending/` once from this step and once inside the bundle's own commented block. Neither is a problem: the rule matches either way, and check 17 counts matched paths rather than lines. Writing the three lines here as well is what makes the ignore state complete before any bundle runs.
 
 Do not touch `.waymark/.gitignore`. Waymark writes it and keeps `write.lock` and `user.toml` out of the repository.
 
@@ -157,14 +157,14 @@ Each bundle owns its own install. Read each `bundle/setup.md` under the installe
 
 1. `map` — the work-record rule.
 2. `task` — the task-record rule.
-3. `glossary` — the glossary directory, its tools, its MCP server registration, and the writing rule.
+3. `glossary` — the `.work-weave/glossary/` sources, the `.work-weave/runtime/glossary/` runtime, its MCP server registration, and the writing rule.
 4. `issue` — the listener, its dependencies, the handles file, and the queue.
 
 Two of them need a person before they finish: the MCP server registration is a harness config edit, and the listener needs a GitHub webhook and a service. Leave those two steps to the person and record them as pending. Without a remote, the issue bundle's external steps have nothing to act on; skip those and say so, but still copy its rule. Every bundle's rule copy is what check 13 compares, and a skipped copy leaves the check failing for the rest of the project's life.
 
-The glossary and issue setups append to `.gitignore` themselves, which is why step 7 already wrote the lines they need.
+The glossary and issue setups write their ignore entries themselves, which is why step 7 already wrote the lines they need.
 
-The glossary and issue setups both run `npm install`. Read each one's exit status and stop on a non-zero one: a failed install can still leave a partial `node_modules`, so the directory appearing proves nothing. A cache directory the user cannot write is the usual cause; `npm install --cache <a directory you own>` gets past it.
+The glossary setup copies its tools into `<root>/.work-weave/runtime/glossary/` and runs `npm ci --omit=dev` there; the issue setup runs `npm install`. Read each one's exit status and stop on a non-zero one: a failed install can still leave a partial `node_modules`, so the directory appearing proves nothing. A cache directory the user cannot write is the usual cause; `npm ci --cache <a directory you own>` and `npm install --cache <a directory you own>` get past it.
 
 Checks 13, 15, and 16.
 
