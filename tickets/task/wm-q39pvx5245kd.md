@@ -18,17 +18,16 @@ custom_fields:
 
 Give the repository the two files a stranger looks for first: what the set is and how to install it, and what they are allowed to do with it.
 
-1. Write `README.md` at the repo root. It opens with one paragraph saying what the set does, then the install command, then what to run after installing, then a pointer to `weave-your-work/` for the skill list. It does not restate the skills' own instructions.
+1. Write `README.md` and `README.zh-CN.md` at the repo root, linking to each other. Explain that the set generalizes Matt's software engineering skills for work in any domain, explores AI-native work through natural language with waymark, Git and GitHub CLI, and supports collaboration through GitHub issue messages and waymark ownership. Include the install command, the setup entry, and a pointer to `weave-your-work/`; do not restate the skills' instructions.
 2. Write `LICENSE` carrying the full Apache License 2.0 text with the copyright line `Copyright 2026 frank` and the appendix filled in. Add a `## License` section to `README.md` naming Apache-2.0 and linking the file.
 
 The install command in the README is the one task the layout ticket makes true: `npx skills add qiyueran-source/weave-your-work`. Until that task lands the command is aspirational, which is why this ticket is written after it and not before.
 
 ## Acceptance signal
 
-`README.md` exists at the repo root and carries, in order: a paragraph naming what the set does, the install command, and the `## License` section. `LICENSE` holds the Apache License 2.0 text, its appendix reads `Copyright 2026 frank`, and GitHub's repository page shows `Apache-2.0` in the license slot. A reader who has never seen the repo can go from the front page to a working install without opening another file.
+Both README versions explain the three characteristics and link to each other. They include the install and setup instructions and link to `LICENSE`. `LICENSE` holds the Apache License 2.0 text, its appendix reads `Copyright 2026 frank`, and GitHub's repository page shows `Apache-2.0` in the license slot. Check local links and the install discovery output; the GitHub license display requires the changes to reach the remote.
 
 ## Boundaries
 
 - No `CONTRIBUTING.md`, no code of conduct, no issue templates.
-- No translation of the README.
 - No docs site, no screenshots, no badges.
