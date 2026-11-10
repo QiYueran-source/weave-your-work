@@ -3,11 +3,12 @@ schema: 1
 id: wm-xgvfgs1mz7jd
 title: Set up a project from globally installed skills
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:39:21Z
-updated_at: 2026-11-10T11:50:13Z
+updated_at: 2026-11-10T11:55:38Z
+closed_at: 2026-11-10T11:55:38Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-2ztwvye6q9t7
@@ -46,3 +47,10 @@ Review point: setup flows and rules, global skill discovery, checks 11–13, rep
 - ~~Decision to make: specify the end-to-end acceptance procedure and test fixtures.
   Why it matters: a passing check that discovers no global rules must not be mistaken for a working install.~~
   Resolved on 2026-11-10: the fresh-project probe uses a temporary HOME, a global install from the local tree, and records all checks; the clone probe runs separately.
+
+## Review
+
+passed
+
+- Goal: the two closed tasks and the revised clone probe show a globally installed set taking a fresh project and a clone through local setup with project-local runtimes and data. The fresh-project probe passed checks 1–7, 10–15, and 17; the clone probe passed the same applicable checks plus check 9, with check 16 not applicable because no service was installed. The installer left this repository's working tree unchanged, and the clone kept its 40 glossary terms. Setup flows and checks name both `.agents/skills` and `$HOME/.agents/skills`, the generated checkout unit, and the project-local settings.
+- Convention: the map split into two tasks under `split_as: task`, both closed, and the old clone probe was revised in place. The probes made no fixes and created no remote, webhook, listener service, or MCP registration. Linux was verified; macOS and Windows remain explicitly unverified.
