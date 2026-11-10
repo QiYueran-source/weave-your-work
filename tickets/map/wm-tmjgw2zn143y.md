@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:38:48Z
-updated_at: 2026-11-10T10:38:48Z
+updated_at: 2026-11-10T10:46:10Z
 parent: wm-wjwa9081hse1
 ---
 ## Target
@@ -25,6 +25,7 @@ Review point: the delivered project-root contract and checks cover fresh project
 ## Decisions so far
 
 - Follow the confirmed project directory and discovery decisions in [Setup skill](wm-ygnttse5hd5k.md).
+- The Git worktree marker `.git`, `.waymark/`, and `.work-weave/` are peers directly under one project root; none is nested inside another. Git worktrees may use a `.git` file instead of a directory. (user confirmed, 2026-11-10)
 
 ## Not yet specified
 
