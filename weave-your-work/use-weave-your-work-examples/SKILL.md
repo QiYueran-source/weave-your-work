@@ -7,8 +7,12 @@ description: "Two worked examples for weave-your-work: a chemistry lab and a sho
 
 Two worked examples of the method in use. Both are fictional and self-contained: each carries its own waymark project, its tickets, and a page that reads the run back. Read one when a skill's rules are too abstract to act on.
 
-- `chemistry-research/` walks the task skills and one grill: a map, a split, one task run, a batch, and the reviews. It also carries a production grill and a map life-cycle audit.
-- `data-analysis/` runs a shop's restock list end to end in its own project: map, grill, both split types, a dependency edge, the task run, all three update dispositions, and the map reviews. The run was unattended, so its grill records accepted recommendations.
+## The two examples
+
+- `chemistry-research/` walks the task skills and one grill: a map, a split, one task run, a batch, and the reviews. It also carries a production grill and a map lifecycle audit. Start at its `README.md`.
+- `data-analysis/` runs a shop's restock list end to end in its own project: map, grill, both split types, a dependency edge, the task run, all three update dispositions, and the map reviews. The run was unattended, so its grill records accepted recommendations. Start at its `README.md`.
+
+Each directory holds its pages, the waymark project its tickets live in, and whatever the run produced. Paths inside a directory are relative to it.
 
 ## Read them when
 
@@ -18,10 +22,3 @@ Two worked examples of the method in use. Both are fictional and self-contained:
 - you are working a task and want to see the design, run, batch, and review paths together;
 - you want to see a grill turn a decision into a testimony, a glossary term, and an ADR;
 - you are changing a closed ticket and want to see which of the three dispositions fits.
-
-## Files
-
-- `chemistry-research/README.md`: the order its pages are read in.
-- `data-analysis/README.md`: the same for the restock run.
-
-Each directory holds the pages, the waymark project its tickets live in, and whatever the run produced. Paths inside a directory are relative to it.
