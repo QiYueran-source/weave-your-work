@@ -3,12 +3,14 @@ schema: 1
 id: wm-tmjgw2zn143y
 title: Project root and work-weave directory contract
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:38:48Z
-updated_at: 2026-11-10T10:46:10Z
+updated_at: 2026-11-10T10:51:21Z
 parent: wm-wjwa9081hse1
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -26,8 +28,10 @@ Review point: the delivered project-root contract and checks cover fresh project
 
 - Follow the confirmed project directory and discovery decisions in [Setup skill](wm-ygnttse5hd5k.md).
 - The Git worktree marker `.git`, `.waymark/`, and `.work-weave/` are peers directly under one project root; none is nested inside another. Git worktrees may use a `.git` file instead of a directory. (user confirmed, 2026-11-10)
+- This map delivers root-discovery code and tests as well as the written contract, not rules alone. Downstream issue and glossary maps integrate the result. (user confirmed, 2026-11-10)
+- The setup skill carries a Node module with no third-party dependencies, a command-line entry, and automated tests. Normal discovery finds the nearest `.work-weave/` and validates all three markers; an explicit path validates that directory only. The setup flow owns first-time root confirmation and creation. Issue and glossary later carry the module in their own project runtimes without assuming another skill is installed. (user confirmed, 2026-11-10)
 
 ## Not yet specified
 
-- Decision to make: choose the concrete contract artifact and the implementation and test boundary for discovery and root validation.
-  Why it matters: downstream tools and setup need one executable, testable interpretation rather than inconsistent path guesses.
+- Decision to make: define the module interface, command, test cases, and how downstream bundles receive a consistent copy.
+  Why it matters: the independently installed skills must apply the same root validation without relying on a neighboring skill directory.
