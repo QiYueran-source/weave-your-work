@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:39:21Z
-updated_at: 2026-11-10T10:39:21Z
+updated_at: 2026-11-10T11:26:57Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-2ztwvye6q9t7
@@ -29,6 +29,8 @@ Review point: setup flows and rules, global skill discovery, checks 11–13, rep
 ## Decisions so far
 
 - Follow the confirmed first-release and setup decisions in [Setup skill](wm-ygnttse5hd5k.md).
+- The issue and glossary bundles each carry their own byte-identical copy of `project-root.cjs`. This map verifies all copies match; no runtime dependency on another installed skill. (user confirmed, 2026-11-10)
+- The end-to-end acceptance covers a fresh project and a fresh clone, checks 11–13 against a global install, and states Linux, macOS, and Windows limits instead of implying unverified support. (user confirmed, 2026-11-10)
 
 ## Not yet specified
 

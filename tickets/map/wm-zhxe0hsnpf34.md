@@ -3,11 +3,12 @@ schema: 1
 id: wm-zhxe0hsnpf34
 title: Isolate issue tools and listener per project
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:38:58Z
-updated_at: 2026-11-10T11:24:01Z
+updated_at: 2026-11-10T11:48:26Z
+closed_at: 2026-11-10T11:48:26Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-tmjgw2zn143y
@@ -47,3 +48,10 @@ Review point: project-local runtime and dependencies, tracked roster, ignored qu
 - ~~Decision to make: determine how the issue bundle receives and verifies a consistent copy of the project-root resolver without relying on another installed skill.
   Why it matters: issue must work when installed independently and validate the same project boundary.~~
   Resolved on 2026-11-10: the bundle carries its own copy; the setup integration map owns the cross-bundle equality check.
+
+## Review
+
+passed
+
+- Goal: the three closed tasks deliver project-root resolution, roster and queue paths under `.work-weave/`, repository rejection, the exclusive queue lock, and a per-checkout runtime and hashed systemd unit. The issue suite passed 53 tests on Linux, including two project roots with separate rosters and queues and a rejected second listener. `.work-weave/issue/handles.toml` is tracked and the queue directory is ignored. macOS remains an unverified LaunchAgent template; Windows is foreground only, as recorded.
+- Convention: the map split into three tasks, all closed, under `split_as: task`; its only dependency is the closed root contract. The body holds no children index, and no unresolved fog remains. The global-install end-to-end run belongs to the setup integration map and is not claimed here.

@@ -3,11 +3,12 @@ schema: 1
 id: wm-2ztwvye6q9t7
 title: Isolate glossary tools and data per project
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:39:09Z
-updated_at: 2026-11-10T11:24:01Z
+updated_at: 2026-11-10T11:48:30Z
+closed_at: 2026-11-10T11:48:30Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-tmjgw2zn143y
@@ -47,3 +48,10 @@ Review point: `.work-weave/glossary/` source reads and writes, root `GLOSSARY.md
 - ~~Decision to make: determine how the glossary bundle receives and verifies a consistent copy of the project-root resolver without relying on another installed skill.
   Why it matters: glossary must work when installed independently and validate the same project boundary.~~
   Resolved on 2026-11-10: the bundle carries its own copy; the setup integration map owns the cross-bundle equality check.
+
+## Review
+
+passed
+
+- Goal: the two closed tasks deliver project-root resolution, `.work-weave/glossary/` sources and header writing, the root `GLOSSARY.md` view, a hard failure on missing markers or data, a project runtime installed with the lock file, a tested post-merge hook, and an MCP server that lists four tools. The retained 40 terms moved without loss and the regenerated view holds 40 terms. The glossary suite passed 10 tests on Linux, including two independent roots. The harness MCP registration is documented as a person's external step, not written into this repository. Windows and macOS were not tested.
+- Convention: the map split into two closed tasks under `split_as: task`; its dependency on the root contract is closed. ADR 0001 records the new source location and names this map. No unresolved fog remains.
