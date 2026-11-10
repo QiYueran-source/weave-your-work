@@ -1,4 +1,19 @@
-
+---
+schema: 1
+id: wm-fc8afkmg3ptv
+title: Constrain a global install to keep project dependencies inside the project
+category: task
+status: closed
+owner: frank
+creator: frank
+created_at: 2026-11-10T07:46:56Z
+updated_at: 2026-11-10T08:06:53Z
+closed_at: 2026-11-10T08:06:53Z
+parent: wm-ygnttse5hd5k
+custom_fields:
+  reversibility: two_way
+  task_kind: delivery
+---
 ## Action
 
 Add a rule to setup's bundle that a globally installed skill set still keeps the project's dependencies inside the project, and that the project root is resolved and confirmed before anything is installed.
