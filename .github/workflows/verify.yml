@@ -25,6 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install bundle dependencies
+        run: |
+          npm ci --prefix weave-your-work/glossary/bundle/tools
+          npm ci --prefix weave-your-work/issue/bundle/tools
+
       - name: Run the bundle tests
         run: npm test
 
