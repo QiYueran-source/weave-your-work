@@ -183,7 +183,7 @@ Format:
 - Below it, one line per axis: the goal check and the convention check. Each line cites its source — the `Acceptance signal` line it was read against, or the `Boundaries` line or repo rule it broke.
 - A finding that cites nothing is not a finding: name the source or drop the line.
 
-Lifecycle: written once the work has ended and `Result` exists, and replaced, never appended, when a task is reviewed again. `passed` and `wrong direction` are written just before the close; `needs changes` and `needs discussion` leave the ticket open with this section on it, so the run that carries the fix reads what the last review named and changes only that. An open ticket then carries `Review` beside `Progress`; a closed ticket carries `Review` instead of it.
+Lifecycle: written once the work has ended and `Result` exists, and replaced, never appended, when a task is reviewed again. `passed` and `wrong direction` are written just before the close; `needs changes` and `needs discussion` leave the ticket open with this section on it, so the run that carries the fix reads what the last review named and changes only that. `needs changes` leaves the ticket open with `Review` alone; `needs discussion` writes `Progress` beside it. A closed ticket carries `Review` instead of `Progress`.
 
 Who writes it: whoever runs the review, never the designer. The executor writes `Result`; the review writes this section, even when one agent does both in turn.
 
