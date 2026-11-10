@@ -39,23 +39,34 @@ async function fixture(t, { owner = 'alice' } = {}) {
     assert.ok(path.basename(root).startsWith('issue-security-'))
     await fs.rm(root, { recursive: true, force: true })
   })
-  const tools = path.join(root, 'tools')
-  await fs.mkdir(tools)
-  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs']) {
+  const tools = path.join(root, '.work-weave/runtime/issue')
+  await Promise.all([
+    fs.mkdir(tools, { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/issue'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/local'), { recursive: true }),
+    fs.mkdir(path.join(root, '.waymark'), { recursive: true }),
+  ])
+  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   // Use installed dependencies without copying credentials or configuration.
   await fs.symlink(await modulesDir(), path.join(tools, 'node_modules'), 'dir')
-  await fs.writeFile(path.join(tools, 'handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = "queue/pending.md"\n')
+  await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')
+  await fs.writeFile(path.join(root, '.waymark/config.toml'), 'schema = 1\n')
+  const roster = path.join(root, '.work-weave/issue/handles.toml')
+  await fs.writeFile(roster, '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = ".work-weave/pending/pending-communications.md"\n')
+  await fs.writeFile(path.join(root, '.work-weave/local/issue-listener.env'), 'REPOSITORY=example/project\n')
   const init = spawnSync('git', ['init', '--quiet'], { cwd: root, encoding: 'utf8' })
   assert.equal(init.status, 0, init.stderr)
   setName(root, owner)
-  return { root, tools, queue: path.join(root, 'queue/pending.md') }
+  return { root, tools, roster, queue: path.join(root, '.work-weave/pending/pending-communications.md') }
 }
 
 function environment(extra = {}) {
   const env = { ...process.env, ...extra, SMEE_URL: '' }
-  if (extra.WEBHOOK_SECRET === undefined) delete env.WEBHOOK_SECRET
+  delete env.REPOSITORY
+  delete env.WEBHOOK_SECRET
+  if (extra.WEBHOOK_SECRET !== undefined) env.WEBHOOK_SECRET = extra.WEBHOOK_SECRET
   return env
 }
 
@@ -104,6 +115,7 @@ async function startListener(t, f, webhookSecret = secret) {
 function issue({ url = 'https://example.test/issues/42', from = 'sender', to = 'alice-handle', title = 'A title', category = 'request', tickets = ['wm-test'], author = 'alice-handle' } = {}) {
   return {
     action: 'opened',
+    repository: { full_name: 'example/project' },
     issue: {
       html_url: url,
       title,
@@ -270,16 +282,16 @@ test('messages outside the protocol are not queued', async (t) => {
   const f = await fixture(t)
   const port = await startListener(t, f)
   const cases = [
-    ['ordinary issue', { action: 'opened', issue: { html_url: 'https://example.test/issues/1', title: 'Bug', body: 'A bug report' } }],
-    ['missing category', { action: 'opened', issue: { html_url: 'https://example.test/issues/2', title: 'No category', body: '---\nkind: communicate\nfrom: sender\nto: [alice-handle]\ntickets: [wm-1]\n---\n' } }],
+    ['ordinary issue', { action: 'opened', repository: { full_name: 'example/project' }, issue: { html_url: 'https://example.test/issues/1', title: 'Bug', body: 'A bug report' } }],
+    ['missing category', { action: 'opened', repository: { full_name: 'example/project' }, issue: { html_url: 'https://example.test/issues/2', title: 'No category', body: '---\nkind: communicate\nfrom: sender\nto: [alice-handle]\ntickets: [wm-1]\n---\n' } }],
     ['unknown category', issue({ url: 'https://example.test/issues/3', category: 'notice' })],
-    ['several recipients', { action: 'opened', issue: { html_url: 'https://example.test/issues/4', title: 'Two', body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: [alice-handle, bob-handle]\ntickets: [wm-1]\n---\n' } }],
-    ['string recipient', { action: 'opened', issue: { html_url: 'https://example.test/issues/5', title: 'One string', body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: alice-handle\ntickets: [wm-1]\n---\n' } }],
+    ['several recipients', { action: 'opened', repository: { full_name: 'example/project' }, issue: { html_url: 'https://example.test/issues/4', title: 'Two', body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: [alice-handle, bob-handle]\ntickets: [wm-1]\n---\n' } }],
+    ['string recipient', { action: 'opened', repository: { full_name: 'example/project' }, issue: { html_url: 'https://example.test/issues/5', title: 'One string', body: '---\nkind: communicate\ncategory: request\nfrom: sender\nto: alice-handle\ntickets: [wm-1]\n---\n' } }],
     ['no tickets', issue({ url: 'https://example.test/issues/6', tickets: [] })],
     ['no sender', issue({ url: 'https://example.test/issues/7', from: '' })],
     ['no title', issue({ url: 'https://example.test/issues/8', title: ' ' })],
-    ['closed action', { action: 'closed', issue: issue().issue }],
-    ['pull request', { action: 'opened', issue: { ...issue().issue, pull_request: { url: 'https://example.test/pulls/9' } } }],
+    ['closed action', { action: 'closed', repository: { full_name: 'example/project' }, issue: issue().issue }],
+    ['pull request', { action: 'opened', repository: { full_name: 'example/project' }, issue: { ...issue().issue, pull_request: { url: 'https://example.test/pulls/9' } } }],
   ]
   for (const [name, payload] of cases) {
     const response = await request(port, payload)
@@ -388,7 +400,7 @@ test('a machine with no git name refuses to start', async (t) => {
 
 test('owners that differ only by case are rejected', async (t) => {
   const f = await fixture(t)
-  await fs.writeFile(path.join(f.tools, 'handles.toml'), '[handles]\nalice = "alice-handle"\nAlice = "other-handle"\n[pending]\npath = "queue/pending.md"\n')
+  await fs.writeFile(f.roster, '[handles]\nalice = "alice-handle"\nAlice = "other-handle"\n[pending]\npath = ".work-weave/pending/pending-communications.md"\n')
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
     cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
   })
@@ -398,7 +410,7 @@ test('owners that differ only by case are rejected', async (t) => {
 
 test('a nested handle table is rejected before the port opens', async (t) => {
   const f = await fixture(t)
-  await fs.writeFile(path.join(f.tools, 'handles.toml'), '[handles.github]\nalice = "alice-handle"\n[pending]\npath = "queue/pending.md"\n')
+  await fs.writeFile(f.roster, '[handles.github]\nalice = "alice-handle"\n[pending]\npath = ".work-weave/pending/pending-communications.md"\n')
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
     cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
   })
