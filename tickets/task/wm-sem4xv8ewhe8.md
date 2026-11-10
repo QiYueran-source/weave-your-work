@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T05:17:16Z
-updated_at: 2026-11-10T05:17:16Z
+updated_at: 2026-11-10T06:09:13Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -31,6 +31,25 @@ The files already on disk under `.agents/skills/` stay where they are for the se
 A fresh `git clone` of the branch, run through `node <skills-cli>/bin/cli.mjs add . --list`, prints `Found 19 skills`, prints no `Skipped` line, and the 19 names equal `ls weave-your-work` minus `ask-me` (which holds no `SKILL.md`). The same command run against the current `main` prints `Found 39 skills` with every name from `.agents/skills/`, so the two logs side by side show the change.
 
 A reader can check it without the branch: after the merge, `npx skills add qiyueran-source/weave-your-work --list` on any machine prints the same 19 names.
+
+## Result
+
+Committed as `48a432d`. The vendored set moved from `.agents/skills/` to `.agents/matt-skills/`, `skills.sh.json` narrows discovery to `./weave-your-work`, and `.agents/skills/` is gitignored except for `issue/bundle/tools/handles.toml`.
+
+Measured on a fresh clone of the committed tree (`git archive` of the index into `/tmp`, then `git clone` of that):
+
+- `skills add . --list` printed `Found 19 skills` and no `Skipped` line.
+- The 19 names are byte-identical to the directories under `weave-your-work/` that hold a `SKILL.md`; `diff` of the two sorted lists is empty.
+- Against `main` before this commit the same command printed `Found 39 skills`, every name from `.agents/skills/`, and none of the 19.
+
+What the run turned up and settled:
+
+- `.agents/skills/issue/` was a second copy of `weave-your-work/issue/`, tracked separately. It is now untracked like the rest of the installed copies. Its `.gitignore` exception is one file, `bundle/tools/handles.toml`, because that file is the roster of owners and GitHub logins shared by everyone using the project, and it is the one thing under `.agents/skills/` that an install does not recreate.
+- The files on disk were left in place, so the sessions running in this checkout keep their skills. Only tracking changed.
+- `docs/smee-signature-research.md` cited `.agents/skills/issue/...` three times, twice in a way that pointed at a path under a tracked file. Both now point at `weave-your-work/issue/...`.
+- The rename is invisible to `.agents/rules/rules-pending-communications.md`: the rule reads the roster from the project root, and that path still holds the file.
+
+Not done here: the `setup` skill still tells a new project to look for `.agents/skills/`, which stays true for an installed project. `weave-your-work/setup/SKILL.md` says the checks look there, and they do.
 
 ## Boundaries
 
