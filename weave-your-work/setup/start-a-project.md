@@ -111,7 +111,7 @@ gh api user --jq .login
 
 The two names are not derivable from each other: `git config user.name` is whatever this machine was configured with, and the login is whichever account `gh` is signed in as. Nothing proves they are the same person, so state both back and ask the person to confirm the pair, for example: "the operator on this machine is `frank`, and the GitHub account is `QiYueran-source`; are those the same person?" A wrong login here means `gh auth login` was run as the wrong account, which is a different repair from a wrong operator name; say which one is wrong.
 
-The pair becomes one line under `[handles]` in `.work-weave/issue/handles.toml`. Step 8's issue bundle owns that file; it does not ask again.
+The pair becomes one line under `[handles]` in `.work-weave/issue/handles.toml`. Step 8's issue bundle writes that file from this answer and reads it back; it does not ask again.
 
 Keep the operator and `git config user.name` the same string. The listener reads the git name, not the operator, and matches it against the roster, so a project whose operator says `frank` while the git name says something else works until the listener starts and then does not.
 
