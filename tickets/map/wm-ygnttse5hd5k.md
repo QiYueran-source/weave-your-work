@@ -56,6 +56,7 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 
 ## Not yet specified
 
+- The individual checklist items. The person confirmed the five groups and the count of fifteen; the items themselves were never written down. Reconstructing them yields sixteen, and `curl` is missing from that reconstruction even though the issue bundle needs it. The draft sits in [Write setup's rule bundle](../task/wm-q38jx2nmm18y.md) and the person settles it before the rule file is written.
 - Joining a clone: its steps and conflicts.
 - What the join flow does about conflicts that a clone can have.
 
