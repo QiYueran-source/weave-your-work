@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:26:38Z
-updated_at: 2026-11-10T06:26:38Z
+updated_at: 2026-11-10T11:25:05Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -16,27 +16,21 @@ custom_fields:
 ---
 ## Action
 
-Ship the roster as a template instead of this project's real file, and move this project's roster out of the install target.
+Ship the roster as a template and move this project's real roster to the project-local shared location.
 
-Today `.agents/skills/issue/bundle/tools/handles.toml` holds `frank = "QiYueran-source"`, and it is tracked only because `.gitignore` re-includes it level by level. That makes this project's people data part of a skill's installed copy, which `skills add --copy` deletes before writing. It also means a stranger who installs the set receives a roster naming someone else.
-
-The same location blocks a global install entirely. `listener.mjs` loads the roster from `path.join(toolsDir, 'handles.toml')`, where `toolsDir` is the skill's own directory, so `~/.agents/skills/issue` would hold one roster for every project on the machine, while `[pending].path` resolves against the project root. Two projects, one roster: an account admitted in one is admitted in the other, and a queue path chosen for one is applied to both. Reading the roster from the project root fixes both, and it is why the roster has to move rather than be copied.
-
-Planned change, pending confirmation of the path:
-
-1. `weave-your-work/issue/bundle/tools/handles.toml.example` — the template, committed with the skill. Both keys with placeholder values and a comment saying what each does and that the queue path is relative to the project root.
-2. The project's real roster moves out of the skill directory. Two candidate paths, one chosen below: `.agents/issue-handles.toml`, or `.waymark/handles.toml` where it lived before 2026-11-09.
-3. `listener.mjs` and `check-pending.mjs` resolve the roster from the project root first, then fall back to the copy beside the tools, so a project set up under the old layout keeps working.
-4. Docs that name the old path: `issue/SKILL.md`, `issue/usage.md`, `issue/communicate-issue.md`, `issue/bundle/setup.md`, `issue/bundle/rules/rules-pending-communications.md`, `setup/start-a-project.md`, `setup/join-a-project.md`, `setup/bundle/rules/rules-checklist.md`, plus the installed `.agents/rules/rules-pending-communications.md`.
-5. `.gitignore` drops the re-include chain; the whole of `.agents/skills/` is ignored again.
-6. The tests write the roster at the project root instead of beside the tools, with one test kept for the fallback.
+1. Add `weave-your-work/issue/bundle/tools/handles.toml.example` with placeholder `[handles]` and `[pending].path` values. A comment says the queue path is relative to the project root and that the file is copied to `.work-weave/issue/handles.toml`.
+2. Move this project's roster from `.agents/skills/issue/bundle/tools/handles.toml` to `.work-weave/issue/handles.toml`. Keep the existing handle and set `[pending].path = ".work-weave/pending/pending-communications.md"`.
+3. Stop re-including the roster under `.agents/skills/`; keep the whole directory ignored and track `.work-weave/issue/handles.toml`.
+4. Update the documents that name the old roster path: `issue/SKILL.md`, `issue/usage.md`, `issue/communicate-issue.md`, `issue/bundle/setup.md`, `issue/bundle/rules/rules-pending-communications.md`, `setup/start-a-project.md`, `setup/join-a-project.md`, and `setup/bundle/rules/rules-checklist.md`. Do not change listener or checker code; the issue map owns it.
+5. A differing installed `.agents/rules/rules-pending-communications.md` is a conflict for the person; do not overwrite it.
 
 ## Acceptance signal
 
-`git ls-files | grep handles` lists the template and this project's roster and nothing under `.agents/skills/`. `npm test` in `weave-your-work/issue/bundle/tools/` passes. A fresh clone lists the roster at its new path, and `node .agents/skills/issue/bundle/tools/check-pending.mjs` still exits 0 there after an install.
+`git ls-files` lists `.work-weave/issue/handles.toml` and `handles.toml.example`, and lists nothing under `.agents/skills/`. The example carries placeholders only. `git check-ignore` shows `.agents/skills/` ignored and `.work-weave/issue/handles.toml` not ignored. The named documents point at the new path.
 
 ## Boundaries
 
-- No change to the roster's contents or to what the listener does with it.
+- No listener or checker code.
+- No migration command for other projects.
 - No second platform table.
-- No migration command for other projects; the fallback read is the migration.
+- No service or runtime change.

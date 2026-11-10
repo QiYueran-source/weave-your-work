@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-10T04:15:35Z
-updated_at: 2026-11-10T05:17:13Z
+updated_at: 2026-11-10T11:25:10Z
 parent: wm-wjwa9081hse1
 custom_fields:
   split_as: task
@@ -51,7 +51,8 @@ Review point: that install log, read against the directory list under `weave-you
 - Whether `skill-creator` and `talk-like-a-human` ship with the set or stay development-only. The CLI skips both today because the lock names them, not because the repo excludes them.
 - Which checks the verification workflow runs beyond discovery, and whether it blocks a merge or only reports.
 - `GLOSSARY.md` is gitignored while some skills refer to a shared glossary; whether it ships is unsettled.
-- Where this project's roster lives once it leaves `.agents/skills/`: `.agents/issue-handles.toml`, or back to `.waymark/handles.toml` where it lived before 2026-11-09.
+- ~~Where this project's roster lives once it leaves `.agents/skills/`: `.agents/issue-handles.toml`, or back to `.waymark/handles.toml` where it lived before 2026-11-09.~~
+  Resolved on 2026-11-10: `.work-weave/issue/handles.toml`, shared in Git; task `wm-ssfcjp9hxbxh` is revised to that path. (user confirmed, 2026-11-10)
 
 ## Out of scope
 
