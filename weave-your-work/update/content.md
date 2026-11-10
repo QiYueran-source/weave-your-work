@@ -46,6 +46,8 @@ waymark body replace <id> --body-file <path>
 waymark reopen <id>
 ```
 
+The body file holds the body alone: its first line is a `##` heading, never the frontmatter. A file that starts with `---` writes the old frontmatter into the new body, and `waymark validate` will not flag it because it reads only the first frontmatter block.
+
 For a map, include its invalidated Review in the body replacement before reopening: strike through each line with `~~` and record why it is invalid. The strike happens once: a re-review that reaches a block already struck for that reason does not strike it again. Fresh verdict first and the struck history below it, as the `map` skill defines the body. A legacy map without a Review has none to strike; do not fabricate one. For a task, keep its Review unchanged and write in `Progress` that update invalidated that verdict, why, and what must be repaired; task-review replaces it after execution. Write that `Progress` section if the ticket has none. `waymark reopen` puts the node in `open`. A reopened split map is started again before repair or review; keep its existing `split_as`. An unfinished split map that was never closed is not reopened and does not need starting. A reopened task is started by its executor. Then review the node again against the new text and close it when it passes.
 
 When the new content does not exist yet, the run does not write it. On a map, it hangs the work as a child; a task takes no child and rewrites its own `Action`. `need-execute.md` carries the shape, the order, and the gate.
