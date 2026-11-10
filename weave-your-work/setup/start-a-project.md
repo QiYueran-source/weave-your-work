@@ -4,17 +4,19 @@ Take an empty directory to a project that passes the setup checks.
 
 This assumes the skill set is installed and nothing else exists: no Git repository, no waymark configuration, no remote. How the set got installed is not this flow's subject; the repository's README carries that.
 
-Run every step from the project root. The commands are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished, and the check's command lives in `.agents/rules/rules-checklist.md`, which step 2 installs. Do not restate those commands here; open the rule.
+Before step 1, settle the directory. Run `git rev-parse --show-toplevel 2>/dev/null || pwd` and print the absolute path it gives; when the directory is not a repository yet, that is `pwd`. Ask the person to confirm it is the project they mean, then run every step from there. Nothing later infers the root: this flow may start in a subdirectory, above two nested projects, or outside a project entirely, and `rules-install.md` says what goes wrong when a step guesses.
+
+The commands below are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished, and the check's command lives in `.agents/rules/rules-checklist.md`, which step 2 installs. Do not restate those commands here; open the rule.
 
 ## 1. Confirm the skill set is there
 
 You are reading this file out of the installed set, so the set is installed. Run check 12 anyway: it proves the four skills this flow calls are still on disk, and it discovers what is there rather than listing it, so it keeps working when the set grows. If it reports a missing skill, stop and repair it; the rest of this flow reads files out of those directories.
 
-Do not run check 13 yet. It compares every bundle's rules against `.agents/rules/`, and nothing is registered there until step 2 writes setup's two rules and step 8 runs the four bundle setups, so on a fresh install it reports all six as unregistered. Step 8 runs it.
+Do not run check 13 yet. It compares every bundle's rules against `.agents/rules/`, and nothing is registered there until step 2 writes setup's three rules and step 8 runs the four bundle setups, so on a fresh install it reports all seven as unregistered. Step 8 runs it.
 
 ## 2. Install setup's own rules
 
-Read `bundle/setup.md` and follow it. It copies `rules-git.md` and `rules-checklist.md` into `.agents/rules/` and states the three cases: absent, identical, and different. A conflict stops the flow until the person decides.
+Read `bundle/setup.md` and follow it. It copies `rules-git.md`, `rules-checklist.md`, and `rules-install.md` into `.agents/rules/` and states the three cases: absent, identical, and different. A conflict stops the flow until the person decides.
 
 From here on, `.agents/rules/rules-checklist.md` is the reference for every check named below.
 

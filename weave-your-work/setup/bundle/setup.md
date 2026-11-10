@@ -2,10 +2,11 @@
 
 ## What this installs
 
-Two rules into `.agents/rules/`:
+Three rules into `.agents/rules/`:
 
 - `rules-git.md` keeps the default branch protected and the work on your own branch.
 - `rules-checklist.md` holds the seventeen checks that say whether the project is still configured.
+- `rules-install.md` keeps the skill set installable outside the project while its dependencies and rules stay inside it.
 
 ## Tools
 
@@ -13,14 +14,14 @@ No additional tools are required.
 
 ## Rules
 
-Copy `bundle/rules/rules-git.md` and `bundle/rules/rules-checklist.md` into `.agents/rules/`, keeping the file names. Run the same case for each file: absent, write it; identical, skip it; different, ask the person and do not overwrite.
+Copy `bundle/rules/rules-git.md`, `bundle/rules/rules-checklist.md`, and `bundle/rules/rules-install.md` into `.agents/rules/`, keeping the file names. Run the same case for each file: absent, write it; identical, skip it; different, ask the person and do not overwrite.
 
 Unix, from the project root:
 
 ```sh
 mkdir -p .agents/rules
 SETUP_SKILL_DIR='/path/to/installed/setup-skill'
-for name in rules-git.md rules-checklist.md; do
+for name in rules-git.md rules-checklist.md rules-install.md; do
   src="$SETUP_SKILL_DIR/bundle/rules/$name"
   dst=".agents/rules/$name"
   if [ ! -e "$dst" ]; then
@@ -40,7 +41,7 @@ Windows PowerShell, from the project root:
 ```powershell
 New-Item -ItemType Directory .agents/rules -Force | Out-Null
 $skillDir = '<setup-skill>'
-foreach ($name in 'rules-git.md', 'rules-checklist.md') {
+foreach ($name in 'rules-git.md', 'rules-checklist.md', 'rules-install.md') {
   $source = Join-Path $skillDir "bundle\rules\$name"
   $target = ".agents\rules\$name"
   if (-not (Test-Path $target)) {
@@ -54,7 +55,7 @@ foreach ($name in 'rules-git.md', 'rules-checklist.md') {
 }
 ```
 
-Set `SETUP_SKILL_DIR`, or `<setup-skill>` in PowerShell, to the installed setup skill directory before running. If a target differs, stop and ask the person whether to keep it, reconcile it, or replace it. Do not remove the target before the person decides. The `exit 1` stops the Unix loop at the first conflict, so the second file is not silently written after one is refused.
+Set `SETUP_SKILL_DIR`, or `<setup-skill>` in PowerShell, to the installed setup skill directory before running. It is wherever the skill set was installed: `<project>/.agents/skills/setup` after a project install, `~/.agents/skills/setup` after a global one. The rules are copied into the project either way; `rules-install.md` says why. If a target differs, stop and ask the person whether to keep it, reconcile it, or replace it. Do not remove the target before the person decides. The `exit 1` stops the Unix loop at the first conflict, so the remaining files are not silently written after one is refused.
 
 ## External steps
 
@@ -62,14 +63,14 @@ None.
 
 ## Verify
 
-Both files must match the bundle's copies byte for byte:
+All three files must match the bundle's copies byte for byte:
 
 ```sh
-for name in rules-git.md rules-checklist.md; do
+for name in rules-git.md rules-checklist.md rules-install.md; do
   cmp -s "$SETUP_SKILL_DIR/bundle/rules/$name" ".agents/rules/$name" \
     && printf '%s\n' "ok: $name" \
     || printf '%s\n' "differs: $name"
 done
 ```
 
-Two `ok` lines pass. The deeper check is check 13 of `rules-checklist.md`, which walks every installed bundle rather than these two names; run that one after any install.
+Three `ok` lines pass. The deeper check is check 13 of `rules-checklist.md`, which walks every installed bundle rather than these three names; run that one after any install.

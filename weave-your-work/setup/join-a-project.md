@@ -6,7 +6,9 @@ The project arrives with the tracker, the rules, and the skills committed. What 
 
 This is not what to run on an empty directory, and not what to run on a project that has no tracker yet; that is [start-a-project.md](start-a-project.md).
 
-Run every step from the project root. Each step names the check that proves it finished; the check's command lives in `.agents/rules/rules-checklist.md`. Do not restate those commands here; open the rule.
+Before step 1, settle the directory. Run `git rev-parse --show-toplevel` and print the absolute path it gives, then ask the person to confirm it is the clone they mean; a machine with several checkouts of the same project reaches this flow from whichever one the session started in. Run every step from there. A clone carries the rules but not the dependencies, and `rules-install.md` says where those go.
+
+Each step names the check that proves it finished; the check's command lives in `.agents/rules/rules-checklist.md`. Do not restate those commands here; open the rule.
 
 ## 1. Confirm this is a clone of a waymark project
 

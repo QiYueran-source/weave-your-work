@@ -16,7 +16,7 @@ Setup configures a project so the rest of the skill set can run in it. It instal
 
 Both flows end by running the checks in `.agents/rules/rules-checklist.md`. When the project does not match either opening state, the checks alone say what is missing.
 
-Setup's own rules are installed by [bundle/setup.md](bundle/setup.md), which copies `rules-git.md` and `rules-checklist.md` into `.agents/rules/`. The other four skills that carry installable parts — `map`, `task`, `glossary`, and `issue` — each own a `bundle/setup.md` of their own. Setup names them and points at them; it never restates their steps.
+Setup's own rules are installed by [bundle/setup.md](bundle/setup.md), which copies `rules-git.md`, `rules-checklist.md`, and `rules-install.md` into `.agents/rules/`. The other four skills that carry installable parts — `map`, `task`, `glossary`, and `issue` — each own a `bundle/setup.md` of their own. Setup names them and points at them; it never restates their steps.
 
 ## What setup does not do
 

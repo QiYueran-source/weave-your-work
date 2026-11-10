@@ -27,3 +27,25 @@ A reader of the rule can answer, without opening another file, where the project
 - The rule states the requirement; making the two existing bundle tools comply is a separate task. Editing `listener.mjs`, `check-pending.mjs`, and `glossary.js` to resolve from the project root is not done here.
 - No change to `.gitignore`, to the install command, or to how the set is published.
 - The rule adds no numbered item to `rules-checklist.md`. If a check is wanted, it goes through its own decision.
+
+## Result
+
+Written as `weave-your-work/setup/bundle/rules/rules-install.md` and wired into three documents.
+
+- The rule carries the five statements the design lists: resolve the root and confirm it, skill files may live outside the project, dependencies live inside it, absolute paths are written once at setup, and rules land in the project rather than under `~/.agents/`.
+- `setup/bundle/setup.md` now installs three rules: the opening line, both loops, the `SETUP_SKILL_DIR` paragraph, and the Verify block all name `rules-install.md`. The paragraph also says the directory may be `~/.agents/skills/setup` after a global install.
+- `setup/SKILL.md` and `setup/start-a-project.md` step 2 name the new rule.
+- `start-a-project.md` and `join-a-project.md` open by settling the directory instead of asserting "run every step from the project root": the command, the printed absolute path, and the confirmation. `start-a-project.md` also moves the fresh-install count in the check 13 warning from six unregistered rules to seven.
+
+Measured:
+
+- The updated loop run twice in an empty project prints `Installed:` for all three on the first pass and `Already installed:` for all three on the second. Verified in `/tmp/setuptest`.
+- A global install of `./weave-your-work` ships `setup/bundle/rules/rules-install.md` to `~/.agents/skills/setup/bundle/rules/`. Verified with `HOME=/tmp/gh3`.
+- Check 13 passes in this checkout after copying the rule to `.agents/rules/rules-install.md`.
+
+## Review
+
+passed
+
+- Goal: the five statements are in the rule, and the three document edits name it. Checked by reading the committed diff and by running the install loop.
+- Convention: the file name starts with `rules`, carries no number, and has no frontmatter, as `rules-bundles.md` requires. The text uses no em-dashes and no second person plural.
