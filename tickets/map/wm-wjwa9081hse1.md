@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-10T06:38:25Z
+updated_at: 2026-11-10T07:01:36Z
 custom_fields:
   split_as: submap
 ---
@@ -44,8 +44,9 @@ That run is one batch, not one per map: write the worked example each effort nee
 - The body carries no children index. The `Sub-maps` list was removed on 2026-11-10 because `map/body.md` forbids one; the children are read from `parent` with `waymark tree`. (user confirmed, 2026-11-10)
 - Three maintenance skills hang directly under this root map rather than under a new category map: stop-and-wait, salvage-and-restart, and feedback-me-please. (user confirmed, 2026-11-10)
 - The root map is started and carries `split_as: submap`: it has held children since 2026-11-06 while still `open`, so its status and field did not match its tree. (user confirmed, 2026-11-10)
-- ~~Three session-level skills hang under one child map rather than one each: `chief-of-staff` to advance a whole map, `handoff`, and `wait-what`.~~ Superseded on 2026-11-10: `chief-of-staff` was dropped as redundant with `execute-all`, so two skills hang under that map. See [Session skills](wm-s4tvr121g3tv.md). (user confirmed, 2026-11-10)
+- ~~Three session-level skills hang under one child map rather than one each: `chief-of-staff` to advance a whole map, `handoff`, and `wait-what`.~~ Superseded on 2026-11-10: `chief-of-staff` was dropped as redundant with `execute-all`, so two skills hang under that map, which is now closed. See [Session skills](wm-s4tvr121g3tv.md). (user confirmed, 2026-11-10)
 - A map is advanced by `execute-all` and `execute-one-task`, not by a session-level skill of its own. (user confirmed, 2026-11-10)
+- Two of Matt's session skills joined the set: `handoff` and `wait-what`. `wait-what` was rewritten rather than ported — it stops the work and reports the state in a fixed table instead of re-pitching the last message. (user confirmed, 2026-11-10)
 
 ## Not yet specified (cross-category coordination)
 
