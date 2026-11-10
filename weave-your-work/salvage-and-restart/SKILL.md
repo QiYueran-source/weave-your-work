@@ -57,7 +57,7 @@ A root has no `--parent`. Its body opens with `Target` and `Acceptance direction
   [the salvage record](../../docs/salvage/2026-11-10-<topic>.md). (user confirmed)
 ```
 
-The new root is `open`, and `split_as: submap` is written when it first splits, not before.
+The new root is `open`; its first split writes `split_as` with the type that split chooses — `submap` or `task` — not before.
 
 ### 4. Move what survives
 

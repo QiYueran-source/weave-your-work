@@ -95,7 +95,7 @@ Read the repository state before creating anything. On a repository that already
 
    The generated unit already records the checkout's working directory, the settings file, and the project runtime. Do not copy a unit from another checkout: its hash, paths, and port belong to that checkout.
 
-3. **Roster and queue.** Use `.work-weave/issue/handles.toml`, tracked in Git. When it is absent, copy `bundle/tools/handles.toml.example` and fill it in before asking. The project's owners are the Waymark owners in `tickets/`; read the signed-in account with `gh api user --jq .login`. An owner name and a GitHub login are different names; state both back and ask the person to confirm they are the same person. A login missing from the file cannot send; a login that should not send belongs nowhere in it.
+3. **Roster and queue.** Use `.work-weave/issue/handles.toml`, tracked in Git. When the setup flow already confirmed the operator/login pair, read the file back and verify it; do not ask the pair again. When this bundle is installed on its own, or the file is absent, copy `bundle/tools/handles.toml.example`, fill it in, and state the operator and login back, asking the person to confirm they are the same person. The project's owners are the Waymark owners in `tickets/`; read the signed-in account with `gh api user --jq .login`. An owner name and a GitHub login are different names; confirm they are the same person. A login missing from the file cannot send; a login that should not send belongs nowhere in it.
 
    ```toml
    [handles]

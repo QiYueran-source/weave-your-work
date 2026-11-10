@@ -76,10 +76,14 @@ function readSource(file) {
     } catch (error) {
       throw new Error(`${file}:${index + 1}: ${error.message}`);
     }
-    const missing = FIELDS.filter((field) => !(field in term));
+    const missing = FIELDS.filter((field) => field !== "group" && !(field in term));
     if (missing.length) {
       throw new Error(`${file}:${index + 1}: missing ${missing.join(", ")}`);
     }
+    if ("group" in term && typeof term.group !== "string") {
+      throw new Error(`${file}:${index + 1}: group must be a string`);
+    }
+    term.group = term.group ?? "";
     terms.push(term);
   });
   return terms;

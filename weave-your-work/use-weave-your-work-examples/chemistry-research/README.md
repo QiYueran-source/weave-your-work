@@ -6,6 +6,8 @@ The story: a process chemistry group is deciding whether a nickel catalyst can r
 
 The walk was run on 2026-11-08 with waymark 0.1.2. `waymark validate --project waymark` reports no findings, and the project sees the repository's Git history through its parent directory.
 
+**This is a historical record.** Its map bodies use the section names current on 2026-11-08: `## Why` and `## Boundaries`. The current map body reference uses `## Target` with a `Why:` line and `## Out of scope`. Read `data-analysis/` for a map written in the current shape; do not copy these map headings into a new map.
+
 ## Order
 
 1. [The tree](01-the-tree.md)

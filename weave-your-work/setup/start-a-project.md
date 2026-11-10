@@ -6,11 +6,11 @@ This assumes the skill set is installed and nothing else exists: no Git reposito
 
 Before step 1, settle the root. Print the current working directory and ask the person to confirm it is the project root or to name another directory. Do not silently use an enclosing Git repository. If the chosen directory is inside a Git repository but is not that repository's worktree root, stop and ask whether to use the enclosing root or create an independent repository; never run `git init` in a nested directory on your own. If the chosen directory has an ancestor Waymark configuration but no local `.waymark/config.toml`, stop and ask whether to use the enclosing project or initialize a separate tracker. Only after confirmation, create the missing `.git`, `.waymark/`, and `.work-weave/` markers in that root. Run every later step from there; nothing else infers the root.
 
-The commands below are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished, and the check's command lives in `.agents/rules/rules-checklist.md`, which step 2 installs. Do not restate those commands here; open the rule.
+The commands below are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished; the checks live in `.agents/rules/rules-checklist.md`, which step 2 installs; the rule names the one script that runs them. Do not restate the checks here; open the rule.
 
 ## 1. Confirm the skill set is there
 
-You are reading this file out of the installed set, so the set is installed. Run check 12 anyway: it proves the four skills this flow calls are still on disk, and it discovers what is there rather than listing it, so it keeps working when the set grows. If it reports a missing skill, stop and repair it; the rest of this flow reads files out of those directories.
+You are reading this file out of the installed set, so the set is installed. Run check 12 anyway: it proves the five skills this flow calls are on disk in one of the roots it finds — `setup` and the four bundles `map`, `task`, `glossary`, and `issue` — and it discovers what is there rather than listing it, so it keeps working when the set grows. If it reports a missing skill, stop and repair it; the rest of this flow reads files out of those directories.
 
 Do not run check 13 yet. It compares every bundle's rules against `.agents/rules/`, and nothing is registered there until step 2 writes setup's three rules and step 8 runs the four bundle setups, so on a fresh install it reports all seven as unregistered. Step 8 runs it.
 
@@ -111,7 +111,7 @@ gh api user --jq .login
 
 The two names are not derivable from each other: `git config user.name` is whatever this machine was configured with, and the login is whichever account `gh` is signed in as. Nothing proves they are the same person, so state both back and ask the person to confirm the pair, for example: "the operator on this machine is `frank`, and the GitHub account is `QiYueran-source`; are those the same person?" A wrong login here means `gh auth login` was run as the wrong account, which is a different repair from a wrong operator name; say which one is wrong.
 
-The pair becomes one line under `[handles]` in `.work-weave/issue/handles.toml`. Step 8's issue bundle owns that file; it does not ask again.
+The pair becomes one line under `[handles]` in `.work-weave/issue/handles.toml`. Step 8's issue bundle writes that file from this answer and reads it back; it does not ask again.
 
 Keep the operator and `git config user.name` the same string. The listener reads the git name, not the operator, and matches it against the roster, so a project whose operator says `frank` while the git name says something else works until the listener starts and then does not.
 
@@ -198,7 +198,7 @@ Check 14.
 
 ## 10. Run the checks
 
-Run all seventeen from `.agents/rules/rules-checklist.md`. Report the failures with the command that repairs each one; do not repair them.
+Run all seventeen with the checklist script. Report the failures and the repair each one names; do not repair them.
 
 Then give the person this table, one row per check, and the list of files this flow changed.
 

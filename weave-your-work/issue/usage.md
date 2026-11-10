@@ -55,7 +55,7 @@ Fetch the issue with `--json` or the equivalent structured flag — not a render
 
 Close with a comment that names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." A thread that settled into a map's `Out of scope` closes with that line instead: "Declined for `<map id>` `<title>`: <one line>."
 
-Use GitHub's ordinary "completed" close. A thread closed without a change takes the "not planned" reason.
+Use GitHub's ordinary "completed" close when a local artifact landed or a decline was recorded. A thread closed without a local artifact takes the "not planned" reason.
 
 The closing comment is the pointer GitHub keeps.
 

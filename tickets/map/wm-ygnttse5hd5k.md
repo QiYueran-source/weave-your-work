@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:52:39Z
-updated_at: 2026-11-10T00:47:32Z
+updated_at: 2026-11-10T13:37:41Z
 parent: wm-a08fwanmy5q6
 ---
 ## Target
@@ -26,7 +26,7 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - Installing a skill's pieces is a task under that skill's map, not under setup: the glossary install step lives under the glossary map (user confirmed).
 - The future total setup explicitly lists the map and task bundles and reads each bundle setup; it does not discover bundles by scanning. The skill and its complete list are not implemented yet. Source: user confirmation.
 
-- Setup is a manual with a bundle that carries part of the initialization rules; it has no script and no tools. (user confirmed, 2026-11-09)
+- ~~Setup is a manual with a bundle that carries part of the initialization rules; it has no script and no tools.~~ Superseded on 2026-11-10: setup's bundle carries one read-only check script, `bundle/tools/check-setup.mjs`. The install flow stays a manual that names each step; the script runs the seventeen checks, prints the result, and repairs nothing. (user confirmed, 2026-11-10)
 - Setup does not install the skills. It installs their dependencies and configures their auth: git, node, gh, waymark. (user confirmed, 2026-11-09)
 - The bundle list is fixed and complete: map, task, glossary, issue. All four are installed, with no optional subset. Setup names which skills have a bundle and points at each bundle's setup; it does not restate the install steps. (user confirmed, 2026-11-09)
 - The dependency step is a checklist. (user confirmed, 2026-11-09)
@@ -69,7 +69,7 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - The checklist carries seventeen checks, in the five groups, plus `curl`, which the issue bundle needs to build its smee channel. They are written for a new project, not for this repository. (user confirmed, 2026-11-10)
 - The skills-and-rules checks discover their targets instead of naming them: a check for the skills themselves and one that walks every `<root>/<skill>/bundle/rules/` so a bundle can be added without editing setup. (user confirmed, 2026-11-10; the first no longer reads `skills-lock.json`, which listed two skills while 41 were installed, and now compares each skills root against what Git tracks)
 - A 404 on the webhook read is not a failure on its own: the check reads `permissions.admin` first, and only an admin's 404 is a real failure. (user confirmed, 2026-11-10)
-- The checks live only in `bundle/rules/rules-checklist.md`, one line each with its command and expected result, starred where the session-start run covers them; session start runs the starred checks, a feature that turns out unavailable runs all of them; `start-a-project.md` references the rule and restates no check. (user confirmed, 2026-11-10)
+- ~~The checks live only in `bundle/rules/rules-checklist.md`, one line each with its command and expected result, starred where the session-start run covers them; session start runs the starred checks, a feature that turns out unavailable runs all of them; `start-a-project.md` references the rule and restates no check.~~ Superseded on 2026-11-10: the rule keeps each check's goal, pass condition, repair, and the two triggers; the executable part is `bundle/tools/check-setup.mjs`, a dependency-free Node script run from the project root. The rule names the script and the starred set. This replaces the POSIX-only shell in the always-loaded rule with one implementation that runs on Windows, macOS, and Linux. (user confirmed, 2026-11-10)
 
 - Work-weave project data and project-local runtime files belong under `<project>/.work-weave/`, separate from `.agents/`. The user wants setup to generate an internal `.gitignore` for local artifacts. `AGENTS.md` and agent rules remain in their existing locations; Waymark's `.waymark/` and `tickets/` are not part of this move. Exact paths and tracked files are not yet settled. (user confirmed, 2026-11-10)
 - Existing projects use test layouts; backward compatibility with those layouts is not required. This decision does not authorize discarding existing project data without inspection. (user confirmed, 2026-11-10)

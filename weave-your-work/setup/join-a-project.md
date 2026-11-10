@@ -2,13 +2,13 @@
 
 Take a clone of a project that already uses waymark to a checkout that passes the setup checks.
 
-The project arrives with the tracker, the rules, and the skills committed. What a clone does not carry is everything that was never committed: the operator, the dependencies, the git hooks, the MCP registration, and the listener. Those are this flow's work.
+The project arrives with the tracker and the rules committed. A project install of the skills is committed too; with a global install, the machine's global set supplies them. What a clone does not carry is everything that was never committed: the operator, the dependencies, the git hooks, the MCP registration, and the listener. Those are this flow's work.
 
 This is not what to run on an empty directory, and not what to run on a project that has no tracker yet; that is [start-a-project.md](start-a-project.md).
 
 Before step 1, settle the directory. Run `git rev-parse --show-toplevel` and print the absolute path it gives, then ask the person to confirm it is the clone they mean; a machine with several checkouts of the same project reaches this flow from whichever one the session started in. Run every step from there. A clone carries the rules but not the dependencies, and `rules-install.md` says where those go.
 
-Each step names the check that proves it finished; the check's command lives in `.agents/rules/rules-checklist.md`. Do not restate those commands here; open the rule.
+Each step names the check that proves it finished; the check lives in `.agents/rules/rules-checklist.md`. Do not restate those checks here; open the rule.
 
 ## 1. Confirm this is a clone of a waymark project
 
@@ -47,11 +47,7 @@ Read the GitHub account:
 gh api user --jq .login
 ```
 
-Then read the roster and ask the person one question:
-
-```sh
-awk '/^\[handles\]/{h=1;next} /^\[/{h=0} h && /^[A-Za-z0-9_.-]+[ \t]*=/{print}' .work-weave/issue/handles.toml
-```
+Then read the roster and ask the person one question. The roster is the `[handles]` table in `.work-weave/issue/handles.toml`; its keys are the owners.
 
 The two names are not derivable from each other. `git config user.name` is whatever this machine was set to, and the login is whichever account `gh` is signed in as; nothing proves they are the same person. So state both back and ask:
 
@@ -73,13 +69,9 @@ Check 11.
 
 Run the four bundle setups from the installed skill set in the same order as `start-a-project.md` step 8: `map`, `task`, `glossary`, `issue`. The glossary and issue setups copy their tools into `.work-weave/runtime/glossary/` and `.work-weave/runtime/issue/` and run `npm ci --omit=dev` there. Read each exit status and stop on a non-zero one.
 
-Then install any other project dependencies the clone needs. Find them outside the runtimes and Git:
+Then install any other project dependencies the clone needs. List every `package.json` under the project, excluding `node_modules`, `.git`, `.work-weave`, the installed skills under `.agents`, the skill source under `weave-your-work`, `.inbox`, and the root `package.json`. Use the file tools you have; the exclusions matter because the runtimes and installed skills carry their own manifests.
 
-```sh
-find . -name package.json -not -path '*/node_modules/*' -not -path './.git/*' -not -path './.work-weave/*'
-```
-
-Run `npm install` in each directory that comes back, and skip a directory whose `package.json` declares no dependencies. When nothing comes back, report "this project has no other dependencies to install" and move on; do not run `npm install` at the root, because a root `package.json` may not be what the project uses.
+Run `npm install` in each directory that comes back, and skip a directory whose `package.json` declares no dependencies. The four bundle setups already handled the installed skills, so never install under `.agents/skills/`. Do not run `npm install` at the root either, because a root `package.json` may not be what the project uses. When nothing comes back, report "this project has no other dependencies to install" and move on.
 
 A failed install can still leave a partial `node_modules`, so a directory that exists proves nothing. An unwritable npm cache is the usual cause; use `--cache <a directory you own>` for `npm ci` or `npm install`. Running the tool is not proof either: an import that cannot resolve prints `ERR_MODULE_NOT_FOUND` and exits 0. Check 15 is the exception — it starts the glossary MCP server and counts the tools it answers with.
 
@@ -138,7 +130,7 @@ Check 16.
 
 ## 8. Run the checks
 
-Run all seventeen from `.agents/rules/rules-checklist.md`, not only the starred ones: a clone is the one moment when nothing local has been proven yet. Report the failures with the command that repairs each one; do not repair them.
+Run all seventeen with the checklist script, not only the starred ones: a clone is the one moment when nothing local has been proven yet. Report the failures and the repair each one names; do not repair them.
 
 Then give the person the same four-state table the other flow uses:
 
@@ -153,7 +145,7 @@ Commit nothing, and do not push the branch you are on. What this flow writes is 
 
 ## What this flow does not do
 
-- It does not install the skills. A clone carries them; check 12 proves they are all still there.
+- It does not install the skills. A project install is committed and travels with the clone; a global install supplies them from `$HOME/.agents/skills`; check 12 proves the five required names are present in one of the roots it finds.
 - It does not register a rule. The rules are committed under `.agents/rules/`; check 13 proves the copies still match their bundles.
 - It does not add the person to `handles.toml`. That is a shared change and goes through a branch and a pull request.
 - It does not create a channel or a webhook. One per repository, and the project already has them.

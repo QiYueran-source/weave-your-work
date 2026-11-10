@@ -16,7 +16,7 @@ Install Node.js 22.20 or newer and npm, then run this once for your machine:
 npx skills add qiyueran-source/weave-your-work -g
 ```
 
-Select the skills and agent environments you want to install when prompted. Include `setup` and `ask-me` to follow the steps below. The command installs from the repository's default branch; it does not require an npm package release. Drop `-g` to install into the current project instead.
+Select the skills and agent environments you want to install when prompted. Select the whole set to follow the steps below; at minimum include `setup`, `ask-me`, and the four bundle skills `map`, `task`, `glossary`, and `issue`. The command installs from the repository's default branch; it does not require an npm package release. Drop `-g` to install into the current project instead.
 
 ## Get started
 

@@ -241,6 +241,20 @@ test("writes the generated view only at the project root", (t) => {
   assert.ok(!fs.existsSync(path.join(root, "glossary")));
 });
 
+test("a term without a group merges into the default group", (t) => {
+  const root = project(t, { operator: "alice", glossary: true });
+  const item = record("alpha");
+  delete item.group;
+  writeSource(root, "alice", [item]);
+
+  assert.equal(glossary.merged(root)[0].group, "");
+
+  const view = glossary.merge(root);
+  const text = fs.readFileSync(view, "utf8");
+  assert.match(text, /## Language/);
+  assert.match(text, /\*\*alpha\*\*/);
+});
+
 test("refuses to report an empty glossary as success", (t) => {
   const root = project(t, { operator: "alice", glossary: true });
 

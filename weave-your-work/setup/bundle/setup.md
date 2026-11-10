@@ -12,7 +12,9 @@ Three rules into `.agents/rules/`:
 
 The bundle includes `tools/project-root.cjs` and `tools/project-root-cli.cjs`. They require Node and Git, but no npm install. Run `node <setup-skill>/bundle/tools/project-root-cli.cjs` to find and validate the nearest project, or add `--project <directory>` to validate that exact directory. The command prints the physical root on success and reports an error on failure. It validates initialized projects; first-time root confirmation and creation belong to the setup flow.
 
-Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`; it returns the physical root or throws. A relative `project` is resolved from `cwd`, which defaults to the current working directory. Run `node --test` in `bundle/tools/` to check the resolver.
+It also includes `tools/check-setup.mjs`, the read-only runner for the seventeen checks in `rules-checklist.md`. Run it from the project root with `--starred` at session start or `--all` when a feature is unavailable; it prints one result per check and exits 1 when a check fails. It needs Node and the tools the checks call.
+
+Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`; it returns the physical root or throws. A relative `project` is resolved from `cwd`, which defaults to the current working directory. Run `node --test` in `bundle/tools/` to check the resolver and the check script.
 
 The issue and glossary tools each carry their own byte-identical copy of `project-root.cjs`. The setup integration checks that the copies still match.
 
@@ -67,14 +69,4 @@ None.
 
 ## Verify
 
-All three files must match the bundle's copies byte for byte:
-
-```sh
-for name in rules-git.md rules-checklist.md rules-install.md; do
-  cmp -s "$SETUP_SKILL_DIR/bundle/rules/$name" ".agents/rules/$name" \
-    && printf '%s\n' "ok: $name" \
-    || printf '%s\n' "differs: $name"
-done
-```
-
-Three `ok` lines pass. The deeper check is check 13 of `rules-checklist.md`, which walks every installed bundle rather than these three names; run that one after any install.
+All three files must match the bundle's copies byte for byte. Check 13 of `rules-checklist.md` is that verification: it walks every installed bundle, not only these three names. Run the checklist script from the project root with `--starred` and read the line for check 13; it prints `ok` only when every copy matches.
