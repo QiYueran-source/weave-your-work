@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:52:39Z
-updated_at: 2026-11-10T13:37:41Z
+updated_at: 2026-11-10T15:21:00Z
 parent: wm-a08fwanmy5q6
 ---
 ## Target
@@ -93,6 +93,8 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - An explicit project path must itself be the project root with all three markers; it is not searched upward. First-time setup is the exception while creating missing markers. If the chosen directory is inside an enclosing Git repository without its own Git root, stop and ask the person to choose the enclosing root or create an independent repository; do not run nested `git init` automatically. (user confirmed, 2026-11-10)
 - If the selected root has no local Waymark configuration but an ancestor does, setup stops and asks the person whether to use the enclosing project or initialize an independent tracker in the selected root. It does not silently use the ancestor. (user confirmed, 2026-11-10)
 - Check 9 reads `false` as two different states. A private repository on a free plan cannot have server protection: the branch prints `false` and `/protection` answers 403 with `Upgrade to GitHub Pro or make this repository public`. The check probes that endpoint once, reports the plan gate as not applicable, and names the local fallback, `rules-git.md` plus the project's own hook if it has one. A `false` while the feature is available is still a failure. (user confirmed, 2026-11-10)
+
+- This repository works on the `qiyueran/dev` branch and lands changes on `main` through pull requests; direct commits to `main` stop. This removes the F4 contradiction without changing `rules-git.md`; a piece that needs its own branch can still branch from `qiyueran/dev`. (user confirmed, 2026-11-10)
 
 ## Not yet specified
 
