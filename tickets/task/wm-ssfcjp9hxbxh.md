@@ -20,6 +20,8 @@ Ship the roster as a template instead of this project's real file, and move this
 
 Today `.agents/skills/issue/bundle/tools/handles.toml` holds `frank = "QiYueran-source"`, and it is tracked only because `.gitignore` re-includes it level by level. That makes this project's people data part of a skill's installed copy, which `skills add --copy` deletes before writing. It also means a stranger who installs the set receives a roster naming someone else.
 
+The same location blocks a global install entirely. `listener.mjs` loads the roster from `path.join(toolsDir, 'handles.toml')`, where `toolsDir` is the skill's own directory, so `~/.agents/skills/issue` would hold one roster for every project on the machine, while `[pending].path` resolves against the project root. Two projects, one roster: an account admitted in one is admitted in the other, and a queue path chosen for one is applied to both. Reading the roster from the project root fixes both, and it is why the roster has to move rather than be copied.
+
 Planned change, pending confirmation of the path:
 
 1. `weave-your-work/issue/bundle/tools/handles.toml.example` — the template, committed with the skill. Both keys with placeholder values and a comment saying what each does and that the queue path is relative to the project root.
