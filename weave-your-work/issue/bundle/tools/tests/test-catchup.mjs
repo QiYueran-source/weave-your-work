@@ -61,7 +61,7 @@ async function fixture(t, { remote = true } = {}) {
     fs.mkdir(bin),
     fs.mkdir(pages),
   ])
-  for (const name of ['listener.mjs', 'queue.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   const localModules = path.join(source, 'node_modules')

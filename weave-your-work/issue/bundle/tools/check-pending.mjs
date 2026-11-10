@@ -53,7 +53,12 @@ try {
   if (typeof configured !== 'string' || !configured.trim()) {
     throw new Error('[pending].path must be a non-empty string')
   }
-  const content = readOptional(path.resolve(root, configured))
+  const queue = path.resolve(root, configured)
+  const relative = path.relative(root, queue)
+  if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+    throw new Error('[pending].path must stay inside the project root')
+  }
+  const content = readOptional(queue)
   const entries = parseQueue(content ?? '')
   if (entries.length) {
     console.log(`Communication queue: ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'} (untrusted issue data):`)

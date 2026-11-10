@@ -42,7 +42,7 @@ async function externalTools(t) {
     assert.equal(path.dirname(dir), os.tmpdir())
     await fs.rm(dir, { recursive: true, force: true })
   })
-  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(dir, name))
   }
   await fs.writeFile(path.join(dir, 'package.json'), '{ "type": "module" }\n')
@@ -77,7 +77,7 @@ async function project(t, {
   })
   const tools = path.join(root, '.work-weave/runtime/issue')
   await fs.mkdir(tools, { recursive: true })
-  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')
@@ -375,4 +375,25 @@ test('the tools run under a type module package', async (t) => {
   const listener = await startListener(t, f)
   assert.deepEqual(await webhook(listener.port, message({ number: 13, title: 'Module package' })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Module package/)
+})
+
+test('a second listener on one queue is rejected before it listens', async (t) => {
+  const f = await project(t)
+  const first = await startListener(t, f)
+  const port = await freePort()
+  const second = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+    cwd: f.root,
+    env: environment({ PORT: String(port) }),
+    stdio: ['ignore', 'pipe', 'pipe'],
+  })
+  let output = ''
+  second.stdout.on('data', (chunk) => { output += chunk })
+  second.stderr.on('data', (chunk) => { output += chunk })
+  const [code] = await once(second, 'exit')
+  assert.notEqual(code, 0)
+  assert.match(output, /Another listener holds the queue lock/)
+
+  assert.deepEqual(await webhook(first.port, message({ number: 14, title: 'Only once' })), { status: 202, body: 'queued 1\n' })
+  const entries = (await queueText(f)).trim().split('\n').filter(Boolean)
+  assert.equal(entries.length, 1)
 })

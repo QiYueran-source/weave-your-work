@@ -22,6 +22,7 @@ import { parse as parseToml } from 'smol-toml'
 import { parse as parseYaml } from 'yaml'
 import SmeeClient from 'smee-client'
 import projectRoot from './project-root.cjs'
+import { acquireQueueLock } from './lock.mjs'
 import { formatEntry, parseQueue } from './queue.mjs'
 
 const { resolveProjectRoot } = projectRoot
@@ -119,7 +120,12 @@ function loadConfig(root) {
 }
 
 function queuePath(root, configured) {
-  return path.resolve(root, configured)
+  const queue = path.resolve(root, configured)
+  const relative = path.relative(root, queue)
+  if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+    throw new Error(`[pending].path must stay inside the project root: ${configured}`)
+  }
+  return queue
 }
 
 // This machine's owner is the local git identity, matched against the [handles]
@@ -308,7 +314,7 @@ function queueIssue(issue, { label = 'issue' } = {}) {
     return 0
   }
   const received = new Date().toISOString().slice(0, 16)
-  return append(queuePath(root, config.pending), [{
+  return append(queue, [{
     url: issue.url, from: fields.from, to: fields.to, owner, title: issue.title, received,
   }])
 }
@@ -410,6 +416,8 @@ let settings
 let repository
 let config
 let machineOwner
+let queue
+let queueLock
 try {
   const options = parseArgs(process.argv.slice(2))
   root = resolveProjectRoot(options)
@@ -417,12 +425,19 @@ try {
   repository = requireRepository(settings)
   config = loadConfig(root)
   machineOwner = await resolveMachineOwner(root, config.handles)
+  queue = queuePath(root, config.pending)
+  queueLock = acquireQueueLock(queue, { root })
 } catch (error) {
   console.error(error.message)
   process.exit(1)
 }
 
 const port = Number(settings.PORT || 8765)
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  console.error('PORT must be an integer from 1 to 65535')
+  queueLock.release()
+  process.exit(1)
+}
 const secret = settings.WEBHOOK_SECRET || ''
 const smeeUrl = settings.SMEE_URL || ''
 
@@ -430,6 +445,16 @@ if (secret && !secret.trim()) {
   console.error('WEBHOOK_SECRET must not contain only whitespace')
   process.exit(1)
 }
+
+function shutdown(code = 0) {
+  queueLock.release()
+  server.close(() => process.exit(code))
+  setTimeout(() => process.exit(code), 1000).unref()
+}
+
+process.on('SIGINT', () => shutdown(0))
+process.on('SIGTERM', () => shutdown(0))
+process.on('exit', () => queueLock.release())
 
 server.listen(port, '127.0.0.1', async () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
@@ -446,6 +471,7 @@ server.listen(port, '127.0.0.1', async () => {
     } catch (error) {
       console.error(redact(`Cannot connect to smee; catch-up not started: ${error.message || 'connection failed'}`))
       await smee.stop()
+      queueLock.release()
       server.close()
       process.exitCode = 1
       return
