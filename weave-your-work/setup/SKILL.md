@@ -5,6 +5,8 @@ description: "Configure a project so the work-weave skill set can run in it: ins
 
 # Setup
 
+Before choosing a flow or making any changes, read [rules-install.md](bundle/rules/rules-install.md) from this installed skill. Resolve and confirm the project root with the person, then follow the rule throughout setup. This applies whether the skill is installed globally or in the project.
+
 This file is the entry to setup. It routes; the flow document holds the steps.
 
 Setup configures a project so the rest of the skill set can run in it. It installs the dependencies and configures their auth, initializes the tracker, writes the rule pointer into `AGENTS.md`, and runs the four bundles' setups. It stops when the checks pass.
