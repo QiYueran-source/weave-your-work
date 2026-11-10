@@ -17,7 +17,7 @@ custom_fields:
 
 ~~Design the map skill so a team can turn a target into a tree: write the five-section map body, hang children, move a map through its status transitions, and accept it when every child is done and no further child is needed.~~
 
-Superseded on 2026-11-09: Design the map skill so a team can turn a target into a tree: write the map body, hang children, move a map through its status transitions, and accept it when every child is done and no further child is needed. A Review section records map verdicts. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+Superseded on 2026-11-09: Design the map skill so a team can turn a target into a tree: write the map body, hang children, move a map through its status transitions, and accept it when every child is done and no further child is needed. A Review section records map verdicts. See [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md).
 Why: map is the node that answers "what I want"; without this skill the tree has no entry point.
 
 ## Acceptance direction
@@ -28,7 +28,7 @@ Review point: read `weave-your-work/map/SKILL.md` and the three references it na
 
 ## Decisions so far
 
-- Inherits the execution map's decisions: the semantic model, the map template, and the frontmatter choice. The template includes Review after a verdict; see [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+- Inherits the execution map's decisions: the semantic model, the map template, and the frontmatter choice. The template includes Review after a verdict; see [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md).
 - `/map` is the single entry that routes to explore, split and review (user confirmed).
 - Status flow: a new map starts open; split starts it (open to in_progress) when it gets children; when every child is closed, `/map` runs review; review closes the map or leaves it in_progress (user confirmed).
 - A decision may be recorded directly in Decisions so far without fog; split then turns it into a child (user confirmed).

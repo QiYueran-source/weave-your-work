@@ -6,7 +6,7 @@ Owning ticket: [wm-31f6a2c9d840](../../tickets/map/wm-31f6a2c9d840.md).
 
 ## Status
 
-Accepted. The testimony clauses of ADR-0001 are superseded by this record; the rest of ADR-0001 stands.
+Accepted. The testimony clauses of ADR-0001 are superseded by this record; the rest of ADR-0001 stands. The category path is superseded by ADR-0003: testimonies now live at `tickets/testimony`, and every other clause of this record stands as written.
 
 ## Considered Options
 

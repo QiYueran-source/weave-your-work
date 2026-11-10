@@ -10,4 +10,4 @@ Owning ticket: [wm-qhd3twqjzhma](../../tickets/map/wm-qhd3twqjzhma.md).
 
 ## Status
 
-The testimony clauses are superseded by ADR-0002; the rest of this record stands.
+The testimony clauses are superseded by ADR-0002; the rest of this record stands. The testimony location is superseded again by ADR-0003, which puts testimonies under `tickets/`; the rule that different kinds of durable material get separate roots still stands.

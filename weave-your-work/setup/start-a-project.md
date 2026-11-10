@@ -71,7 +71,7 @@ Add the other two categories one at a time:
 
 ```sh
 waymark config add category task tickets/task
-waymark config add category testimony testimony
+waymark config add category testimony tickets/testimony
 ```
 
 Then the six custom fields:

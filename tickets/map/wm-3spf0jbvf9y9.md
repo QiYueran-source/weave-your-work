@@ -29,7 +29,7 @@ Review point: Check that the SKILL.md names who reviews, how the acceptance dire
 
 ## Decisions so far
 
-- Each of the four verdicts records a Review with the goal and convention checks and their evidence. An invalidated map Review is struck through with its reason and retained after re-review. Old maps without one are not backfilled. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+- Each of the four verdicts records a Review with the goal and convention checks and their evidence. An invalidated map Review is struck through with its reason and retained after re-review. Old maps without one are not backfilled. See [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md).
 
 - Review owns reviewing to closed or return; the map skill owns delivering to reviewing (user confirmed).
 - ~~Anyone may review, including the owner reviewing their own work; the earlier "non-executor" rule is dropped.~~ Superseded on 2026-11-08: only the owner reviews and closes; a non-owner reports findings to the owner. This matches `task-review` and `map/frontmatter.md`. (user confirmed)

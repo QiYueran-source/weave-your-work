@@ -5,7 +5,7 @@ Operator: frank
 
 ## Context
 
-The explore skill was first designed around fog triage: five fog classes (judgment, fact, decision, goal, action), two routes (conversation, probe task), impact ranking, assumption-ization, landing rules, and an interface with ask-me. During review the user decided the positioning was wrong: explore should only clear fog, nothing else. The old ticket was archived and a new one opened ([Fog-explore skill: clear a map's fog](../tickets/map/wm-3084re0f48z3.md)), renamed fog-explore.
+The explore skill was first designed around fog triage: five fog classes (judgment, fact, decision, goal, action), two routes (conversation, probe task), impact ranking, assumption-ization, landing rules, and an interface with ask-me. During review the user decided the positioning was wrong: explore should only clear fog, nothing else. The old ticket was archived and a new one opened ([Fog-explore skill: clear a map's fog](../../map/wm-3084re0f48z3.md)), renamed fog-explore.
 
 This log records the design discussion of the new fog-explore skill and the alternatives that lost.
 
