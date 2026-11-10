@@ -3,11 +3,12 @@ schema: 1
 id: wm-sem4xv8ewhe8
 title: Make root install return only the weave skills
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T05:17:16Z
-updated_at: 2026-11-10T06:09:13Z
+updated_at: 2026-11-10T06:10:38Z
+closed_at: 2026-11-10T06:10:38Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -50,6 +51,13 @@ What the run turned up and settled:
 - The rename is invisible to `.agents/rules/rules-pending-communications.md`: the rule reads the roster from the project root, and that path still holds the file.
 
 Not done here: the `setup` skill still tells a new project to look for `.agents/skills/`, which stays true for an installed project. `weave-your-work/setup/SKILL.md` says the checks look there, and they do.
+
+## Review
+
+passed
+
+- Goal: A fresh clone of the committed tree prints `Found 19 skills`, no `Skipped` line, and the 19 names diff clean against the directories under `weave-your-work/` that hold a `SKILL.md`. Checked by exporting the index with `git archive` into `/tmp`, cloning that, and running `skills add . --list` against the clone. The same command on `main` before this commit printed 39, all matt's.
+- Convention: The change touches only layout, the config file, `.gitignore`, a reference README, and three path citations in `docs/smee-signature-research.md`. No skill text and no front matter was edited, and `weave-your-work/` was not renamed, both as the Boundaries require.
 
 ## Boundaries
 
