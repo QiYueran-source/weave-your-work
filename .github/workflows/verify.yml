@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run the bundle tests
+        run: npm test
+
       - name: Install the skill set
         env:
           HOME: ${{ runner.temp }}/home
