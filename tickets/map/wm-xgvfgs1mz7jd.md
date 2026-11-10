@@ -3,16 +3,18 @@ schema: 1
 id: wm-xgvfgs1mz7jd
 title: Set up a project from globally installed skills
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:39:21Z
-updated_at: 2026-11-10T11:26:57Z
+updated_at: 2026-11-10T11:50:13Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-2ztwvye6q9t7
   - wm-tmjgw2zn143y
   - wm-zhxe0hsnpf34
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -32,9 +34,15 @@ Review point: setup flows and rules, global skill discovery, checks 11–13, rep
 - The issue and glossary bundles each carry their own byte-identical copy of `project-root.cjs`. This map verifies all copies match; no runtime dependency on another installed skill. (user confirmed, 2026-11-10)
 - The end-to-end acceptance covers a fresh project and a fresh clone, checks 11–13 against a global install, and states Linux, macOS, and Windows limits instead of implying unverified support. (user confirmed, 2026-11-10)
 
+- Proposed: checks 11–13 scan both `.agents/skills` and `$HOME/.agents/skills`, the `skills` CLI's global target, and deduplicate by real path. No new state file records the skill root. (user confirmed, 2026-11-10)
+- Proposed: check 16 derives the unit name from `.work-weave/local/work-weave-issue-*.service` and reads the channel from `.work-weave/local/issue-listener.env`; it does not hardcode a service name or `~/.config`. (user confirmed, 2026-11-10)
+- Proposed: the old clone probe `wm-j3ed13ejn8cy` is revised in place for the join flow under the global install; a new probe covers fresh-project initialization. (user confirmed, 2026-11-10)
+
 ## Not yet specified
 
-- Decision to make: reconcile existing setup tasks and the clone probe with the new project contract and bundle outputs.
-  Why it matters: existing flows and checks assume project-local skills and legacy data paths.
-- Decision to make: specify the end-to-end acceptance procedure and test fixtures.
-  Why it matters: a passing check that discovers no global rules must not be mistaken for a working install.
+- ~~Decision to make: reconcile existing setup tasks and the clone probe with the new project contract and bundle outputs.
+  Why it matters: existing flows and checks assume project-local skills and legacy data paths.~~
+  Resolved on 2026-11-10: update the flows and checks for the new bundle layouts, revise the clone probe, and add a fresh-project probe.
+- ~~Decision to make: specify the end-to-end acceptance procedure and test fixtures.
+  Why it matters: a passing check that discovers no global rules must not be mistaken for a working install.~~
+  Resolved on 2026-11-10: the fresh-project probe uses a temporary HOME, a global install from the local tree, and records all checks; the clone probe runs separately.
