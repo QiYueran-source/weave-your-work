@@ -12,7 +12,9 @@ Setup configures a project so the rest of the skill set can run in it. It instal
 ## Which flow
 
 - An empty directory, or a project with no tracker yet: [start-a-project.md](start-a-project.md) takes it to a configured project and stops before the commit.
-- A clone of an existing project: not written yet. It is a different flow, because the project arrives with a tracker, rules, and often a remote. Until that document exists, run the checks in `.agents/rules/rules-checklist.md` and repair what fails.
+- A clone of a project that already uses waymark: [join-a-project.md](join-a-project.md) fills in what a clone cannot carry — the identity, the dependencies, the hook, the MCP registration, and the service — and leaves the shared files alone.
+
+Both flows end by running the checks in `.agents/rules/rules-checklist.md`. When the project does not match either opening state, the checks alone say what is missing.
 
 Setup's own rules are installed by [bundle/setup.md](bundle/setup.md), which copies `rules-git.md` and `rules-checklist.md` into `.agents/rules/`. The other four skills that carry installable parts — `map`, `task`, `glossary`, and `issue` — each own a `bundle/setup.md` of their own. Setup names them and points at them; it never restates their steps.
 

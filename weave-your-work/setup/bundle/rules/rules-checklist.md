@@ -108,13 +108,24 @@ print('storage_root:', d['storage_root'])
 
 Passes when the first prints `healthy= True errors= 0`, and the second prints `storage_root: tickets`, the categories `['map', 'task', 'testimony']`, and the six fields `['needs_human', 'outcome', 'reversibility', 'split_as', 'task_kind', 'waiting_on']`. Read the JSON, never the exit code: `waymark validate` exits 0 whether or not it found anything.
 
-**11. The operator is set.**
+**11. The operator is set, and the listener's roster knows it.**
 
 ```sh
-waymark config show --json | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['effective']['operator'])"
+op=$(waymark config show --json | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['effective']['operator'])")
+echo "operator: $op"
+f=.agents/skills/issue/bundle/tools/handles.toml
+if [ ! -e "$f" ]; then echo "handles: absent, nothing to match"; exit 0; fi
+keys=$(awk '/^\[handles\]/{h=1;next} /^\[/{h=0} h && /=/{sub(/[ \t]*=.*/,"");gsub(/[ \t"]/,"");print}' "$f")
+if [ -z "$keys" ]; then echo "handles: the [handles] table is empty"; exit 1; fi
+for k in $keys; do
+  [ "$(printf '%s' "$k" | tr 'A-Z' 'a-z')" = "$(printf '%s' "$op" | tr 'A-Z' 'a-z')" ] && { echo "handles: $k"; exit 0; }
+done
+echo "handles: NO MATCH, owners are $(echo $keys | tr ' ' ', ')"; exit 1
 ```
 
-Passes when it prints a name. An unset operator prints `None`; the human output says `- unset (unset)` and writes it to stderr.
+Passes when it prints `operator: <name>` and then either `handles: absent, nothing to match` or `handles: <key>`. An unset operator prints `operator: None`; the human output says `- unset (unset)` and writes it to stderr.
+
+The roster half matters because nothing else checks it. `waymark create` accepts any owner string and `waymark validate` does not look at the value, so a typo stays invisible until the listener refuses to start: it matches `git config user.name` against the `[handles]` keys, and a name that is not there stops the service. The comparison folds case here for the same reason the listener does; the owner string waymark stores keeps its case, and waymark's own `--owner` matching does not fold it.
 
 ## Skills and rules
 
@@ -122,15 +133,36 @@ Passes when it prints a name. An unset operator prints `None`; the human output 
 
 ```sh
 python3 -c "
-import json, os, sys
-try: d = json.load(open('skills-lock.json'))
-except FileNotFoundError: sys.exit('skills-lock.json is missing')
-missing = [n for n in d['skills'] if not os.path.isdir('.agents/skills/' + n)]
-print('missing:', missing or 'none')
+import os, subprocess, sys
+roots = []
+for base, dirs, files in os.walk('.'):
+    if set(base.split(os.sep)) & {'.git', 'node_modules'} or base.count(os.sep) > 3:
+        dirs[:] = []
+        continue
+    for d in list(dirs):
+        if d != 'skills':
+            continue
+        p = os.path.relpath(os.path.join(base, d))
+        names = {e for e in os.listdir(p) if os.path.isfile(os.path.join(p, e, 'SKILL.md'))}
+        if names:
+            roots.append((p, names))
+if not roots:
+    raise SystemExit('no skills directory holding <name>/SKILL.md')
+bad = False
+for p, names in roots:
+    tracked = subprocess.run(['git', 'ls-files', p], capture_output=True, text=True).stdout.split()
+    seen = {line.split('/')[2] for line in tracked if line.count('/') >= 2}
+    if not seen:
+        print(f'{p}: {len(names)} skills, none tracked yet, nothing to compare')
+        continue
+    missing = sorted(seen - names)
+    print(f'{p}: {len(names)} skills, missing: {missing or \"none\"}')
+    bad = bad or bool(missing)
+raise SystemExit(1 if bad else 0)
 "
 ```
 
-Passes when it prints `missing: none`. The lock file lists what the install put there, so this check holds no skill names and needs no edit when the set changes.
+Passes when every root it prints says `missing: none`, or `none tracked yet` for a set that has not been committed. It finds the roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, so `.agents/skills` and an agent's own directory are both covered without naming either. The walk does not follow symlinks, so a `.claude/skills` holding links into `.agents/skills` reports nothing twice. The manifest is what Git tracks under that root, not `skills-lock.json`: the lock file records only what `skills add` wrote, which was two entries when the set held 41 skills.
 
 **13. Every bundle's rules are registered.** *
 
@@ -167,18 +199,19 @@ Passes when it prints `4`, for `glossary_lookup`, `glossary_list`, `glossary_wri
 
 ```sh
 systemctl --user is-active issue-listener
+systemctl --user show issue-listener -p WorkingDirectory --value
 R=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
 gh api "repos/$R/hooks" --jq '.[].config.url'
 ```
 
-Passes when the first prints `active` and the third prints the `SMEE_URL` from `~/.config/work-weave/smee.env`. A 404 on the hooks read is not a failure by itself: read the account's permissions first.
+Passes when the first prints `active`, the second prints this project's root, and the fourth prints the `SMEE_URL` from `~/.config/work-weave/smee.env`. Compare the second against `git rev-parse --show-toplevel`; `active` alone does not say which checkout the service serves. The queue path resolves from the listener's working directory, so a unit bound to another clone is `active` while this project's queue never grows. A 404 on the hooks read is not a failure by itself: read the account's permissions first.
 
 ```sh
 R=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
 gh api "repos/$R" --jq .permissions.admin
 ```
 
-If that prints `false`, the account cannot see webhooks at all, so report the check as unverifiable and name the missing permission as the reason. If it prints `true` and the hooks read still returned 404, the check fails. The listener has a `systemctl` step only on Linux; on macOS and Windows report the gap and do not invent a service step.
+If that prints `false`, the account cannot see webhooks at all, so report the check as unverifiable and name the missing permission as the reason. If it prints `true` and the hooks read still returned 404, the check fails. The listener has a `systemctl` step only on Linux; on macOS and Windows report the gap and name the alternative: run the listener in a terminal while you work, so the queue still fills, and say that a login-time launch agent or a scheduled task would have to be written by the person. Do not invent a service step and do not call the missing unit a failure of the project.
 
 **17. The queue and the build output are ignored.**
 

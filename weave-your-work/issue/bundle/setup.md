@@ -142,14 +142,13 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
 4. **Handles and queue.** In the project's installed issue skill, use `.agents/skills/issue/bundle/tools/handles.toml`:
 
    - If it exists, keep it unchanged. A missing owner is the case to raise; a stale one is not yours to correct unasked.
-   - If it is absent, fill it in before asking. The project's owners are the waymark owners in `tickets/`; their logins come from the repository's collaborators:
+   - If it is absent, fill it in before asking. The project's owners are the waymark owners in `tickets/`; read the signed-in account with `gh api user --jq .login`. Listing the repository's collaborators also works, but only for an account with push access — `gh api repos/<owner>/<repo>/collaborators` answers `403 Must have push access to view repository collaborators` for everyone else, so do not build the step on it.
 
      ```bash
-     gh api repos/<owner>/<repo>/collaborators --jq '.[].login'
      gh api user --jq .login
      ```
 
-     Match each owner to a login from what you find, and write the file. When a name has no obvious match, that is the question to ask, and it is one question with the candidates you found, not an empty request. Say what the list does when you ask: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Use `pending/pending-communications.md`; when the project already ignores another directory, put the queue inside that one instead of adding a second entry. If an older `.waymark/handles.toml` exists, its mappings are the answer for the names it holds; confirm only the ones you cannot match. Translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
+     An owner name and a GitHub login are two different names and nothing derives one from the other, so do not infer the pair in either direction: state both back and ask the person to confirm they are the same person. When a name has no match at all, that is the question to ask, and it is one question with what you found, not an empty request. Say what the list does when you ask: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Use `pending/pending-communications.md`; when the project already ignores another directory, put the queue inside that one instead of adding a second entry. If an older `.waymark/handles.toml` exists, its mappings are the answer for the names it holds; confirm only the ones you cannot match. Translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
    - Track the new file in Git alongside the installed skill. Do not put credentials or secrets in it.
 
    Example:

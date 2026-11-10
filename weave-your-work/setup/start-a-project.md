@@ -2,13 +2,13 @@
 
 Take an empty directory to a project that passes the setup checks.
 
-This assumes the skill set is installed and nothing else exists: no Git repository, no waymark configuration, no remote. If the skill set is not installed yet, install it first with `npx skills add <repo>/weave-your-work -a codex`, which writes only `.agents/skills/`. The other install targets, `.claude/skills`, `.kiro/skills`, and `.trae/skills`, are copies of the same files and none of the checks read them.
+This assumes the skill set is installed and nothing else exists: no Git repository, no waymark configuration, no remote. How the set got installed is not this flow's subject; the repository's README carries that.
 
 Run every step from the project root. The commands are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished, and the check's command lives in `.agents/rules/rules-checklist.md`, which step 2 installs. Do not restate those commands here; open the rule.
 
 ## 1. Confirm the skill set is there
 
-Run checks 12 and 13. Both discover what is installed rather than listing it, so they also work later, when the set has grown. If 12 reports a missing skill, install the set before continuing; the rest of this flow reads files from those directories.
+You are reading this file out of the installed set, so the set is installed. Run checks 12 and 13 anyway: they prove the four skills this flow calls have their bundles and their rules, and they discover what is there rather than listing it, so they keep working when the set grows. If either reports something, stop and repair it. The rest of this flow reads files out of those directories.
 
 ## 2. Install setup's own rules
 
@@ -91,15 +91,27 @@ Never pass `--force` to `waymark init`. Without it, a re-run reuses the existing
 
 The generation in `.waymark/config.toml` is waymark's to write. A fresh init writes 1.8, an older project may carry another number, and neither is a problem.
 
-## 6. Set the operator
+## 6. Set the operator and name the GitHub account
 
-Ask once, with `git config user.name` as the default:
+`waymark` stores the operator in `.waymark/user.toml`, which it gitignores for you, so this value does not travel with the repository and every clone sets its own. Ask once, with `git config user.name` as the default:
 
 ```sh
 waymark config set operator "<name>"
 ```
 
-The name goes into `.waymark/user.toml`, which waymark gitignores for you. Check 11.
+Then read the GitHub account, and ask the second question in the same breath:
+
+```sh
+gh api user --jq .login
+```
+
+The two names are not derivable from each other: `git config user.name` is whatever this machine was configured with, and the login is whichever account `gh` is signed in as. Nothing proves they are the same person, so state both back and ask the person to confirm the pair, for example: "the operator on this machine is `frank`, and the GitHub account is `QiYueran-source`; are those the same person?" A wrong login here means `gh auth login` was run as the wrong account, which is a different repair from a wrong operator name; say which one is wrong.
+
+The pair becomes one line under `[handles]` in `.agents/skills/issue/bundle/tools/handles.toml`. Step 8's issue bundle owns that file; it does not ask again.
+
+Keep the operator and `git config user.name` the same string. The listener reads the git name, not the operator, and matches it against the roster, so a project whose operator says `frank` while the git name says something else works until the listener starts and then does not.
+
+Check 11.
 
 ## 7. Write `.gitignore`
 
