@@ -121,7 +121,7 @@ One test: **did this produce a local artifact?**
 
 An artifact is a change to a map or task — its text, status, relations, or a fact it cites — or a rejection recorded in the map's `Out of scope`. Discussion, agreement, thanks, scheduling, and options that lost produce no artifact and stay on GitHub.
 
-**No artifact.** Close the issue with a comment that says so. Nothing lands locally.
+**No artifact.** Close the issue as not planned, with a comment that says so. Nothing lands locally.
 
 **An artifact.** The ticket's owner writes it:
 
@@ -133,7 +133,7 @@ An artifact is a change to a map or task — its text, status, relations, or a f
 
 A run that is not the owner stops at the issue. It replies and records on its own ticket what it is waiting for; it does not write the foreign ticket.
 
-**Close.** The sender closes a `request` after checking that its ask is satisfied; the recipient closes a `result` or `comment` after reading it. The closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." A thread that settled into a map's `Out of scope` closes with that line instead: "Declined for `<map id>` `<title>`: <one line>." Close as completed.
+**Close.** The sender closes a `request` after checking that its ask is satisfied; the recipient closes a `result` or `comment` after reading it. The closing comment names the ticket and what changed: "Landed in `<id>` `<title>`: <one line>." A thread that settled into a map's `Out of scope` closes with that line instead: "Declined for `<map id>` `<title>`: <one line>." Close as completed when a local artifact landed or a decline was recorded; close as not planned when the thread produced no local artifact.
 
 **Done when** the issue is closed, the closing comment names the ticket or the map, and the ticket or the map's `Out of scope` carries the artifact — or the comment says why none was written.
 
