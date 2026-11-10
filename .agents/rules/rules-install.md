@@ -1,33 +1,24 @@
-# Install Skills Globally, Keep Dependencies and Rules in the Project
+# Resolve the Project Before Installing
 
-The skill set is a tool for every project on the machine, so it may be installed once, outside any project. What it needs in order to run is not a tool: dependencies belong to the project that uses them, and rules are read out of the project. A global install that also puts dependencies or rules in the home directory breaks the next project silently, because nothing there is ever read.
+The skills may be installed globally or in a project. Project data, runtime files, dependencies, and rules belong to the project they serve. Resolve one project root before setup or normal use so a globally installed skill cannot use its own location or an enclosing project by accident.
 
 ## What to do
 
-1. **Resolve the project root before any step runs.** From the directory the person means:
+1. **First-time setup:** Before `.work-weave/` exists, show the current directory and ask the person to confirm it or name the project root. Do not silently select an enclosing Git repository. The setup flow creates any missing project markers only after confirmation. If the selected directory is inside an enclosing Git repository but has no Git worktree root of its own, stop and ask whether to use the enclosing root or create an independent repository; do not run `git init` automatically. If the selected root has no local Waymark configuration but an ancestor does, stop and ask whether to use the enclosing project or initialize a separate tracker there.
 
-   ```sh
-   git rev-parse --show-toplevel 2>/dev/null || pwd
-   ```
+2. **Normal discovery:** From the working directory, search upward for the nearest `.work-weave/` and validate that project. If none exists, stop and ask the person to run setup or provide an explicit project. Do not fall through to a more distant project when the nearest marker is invalid. Nested projects use the closest marker. An explicit project path means that exact directory: validate it without searching upward.
 
-   Print the absolute path and ask the person to confirm it is the project they mean. Every later step runs from there. This is the one value the flow cannot infer: the same skill may start in a subdirectory, in a directory above two nested projects, or outside a project entirely.
+3. **Validate the root:** `.git`, `.waymark/config.toml`, and `.work-weave/` must all belong directly to the selected project root. The Git marker may be a `.git` directory or a `.git` file for a worktree. Confirm that Git's worktree root is the selected directory. Do not use Git, Waymark, or work-weave markers found only in different ancestor directories. Resolve physical paths before comparing them.
 
-2. **Skill files may live outside the project.** `npx skills add <repo> -g` writes to `~/.agents/skills/`. That is allowed and needs no workaround. The skill set is a tool, not a project file.
+4. **Keep shared and local files in their settled locations:**
+   - Shared project data lives in Git. `.work-weave/issue/handles.toml` and `.work-weave/glossary/` are shared. The generated `GLOSSARY.md` stays at the project root and is ignored by `/GLOSSARY.md` in the root `.gitignore`.
+   - Checkout-specific files live under `.work-weave/` and stay out of Git. Its `.gitignore` ignores `pending/`, `runtime/`, and `local/`. This covers the pending queue, per-checkout issue and glossary tool copies and dependencies, and local service configuration.
+   - `AGENTS.md` stays at the project root, and rules stay in `<project>/.agents/rules/`. A global skill install changes only where skill files live. It does not move project rules into `~/.agents/`.
 
-3. **Dependencies live inside the project.** A package that a bundle tool imports is installed under the project root, and `node_modules` is gitignored there. Do not run `npm install` against any directory under `~/.agents/skills/`: a restored `node_modules` is stale the moment the set is upgraded, it is invisible to the project's own lock file, and it is never removed. A tool that needs a package resolves it from the root found in step 1, for example:
+5. **Use the selected project's runtime and data:** When both project-local and globally installed skills are present, the harness chooses which skill it loads. Do not impose a precedence. The selected skill uses the current project's `.work-weave/`; do not resolve its project data relative to the installed skill directory. Services and MCP registrations use the project path confirmed during setup.
 
-   ```js
-   import { createRequire } from 'node:module'
-   const require = createRequire(path.join(root, 'noop.js'))
-   const entry = require.resolve('<package>')
-   ```
-
-   `NODE_PATH` does not do this for ES modules. Do not build a step on it.
-
-4. **Every absolute path is written once, at setup.** The MCP registration's `--project`, the service unit's `WorkingDirectory`, and a hook's skill path each record the value from step 1. Nothing recomputes it at run time, and a relative path in a skill is never read against the current directory.
-
-5. **Rules land in the project, never under `~/.agents/`.** A global install changes where the skill files live and nothing else. The source of a rule becomes `~/.agents/skills/<skill>/bundle/rules/`, the copy still goes to `<project>/.agents/rules/`, and the pointer still sits at `<project>/AGENTS.md`. `~/.agents/rules/` has no reader. The harness discovers `.agents/skills/` on its own, but `.agents/rules/` takes effect only because `AGENTS.md` tells the agent to read it. For the same reason `AGENTS.md` belongs at the project root: `<project>/.agents/AGENTS.md` is never read, and `~/.agents/AGENTS.md` is read by every project on the machine, so it must not carry one project's rules.
+6. **Keep secrets local:** Do not put Smee channel URLs in Git, tickets, or logs. A listener rejects and logs an event whose repository is missing or does not match its configured repository; this check isolates repositories but does not authenticate the sender.
 
 ## Why
 
-The failure this rule prevents does not announce itself. A globally installed set with dependencies under `~/.agents/skills/` runs correctly on the machine where it was installed and fails on the next one with a module that cannot be found. A rule copied into `~/.agents/rules/` is written, appears installed, and is never read. Both look like success until someone tries to work in a fresh project.
+A nearest-marker search and exact validation keep nested projects separate and prevent missing local configuration from being supplied silently by an enclosing project. Shared files remain available to every clone, while each checkout keeps its queue, runtime copies, dependencies, and service configuration separate.
