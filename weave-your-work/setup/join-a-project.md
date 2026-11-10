@@ -50,7 +50,7 @@ gh api user --jq .login
 Then read the roster and ask the person one question:
 
 ```sh
-awk '/^\[handles\]/{h=1;next} /^\[/{h=0} h && /^[A-Za-z0-9_.-]+[ \t]*=/{print}' .agents/skills/issue/bundle/tools/handles.toml
+awk '/^\[handles\]/{h=1;next} /^\[/{h=0} h && /^[A-Za-z0-9_.-]+[ \t]*=/{print}' .work-weave/issue/handles.toml
 ```
 
 The two names are not derivable from each other. `git config user.name` is whatever this machine was set to, and the login is whichever account `gh` is signed in as; nothing proves they are the same person. So state both back and ask:

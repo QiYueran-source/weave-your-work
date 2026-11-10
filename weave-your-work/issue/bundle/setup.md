@@ -9,7 +9,7 @@ A run can complete most of this file alone: the channel, the webhook, and the se
 - A smee.io channel, which gives the repository a public webhook URL. One channel serves every listener in the repository.
 - A webhook on the GitHub repository, for issue events.
 - The Node listener in `bundle/tools/`, which holds the smee client and the webhook receiver.
-- A project-specific `bundle/tools/handles.toml` with the team mappings and pending queue path. It is also the roster of logins allowed to send.
+- A project-specific `.work-weave/issue/handles.toml` with the team mappings and pending queue path, copied from `bundle/tools/handles.toml.example`. It is also the roster of logins allowed to send.
 - The session rule generated from `bundle/rules/` into `.agents/rules/rules-pending-communications.md`.
 - A startup scan for open communicate issues missed while the listener was off.
 
@@ -139,7 +139,7 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
 
    One listener per queue file. Duplicates are skipped by comparing against the queue each process reads before appending, and nothing locks that read, so two listeners on one queue are not serialized against each other.
 
-4. **Handles and queue.** In the project's installed issue skill, use `.agents/skills/issue/bundle/tools/handles.toml`:
+4. **Handles and queue.** Use `.work-weave/issue/handles.toml` in the project root. When it is absent, copy `bundle/tools/handles.toml.example` to it:
 
    - If it exists, keep it unchanged. A missing owner is the case to raise; a stale one is not yours to correct unasked.
    - If it is absent, fill it in before asking. The project's owners are the waymark owners in `tickets/`; read the signed-in account with `gh api user --jq .login`. Listing the repository's collaborators also works, but only for an account with push access — `gh api repos/<owner>/<repo>/collaborators` answers `403 Must have push access to view repository collaborators` for everyone else, so do not build the step on it.
@@ -148,8 +148,8 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
      gh api user --jq .login
      ```
 
-     An owner name and a GitHub login are two different names and nothing derives one from the other, so do not infer the pair in either direction: state both back and ask the person to confirm they are the same person. When a name has no match at all, that is the question to ask, and it is one question with what you found, not an empty request. Say what the list does when you ask: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Use `pending/pending-communications.md`; when the project already ignores another directory, put the queue inside that one instead of adding a second entry. If an older `.waymark/handles.toml` exists, its mappings are the answer for the names it holds; confirm only the ones you cannot match. Translate its queue path from relative to `.waymark/` into a path relative to the project root. Do not remove the old file until the new file is verified.
-   - Track the new file in Git alongside the installed skill. Do not put credentials or secrets in it.
+     An owner name and a GitHub login are two different names and nothing derives one from the other, so do not infer the pair in either direction: state both back and ask the person to confirm they are the same person. When a name has no match at all, that is the question to ask, and it is one question with what you found, not an empty request. Say what the list does when you ask: the listener queues an issue only when its author is a login in this file, so an account missing from it cannot send a message, and an account that should not send belongs nowhere in it. Use `.work-weave/pending/pending-communications.md`; when the project already ignores another directory, put the queue inside that one instead of adding a second entry.
+   - Track the new file in Git. Do not put credentials or secrets in it.
 
    Example:
 
@@ -159,7 +159,7 @@ Run these yourself. Read the repository from its git `origin`, and read the curr
    hanjiang = "hanjiang-gh"
 
    [pending]
-   path = "pending/pending-communications.md"
+   path = ".work-weave/pending/pending-communications.md"
    ```
 
    The queue path is relative to the project root. Its directory is local state and has to be ignored, or the next `git add -A` commits other people's messages. Add the directory, not the file:
@@ -200,7 +200,7 @@ Each step is a command, so a run can check the install without asking the person
 
    `<login>` is the login of this machine's owner, not just any handle in the table: a message addressed to another owner is skipped on purpose. The queue gains one line within a few seconds. Close the issue afterwards; the queue line stays as the record of what arrived.
 
-4. **The queue is ignored.** `git check-ignore -v pending/pending-communications.md` prints a matching `.gitignore` line. No output means the queue is tracked state, and the first `git add -A` publishes what arrived.
+4. **The queue is ignored.** `git check-ignore -v .work-weave/pending/pending-communications.md` prints a matching `.gitignore` line. No output means the queue is tracked state, and the first `git add -A` publishes what arrived.
 
 5. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete: queued 1 entries` and the new line. This is the only step that proves the startup scan works; the live path and the scan are separate code.
 

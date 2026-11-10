@@ -1,17 +1,6 @@
 # The installed skill copies. `npx skills add` writes them and they rebuild from
 # the source under weave-your-work/, so they stay out of the repository.
-.agents/skills/*
-# One file is not an install artifact: the issue listener's roster of owners and
-# their GitHub logins is shared project data and travels with the repository.
-# Git cannot re-include a file whose parent directory is excluded, so each level
-# back down to the file is re-included in turn.
-!.agents/skills/issue/
-.agents/skills/issue/*
-!.agents/skills/issue/bundle/
-.agents/skills/issue/bundle/*
-!.agents/skills/issue/bundle/tools/
-.agents/skills/issue/bundle/tools/*
-!.agents/skills/issue/bundle/tools/handles.toml
+.agents/skills/
 
 .agents/rules/reply.md
 GLOSSARY.md

@@ -4,4 +4,4 @@ frank = "QiYueran-source"
 
 # Resolve the local, gitignored queue path from the project root.
 [pending]
-path = "pending/pending-communications.md"
+path = ".work-weave/pending/pending-communications.md"

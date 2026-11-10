@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:26:38Z
-updated_at: 2026-11-10T11:25:05Z
+updated_at: 2026-11-10T11:34:27Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -27,6 +27,21 @@ Ship the roster as a template and move this project's real roster to the project
 ## Acceptance signal
 
 `git ls-files` lists `.work-weave/issue/handles.toml` and `handles.toml.example`, and lists nothing under `.agents/skills/`. The example carries placeholders only. `git check-ignore` shows `.agents/skills/` ignored and `.work-weave/issue/handles.toml` not ignored. The named documents point at the new path.
+
+## Result
+
+Added `weave-your-work/issue/bundle/tools/handles.toml.example` and moved this project's roster to `.work-weave/issue/handles.toml`, with the queue path set to `.work-weave/pending/pending-communications.md`. The root `.gitignore` now ignores the whole `.agents/skills/` directory and no longer re-includes the roster. The eight named documents point at the new roster and queue paths.
+
+`git ls-files` lists the new roster and the example and nothing under `.agents/skills/`. `git check-ignore` shows `.agents/skills/` ignored and `.work-weave/issue/handles.toml` not ignored.
+
+The installed `.agents/rules/rules-pending-communications.md` still carries the old path and differs from the bundle source. It was not overwritten; replacing it needs the person's decision under the rule-conflict policy.
+
+## Review
+
+passed
+
+- Goal: the acceptance checks above pass. The example carries placeholders only, and the named source documents use the new path.
+- Convention: the change moves data and documentation only. Listener and checker code, service and runtime files, and the installed rule copy were left alone.
 
 ## Boundaries
 

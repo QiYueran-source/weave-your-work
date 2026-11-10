@@ -35,7 +35,7 @@ Filing is unaffected: any login on the roster may file, whatever this machine's 
 
 Write the frontmatter and the body from [communicate-issue.md](communicate-issue.md), confirm every ticket in `tickets` exists, and resolve the recipient's handle.
 
-A handle is not a local owner name. Read the `[handles]` table in `bundle/tools/handles.toml` beside this skill's listener and verify the account exists. A missing file, a missing owner, or an account that does not exist means ask the run's owner; never guess a login from a waymark name.
+A handle is not a local owner name. Read the `[handles]` table in `.work-weave/issue/handles.toml` and verify the account exists. A missing file, a missing owner, or an account that does not exist means ask the run's owner; never guess a login from a waymark name.
 
 The handle is used twice: in the frontmatter for the listener, and as the `@mention` in the body for GitHub's notification. Assign the issue to the same account as well; the assignment puts it in the recipient's dashboard. If `gh` refuses the assignment, file without it, keep the mention, and tell the recipient out of band.
 
@@ -82,7 +82,7 @@ Each valid message appends one JSON object per list line:
 - {"url":"https://example.test/issues/1","from":"frank","to":"kim-dev","owner":"kim","title":"The ask","received":"2026-11-09T02:13"}
 ```
 
-The queue file is `[pending].path` in `bundle/tools/handles.toml`, resolved from the project root; it defaults to `pending/pending-communications.md`. The queue is local state and gitignored; the handles file is shared and tracked.
+The queue file is `[pending].path` in `.work-weave/issue/handles.toml`, resolved from the project root; it defaults to `.work-weave/pending/pending-communications.md`. The queue is local state and gitignored; the handles file is shared and tracked.
 
 ## Other hosts
 
@@ -97,7 +97,7 @@ GitLab, Gitee, Gitea, Bitbucket, and Azure DevOps are not supported. The format,
 
 - `Cannot find package`: run `npm install` in `bundle/tools/`.
 - `Catch-up failed: origin is not a supported github.com repository URL`: the checkout's git `origin` is not a GitHub URL, or it has more than one fetch URL.
-- `Catch-up failed: no handles configured for catch-up`: `bundle/tools/handles.toml` has no `[handles]` entries.
+- `Catch-up failed: no handles configured for catch-up`: `.work-weave/issue/handles.toml` has no `[handles]` entries.
 - `Cannot connect to smee`: the channel URL is wrong or the network is down; the process exits non-zero and does not scan.
 - The queue stays empty after an issue was opened: check the webhook's recent deliveries, the listener's log, and whether the body opens with `kind: communicate`. GitHub reporting success at the channel does not prove the local listener received the event.
 - The checker reports an invalid entry: the queue holds a line that is neither the JSON form nor the older pipe form. Do not rewrite the file blindly; the earlier entries are a record.

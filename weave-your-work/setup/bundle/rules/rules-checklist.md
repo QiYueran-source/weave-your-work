@@ -113,7 +113,7 @@ Passes when the first prints `healthy= True errors= 0`, and the second prints `s
 ```sh
 op=$(waymark config show --json | python3 -c "import json,sys; print(json.load(sys.stdin)['data']['effective']['operator'])")
 echo "operator: $op"
-f=.agents/skills/issue/bundle/tools/handles.toml
+f=.work-weave/issue/handles.toml
 if [ ! -e "$f" ]; then echo "handles: absent, nothing to match"; exit 0; fi
 keys=$(awk '/^\[handles\]/{h=1;next} /^\[/{h=0} h && /=/{sub(/[ \t]*=.*/,"");gsub(/[ \t"]/,"");print}' "$f")
 if [ -z "$keys" ]; then echo "handles: the [handles] table is empty"; exit 1; fi
@@ -223,7 +223,7 @@ If that prints `false`, the account cannot see webhooks at all, so report the ch
 **17. The queue and the build output are ignored.**
 
 ```sh
-git check-ignore node_modules/ GLOSSARY.md pending/pending-communications.md 2>/dev/null | wc -l
+git check-ignore node_modules/ GLOSSARY.md .work-weave/pending/pending-communications.md 2>/dev/null | wc -l
 ```
 
 Passes when it prints `3`. Count the output; never read the exit code, because `git check-ignore` exits 0 when any one of the paths matches, which cannot tell three registered rules from one. It answers for paths that do not exist yet, so it runs before anything installs dependencies.
