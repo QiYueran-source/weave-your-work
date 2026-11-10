@@ -571,8 +571,8 @@ function checkListener(ctx) {
   if (!match) return fail('SMEE_URL is missing from .work-weave/local/issue-listener.env')
   const channel = match[1].trim()
   const urls = hooks.stdout.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
-  if (!urls.includes(channel)) return fail(`the webhook does not point at ${channel}`)
-  return ok(`unit ${unit} is active in this checkout; the webhook points at ${channel}`)
+  if (!urls.includes(channel)) return fail('the webhook does not point at the configured channel')
+  return ok(`unit ${unit} is active in this checkout; the webhook points at the configured channel`)
 }
 
 function checkIgnore(ctx) {
