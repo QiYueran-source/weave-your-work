@@ -3,11 +3,13 @@ schema: 1
 id: wm-wjwa9081hse1
 title: 'Work-weave: general team collaboration skill set'
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-10T00:25:31Z
+updated_at: 2026-11-10T01:21:46Z
+custom_fields:
+  split_as: submap
 ---
 ## Destination
 
@@ -16,7 +18,7 @@ Form an installable skill set for general team collaboration under weave-your-wo
 ## Notes
 
 - Category split (decided): entry (ask-me), environment (setup), execution (map, task, glossary), communication (issue). Each category can hold several skills; this round opens one map per category, and each category's children are skill maps.
-- One map per category, listed under "Sub-maps". Design decisions live in each sub-map; this map is an index only and does not restate them.
+- One map per category. Design decisions live in each sub-map; this map is an index only and does not restate them. The structure is read from each child's `parent` field, not from a list in this body.
 - Reference sources: matt skill set (.inbox/skills), reference skills (.inbox/skills-ref), design notes (.inbox/work-methods/).
 - Key findings (general-methods.md): name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts others can read; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
 
@@ -25,13 +27,6 @@ Form an installable skill set for general team collaboration under weave-your-wo
 The set is accepted when every skill the sub-maps name is delivered under `weave-your-work/`, installs with `npx skills add`, and one end-to-end run over the whole set has been done.
 
 That run is one batch, not one per map: write the worked example each effort needs under `use-weave-your-work-examples/`, walk every skill's paths in it, and apply whatever the walk shows is wrong. A map is judged on the deliverable its own acceptance direction names; whether a reader can walk the set is judged here, once.
-
-## Sub-maps
-
-- [Entry skills: ask-me routing and questioning](tickets/map/wm-8wzzh4hp5evp.md)
-- [Environment skills: setup initialization and checks](tickets/map/wm-a08fwanmy5q6.md)
-- [Execution skills: map, task, and glossary](tickets/map/wm-qhd3twqjzhma.md)
-- [Communication skills: issue remote exchange](tickets/map/wm-25b3q7mg88c7.md)
 
 ## Decisions so far
 
@@ -46,6 +41,9 @@ That run is one batch, not one per map: write the worked example each effort nee
 - ~~Skill invocation has one test: a skill is model-invocable only when another skill reaches it mid-run, or when its trigger is a state the run has to notice for itself. Every other skill is user-invoked, which loads no description into context.~~ Superseded on 2026-11-09: the test does not hold. Entry skills are reached by runs too, and a skill that another skill must load cannot be kept out of the model's reach; the classification produced references that could not be followed. (user confirmed, 2026-11-09)
 - ~~Five skills are user-invoked. `execute-all` and `execute-one-task`, because each spends a run of unspecified size and writes real files. `task`, because it is the entry name a person types and no skill calls it. `issue`, because a filed issue is sent under the operator's GitHub account and cannot be recalled. `use-weave-your-work-examples`, because no skill calls it and its description is the longest in the set, spent on examples a person opens deliberately; its content is revised later, and this entry settles only how it is invoked.~~ Superseded on 2026-11-09: same reason as the test above. (user confirmed, 2026-11-09)
 - Skill invocation is not classified: every skill is model-invocable, and the one action that must not start by accident, a batch, says so in its own text. (user confirmed, 2026-11-09)
+- The body carries no children index. The `Sub-maps` list was removed on 2026-11-10 because `map/body.md` forbids one; the children are read from `parent` with `waymark tree`. (user confirmed, 2026-11-10)
+- Three maintenance skills hang directly under this root map rather than under a new category map: stop-and-wait, salvage-and-restart, and feedback-me-please. (user confirmed, 2026-11-10)
+- The root map is started and carries `split_as: submap`: it has held children since 2026-11-06 while still `open`, so its status and field did not match its tree. (user confirmed, 2026-11-10)
 
 ## Not yet specified (cross-category coordination)
 
