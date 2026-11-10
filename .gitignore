@@ -1,8 +1,10 @@
+# The installed skill copies. `npx skills add` writes them and they rebuild from
+# the source under weave-your-work/, so they stay out of the repository.
+.agents/skills/
+
 .agents/rules/reply.md
-GLOSSARY.md
+/GLOSSARY.md
 
 node_modules/
-
-pending/
 
 __pycache__/

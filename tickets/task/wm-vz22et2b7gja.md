@@ -23,7 +23,7 @@ Write `weave-your-work/map-review/SKILL.md`, the skill that accepts a map whose 
 2. State what it reads: the map's `Target`, `Acceptance direction`, and review point; its `Decisions so far` for what changed since the split; each child's own closure; and `body.md` plus the split rules for the convention axis.
 3. Write the two axes, read and reported separately: the goal check against the acceptance direction and review point, the convention check against the body format and the split rules. Every finding cites the line it fails.
 4. Write the four verdicts and what each one produces: passed closes the map; needs changes records the gap in the map's `Decisions so far` and leaves it open; needs discussion leaves it open and hands the question to grill; wrong direction closes the map with `outcome=failed` and names the sibling that replaces it.
-5. ~~State that a map has no `Review` section: its verdict is its status, so the only body write is the gap that `needs changes` records.~~ Superseded on 2026-11-09: record all four verdicts in a map Review with both checks and evidence, preserving invalidated map reviews as agreed in [the design discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+5. ~~State that a map has no `Review` section: its verdict is its status, so the only body write is the gap that `needs changes` records.~~ Superseded on 2026-11-09: record all four verdicts in a map Review with both checks and evidence, preserving invalidated map reviews as agreed in [the design discussion](../testimony/wm-0xrcwvnrcc9k.md).
 6. State that the review point is not a checklist. A review point that cannot be checked is fog for explore, not a reason to open one.
 7. Keep the report shape: conclusion, findings per axis with sources, what holds up, verdict.
 
@@ -31,7 +31,7 @@ Write `weave-your-work/map-review/SKILL.md`, the skill that accepts a map whose 
 
 ~~`weave-your-work/map-review/SKILL.md` exists. It names who reviews, states the two axes and that they are reported separately, gives the four verdicts with what each one produces, and says a verdict is the map's status rather than a body section. A reader holding a map whose children are complete can run the review from this file and know which status and which body entry the verdict produces. It names `body.md` and the split skill instead of restating their rules.~~
 
-Superseded on 2026-11-09: The file exists and names the owner, both separately reported checks, all four verdicts and their Review, status, and outcome writes. A reader can check actual children and evidence, handle ambiguity and inconsistent states, and see which rules own the body, split, and dependencies. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+Superseded on 2026-11-09: The file exists and names the owner, both separately reported checks, all four verdicts and their Review, status, and outcome writes. A reader can check actual children and evidence, handle ambiguity and inconsistent states, and see which rules own the body, split, and dependencies. See [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md).
 
 ## Result
 

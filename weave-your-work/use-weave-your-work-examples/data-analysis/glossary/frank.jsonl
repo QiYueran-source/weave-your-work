@@ -1,0 +1,1 @@
+{"term":"cover","definition":"Weeks of stock left, computed as on-hand units divided by the average weekly units sold over the four most recent weeks.","avoid":["days of stock","runway"],"group":"Data analysis","created_at":"2026-11-10T00:20:00Z","updated_at":"2026-11-10T00:20:00Z"}

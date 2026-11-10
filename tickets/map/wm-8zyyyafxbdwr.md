@@ -3,12 +3,15 @@ schema: 1
 id: wm-8zyyyafxbdwr
 title: Map front matter and dependencies
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T05:53:00Z
-updated_at: 2026-11-09T05:31:42Z
+updated_at: 2026-11-09T15:10:25Z
+closed_at: 2026-11-09T15:10:25Z
 parent: wm-0b59r7xfhk73
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -45,7 +48,7 @@ Review point: Check that the reference covers the custom fields with their write
 - The preparation does not use a soft link, and the reason is narrower than it looks. `waymark link add` writes both tickets, so the link would be a write to a foreign file before that owner has agreed to anything; the intent lives in the child's body instead. This does not contradict the archive ruling above: archiving a depended-on node has no alternative, while waiting on a parent has one. (verified in waymark 0.1.2)
 - The owner is the only one who writes a map's front matter (advance): status, custom fields, dependencies, owner transfer. Skills write only their own fields at their landings: split writes split_as and parent on the child it creates; review writes closed and outcome; archive writes archived_at and archive_reason. No skill edits another owner's body to record a relation. The two exceptions are waymark commands that write both ends by construction — `link add` / `link remove` and `archive`'s inbound cleanup — and a skill that reaches one of them across ownership files the hand-over issue straight after. Source: user confirmation.
 - Dependency rules: parent-child is a natural dependency and gets no explicit edge (a parent's acceptance waits for its children; a child never waits for its parent, which would be a loop). An explicit edge is used for sibling or cross-branch waits: dependencies live only in front matter (the body never mirrors them), and after wiring run `waymark dep tree`, `waymark ready`, and `waymark blocked` to verify. Source: user confirmation.
-- ~~Dependency direction: a node A may depend on a node B only when B can be implemented without A — the blocked node must be independently implementable. The operating procedure may wait on task details because a task is implemented without the procedure; the reverse is invalid, and that is why a finer node never waits on the map that abstracts it. Source: user confirmation.~~ Superseded on 2026-11-09: a waiting map may need the blocker's output; the blocker must be able to finish without the waiting map. A task waits only for an output it actually needs and carries no dependency edge. For a failed closed blocker, check that the required output is usable before accepting or performing work that needs it. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+- ~~Dependency direction: a node A may depend on a node B only when B can be implemented without A — the blocked node must be independently implementable. The operating procedure may wait on task details because a task is implemented without the procedure; the reverse is invalid, and that is why a finer node never waits on the map that abstracts it. Source: user confirmation.~~ Superseded on 2026-11-09: a waiting map may need the blocker's output; the blocker must be able to finish without the waiting map. A task waits only for an output it actually needs and carries no dependency edge. For a failed closed blocker, check that the required output is usable before accepting or performing work that needs it. See [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md).
 - Dependency timing: an edge is added after the discussion is settled — grill the relation first, wire the edge last. A completed blocker keeps its edge as history; the owner removes an edge when the wait no longer holds. Source: user confirmation (timing); the history-and-removal practice follows the earlier recommendation.
 - The operating procedure waits on this child map: its dependency list includes the front matter and dependencies map. Source: user confirmation.
 - The reference is named `frontmatter.md` and lives under `weave-your-work/map/`, alongside `body.md` and the operating procedure reference. It points readers to `waymark --help` for the core fields instead of repeating them, and it defines the skill's custom fields — split_as (submap / task, written by split at the first split, never flipped), outcome (failed, written by review when closing a failed node), task_kind (delivery / probe, task tickets only) — each with who writes it. Source: user confirmation.
@@ -68,3 +71,10 @@ Review point: Check that the reference covers the custom fields with their write
 - Map lifecycle workflow (the operating procedure reference).
 - Task front matter fields and task-level dependency rules (task skill).
 - The review skill's acceptance rules (who accepts, when review runs).
+
+## Review
+
+passed
+
+- Goal: `weave-your-work/map/frontmatter.md` exists. It points at `waymark --help` and `waymark agent-doc` for the core fields instead of repeating them; it defines `split_as`, `outcome`, and `task_kind` with their value sets and who writes each; it states that every field change goes through a waymark command and why a hand edit leaves `updated_at` stale; it gives the dependency direction and timing rules with the read-back commands; and it ends with the machine-checked and person-checked violation list. The sample check was performed on this map: its `split_as` was read from the custom-field table and written with `waymark field update`, which is what the table prescribes.
+- Convention: the body carries the sections `body.md` lists, in order, and every Decisions entry carries a source. The one child is a task, matching `split_as: task`, and the body holds no children index. The map carried that child while still `open` and without the field; both were recorded at this review, so the record was behind the work rather than the work behind the record. `waymark validate` reports no findings.

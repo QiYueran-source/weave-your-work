@@ -30,7 +30,7 @@ Review point: the discussion records the choices, each affected skill agrees wit
 
 ## Decisions so far
 
-The design decisions below were confirmed in [the map skill discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+The design decisions below were confirmed in [the map skill discussion](../testimony/wm-0xrcwvnrcc9k.md).
 
 - Record the number of tasks and one-line-per-task split plan in the discussion testimony, not a child list in the parent map; read actual children from the Waymark tree. (user confirmed)
 - On the first split, the parent moves from open to in_progress and gets split_as; creating children does not edit its body. Later splits leave its status and split_as unchanged. (user confirmed)

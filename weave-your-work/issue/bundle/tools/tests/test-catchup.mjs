@@ -50,16 +50,26 @@ async function fixture(t, { remote = true } = {}) {
     assert.ok(path.basename(root).startsWith('issue-catchup-'))
     await fs.rm(root, { recursive: true, force: true })
   })
-  const tools = path.join(root, 'tools')
+  const tools = path.join(root, '.work-weave/runtime/issue')
   const bin = path.join(root, 'bin')
   const pages = path.join(root, 'pages')
-  await Promise.all([fs.mkdir(tools), fs.mkdir(bin), fs.mkdir(pages)])
-  for (const name of ['listener.mjs', 'queue.mjs']) {
+  await Promise.all([
+    fs.mkdir(tools, { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/issue'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/local'), { recursive: true }),
+    fs.mkdir(path.join(root, '.waymark'), { recursive: true }),
+    fs.mkdir(bin),
+    fs.mkdir(pages),
+  ])
+  for (const name of ['listener.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   const localModules = path.join(source, 'node_modules')
   await fs.symlink(await exists(localModules) ? localModules : fallbackModules, path.join(tools, 'node_modules'), 'dir')
-  await fs.writeFile(path.join(tools, 'handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = "queue/pending.md"\n')
+  await fs.writeFile(path.join(root, '.waymark/config.toml'), 'schema = 1\n')
+  await fs.writeFile(path.join(root, '.work-weave/issue/handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = ".work-weave/pending/pending-communications.md"\n')
+  await fs.writeFile(path.join(root, '.work-weave/local/issue-listener.env'), 'REPOSITORY=example/project\n')
+  await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')
   const fake = `#!${process.execPath}\n` + String.raw`
 const fs = require('node:fs')
 const path = require('node:path')
@@ -89,7 +99,7 @@ if (fs.existsSync(path.join(process.env.FAKE_PAGES, 'block-' + page))) {
   git(root, 'init', '--quiet')
   git(root, 'config', 'user.name', 'alice')
   if (remote) git(root, 'remote', 'add', 'origin', 'https://github.com/example/project.git')
-  return { root, tools, bin, pages, children, queue: path.join(root, 'queue/pending.md'), calls: path.join(root, 'calls') }
+  return { root, tools, bin, pages, children, queue: path.join(root, '.work-weave/pending/pending-communications.md'), calls: path.join(root, 'calls') }
 }
 
 async function stage(f, page, records) {
@@ -109,6 +119,7 @@ async function start(f) {
   const port = await freePort()
   const env = { ...process.env, PORT: String(port), SMEE_URL: '', PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, FAKE_PAGES: f.pages, FAKE_CALLS: f.calls, FAKE_ROOT: f.root }
   delete env.WEBHOOK_SECRET
+  delete env.REPOSITORY
   const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], { cwd: f.root, env, stdio: ['ignore', 'pipe', 'pipe'] })
   f.children.add(child)
   let output = ''
@@ -226,7 +237,7 @@ test('webhook stays available during a delayed scan and does not duplicate its i
   const listener = await start(f)
   await waitFor(() => exists(path.join(f.pages, 'started-1')), 'blocked GitHub request', listener.output)
   assert.ok(!listener.output().includes('Catch-up complete:'))
-  const response = await webhook(listener.port, { action: 'opened', issue: live })
+  const response = await webhook(listener.port, { action: 'opened', repository: { full_name: 'example/project' }, issue: live })
   assert.deepEqual(response, { status: 202, body: 'queued 1\n' })
   await fs.writeFile(path.join(f.pages, 'release-1'), '')
   await finish(listener)
@@ -251,7 +262,7 @@ test('scan failures are reported and do not disable the webhook', async (t) => {
       const listener = await start(f)
       await finish(listener, 'failed')
       assert.ok(!listener.output().includes('Catch-up complete:'), listener.output())
-      const response = await webhook(listener.port, { action: 'opened', issue: issue(99) })
+      const response = await webhook(listener.port, { action: 'opened', repository: { full_name: 'example/project' }, issue: issue(99) })
       assert.deepEqual(response, { status: 202, body: 'queued 1\n' })
       assert.equal((await entries(f))[0].url, 'https://github.com/example/project/issues/99')
       if (scenario === 'missing remote') assert.deepEqual(await calls(f), [])

@@ -1,7 +1,6 @@
 ---
 name: task
 description: "Start here for task work: write a task ticket, advance one task, run a batch under a map, or review a finished one, and open the skill that owns the question."
-disable-model-invocation: true
 ---
 
 # Task

@@ -3,29 +3,31 @@ schema: 1
 id: wm-qhd3twqjzhma
 title: 'Execution skills: map, task, glossary, and explore'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:09Z
-updated_at: 2026-11-09T05:31:22Z
+updated_at: 2026-11-09T15:16:10Z
+closed_at: 2026-11-09T15:16:10Z
 parent: wm-wjwa9081hse1
+custom_fields:
+  split_as: submap
 ---
-## Destination
+## Target
 
-Design the map, task, grill, and explore skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). The grill skill carries the testimony, glossary, and ADR branches. Suits any domain. This is the core category.
+Design the map, task, grill, and explore skills: the complete collaboration chain from target maps to task advancement to acceptance, with waymark as the single tracker and clear ownership (one owner per item, the owner advances and accepts). The grill skill carries the testimony, glossary, and ADR branches. It suits any domain.
 
-## Notes
+Why: this is the core category. Without these skills there is no chain from a stated target to accepted work; the other categories only describe the set around it.
 
-- Category: execution. Answers "is the work advancing, who is accountable, where is it stuck".
-- Delivery location: map/, task/, explore/, grill/, glossary/, and adr/ skill directories under weave-your-work/ (to be created).
-- Project layout: `tickets/` stores map and task work state; `glossary/` stores per-operator JSONL glossary sources; root `GLOSSARY.md` is the generated local view and is ignored; `testimony/` stores records of grill discussions; `docs/adr/` stores accepted architecture decisions; and `weave-your-work/` stores delivered skills and examples. See [ADR 0001](../../docs/adr/0001-project-document-layout.md).
-- Glossary: GLOSSARY.md (created; ticket/issue/comment/map/task/target tree/dependency edge/refinement/arrive/advance/claim/delivery task/probe task/reversibility/acceptance signal/frontier defined).
-- Design notes: .inbox/work-methods/domain-and-conventions.md, general-methods.md, reference-skills-comparison.md.
-- Key findings: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
-- Reference degree: take domain-neutral methods only. Product-specific tools such as A/B tests, fake-door tests, prototypes, and Wizard of Oz stay out of the general skill; abstract them to "smallest reversible action" and "measure behavior, not opinions".
+## Acceptance direction
+
+All children are complete and no further children are needed.
+
+Review point: the skills the target names exist under `weave-your-work/` — `map`, `task`, `grill`, and `fog-explore` — together with the `update` skill that changes a written target and the `adr` and `glossary` skills the grill branch carries; each one's own map accepted it.
 
 ## Decisions so far
 
+- Project layout: `tickets/` holds every waymark document — map and task work state and grill records under `tickets/testimony` — `glossary/` holds per-operator JSONL sources, `docs/adr/` holds accepted decisions, and `weave-your-work/` holds delivered skills and examples. See [ADR 0001](../../docs/adr/0001-project-document-layout.md); the testimony move is [ADR 0003](../../docs/adr/0003-testimony-lives-under-tickets.md) (user confirmed, 2026-11-10).
 - Semantic model: the target tree refines layer by layer; every node is a target and parent-child is refinement, not sequence; ordering is expressed by dependency edges, not node chains. The tree carries structure, edges carry order. A leaf (task) is the end of the refinement chain: refined from the root to the point of execution; leaves are parallel refinement branches, not a progression order; ordering comes only from dependency edges (user confirmed, recorded in GLOSSARY).
 - Unified naming: the goal term is dropped; every target node is called a map. map answers "what I want", the root map is the overall goal, and a map's children are more refined targets; task is the finest level, declaring an action and its verifiable result (user confirmed, recorded in GLOSSARY).
 - Nesting criterion: a map may hang child maps; depth is decided by "can a concrete action and verifiable result be written", and keep it as small as possible; a child map must have an owner and an acceptance direction (user confirmed direction).
@@ -34,8 +36,8 @@ Design the map, task, grill, and explore skills: the complete collaboration chai
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery (failure is an incident) and probe (failure is a normal result), with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge; a map is accepted when all its child maps and tasks are complete and no further children are needed. The non-executor rule is dropped (user confirmed).
-- update skill: changing the content of a node other nodes already rely on is its own operation, not a plain advance. It has two tests (same subject? verdict still holds?), three dispositions (edit in place, strike and reopen, retire and replace), and a move that is one `parent set`. Built at `weave-your-work/update/`; the rules live in [Update skill: change a closed map or task](tickets/map/wm-9sfmaphskg0c.md) (user confirmed).
-- map template: ~~five sections, fixed.~~ Superseded on 2026-11-09: a Review section records each map verdict; see [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md). Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Decisions so far records settled content in its concrete form with a source; longer discussion history stays in a testimony and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason. The body carries no Children section: waymark's parent field is the only copy of the structure, read with `waymark tree --root <id>`, so a foreign owner never has to edit another person's ticket to record a relation (user confirmed).
+- update skill: changing the content of a node other nodes already rely on is its own operation, not a plain advance. It has two tests (same subject? verdict still holds?), three dispositions (edit in place, strike and reopen, retire and replace), and a move that is one `parent set`. Built at `weave-your-work/update/`; the rules live in [Update skill: change a closed map or task](wm-9sfmaphskg0c.md) (user confirmed).
+- map template: ~~five sections, fixed.~~ Superseded on 2026-11-09: a Review section records each map verdict; see [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md). Target states one expected outcome plus Why; the target does not name a solution. Acceptance direction gives a specific observable result when writable, otherwise the default "all children are complete and no further children are needed," plus a required review point. Decisions so far records settled content in its concrete form with a source; longer discussion history stays in a testimony and is linked from the relevant entry. Not yet specified holds extensible fog entry types, including assumptions, facts, decisions, and goals. Out of scope holds every deliberate exclusion with a reason. The body carries no Children section: waymark's parent field is the only copy of the structure, read with `waymark tree --root <id>`, so a foreign owner never has to edit another person's ticket to record a relation (user confirmed).
 - map frontmatter: `split_as` (submap / task, written at split time). title, category, status, owner, creator, parent and dependency cover the rest; target, acceptance direction, children, decisions, fog and exclusions are body text because they are long-form (user confirmed direction).
 - Node outcomes: a node ends in one of three states. completed closes it as achieved. failed keeps the record: status closed plus the outcome field set to failed, and a replacement node opened as a sibling with a soft link between them. archived retires a node that was never done or whose direction proved wrong (user confirmed; outcome field declared).
 - Fog exploration: before choosing a route, turn each fog item into a testable assumption and rank assumptions by impact times risk; test high-impact, high-risk ones first. Then route by where the answer lives: in someone's head, use conversation; in reality, use a probe task. Conversation asks about past behaviour and specific examples, not opinions; a probe uses the smallest reversible action and measures behaviour, not opinions. Methods stay domain-neutral: no A/B tests or other product-specific tools (user confirmed direction).
@@ -63,3 +65,10 @@ Design the map, task, grill, and explore skills: the complete collaboration chai
 - Software-specific workflows (TDD, code review, and so on).
 - Product-specific validation tools (A/B tests, fake-door tests, prototypes, Wizard of Oz).
 - GitHub/Gitee issue triage (communication category).
+
+## Review
+
+passed
+
+- Goal: every skill the target names exists under `weave-your-work/` — `map`, `task`, `grill`, and `fog-explore` — with the `update` skill that changes a written target and the `adr` and `glossary` skills the grill branch carries; each is accepted by its own map, all five children of this map are closed, and each child's deliverable is the file its own acceptance direction named.
+- Convention: the body carries the six sections in order, with the default clause and a review point, and all 18 Decisions entries carry a source. `split_as: submap` matches the five children, which are all maps, and the body carries no children index. The migration from `Destination`/`Notes` kept every decision and dropped five notes that had no home in the format: the category line, the delivery-location list (already stale, since explore is now `fog-explore`), the glossary status line, the `.inbox` design-note paths, and the research findings those notes hold. The map is started at this review because it carried children while still `open`. `waymark validate` reports no findings.

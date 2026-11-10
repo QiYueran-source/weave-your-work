@@ -1,4 +1,4 @@
-version = "1.9"
+version = "1.10"
 storage_root = "tickets"
 
 [categories.map]
@@ -10,7 +10,7 @@ path = "tickets/task"
 name = "Task"
 
 [categories.testimony]
-path = "testimony"
+path = "tickets/testimony"
 name = "Testimony"
 
 [fields.needs_human]

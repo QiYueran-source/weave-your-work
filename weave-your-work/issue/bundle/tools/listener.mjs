@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 // Receive a smee webhook stream and queue communicate issues.
 //
-// Run from the repository root:
-//   SMEE_URL=https://smee.io/<id> node <skill>/bundle/tools/listener.mjs
+// Run from the project root, or pass the project explicitly:
+//   node <skill>/bundle/tools/listener.mjs [--project <directory>]
 //
-// Without SMEE_URL the HTTP endpoint runs alone. WEBHOOK_SECRET optionally
-// enables signature verification for transports that preserve request bytes.
+// The project is the nearest directory above the working directory that holds
+// a .work-weave marker, unless --project names it. Checkout settings come from
+// <root>/.work-weave/local/issue-listener.env; the process environment
+// overrides them. Without SMEE_URL the HTTP endpoint runs alone. WEBHOOK_SECRET
+// optionally enables signature verification for transports that preserve
+// request bytes.
 
 import { execFile } from 'node:child_process'
 import http from 'node:http'
@@ -14,27 +18,84 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import { fileURLToPath } from 'node:url'
 import { parse as parseToml } from 'smol-toml'
 import { parse as parseYaml } from 'yaml'
 import SmeeClient from 'smee-client'
+import projectRoot from './project-root.cjs'
+import { acquireQueueLock } from './lock.mjs'
 import { formatEntry, parseQueue } from './queue.mjs'
 
+const { resolveProjectRoot } = projectRoot
 const run = promisify(execFile)
-const DEFAULT_PENDING = 'pending/pending-communications.md'
-const root = process.cwd()
-const toolsDir = path.dirname(fileURLToPath(import.meta.url))
-const port = Number(process.env.PORT || 8765)
-const secret = process.env.WEBHOOK_SECRET || ''
-const smeeUrl = process.env.SMEE_URL || ''
+const DEFAULT_PENDING = '.work-weave/pending/pending-communications.md'
+const ROSTER_FILE = '.work-weave/issue/handles.toml'
+const SETTINGS_FILE = '.work-weave/local/issue-listener.env'
+const USAGE = 'Usage: node listener.mjs [--project <directory>]'
 
-if (secret && !secret.trim()) {
-  console.error('WEBHOOK_SECRET must not contain only whitespace')
-  process.exit(1)
+function parseArgs(argv) {
+  let project
+  for (let index = 0; index < argv.length; index++) {
+    const argument = argv[index]
+    if (argument === '--project') {
+      const value = argv[index + 1]
+      if (!value || value.startsWith('--')) throw new Error(USAGE)
+      project = value
+      index++
+    } else if (argument.startsWith('--project=')) {
+      project = argument.slice('--project='.length)
+      if (!project) throw new Error(USAGE)
+    } else {
+      throw new Error(`Unknown argument ${argument}; ${USAGE}`)
+    }
+  }
+  return project === undefined ? {} : { project }
 }
 
-function loadConfig() {
-  const file = path.join(toolsDir, 'handles.toml')
+function parseSettings(content) {
+  const values = {}
+  for (const [index, line] of content.split(/\r?\n/).entries()) {
+    const text = line.trim()
+    if (!text || text.startsWith('#')) continue
+    const equals = text.indexOf('=')
+    if (equals < 1) throw new Error(`${SETTINGS_FILE} line ${index + 1} must be KEY=VALUE`)
+    const key = text.slice(0, equals).trim()
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key)) {
+      throw new Error(`${SETTINGS_FILE} line ${index + 1} has an invalid key`)
+    }
+    let value = text.slice(equals + 1).trim()
+    const quoted = value.length >= 2 &&
+      ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'")))
+    if (quoted) value = value.slice(1, -1)
+    values[key] = value
+  }
+  return values
+}
+
+// Checkout settings are read once, from the project and not beside the tools.
+// A process environment value wins, so a service unit or a test can override
+// one key without rewriting the file.
+function loadSettings(root) {
+  const file = path.join(root, SETTINGS_FILE)
+  let content
+  try {
+    content = fs.readFileSync(file, 'utf8')
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
+    content = ''
+  }
+  return { ...parseSettings(content), ...process.env }
+}
+
+function requireRepository(settings) {
+  const repository = settings.REPOSITORY
+  if (typeof repository !== 'string' || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository)) {
+    throw new Error(`REPOSITORY must be set to owner/repo in ${SETTINGS_FILE} or the environment`)
+  }
+  return repository
+}
+
+function loadConfig(root) {
+  const file = path.join(root, ROSTER_FILE)
   if (!fs.existsSync(file)) {
     return { handles: {}, pending: DEFAULT_PENDING }
   }
@@ -45,21 +106,33 @@ function loadConfig() {
       throw new Error(`handles.toml: ${owner} is not a login; put every owner under one [handles] table`)
     }
   }
-  return {
-    handles,
-    pending: (data.pending && data.pending.path) || DEFAULT_PENDING,
+  let configured = DEFAULT_PENDING
+  if (data.pending !== undefined) {
+    if (!data.pending || typeof data.pending !== 'object' || Array.isArray(data.pending)) {
+      throw new Error('handles.toml: [pending] must be a table')
+    }
+    if (data.pending.path !== undefined) configured = data.pending.path
   }
+  if (typeof configured !== 'string' || !configured.trim()) {
+    throw new Error('handles.toml: [pending].path must be a non-empty string')
+  }
+  return { handles, pending: configured }
 }
 
-function queuePath(configured) {
-  return path.resolve(root, configured)
+function queuePath(root, configured) {
+  const queue = path.resolve(root, configured)
+  const relative = path.relative(root, queue)
+  if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+    throw new Error(`[pending].path must stay inside the project root: ${configured}`)
+  }
+  return queue
 }
 
 // This machine's owner is the local git identity, matched against the [handles]
 // keys without regard to case. `git config --local user.name` is the per-clone
 // slot: untracked, so a machine that belongs to someone else changes it without
 // touching the shared roster.
-async function resolveMachineOwner(handles) {
+async function resolveMachineOwner(root, handles) {
   const owners = Object.keys(handles)
   if (!owners.length) {
     throw new Error('handles.toml has no owners; add at least one under [handles]')
@@ -241,7 +314,7 @@ function queueIssue(issue, { label = 'issue' } = {}) {
     return 0
   }
   const received = new Date().toISOString().slice(0, 16)
-  return append(queuePath(config.pending), [{
+  return append(queue, [{
     url: issue.url, from: fields.from, to: fields.to, owner, title: issue.title, received,
   }])
 }
@@ -303,6 +376,19 @@ const server = http.createServer((req, res) => {
       return
     }
     const event = req.headers['x-github-event']
+    const fullName = payload.repository && payload.repository.full_name
+    if (typeof fullName !== 'string' || !fullName.trim()) {
+      console.error('Skipped webhook event: repository.full_name is missing')
+      res.writeHead(202)
+      res.end('queued 0\n')
+      return
+    }
+    if (fullName !== repository) {
+      console.error(`Skipped webhook event: repository ${fullName} is not ${repository}`)
+      res.writeHead(202)
+      res.end('queued 0\n')
+      return
+    }
     const issue = readIssueEvent(payload, event)
     if (!issue) {
       res.writeHead(202)
@@ -321,18 +407,54 @@ const server = http.createServer((req, res) => {
   })
 })
 
-// The configuration and this machine's owner are read once, before the port
-// opens: a machine with no owner can queue nothing, so it refuses to start
-// instead of running and silently dropping every message.
+// The project, its settings, the roster, and this machine's owner are read
+// once, before the port opens: a machine with no owner or no expected
+// repository can queue nothing, so it refuses to start instead of running and
+// silently dropping messages that do not belong to this checkout.
+let root
+let settings
+let repository
 let config
 let machineOwner
+let queue
+let queueLock
 try {
-  config = loadConfig()
-  machineOwner = await resolveMachineOwner(config.handles)
+  const options = parseArgs(process.argv.slice(2))
+  root = resolveProjectRoot(options)
+  settings = loadSettings(root)
+  repository = requireRepository(settings)
+  config = loadConfig(root)
+  machineOwner = await resolveMachineOwner(root, config.handles)
+  queue = queuePath(root, config.pending)
+  queueLock = acquireQueueLock(queue, { root })
 } catch (error) {
   console.error(error.message)
   process.exit(1)
 }
+
+const port = Number(settings.PORT || 8765)
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  console.error('PORT must be an integer from 1 to 65535')
+  queueLock.release()
+  process.exit(1)
+}
+const secret = settings.WEBHOOK_SECRET || ''
+const smeeUrl = settings.SMEE_URL || ''
+
+if (secret && !secret.trim()) {
+  console.error('WEBHOOK_SECRET must not contain only whitespace')
+  process.exit(1)
+}
+
+function shutdown(code = 0) {
+  queueLock.release()
+  server.close(() => process.exit(code))
+  setTimeout(() => process.exit(code), 1000).unref()
+}
+
+process.on('SIGINT', () => shutdown(0))
+process.on('SIGTERM', () => shutdown(0))
+process.on('exit', () => queueLock.release())
 
 server.listen(port, '127.0.0.1', async () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
@@ -349,6 +471,7 @@ server.listen(port, '127.0.0.1', async () => {
     } catch (error) {
       console.error(redact(`Cannot connect to smee; catch-up not started: ${error.message || 'connection failed'}`))
       await smee.stop()
+      queueLock.release()
       server.close()
       process.exitCode = 1
       return

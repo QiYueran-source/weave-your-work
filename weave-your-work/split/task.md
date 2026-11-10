@@ -25,7 +25,7 @@ Gates 3, 4, 5, and 6 each decide a field, which is why a layer settles them befo
 
 ## The plan
 
-Write the count and one line per task in the discussion testimony before the first ticket is created. The children themselves, read back with `waymark tree --root <map>`, show what was actually written.
+Decide the count and one line per task before the first ticket is created, and write both into the discussion testimony. The entry is a log, not an input to a review: no skill reads it today, and a later skill may read a testimony to see why a layer was cut the way it was. What a reader checks is the tree, read back with `waymark tree --root <map>`.
 
 The count comes from the grill discussion, not from the number of decisions. One decision may become three tasks, and three decisions may become one.
 

@@ -13,7 +13,7 @@ It is a record, not a work item: it has a category, an owner, and a status, but 
 - Status: `open` while the grill runs, `closed` when it ends. Tickets cite it only after it closes.
 - Links: a soft link to the discussion's work item when there is one, and to any work item the grill hands off.
 
-The file is the waymark id, `testimony/wm-....md`. The date and last edit come from `created_at` and `updated_at`; do not repeat them in the title.
+The file is the waymark id, `tickets/testimony/wm-....md`. The date and last edit come from `created_at` and `updated_at`; do not repeat them in the title.
 
 ## The body
 

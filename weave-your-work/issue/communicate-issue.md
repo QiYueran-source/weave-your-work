@@ -27,11 +27,11 @@ Reply in this thread with which one you choose.
 
 - `kind` is always `communicate`. It marks the issue; without it the listener ignores the issue.
 - `category` is one of `request`, `result`, or `comment`. It is required.
-- `from` is the local owner who sends the message, written as the name in `handles.toml`. It is not the GitHub account that holds the token.
+- `from` is the local owner who sends the message, written as the name in `.work-weave/issue/handles.toml`. It is not the GitHub account that holds the token.
 - `to` is a list with exactly one GitHub handle. A message for several people is several issues, one per recipient.
 - `tickets` is a non-empty list of existing map or task ids. The first is the main ticket: the title carries it and the answer lands there. A message may name tickets on either side of the exchange.
 
-The recipient handle and the `@mention` in the body use the GitHub login from `handles.toml`. Resolve it there; never derive a login from the owner name. Verify the account exists before filing.
+The recipient handle and the `@mention` in the body use the GitHub login from `.work-weave/issue/handles.toml`. Resolve it there; never derive a login from the owner name. Verify the account exists before filing.
 
 ## Categories
 

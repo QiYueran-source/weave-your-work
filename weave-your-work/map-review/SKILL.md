@@ -23,7 +23,7 @@ The map: `Target`, `Acceptance direction`, the review point under it, and `Decis
 
 The actual children: compare each type with `split_as`, read status and outcome, and inspect failed outcomes and replacements. For a legacy map split before `split_as` existed, inspect the actual child types and available history without inventing the field; mixed types remain a finding. Read task `Result`, `Review`, and actual deliverables against the map's acceptance direction. A task closed before task-review existed may lack Review: inspect its Acceptance signal, Result, and actual deliverables without inventing a past review. Missing evidence is not a pass. Read child maps' Review and supporting evidence; for a legacy child map without Review, inspect its acceptance direction, children, and available evidence without inventing a past review. `waymark validate` checks structure; it does not establish semantic acceptance.
 
-The rules: `body.md` for the body shape, the split skill for the child rules, and `map/frontmatter.md` for dependency readiness and required outputs, including failed dependencies.
+The rules: the map skill's `body.md` for the body shape, the split skill for the child rules, and the map skill's `frontmatter.md` for dependency readiness and required outputs, including failed dependencies.
 
 The review point is not a checklist to open first. It was written before the work started, and reading the map against it is the check.
 
@@ -31,11 +31,11 @@ The review point is not a checklist to open first. It was written before the wor
 
 **Goal check**: did the map do what its `Acceptance direction` says? Read the direction line by line and the review point with it. Every line has to be answered by what the map and its children delivered.
 
-**Convention check**: was the map built to the rules? Check the body shape and applicable sections against `body.md`, actual child types against `split_as`, no children index in the body, dependencies against `frontmatter.md`, and ticket write ownership. Optional empty sections and a legacy Review that never existed are not required retroactively.
+**Convention check**: was the map built to the rules? Check the body shape and applicable sections against the map skill's `body.md`, actual child types against `split_as`, no children index in the body, dependencies against its `frontmatter.md`, and ticket write ownership. Optional empty sections and a legacy Review that never existed are not required retroactively.
 
 Read the two separately and report them separately. One holding does not cover the other, and merging them hides a failing axis behind a passing one.
 
-Every finding names its source: the acceptance direction line it did not meet, the `body.md` rule it broke, or the split rule it broke. A finding that cites nothing is an opinion, and it is dropped rather than reported.
+Every finding names its source: the acceptance direction line it did not meet, the map skill's `body.md` rule it broke, or the split rule it broke. A finding that cites nothing is an opinion, and it is dropped rather than reported.
 
 ## Four verdicts
 
@@ -49,7 +49,7 @@ Every finding names its source: the acceptance direction line it did not meet, t
 
 ## What it writes
 
-Write `Review` for all four verdicts, including the verdict, separate goal and convention checks with evidence, and any unresolved question. Cite evidence for passing checks as well as sources for findings. On same-subject re-review, strike through the previous current review and record why it is superseded, including when a non-passing review was resolved while the map stayed in progress. Retain that history with the fresh verdict, as `map/body.md` and `update` specify.
+Write `Review` for all four verdicts, including the verdict, separate goal and convention checks with evidence, and any unresolved question. Cite evidence for passing checks as well as sources for findings. On same-subject re-review, strike through the previous current review and record why it is superseded, including when a non-passing review was resolved while the map stayed in progress. Retain that history with the fresh verdict, as the map skill's `body.md` and `update` specify.
 
 `passed` and `wrong direction`: close the map. With `wrong direction`, write `outcome=failed` before closing. If a failed outcome remains from an interrupted or invalidated review and the owner has freshly established `passed`, clear it with `waymark field update <map> --clear outcome` before closing; do not clear a failed outcome merely to make the fields match.
 
@@ -68,6 +68,6 @@ A report that names something the ticket does not hold is a missing write, not a
 ## What this skill does not do
 
 - Accept a task. That is `task-review`.
-- Split the map or clear its fog. Those are split and explore.
-- Define the body sections or the front matter. Those are `body.md` and `frontmatter.md`.
+- Split the map or clear its fog. Those are `split` and `fog-explore`.
+- Define the body sections or the front matter. Those are the map skill's `body.md` and `frontmatter.md`.
 - Open the replacement for a failed map. The owner does that.

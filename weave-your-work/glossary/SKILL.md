@@ -42,7 +42,7 @@ Write one JSONL line to your own source with `glossary_write`:
 
 Write the term the moment it resolves, one term at a time. Do not batch a discussion's terms into one write at the end.
 
-The source is `glossary/<operator>.jsonl`. Never write to another operator's file.
+The source is `.work-weave/glossary/<operator>.jsonl`. Never write to another operator's file.
 
 ## Reading a term
 
@@ -50,11 +50,11 @@ The source is `glossary/<operator>.jsonl`. Never write to another operator's fil
 
 ## Running the tools
 
-The MCP server and the CLI live in `bundle/tools/`. `bundle/setup.md` installs them; `usage.md` has the CLI commands, the stdio config shape, and troubleshooting. Read it when the tools are not running or when you need the CLI instead of the MCP.
+The MCP server and the CLI live in the project runtime at `.work-weave/runtime/glossary/`. `bundle/setup.md` copies the tools there and installs their dependencies; `usage.md` has the CLI commands, the stdio config shape, and troubleshooting. Read it when the tools are not running or when you need the CLI instead of the MCP.
 
 ## The generated view
 
-`GLOSSARY.md` at the project root is generated from `glossary/*.jsonl`. Never edit it by hand; the next merge overwrites it. Rebuild it with `glossary_merge`, or let the post-merge hook do it after a pull.
+`GLOSSARY.md` at the project root is generated from `.work-weave/glossary/*.jsonl`. Never edit it by hand; the next merge overwrites it. Rebuild it with `glossary_merge`, or let the post-merge hook do it after a pull.
 
 The merge reads every source, keeps the latest `updated_at` for each term, and writes the view with a `_Source_` line per term. Same-name conflicts are not resolved in this version.
 

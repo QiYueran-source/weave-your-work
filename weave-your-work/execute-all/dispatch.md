@@ -19,7 +19,7 @@ The waymark store takes one write lock at a time, for one read-modify-write wind
 
 ## What a subagent may write
 
-- Its own ticket: `Result`, `Progress`, and `waiting_on`, plus the claim.
+- Its own ticket: `Result` and `Progress`, plus the claim.
 - The files its work needs.
 
 It may not write another ticket, the map, `## Review`, or `outcome`, and it does not close the ticket. It does not commit.

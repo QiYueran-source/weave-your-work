@@ -30,7 +30,7 @@ Who writes it: whoever writes the ticket, before work starts.
 
 ## needs_human
 
-Optional at creation, and the only optional field written then. Type: boolean. Leave it unset when the task needs no person.
+Optional at creation, and the only optional field written then. Type: boolean. The split skill writes it explicitly, so a ticket made by split carries `true` or `false`; a ticket written by hand may leave it unset, which means the same as `false`.
 
 - `true`: the task contains work only a person can do.
 - `false`: the task was checked and needs no person.

@@ -16,6 +16,7 @@ The walk was run on 2026-11-08 with waymark 0.1.2. `waymark validate --project w
 6. [What the walk found](06-what-the-walk-found.md)
 7. [The production grill](07-the-production-grill.md)
 8. [Map lifecycle audit](08-map-lifecycle-audit.md) — a separate test project, including review mistakes and exceptional review paths
+9. [Map improvement checks](09-map-improvement-checks.md) — what the checks on the map skill family showed after the audit rounds
 
 ## The project
 

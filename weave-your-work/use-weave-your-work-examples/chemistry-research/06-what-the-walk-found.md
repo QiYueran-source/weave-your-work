@@ -14,7 +14,7 @@ The walk produced 19 numbered findings. The analysis added two more: the table/p
 - **#14 A re-run does not read the gap.** `execute-one-task` reads `## Review` and fixes only a `needs changes` gap.
 - **#15 A full-body replace can drop `Review`.** `execute-one-task` now says to include the existing `## Review` unchanged when replacing the body.
 - **#16 The batch's write permission is wider than the run's.** `dispatch.md` now lists `Result`, `Progress`, `waiting_on`, and the claim.
-- **#18 The example task is stale.** [task-example.md](../task-example.md) is rewritten in the current shape.
+- **#18 The example task was stale.** The single-page sample was removed on 2026-11-10; the two scenarios carry the current shapes.
 - **#19 A hand-back has no route to a failed close.** `execute-one-task` writes `Result` and invokes `task-review`; the review closes it as `wrong direction` or waits on the owner.
 - **The table/probe pair.** It is a split error: a task that reads another task's output is one action with several steps, or two sibling maps with an edge. `waiting_on` is for a person, not for a task's output. `split/task.md` now says this.
 - **The operator/owner conflict.** `execute-all` selects tasks owned by the chosen map's owner, not by the local operator.

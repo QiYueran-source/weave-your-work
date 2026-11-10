@@ -10,7 +10,7 @@ description: >-
 
 Grill is a discussion that ends with a shared understanding and a written record. It asks the questions the person has not answered, waits for the answers, and moves outward as the answers settle.
 
-Use it when a plan, decision, or idea is still fuzzy, or when `fog-explore`, `split`, or `review` reaches a decision it cannot settle alone.
+Use it when a plan, decision, or idea is still fuzzy, or when `fog-explore`, `split`, `map-review`, or `task-review` reaches a decision it cannot settle alone.
 
 ## Before the first question
 

@@ -3,12 +3,15 @@ schema: 1
 id: wm-bfqvr54kz3h4
 title: 'Task reference: how to split a map into tasks'
 category: map
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:03:36Z
-updated_at: 2026-11-09T05:31:34Z
+updated_at: 2026-11-10T00:25:06Z
+closed_at: 2026-11-09T15:11:13Z
 parent: wm-3nhrhmds8rqd
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -18,14 +21,16 @@ Why: `task.md` is a reference inside the split skill, not a skill of its own, bu
 
 ## Acceptance direction
 
-The reference is written into split's `task.md`: the test, the body it writes, the fields it sets, and how the task is hung are all stated. ~~A sample map is split into tasks that a run can pick up.~~ That sample split is the worked example the root map defers to one batch: [Work-weave: general team collaboration skill set](tickets/map/wm-wjwa9081hse1.md).
+The reference is written into split's `task.md`: the test, the body it writes, the fields it sets, and how the task is hung are all stated. ~~A sample map is split into tasks that a run can pick up.~~ That sample split is the worked example the root map defers to one batch: [Work-weave: general team collaboration skill set](wm-wjwa9081hse1.md).
 
 All children are complete and no further child is needed.
 
+Review point: read `split/task.md` — the six gates are stated, each task's body is written against task design, the fields set at creation and the ones split never writes are listed, and the hanging order (start the map, record `split_as`, create every ticket, read the tree back) is described.
+
 ## Decisions so far
 
-- The reference lives inside the split skill as `task.md`, not as a skill of its own (inherited from [Split skills: choose child maps or tasks](tickets/map/wm-3nhrhmds8rqd.md)).
-- The task side is settled: [Task design skill](tickets/map/wm-793jrqph1ckv.md) and [Task execution skill](tickets/map/wm-avc7a31tae33.md) are closed, so this reference points at them instead of restating them (inherited).
+- The reference lives inside the split skill as `task.md`, not as a skill of its own (inherited from [Split skills: choose child maps or tasks](wm-3nhrhmds8rqd.md)).
+- The task side is settled: [Task design skill](wm-793jrqph1ckv.md) and [Task execution skill](wm-avc7a31tae33.md) are closed, so this reference points at them instead of restating them (inherited).
 - The choice criterion lives once in the split skill's `SKILL.md`; this reference applies it and does not restate it (inherited).
 - A child defaults to its parent's owner (inherited from the submap reference design).
 - A split writes the child ticket itself: the body, the fields, and the parent relation, then reads the shape back with `waymark tree` (inherited from the split skill's decisions).
@@ -35,7 +40,8 @@ All children are complete and no further child is needed.
 - The count is decided before anything is written, then each task is taken one at a time. The first split writes `split_as: task`, and every later child of that map is a task; a part that needs a map opens a sibling map (user confirmed).
 - When the discussion cannot support a body — no evidence the signal could name, or no single action that ends at one result — split sends the part back to grill. It never guesses (user confirmed).
 
-- ~~The split plan — how many tasks this layer makes and one line for each — is written on this map, not in a testimony (user confirmed). One bullet in `Decisions so far` carries it, because the count and each task's scope are what the grill settled. No new section is opened for it: the result of the split is the set of children, read back with `waymark tree --root <map>`, and anything still unwritten is the decided list minus what that read shows. Source: user confirmation that the plan lives on the map; the section choice is this file's, and a section of its own can be added later if a split ever spans sessions.~~ Superseded on 2026-11-09: record the count and one-line task plan in testimony; read actual children from the tree. Task layers cumulatively cover the full acceptance direction; a planned task is not completed work. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+- ~~The split plan — how many tasks this layer makes and one line for each — is written on this map, not in a testimony (user confirmed). One bullet in `Decisions so far` carries it, because the count and each task's scope are what the grill settled. No new section is opened for it: the result of the split is the set of children, read back with `waymark tree --root <map>`, and anything still unwritten is the decided list minus what that read shows. Source: user confirmation that the plan lives on the map; the section choice is this file's, and a section of its own can be added later if a split ever spans sessions.~~ Superseded on 2026-11-09: record the count and one-line task plan in testimony; read actual children from the tree. Task layers cumulatively cover the full acceptance direction; a planned task is not completed work. See [the confirmed discussion](../testimony/wm-0xrcwvnrcc9k.md).
+- The task-layer plan is a log, not a review input: no skill reads it today, and a later skill may read a testimony to see why a layer was cut the way it was. (user confirmed, 2026-11-10)
 - The fields split sets at creation are `task_kind`, `reversibility`, `needs_human` written explicitly, `owner` defaulting to the parent map's, and `parent` given on `waymark create`. What each field accepts and who may write it stays in task design's `properties.md`, which the reference names instead of restating (user confirmed).
 - Split writes all the task tickets first, then reads the shape back with `waymark tree --root <map>`. A half-finished split leaves no body edit behind, and any ticket whose parent is wrong shows up in that check (user confirmed).
 
@@ -53,3 +59,10 @@ All children are complete and no further child is needed.
 - Task body format, kinds, reversibility, and acceptance signals (task design).
 - Advancing a task (task execution).
 - Splitting into child maps (the submap reference).
+
+## Review
+
+passed
+
+- Goal: `weave-your-work/split/task.md` exists. It states the six gates a part passes before it becomes a task, writes each task's body against task design's `body.md`, `kind.md`, and `properties.md` without repeating them, lists the fields split sets at creation and the ones it never writes, and gives the hanging order: start the map, record `split_as`, create every ticket, read the tree back. The struck sample-split clause is deferred to the root map's batch, as the acceptance direction says.
+- Convention: the body carries the sections `body.md` lists, in order, and every Decisions entry carries a source. The one child is a task, matching `split_as: task`, and the body holds no children index. The map carried its child while still `open` and without the field — the miss its own reference warns against — and both were recorded at this review. Four links written from the repository root now use the sibling form so they resolve from the file. `waymark validate` reports no findings.

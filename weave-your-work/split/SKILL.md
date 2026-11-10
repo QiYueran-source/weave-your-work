@@ -33,7 +33,7 @@ The field lives on the map whose children they are, and it never flips. Mixing t
 Two decisions, then writing.
 
 1. Decide the type, with the question above.
-2. Decide how many children this layer gets. The count comes out of the same discussion that settled the layer, and it is not tied to the number of decisions: several decisions may feed one child, and one decision may feed several. For tasks, record the count and one-line plan per task in the discussion testimony.
+2. Decide how many children this layer gets. The count comes out of the same discussion that settled the layer, and it is not tied to the number of decisions: several decisions may feed one child, and one decision may feed several. For tasks, write the count and one-line plan per task into the discussion testimony as a log; no review reads it.
 3. Write the children one at a time, against the reference for their type.
 
 Decide the count before anything is written. It is the one thing a later child cannot repair, because a layer written one child at a time grows a child per idea.
@@ -51,11 +51,11 @@ If a first split is interrupted, inspect status, `split_as`, the recorded plan, 
 - `task.md`: when the parts are executable, and how each task body, field, and parent relation is written.
 - `submap.md`: when the parts are still goals, and how each child map body and parent relation is written.
 
-Both write child bodies against `body.md` in the map skill and field rules in `frontmatter.md`. Neither restates a rule that lives in those files.
+Both write child bodies against the map skill's `body.md` and the field rules in its `frontmatter.md`. Neither restates a rule that lives in those files.
 
 ## What this skill does not do
 
-- Clear fog. That is explore.
+- Clear fog. That is `fog-explore`.
 - Decide a child's content. That is grill.
 - Define a task's body, kind, or fields. That is task design.
 - Move an existing subtree, or change a map that is already settled. That is update.

@@ -2,7 +2,7 @@
 
 Write a term when it resolves during a discussion, one term at a time.
 
-- One term per line in `glossary/<operator>.jsonl`.
+- One term per line in `.work-weave/glossary/<operator>.jsonl`.
 - Only terms this project coins or narrows. General vocabulary stays out.
 - Define what the term is, not what it does. One or two sentences.
 - The glossary is a vocabulary, not a spec. Do not write commands, file paths, or step lists. If a definition needs a command or more than two sentences, it is a spec; move the detail to the ticket or reference.

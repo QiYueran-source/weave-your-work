@@ -4,6 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
+const { resolveProjectRoot } = require("./project-root.cjs");
 
 const FIELDS = ["term", "definition", "avoid", "group", "created_at", "updated_at"];
 
@@ -12,14 +13,8 @@ function now() {
 }
 
 function projectRoot(value) {
-  if (value) return path.resolve(value);
-  let dir = process.cwd();
-  for (;;) {
-    if (fs.existsSync(path.join(dir, ".waymark", "config.toml"))) return dir;
-    const parent = path.dirname(dir);
-    if (parent === dir) return process.cwd();
-    dir = parent;
-  }
+  if (value === undefined || value === null) return resolveProjectRoot({});
+  return resolveProjectRoot({ project: value });
 }
 
 function operator(root) {
@@ -41,9 +36,28 @@ function operator(root) {
   return process.env.USER || "operator";
 }
 
+function glossaryDir(root) {
+  const dir = path.join(root, ".work-weave", "glossary");
+  let stat;
+  try {
+    stat = fs.statSync(dir);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      throw new Error(
+        `Glossary directory not found: ${dir}. Run the glossary setup for this project.`,
+        { cause: error }
+      );
+    }
+    throw new Error(`Cannot read glossary directory ${dir}: ${error.message}`, { cause: error });
+  }
+  if (!stat.isDirectory()) {
+    throw new Error(`Glossary path is not a directory: ${dir}`);
+  }
+  return dir;
+}
+
 function sourceFiles(root) {
-  const dir = path.join(root, "glossary");
-  if (!fs.existsSync(dir)) return [];
+  const dir = glossaryDir(root);
   return fs
     .readdirSync(dir)
     .filter((name) => name.endsWith(".jsonl"))
@@ -72,9 +86,13 @@ function readSource(file) {
 }
 
 function merged(root) {
+  const files = sourceFiles(root);
+  if (files.length === 0) {
+    throw new Error(`No glossary sources in ${glossaryDir(root)}; expected <operator>.jsonl.`);
+  }
   const terms = new Map();
   const order = [];
-  for (const file of sourceFiles(root)) {
+  for (const file of files) {
     for (const term of readSource(file)) {
       const key = term.term;
       const record = { ...term, _source: path.basename(file) };
@@ -85,6 +103,9 @@ function merged(root) {
         terms.set(key, record);
       }
     }
+  }
+  if (terms.size === 0) {
+    throw new Error(`No glossary terms in ${glossaryDir(root)}; refusing to report an empty glossary.`);
   }
   return order.map((key) => terms.get(key));
 }
@@ -99,8 +120,7 @@ function find(root, query) {
 function writeTerm(root, term, definition, avoid, group) {
   if (!term.trim()) throw new Error("term is empty");
   if (!definition.trim()) throw new Error("definition is empty");
-  const dir = path.join(root, "glossary");
-  fs.mkdirSync(dir, { recursive: true });
+  const dir = glossaryDir(root);
   const file = path.join(dir, `${operator(root)}.jsonl`);
   const stamp = now();
   const record = {
@@ -117,10 +137,10 @@ function writeTerm(root, term, definition, avoid, group) {
 
 function merge(root) {
   const terms = merged(root);
-  const headerPath = path.join(root, "glossary", "_header.md");
+  const headerPath = path.join(glossaryDir(root), "_header.md");
   const header = fs.existsSync(headerPath)
     ? fs.readFileSync(headerPath, "utf8").trimEnd()
-    : "# Glossary\n\nThis file is generated from `glossary/*.jsonl`. Do not edit it by hand.";
+    : "# Glossary\n\nThis file is generated from `.work-weave/glossary/*.jsonl`. Do not edit it by hand.";
 
   const groups = new Map();
   for (const term of terms) {
@@ -159,7 +179,13 @@ function main(argv) {
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "--project") project = argv[++index];
+    if (arg === "--project") {
+      const value = argv[++index];
+      if (value === undefined || value.startsWith("--")) {
+        throw new Error("--project requires a directory");
+      }
+      project = value;
+    }
     else if (arg === "--term") flags.term = argv[++index];
     else if (arg === "--definition") flags.definition = argv[++index];
     else if (arg === "--avoid") flags.avoid.push(argv[++index]);
@@ -203,7 +229,7 @@ function main(argv) {
   return 2;
 }
 
-module.exports = { merged, find, writeTerm, merge, operator, projectRoot };
+module.exports = { merged, find, writeTerm, merge, operator, glossaryDir, projectRoot };
 
 if (require.main === module) {
   try {

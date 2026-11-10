@@ -8,8 +8,22 @@ const glossary = require("./glossary.js");
 
 const argv = process.argv.slice(2);
 const projectFlag = argv.indexOf("--project");
-const project = projectFlag >= 0 ? argv[projectFlag + 1] : process.env.GLOSSARY_PROJECT;
-const root = glossary.projectRoot(project);
+let project = process.env.GLOSSARY_PROJECT;
+if (projectFlag >= 0) {
+  project = argv[projectFlag + 1];
+  if (project === undefined || project.startsWith("--")) {
+    console.error("--project requires a directory");
+    process.exit(1);
+  }
+}
+let root;
+try {
+  root = glossary.projectRoot(project);
+  glossary.glossaryDir(root);
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
 
 const server = new McpServer({ name: "glossary", version: "1.0.0" });
 

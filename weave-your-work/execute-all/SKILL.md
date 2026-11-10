@@ -1,12 +1,13 @@
 ---
 name: execute-all
 description: Advance every task under a map at once, one subagent per task, and carry each one to a reviewed end.
-disable-model-invocation: true
 ---
 
 # Execute all
 
 A map's tasks are parallel branches, so the normal way to advance a map is to run them together. Take the tasks the run's owner owns, claim them all, send each to its own subagent, and carry each one to a reviewed end. The run's owner is the owner of the chosen map; the local operator is not the owner, and on a shared checkout they can differ.
+
+Start a batch only when the person asks for one. Answering "what is left under this map" is a read, not a batch.
 
 `execute-one-task` holds the steps of one task; `task-review` holds the judgment. This skill decides which tasks run, how they are sent, and what the main agent does as reports come back. Load the map and split skills for dependency and task-split checks; if either is unavailable, stop and ask the owner to install it.
 

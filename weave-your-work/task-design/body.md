@@ -4,7 +4,7 @@ A task body says what one action is, what it hands over, and how someone checks 
 
 ## How a body is laid out
 
-Sections appear in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
+The order is the one each kind's list below gives; this file explains the sections in reading order, not body order. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
 
 A section is written when it carries something. One with nothing to say is left out, never filled with filler such as `TBD`.
 
@@ -20,7 +20,7 @@ A task carries no dependency edges, for the reason above: work that waits on a s
 
 ## Shared sections
 
-These appear in both kinds, in this order, before the kind's own sections.
+`Action` and `Acceptance signal` open every body, in that order. `Boundaries` is shared too, but it comes after the kind's own sections, as each list shows.
 
 ### Action
 
