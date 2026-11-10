@@ -3,11 +3,12 @@ schema: 1
 id: wm-8wzzh4hp5evp
 title: 'Entry skill: ask-me routes a person to the skill that fits'
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:07Z
-updated_at: 2026-11-10T07:37:52Z
+updated_at: 2026-11-10T07:50:01Z
+closed_at: 2026-11-10T07:50:01Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-bhxcbv4j8fyd
@@ -54,3 +55,10 @@ Default clause. Review point: open `weave-your-work/ask-me/SKILL.md` alone; ever
 - Issue triage state machine (communication category, not this round).
 - The question protocol, glossary terms, and decision records: those belong to `grill`, `glossary`, and `adr`.
 - Reading the project's state to route: that is `wait-what`.
+
+## Review
+
+passed
+
+- Goal: the review point asks that every skill ask-me names exists under `weave-your-work/`, every skill in the set is reachable from it in one hop, it restates no rule from a skill it names, and it names no file this project does not have. All four ran: the 21 skills besides `ask-me` are each named in `SKILL.md`, every backticked name resolves to a directory that exists, a grep for `waymark`, `acceptance clause`, `Default clause`, and `frontmatter` found nothing, and `npx skills add ./weave-your-work/ask-me` installed it without a skip.
+- Convention: `split_as` is `task` and the one child is a task, closed by `task-review` with both axes evidenced. The body holds no children index. `Not yet specified` is empty, so the map was reviewed with no fog left. `waymark validate` reports no findings.

@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-10T07:01:36Z
+updated_at: 2026-11-10T07:50:13Z
 custom_fields:
   split_as: submap
 ---
@@ -36,7 +36,7 @@ That run is one batch, not one per map: write the worked example each effort nee
 - Ownership model: one owner per item, owner advances and accepts; no executor field (user confirmed).
 - Task types: delivery and probe, with a reversibility marker; details reference skills-ref later (user confirmed).
 - Acceptance: judged by the owner against signals agreed in advance, distinguishing done/not done/cannot judge. The non-executor rule is dropped (user confirmed).
-- ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).
+- ~~ask-me is one whole skill, covering the question protocol, decision records, and glossary (user confirmed).~~ Superseded on 2026-11-10: ask-me covers none of the three. It routes; `grill` owns the protocol, `adr` the records, `glossary` the terms. (user confirmed, 2026-11-10)
 - Worked examples and the end-to-end test of every skill happen in one batch, once the skill set is whole. No skill carries a per-skill functional test. ~~each one records the paths it has not exercised in its own gap list, and those lists are the input to that batch.~~ Superseded on 2026-11-10: the per-skill gap lists were merged into one [Gaps](../../docs/gaps.md) file under `docs/` when the worked examples that held them were deleted. That file is the batch's input. A path left unexercised today is deferred, not closed. (user confirmed; amended 2026-11-10)
 - ~~Skill invocation has one test: a skill is model-invocable only when another skill reaches it mid-run, or when its trigger is a state the run has to notice for itself. Every other skill is user-invoked, which loads no description into context.~~ Superseded on 2026-11-09: the test does not hold. Entry skills are reached by runs too, and a skill that another skill must load cannot be kept out of the model's reach; the classification produced references that could not be followed. (user confirmed, 2026-11-09)
 - ~~Five skills are user-invoked. `execute-all` and `execute-one-task`, because each spends a run of unspecified size and writes real files. `task`, because it is the entry name a person types and no skill calls it. `issue`, because a filed issue is sent under the operator's GitHub account and cannot be recalled. `use-weave-your-work-examples`, because no skill calls it and its description is the longest in the set, spent on examples a person opens deliberately; its content is revised later, and this entry settles only how it is invoked.~~ Superseded on 2026-11-09: same reason as the test above. (user confirmed, 2026-11-09)
@@ -46,11 +46,12 @@ That run is one batch, not one per map: write the worked example each effort nee
 - The root map is started and carries `split_as: submap`: it has held children since 2026-11-06 while still `open`, so its status and field did not match its tree. (user confirmed, 2026-11-10)
 - ~~Three session-level skills hang under one child map rather than one each: `chief-of-staff` to advance a whole map, `handoff`, and `wait-what`.~~ Superseded on 2026-11-10: `chief-of-staff` was dropped as redundant with `execute-all`, so two skills hang under that map, which is now closed. See [Session skills](wm-s4tvr121g3tv.md). (user confirmed, 2026-11-10)
 - A map is advanced by `execute-all` and `execute-one-task`, not by a session-level skill of its own. (user confirmed, 2026-11-10)
+- The entry skill `ask-me` landed as a router: it names the skill that fits the situation and invokes nothing. Its main route is `map` then `task`, `grill` sits beside every step, and five branch points open on a state. It carries no question protocol — `grill` owns every discussion, which supersedes the root decision that ask-me would cover one. (user confirmed, 2026-11-10)
 - Two of Matt's session skills joined the set: `handoff` and `wait-what`. `wait-what` was rewritten rather than ported — it stops the work and reports the state in a fixed table instead of re-pitching the last message. (user confirmed, 2026-11-10)
 
 ## Not yet specified (cross-category coordination)
 
-- Dependencies between skills: how ask-me routes to execution and communication skills.
+- ~~Dependencies between skills: how ask-me routes to execution and communication skills.~~ Resolved on 2026-11-10: [Entry skill](wm-8wzzh4hp5evp.md) settled it. ask-me routes to the family entry, not to a skill, and each family entry routes inside its own family.
 - Which map maintains the shared glossary, and which file it lives in.
 - Installation and distribution: reference matt's skill configuration mechanism, optional.
 - Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.
