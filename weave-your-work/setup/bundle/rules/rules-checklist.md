@@ -162,6 +162,16 @@ if not roots:
 bad = False
 known = set()
 scope = os.path.realpath('.')
+required = {'setup', 'map', 'task', 'glossary', 'issue'}
+source = os.path.isdir('weave-your-work') and os.path.isfile('skills.sh.json')
+installed = set()
+for p, names in roots:
+    installed.update(names)
+if not source:
+    missing_required = sorted(required - installed)
+    if missing_required:
+        print('missing required skills in every root: ' + ', '.join(missing_required))
+        bad = True
 for p, names in roots:
     fresh = [n for n in names if os.path.realpath(os.path.join(p, n)) not in known]
     for n in names:
@@ -188,7 +198,7 @@ raise SystemExit(1 if bad else 0)
 "
 ```
 
-Passes when every project root it prints says `missing: none`, `none tracked yet` for a set that has not been committed, or `all reached again through another root` for a directory holding the same skills a second time; a global root prints `(global install)` and is listed without a Git manifest. It finds project roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, and then adds `$HOME/.agents/skills`, the `skills` CLI's global target. A skill already counted under an earlier root is not counted again, compared by real path: `skills add` without `-a` writes copies into `.agents/skills` and symlinks to them in `.claude/skills`, and the second root would otherwise look like a set with no manifest. The project manifest is what Git tracks under that root, not `skills-lock.json`.
+Passes when every project root it prints says `missing: none`, `none tracked yet` for a set that has not been committed, or `all reached again through another root` for a directory holding the same skills a second time, and when the five skills the setup flow calls — `setup`, `map`, `task`, `glossary`, and `issue` — are present in at least one of the roots it prints. A global root prints `(global install)` and is listed without a Git manifest, but its names still count toward that required set. A skill source checkout — a project that holds `weave-your-work/` and `skills.sh.json` — is the source of the set rather than a project using it, so it skips the required set and relies on its own source tree. It finds project roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, and then adds `$HOME/.agents/skills`, the `skills` CLI's global target. A skill already counted under an earlier root is not counted again, compared by real path: `skills add` without `-a` writes copies into `.agents/skills` and symlinks to them in `.claude/skills`, and the second root would otherwise look like a set with no manifest. The project manifest is what Git tracks under that root, not `skills-lock.json`.
 
 **13. Every bundle's rules are registered.** *
 

@@ -2,7 +2,7 @@
 
 Take a clone of a project that already uses waymark to a checkout that passes the setup checks.
 
-The project arrives with the tracker, the rules, and the skills committed. What a clone does not carry is everything that was never committed: the operator, the dependencies, the git hooks, the MCP registration, and the listener. Those are this flow's work.
+The project arrives with the tracker and the rules committed. A project install of the skills is committed too; with a global install, the machine's global set supplies them. What a clone does not carry is everything that was never committed: the operator, the dependencies, the git hooks, the MCP registration, and the listener. Those are this flow's work.
 
 This is not what to run on an empty directory, and not what to run on a project that has no tracker yet; that is [start-a-project.md](start-a-project.md).
 
@@ -160,7 +160,7 @@ Commit nothing, and do not push the branch you are on. What this flow writes is 
 
 ## What this flow does not do
 
-- It does not install the skills. A clone carries them; check 12 proves they are all still there.
+- It does not install the skills. A project install is committed and travels with the clone; a global install supplies them from `$HOME/.agents/skills`; check 12 proves the five required names are present in one of the roots it finds.
 - It does not register a rule. The rules are committed under `.agents/rules/`; check 13 proves the copies still match their bundles.
 - It does not add the person to `handles.toml`. That is a shared change and goes through a branch and a pull request.
 - It does not create a channel or a webhook. One per repository, and the project already has them.
