@@ -61,15 +61,17 @@ The closing comment is the pointer GitHub keeps.
 
 ## The queue and the listener
 
-The listener and the checker are this skill's own tools; no CLI documents them, so the commands are exact.
+The listener and the checker are this skill's own tools; no CLI documents them, so the commands are exact. Setup copies them into the checkout's runtime.
 
 ```bash
-cd <repo>
-SMEE_URL=https://smee.io/<id> node <skill>/bundle/tools/listener.mjs
-node <skill>/bundle/tools/check-pending.mjs
+cd <project-root>
+node .work-weave/runtime/issue/listener.mjs
+node .work-weave/runtime/issue/check-pending.mjs
 ```
 
-Run both from the project root. The listener holds one process: it connects to the channel, forwards each event to the local `/webhook`, and then scans for issues opened while it was off. `bundle/setup.md` explains `SMEE_URL`, `PORT`, and `WEBHOOK_SECRET`, and installs the service that sets them.
+The settings come from `.work-weave/local/issue-listener.env`, so neither command needs the channel or port in the shell. The listener holds one process: it connects to the channel, forwards each event to the local `/webhook`, and then scans for issues opened while it was off. `bundle/setup.md` explains the settings and installs the service.
+
+The listener takes an exclusive lock on the queue and exits if another listener on this host holds it. A dead or stale lock is logged and taken over on the next start.
 
 - The listener redacts the channel URL from its log. Keep that URL private; anyone who knows it can post or view events.
 - Log lines worth reading: `listening on http://...`, `queueing messages addressed to <owner>`, `Catch-up complete: queued N entries from <repo>`, `Skipped <label>: invalid <fields>`, `Skipped <label>: author is not a known login`, `Skipped <label>: addressed to <handle>, not to <owner>`, and `Catch-up failed: <reason>`. A skipped message claimed `kind: communicate` and failed a field check, which names the field, the author check, or the recipient check. The last one is this machine declining someone else's mail; it is not an error.
@@ -88,14 +90,14 @@ The queue file is `[pending].path` in `.work-weave/issue/handles.toml`, resolved
 
 GitLab, Gitee, Gitea, Bitbucket, and Azure DevOps are not supported. The format, the categories, and the checker would still hold there, but carrying a message needs a fork:
 
-- **The listener's GitHub block.** In `bundle/tools/listener.mjs`, the two functions between the `---- GitHub ----` markers: one reads a webhook event, the other lists a repository's open issues. Everything outside them — the HTTP endpoint, the signature check, the queue, the deduplication, and the log redaction — is independent of the host.
+- **The listener's GitHub block.** In the runtime copy `.work-weave/runtime/issue/listener.mjs`, the two functions between the `---- GitHub ----` markers: one reads a webhook event, the other lists a repository's open issues. Everything outside them — the HTTP endpoint, the signature check, the queue, the deduplication, and the log redaction — is independent of the host. Change the source in `bundle/tools/` and reinstall the runtime.
 - **The handle table.** `[handles]` maps a local owner to a GitHub login. A fork that supports two hosts at once would have to put a host name back into that file and decide which table a message resolves against.
 - **The setup.** The webhook page, the event name, the signature header, and the CLI the listener calls for its startup scan all change with the host.
 - **`gh` in the five operations.** The capability table above is what a replacement CLI has to provide.
 
 ## Troubleshooting
 
-- `Cannot find package`: run `npm install` in `bundle/tools/`.
+- `Cannot find package`: run `npm ci --omit=dev` in `.work-weave/runtime/issue/`.
 - `Catch-up failed: origin is not a supported github.com repository URL`: the checkout's git `origin` is not a GitHub URL, or it has more than one fetch URL.
 - `Catch-up failed: no handles configured for catch-up`: `.work-weave/issue/handles.toml` has no `[handles]` entries.
 - `Cannot connect to smee`: the channel URL is wrong or the network is down; the process exits non-zero and does not scan.

@@ -3,11 +3,12 @@ schema: 1
 id: wm-ssfcjp9hxbxh
 title: Separate the roster template from this project's roster
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:26:38Z
-updated_at: 2026-11-10T11:34:27Z
+updated_at: 2026-11-10T11:34:34Z
+closed_at: 2026-11-10T11:34:34Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false

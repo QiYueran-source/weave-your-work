@@ -3,11 +3,12 @@ schema: 1
 id: wm-0xzjh4wde202
 title: Run glossary tools against project-local sources
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T11:24:54Z
-updated_at: 2026-11-10T11:24:54Z
+updated_at: 2026-11-10T11:33:49Z
+closed_at: 2026-11-10T11:33:49Z
 parent: wm-2ztwvye6q9t7
 custom_fields:
   needs_human: false
@@ -27,6 +28,21 @@ Deliver glossary tools that read and write the selected project's `.work-weave/g
 ## Acceptance signal
 
 `node --test` in `weave-your-work/glossary/bundle/tools/` passes. The tests show two independent vocabularies and views, and a missing `.work-weave/glossary/` exits non-zero without creating or overwriting `GLOSSARY.md`. The tools run under a `"type": "module"` package.
+
+## Result
+
+Delivered `project-root.cjs` in the glossary tools, project resolution through the shared contract, sources and header under `.work-weave/glossary/`, and the generated view only at the project root. A missing or invalid marker or glossary directory is a hard error; the tools refuse to report or write an empty glossary.
+
+`node --test` in `weave-your-work/glossary/bundle/tools/` passed 10 tests on Linux, including two roots with separate vocabularies and views, write isolation, explicit and discovered roots, missing markers, a missing glossary directory without creating or overwriting `GLOSSARY.md`, the new header location, an empty glossary, and execution under a `type: module` project runtime. Windows and macOS were not tested.
+
+Decisions: a missing `.work-weave/glossary/` fails every command; an empty source set or zero terms fails rather than writing a view; a missing `_header.md` uses the built-in header; the tools stay CommonJS with the runtime `package.json`; `--project` without a directory fails instead of falling back to discovery.
+
+## Review
+
+passed
+
+- Goal: the tests exercise the acceptance signal, including two independent roots, no cross-read or cross-write, and a missing glossary directory that leaves the view untouched. The MCP tool names and argument shapes are unchanged.
+- Convention: the change stays inside the glossary tools and their tests. No setup, runtime install, MCP registration, hook, migration, ADR, or term-schema change was made.
 
 ## Boundaries
 

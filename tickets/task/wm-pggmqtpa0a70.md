@@ -3,11 +3,12 @@ schema: 1
 id: wm-pggmqtpa0a70
 title: Guard the pending queue with one listener
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T11:24:39Z
-updated_at: 2026-11-10T11:24:39Z
+updated_at: 2026-11-10T11:37:11Z
+closed_at: 2026-11-10T11:37:11Z
 parent: wm-zhxe0hsnpf34
 custom_fields:
   needs_human: false
@@ -26,6 +27,19 @@ Deliver an exclusive queue lock so two listeners on one checkout cannot both app
 ## Acceptance signal
 
 `node --test` in `weave-your-work/issue/bundle/tools/` passes. The tests start two listeners against one queue and show that only one appends; they also show recovery after a simulated crash and no append while rejected. The lock lives under the ignored pending directory and is not committed.
+
+## Result
+
+Delivered `lock.mjs` and wired it into the listener before the port opens. The lock is created atomically at `.work-weave/pending/.lock` with pid, start time, host, and root. A live same-host pid is rejected; a dead pid is taken over; an unverifiable or unreadable lock is taken over only after 24 hours. The listener releases the lock on clean shutdown, SIGINT, SIGTERM, and process exit, and the checker now refuses a queue path outside the project.
+
+`node --test` in `weave-your-work/issue/bundle/tools/` passed 43 top-level tests (48 including subtests) on Linux, including six lock unit tests and an integration test that starts a second listener on one queue, sees it rejected, sends one event to the first, and finds one queue entry. Windows and macOS were not tested.
+
+## Review
+
+passed
+
+- Goal: the unit and integration tests show one writer per queue, stale takeover, live rejection, release after shutdown, and no duplicate append. The acceptance signal is met on Linux.
+- Convention: the change stays inside the issue tools and tests; it does not alter the queue format, repository validation, service, or setup guide.
 
 ## Boundaries
 

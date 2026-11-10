@@ -87,7 +87,7 @@ The `to` handle is used twice: in the frontmatter for the listener, and as the `
 
 ## Listen and the queue
 
-The listener is part of this skill. `bundle/setup.md` covers the channel, webhook, Node listener in `bundle/tools/`, and session rule in `bundle/rules/`. Setup reads the existing channel and webhook back with `gh` before creating either, so installing on a repository that already has a listener adds nothing and asks nothing.
+The listener is part of this skill. `bundle/setup.md` installs its runtime under `.work-weave/runtime/issue/`, covers the channel and webhook, and installs the session rule from `bundle/rules/`. Setup reads the existing channel and webhook back with `gh` before creating either, so installing on a repository that already has a listener adds nothing and asks nothing. Each checkout gets its own runtime, queue, port, and service.
 
 The default smee setup does not verify signatures: smee re-serializes the JSON, so GitHub's HMAC over the original bytes cannot match. Anyone who knows the channel URL can send or view events, so keep the URL private; the listener redacts it from its log.
 
@@ -161,5 +161,5 @@ Three lines: what was filed or read, what changed on the ticket, and what is sti
 - `communicate-issue.md`: the format, the three categories, and the closing rules.
 - `usage.md`: the five operations as contracts, the queue, and the listener's own commands.
 - `bundle/setup.md`: the install steps, the channel, the webhook, the listener service, and the session rule.
-- `bundle/tools/listener.mjs`: the webhook receiver that parses the frontmatter and appends to the queue.
+- `bundle/tools/`: the source tools copied into `.work-weave/runtime/issue/`. `listener.mjs` receives webhooks and appends to the queue; `lock.mjs` keeps one writer per queue; `configure.mjs` writes the checkout settings and unit.
 - `bundle/rules/`: the session rule Markdown that the setup installs into `.agents/rules/`.
