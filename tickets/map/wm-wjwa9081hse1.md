@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-10T06:27:09Z
+updated_at: 2026-11-10T06:38:25Z
 custom_fields:
   split_as: submap
 ---
@@ -44,7 +44,8 @@ That run is one batch, not one per map: write the worked example each effort nee
 - The body carries no children index. The `Sub-maps` list was removed on 2026-11-10 because `map/body.md` forbids one; the children are read from `parent` with `waymark tree`. (user confirmed, 2026-11-10)
 - Three maintenance skills hang directly under this root map rather than under a new category map: stop-and-wait, salvage-and-restart, and feedback-me-please. (user confirmed, 2026-11-10)
 - The root map is started and carries `split_as: submap`: it has held children since 2026-11-06 while still `open`, so its status and field did not match its tree. (user confirmed, 2026-11-10)
-- Three session-level skills hang under one child map rather than one each: `chief-of-staff` to advance a whole map, `handoff`, and `wait-what`. See [Session skills](wm-s4tvr121g3tv.md). (user confirmed, 2026-11-10)
+- ~~Three session-level skills hang under one child map rather than one each: `chief-of-staff` to advance a whole map, `handoff`, and `wait-what`.~~ Superseded on 2026-11-10: `chief-of-staff` was dropped as redundant with `execute-all`, so two skills hang under that map. See [Session skills](wm-s4tvr121g3tv.md). (user confirmed, 2026-11-10)
+- A map is advanced by `execute-all` and `execute-one-task`, not by a session-level skill of its own. (user confirmed, 2026-11-10)
 
 ## Not yet specified (cross-category coordination)
 
@@ -53,7 +54,7 @@ That run is one batch, not one per map: write the worked example each effort nee
 - Installation and distribution: reference matt's skill configuration mechanism, optional.
 - Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.
 - ~~Whether the local comment category stays.~~ Resolved 2026-11-09 in the execution map: the category is removed, because the issue skill uses `comment` for a message category. See [Execution skills: map, task, glossary, and explore](wm-qhd3twqjzhma.md).
-- ~~Skills that may join each category later (retro, handoff, and so on); not this round.~~ Resolved on 2026-11-10: handoff and two other session-level skills are taken up by [Session skills](wm-s4tvr121g3tv.md); retro stays fog inside that map.
+- ~~Skills that may join each category later (retro, handoff, and so on); not this round.~~ Resolved on 2026-11-10: `handoff` and `wait-what` are taken up by [Session skills](wm-s4tvr121g3tv.md); `retro` is dropped, because its only caller was `chief-of-staff` and `chief-of-staff` does not come in.
 - A skill that reads testimonies to reconstruct how a layer was cut and what was considered before it settled.
   Why it matters: the split's plan log has no reader today; such a skill would give it one and would notice when the log is missing.
 
