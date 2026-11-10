@@ -3,11 +3,12 @@ schema: 1
 id: wm-9jwjg4q4tvv5
 title: Check the setup state from one cross-platform script
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T13:37:47Z
-updated_at: 2026-11-10T13:37:49Z
+updated_at: 2026-11-10T13:48:33Z
+closed_at: 2026-11-10T13:48:33Z
 parent: wm-ygnttse5hd5k
 custom_fields:
   needs_human: false
@@ -29,6 +30,21 @@ Add one dependency-free Node check script under setup's bundle and move the exec
 ## Acceptance signal
 
 `node <setup-skill>/bundle/tools/check-setup.mjs --all` prints seventeen results and reports this repository's real state; `--starred` prints the ten starred checks; the JSON mode is stable enough for tests. The rule has no POSIX-only command, the two copies are identical, and `npm test` passes. The script runs on Linux here; Windows and macOS behavior is in the Node code paths, not in unverified PowerShell.
+
+## Result
+
+Delivered `weave-your-work/setup/bundle/tools/check-setup.mjs` and `check-setup.test.mjs`. The script runs the seventeen checks from the project root, prints one result per check (`ok`, `fail`, `not applicable`, `unverified`), supports `--starred`, `--all`, and `--json`, and exits 1 only on a failure. It repairs nothing and reads no secret.
+
+The rule is 58 lines instead of 265 and keeps each check's goal, pass condition, and repair. The two copies are identical. `npm test` passed 85 tests. On this checkout `--starred` reported 10 ok; `--all` reported 16 ok and one real failure: no generated listener unit under `.work-weave/local`.
+
+The join flow now reads the roster and lists `package.json` files without `awk` or `find`; the feedback skill states the `GH_TOKEN` mechanism once, with Unix and PowerShell forms; the setup guide's Verify points at check 13. Windows and macOS were not run here. The script uses Node and direct process calls, so it has no shell dialect, but their behavior remains unverified.
+
+## Review
+
+passed
+
+- Goal: `npm test` passed 85 tests. `--starred` returned 10 ok on this checkout; `--all` returned 16 ok and one real failure (no listener unit). The rule copies are byte-identical. The Windows and macOS paths are not verified.
+- Convention: the script repairs nothing and reads no secret; check 9 keeps the plan-gate exception; `rules-git.md` and the parallel protection change were not touched; the platform service guides are unchanged.
 
 ## Boundaries
 
