@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T00:47:55Z
-updated_at: 2026-11-10T01:02:55Z
+updated_at: 2026-11-10T01:13:52Z
 parent: wm-ygnttse5hd5k
 custom_fields:
   needs_human: false
@@ -66,7 +66,7 @@ The confirmed design says fifteen checks in five groups, but only the groups wer
 
 - The glossary MCP server answers with its four tools.
 - `systemctl --user is-active issue-listener` prints `active`, and the repository's webhook points at the smee channel in `~/.config/work-weave/smee.env`.
-- `git check-ignore` reports both `pending/pending-communications.md` and `GLOSSARY.md` as ignored.
+- `git check-ignore` reports `node_modules/`, `GLOSSARY.md`, and `pending/pending-communications.md` as ignored. It answers for paths that do not exist yet.
 
 Sixteen lines, plus `curl` if it becomes an item. The count is the person's to settle before the rule file is written.
 
