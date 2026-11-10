@@ -1,6 +1,12 @@
 # macOS service
 
-The LaunchAgent template below is unverified. It has not been tested on a Mac, so treat it as a starting point and check it on the machine before relying on it. Until then, run the listener in the foreground with the command in [windows.md](windows.md); that command is the same on macOS.
+The LaunchAgent template below is unverified. It has not been tested on a Mac, so treat it as a starting point and check it on the machine before relying on it. Until then, run the listener in the foreground:
+
+```sh
+node .work-weave/runtime/issue/listener.mjs
+```
+
+The Windows guide uses backslashes in its path; use this forward-slash form on macOS.
 
 ## Template
 
