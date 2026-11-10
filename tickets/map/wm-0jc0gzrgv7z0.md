@@ -3,11 +3,12 @@ schema: 1
 id: wm-0jc0gzrgv7z0
 title: 'Stop-and-wait: read the whole project and report contradictions'
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T01:21:53Z
-updated_at: 2026-11-10T01:21:58Z
+updated_at: 2026-11-10T01:47:30Z
+closed_at: 2026-11-10T01:47:30Z
 parent: wm-wjwa9081hse1
 custom_fields:
   split_as: submap
@@ -41,3 +42,10 @@ Review point: `weave-your-work/stop-and-wait/SKILL.md` names the trigger, the re
 - Repairing what the report finds. The person decides which findings become tickets.
 - Reviewing one map or one task. Those are `map-review` and `task-review`.
 - A health score, a badge, or a coverage percentage. The output is specific conflicts, not a grade.
+
+## Review
+
+passed
+
+- Goal: the review point has four parts. `weave-your-work/stop-and-wait/SKILL.md` names the trigger (`## When it runs`), the read set with its stopping rule (`## The read set`), the six classes as a closed list with the instruction that a new class is a decision on this map (`## Six conflict classes`), the report path and the fixed shape of one finding (`## The report`), and what the run never writes (`## What it never does`). One real report exists at `docs/stop-and-wait/2026-11-10-skill-set.md`; its four findings each carry a `Side A` and a `Side B`, and every one of the fourteen citations was re-opened at the cited line or resolved with `waymark show` before the report was committed.
+- Convention: the body carries the five sections this map needs, `split_as: submap` matches its one child being a task, no children index appears in the body, and the work was written by the task that owns it. The child closed with a `passed` review citing the same evidence.
