@@ -8,7 +8,9 @@ Run every step from the project root. The commands are the shapes that were chec
 
 ## 1. Confirm the skill set is there
 
-You are reading this file out of the installed set, so the set is installed. Run checks 12 and 13 anyway: they prove the four skills this flow calls have their bundles and their rules, and they discover what is there rather than listing it, so they keep working when the set grows. If either reports something, stop and repair it. The rest of this flow reads files out of those directories.
+You are reading this file out of the installed set, so the set is installed. Run check 12 anyway: it proves the four skills this flow calls are still on disk, and it discovers what is there rather than listing it, so it keeps working when the set grows. If it reports a missing skill, stop and repair it; the rest of this flow reads files out of those directories.
+
+Do not run check 13 yet. It compares every bundle's rules against `.agents/rules/`, and nothing is registered there until step 2 writes setup's two rules and step 8 runs the four bundle setups, so on a fresh install it reports all six as unregistered. Step 8 runs it.
 
 ## 2. Install setup's own rules
 
@@ -57,7 +59,7 @@ git config user.email "<address>"
 
 Check 7.
 
-This flow creates no remote. Leave check 8 reporting no remote; the three checks that depend on one are not applicable.
+This flow creates no remote. Leave check 8 reporting no remote; the two checks that depend on one, 9 and 16, are not applicable. Check 17 does not depend on a remote and still runs.
 
 ## 5. Initialize the tracker
 
@@ -156,9 +158,11 @@ Each bundle owns its own install. Read each `bundle/setup.md` under the installe
 3. `glossary` — the glossary directory, its tools, its MCP server registration, and the writing rule.
 4. `issue` — the listener, its dependencies, the handles file, and the queue.
 
-Two of them need a person before they finish: the MCP server registration is a harness config edit, and the listener needs a GitHub webhook and a service. Leave those two steps to the person and record them as pending. Without a remote, the issue bundle is largely not applicable; say so and skip it rather than inventing a channel.
+Two of them need a person before they finish: the MCP server registration is a harness config edit, and the listener needs a GitHub webhook and a service. Leave those two steps to the person and record them as pending. Without a remote, the issue bundle's external steps have nothing to act on; skip those and say so, but still copy its rule. Every bundle's rule copy is what check 13 compares, and a skipped copy leaves the check failing for the rest of the project's life.
 
 The glossary and issue setups append to `.gitignore` themselves, which is why step 7 already wrote the lines they need.
+
+The glossary and issue setups both run `npm install`. Read each one's exit status and stop on a non-zero one: a failed install can still leave a partial `node_modules`, so the directory appearing proves nothing. A cache directory the user cannot write is the usual cause; `npm install --cache <a directory you own>` gets past it.
 
 Checks 13, 15, and 16.
 

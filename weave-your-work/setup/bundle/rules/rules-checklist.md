@@ -7,9 +7,9 @@ Run these checks at the start of a session, and run every one of them when a fea
 1. At session start, run the starred checks. They are local and cheap, and they catch a tool that vanished, a rule copy that drifted, or a tracker that stopped validating.
 2. When something you expect to work does not, run all seventeen. The unstarred ones cover the pieces that only matter when you reach for them: curl, the remote, the protection flag, the operator, the MCP server, the listener, and the ignore rules.
 3. Report the failures. Name the check and the command that repairs it. Do not run the repair, do not edit a config, and do not install anything. Repairing the setup is the person's decision; this rule only reports.
-4. Mark a check not applicable only where the check says so. A missing remote covers three of them. Never mark a check passed without running it.
+4. Mark a check not applicable only where the check says so. A missing remote covers two of them, checks 9 and 16. Never mark a check passed without running it.
 
-Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are, except for the two spots marked `<skill>`, which take the installed skill's directory.
+Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are, except for the one spot in check 15 marked `<skill>`, which takes the installed skill's directory.
 
 ## Tools
 
@@ -79,7 +79,7 @@ Passes when both print a value.
 git remote get-url origin
 ```
 
-Passes when it prints a URL. Exit 2 means there is no remote, which makes checks 9, 16, and 17 not applicable; it is not a failure.
+Passes when it prints a URL. Exit 2 means there is no remote, which makes checks 9 and 16 not applicable; it is not a failure. Check 17 answers either way: the ignore rules are local, so it runs before the repository has a remote or a commit.
 
 **9. The default branch is protected.**
 
@@ -149,7 +149,14 @@ for base, dirs, files in os.walk('.'):
 if not roots:
     raise SystemExit('no skills directory holding <name>/SKILL.md')
 bad = False
+known = set()
 for p, names in roots:
+    fresh = [n for n in names if os.path.realpath(os.path.join(p, n)) not in known]
+    for n in names:
+        known.add(os.path.realpath(os.path.join(p, n)))
+    if not fresh:
+        print(f'{p}: {len(names)} skills, all reached again through another root, nothing new to compare')
+        continue
     tracked = subprocess.run(['git', 'ls-files', p], capture_output=True, text=True).stdout.split()
     seen = {line.split('/')[2] for line in tracked if line.count('/') >= 2}
     if not seen:
@@ -162,7 +169,7 @@ raise SystemExit(1 if bad else 0)
 "
 ```
 
-Passes when every root it prints says `missing: none`, or `none tracked yet` for a set that has not been committed. It finds the roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, so `.agents/skills` and an agent's own directory are both covered without naming either. The walk does not follow symlinks, so a `.claude/skills` holding links into `.agents/skills` reports nothing twice. The manifest is what Git tracks under that root, not `skills-lock.json`: the lock file records only what `skills add` wrote, which was two entries when the set held 41 skills.
+Passes when every root it prints says `missing: none`, `none tracked yet` for a set that has not been committed, or `all reached again through another root` for a directory holding the same skills a second time. It finds the roots by looking for any directory named `skills` that holds `<name>/SKILL.md`, three levels deep at most, skipping `.git` and `node_modules`, so `.agents/skills` and an agent's own directory are both covered without naming either. A skill already counted under an earlier root is not counted again, compared by real path: `skills add` without `-a` writes copies into `.agents/skills` and symlinks to them in `.claude/skills`, and the second root would otherwise look like a set with no manifest. The manifest is what Git tracks under that root, not `skills-lock.json`: the lock file records only what `skills add` wrote, which was two entries when the set held 41 skills.
 
 **13. Every bundle's rules are registered.** *
 
