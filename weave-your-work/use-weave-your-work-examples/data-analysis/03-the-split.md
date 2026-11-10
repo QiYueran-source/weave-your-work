@@ -18,4 +18,4 @@ Each child then split into tasks, started at its first split and frozen as `task
 
 The task bodies were written against `split/task.md`'s gates: one action and one standard, evidence a reader can open, the fields set explicitly, no dependency edge on a task, and no `Result`, `Review`, or `Progress` from the designer.
 
-What the split did not do is write the plan. `split/task.md` asks for the count and one line per task in the discussion testimony before the first ticket is created, and this run skipped it. [What the run showed](07-what-the-run-showed.md) treats that as the main finding, because no later step caught it either.
+What the split did not do is write the plan log. `split/task.md` asks for the count and one line per task in the discussion testimony before the first ticket is created, and this run skipped it, so the testimony has no record of how the layer was cut. Nothing catches that today: the entry is a log for a later reader, not an input to a review. [What the run showed](07-what-the-run-showed.md) says what that means for the run.

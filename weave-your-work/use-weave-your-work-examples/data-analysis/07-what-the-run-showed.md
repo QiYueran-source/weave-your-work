@@ -1,10 +1,10 @@
 # What the run showed
 
-## The main finding: the task-layer plan is written where the reviewer does not look
+## The plan log was not written
 
-`split/task.md` asks for the count and one line per task in the discussion testimony before the first ticket is created. This run skipped that, and neither the split's own steps nor the map reviews noticed. The reason is structural: the plan goes into the testimony, while `map-review` reads the map, its children, and the rules — not the testimony. The requirement sits in a file the reviewer has no step for.
+`split/task.md` asks for the count and one line per task in the discussion testimony before the first ticket is created. This run skipped it, so nothing records how the layer was cut. No skill noticed, and that is by design: the entry is a log for traceability, not an input to a review. `map-review` reads the map, its children, and the rules, and it should not need a testimony to judge whether the tasks are right — once the tickets exist, the tree is what a reader checks.
 
-The same miss appeared in the first chemistry audit. Moving the plan out of the map body removed it from the reviewer's view, and nothing replaced that view. Two ways to close it: `map-review` reads the testimony the map links, or the split writes the plan into the map's `Decisions so far` (which contradicts the rule that a split does not edit the parent body). The first needs a review step; the second needs a rule change.
+The same miss appeared in the first chemistry audit. Two runs in a row is evidence about the step, not about the reviews: writing the log is easy to skip because nothing downstream reads it. A future skill that reads a testimony to see why a layer was split the way it was would make the log worth keeping and would catch its absence; no such skill exists today.
 
 ## Setup friction
 

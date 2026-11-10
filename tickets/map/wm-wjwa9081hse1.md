@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-09T15:55:22Z
+updated_at: 2026-11-10T00:25:31Z
 ---
 ## Destination
 
@@ -55,6 +55,8 @@ That run is one batch, not one per map: write the worked example each effort nee
 - Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.
 - ~~Whether the local comment category stays.~~ Resolved 2026-11-09 in the execution map: the category is removed, because the issue skill uses `comment` for a message category. See [Execution skills: map, task, glossary, and explore](wm-qhd3twqjzhma.md).
 - Skills that may join each category later (retro, handoff, and so on); not this round.
+- A skill that reads testimonies to reconstruct how a layer was cut and what was considered before it settled.
+  Why it matters: the split's plan log has no reader today; such a skill would give it one and would notice when the log is missing.
 
 ## Out of scope
 

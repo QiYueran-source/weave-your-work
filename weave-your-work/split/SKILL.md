@@ -33,7 +33,7 @@ The field lives on the map whose children they are, and it never flips. Mixing t
 Two decisions, then writing.
 
 1. Decide the type, with the question above.
-2. Decide how many children this layer gets. The count comes out of the same discussion that settled the layer, and it is not tied to the number of decisions: several decisions may feed one child, and one decision may feed several. For tasks, record the count and one-line plan per task in the discussion testimony.
+2. Decide how many children this layer gets. The count comes out of the same discussion that settled the layer, and it is not tied to the number of decisions: several decisions may feed one child, and one decision may feed several. For tasks, write the count and one-line plan per task into the discussion testimony as a log; no review reads it.
 3. Write the children one at a time, against the reference for their type.
 
 Decide the count before anything is written. It is the one thing a later child cannot repair, because a layer written one child at a time grows a child per idea.

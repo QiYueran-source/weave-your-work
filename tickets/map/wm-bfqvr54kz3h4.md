@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T16:03:36Z
-updated_at: 2026-11-09T15:11:13Z
+updated_at: 2026-11-10T00:25:06Z
 closed_at: 2026-11-09T15:11:13Z
 parent: wm-3nhrhmds8rqd
 custom_fields:
@@ -41,6 +41,7 @@ Review point: read `split/task.md` — the six gates are stated, each task's bod
 - When the discussion cannot support a body — no evidence the signal could name, or no single action that ends at one result — split sends the part back to grill. It never guesses (user confirmed).
 
 - ~~The split plan — how many tasks this layer makes and one line for each — is written on this map, not in a testimony (user confirmed). One bullet in `Decisions so far` carries it, because the count and each task's scope are what the grill settled. No new section is opened for it: the result of the split is the set of children, read back with `waymark tree --root <map>`, and anything still unwritten is the decided list minus what that read shows. Source: user confirmation that the plan lives on the map; the section choice is this file's, and a section of its own can be added later if a split ever spans sessions.~~ Superseded on 2026-11-09: record the count and one-line task plan in testimony; read actual children from the tree. Task layers cumulatively cover the full acceptance direction; a planned task is not completed work. See [the confirmed discussion](../../testimony/wm-0xrcwvnrcc9k.md).
+- The task-layer plan is a log, not a review input: no skill reads it today, and a later skill may read a testimony to see why a layer was cut the way it was. (user confirmed, 2026-11-10)
 - The fields split sets at creation are `task_kind`, `reversibility`, `needs_human` written explicitly, `owner` defaulting to the parent map's, and `parent` given on `waymark create`. What each field accepts and who may write it stays in task design's `properties.md`, which the reference names instead of restating (user confirmed).
 - Split writes all the task tickets first, then reads the shape back with `waymark tree --root <map>`. A half-finished split leaves no body edit behind, and any ticket whose parent is wrong shows up in that check (user confirmed).
 
