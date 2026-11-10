@@ -3,11 +3,12 @@ schema: 1
 id: wm-2h2z3cvs6a7r
 title: Write the first-time initialization SOP
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T00:47:51Z
-updated_at: 2026-11-10T01:13:48Z
+updated_at: 2026-11-10T01:39:34Z
+closed_at: 2026-11-10T01:39:34Z
 parent: wm-ygnttse5hd5k
 custom_fields:
   needs_human: false

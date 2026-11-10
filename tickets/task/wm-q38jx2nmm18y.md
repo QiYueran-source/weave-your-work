@@ -3,11 +3,12 @@ schema: 1
 id: wm-q38jx2nmm18y
 title: Write setup's rule bundle
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T00:47:55Z
-updated_at: 2026-11-10T01:25:29Z
+updated_at: 2026-11-10T01:39:34Z
+closed_at: 2026-11-10T01:39:34Z
 parent: wm-ygnttse5hd5k
 custom_fields:
   needs_human: false
