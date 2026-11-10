@@ -3,11 +3,12 @@ schema: 1
 id: wm-hn55shjd69fs
 title: Write the feedback-me-please skill and check its commands
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T01:25:49Z
-updated_at: 2026-11-10T01:25:52Z
+updated_at: 2026-11-10T01:46:55Z
+closed_at: 2026-11-10T01:46:55Z
 parent: wm-0166kgff304k
 custom_fields:
   needs_human: false
@@ -48,3 +49,10 @@ What each command returned:
 Two corrections the run made to the skill. The account check now includes the permissions call, because a logged-in account that cannot post would otherwise fail at the last step, after the draft was approved. The star check now says the `404` body is the expected answer and that the command exits 1, since a run that trusts the exit code would read "not starred" as "check failed".
 
 The `--body-file` path in step 4 is a file the run writes before sending; no draft file was created in this task, because no issue was approved.
+
+## Review
+
+passed
+
+- Goal: the `Acceptance signal` asks for the skill, each quoted command run and reported, the active account's write access stated, the starred lookup's answer recorded, and no issue or star created. `Result` reports each command with its actual output: the active account has `pull` only, the repository owner's account has `admin`, the starred lookup returns 404 under both, the label set has eleven entries, and the search returns `#8` for one phrase and nothing for another. `gh issue list --repo ...` was not run, so no issue exists and none was starred.
+- Convention: `Boundaries` held. No test issue, no star, no comment, and no `npx skills add`.

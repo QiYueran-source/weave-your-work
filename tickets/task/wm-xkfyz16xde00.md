@@ -3,11 +3,12 @@ schema: 1
 id: wm-xkfyz16xde00
 title: Write the salvage-and-restart skill and run it on a scratch project
 category: task
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T01:25:49Z
-updated_at: 2026-11-10T01:25:52Z
+updated_at: 2026-11-10T01:46:55Z
+closed_at: 2026-11-10T01:46:55Z
 parent: wm-14tmxq9g2083
 custom_fields:
   needs_human: false
@@ -46,3 +47,10 @@ Three things the run corrected in the skill, all now written into it:
 3. **The new root comes before the move.** The first ordering moved a branch onto a root that did not exist yet, so step 3 is now raising the new root and step 4 is the move.
 
 The `--strict` flag matters for check 2: plain `waymark validate` exits 0 on error findings and only reports them, so "no findings" was never what the check could test.
+
+## Review
+
+passed
+
+- Goal: the `Acceptance signal` asks for the skill, a scratch run whose record names the new root id, the archived count and all five checks, one root in `waymark tree`, no live ticket pointing at an archived node, no validate findings, and every quoted command run. In `/tmp/wmfinal`: new root `wm-29nwpztbksc1`, three archived nodes, `waymark tree` shows one root with `wm-qpf0y91hn5rq` under it, `waymark validate --strict` exits 0 with one info finding, and `Result` records each of the five commands and the three corrections the run forced.
+- Convention: nothing in this repository's own tickets was changed by the scratch run, and no real project was restarted. The skill files and the ticket's `Result` are the only writes.
