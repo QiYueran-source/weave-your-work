@@ -45,7 +45,7 @@ Measured on a fresh clone of the committed tree (`git archive` of the index into
 What the run turned up and settled:
 
 - `.agents/skills/issue/` was a second copy of `weave-your-work/issue/`, tracked separately. It is now untracked like the rest of the installed copies. Its `.gitignore` exception is one file, `bundle/tools/handles.toml`, because that file is the roster of owners and GitHub logins shared by everyone using the project, and it is the one thing under `.agents/skills/` that an install does not recreate.
-- The files on disk were left in place, so the sessions running in this checkout keep their skills. Only tracking changed.
+- The files on disk were left in place: the 40 vendored directories were copied back into `.agents/skills/` after the move, so the sessions running in this checkout keep their skills and only tracking changed. The consequence is that a local `add . --list` in this checkout prints 57, because the install target is populated here; a fresh clone prints 19. Same shape as matt's machine, where the installed copies live outside the repo rather than inside an ignored directory.
 - `docs/smee-signature-research.md` cited `.agents/skills/issue/...` three times, twice in a way that pointed at a path under a tracked file. Both now point at `weave-your-work/issue/...`.
 - The rename is invisible to `.agents/rules/rules-pending-communications.md`: the rule reads the roster from the project root, and that path still holds the file.
 
