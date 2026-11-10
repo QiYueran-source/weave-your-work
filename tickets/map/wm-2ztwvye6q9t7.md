@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:39:09Z
-updated_at: 2026-11-10T10:39:09Z
+updated_at: 2026-11-10T11:11:28Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-tmjgw2zn143y
@@ -34,3 +34,6 @@ Review point: `.work-weave/glossary/` source reads and writes, root `GLOSSARY.md
   Why it matters: existing tooling assumes root glossary sources and can otherwise silently generate an empty view.
 - Decision to make: reconcile the closed glossary map and project-layout ADR with the new source location.
   Why it matters: their recorded decisions describe the previous layout.
+
+- Decision to make: determine how the glossary bundle receives and verifies a consistent copy of the project-root resolver without relying on another installed skill.
+  Why it matters: glossary must work when installed independently and validate the same project boundary.

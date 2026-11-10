@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T10:38:58Z
-updated_at: 2026-11-10T10:38:58Z
+updated_at: 2026-11-10T11:11:28Z
 parent: wm-wjwa9081hse1
 dependencies:
   - wm-tmjgw2zn143y
@@ -34,3 +34,6 @@ Review point: project-local runtime and dependencies, tracked roster, ignored qu
   Why it matters: the listener must isolate projects and refuse conflicting queue writers without pretending unauthenticated webhook data is trusted.
 - Decision to make: reconcile the existing roster separation task and issue map with the confirmed layout.
   Why it matters: their old paths and compatibility fallback conflict with the new project boundary.
+
+- Decision to make: determine how the issue bundle receives and verifies a consistent copy of the project-root resolver without relying on another installed skill.
+  Why it matters: issue must work when installed independently and validate the same project boundary.
