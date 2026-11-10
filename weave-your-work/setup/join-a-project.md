@@ -8,7 +8,7 @@ This is not what to run on an empty directory, and not what to run on a project 
 
 Before step 1, settle the directory. Run `git rev-parse --show-toplevel` and print the absolute path it gives, then ask the person to confirm it is the clone they mean; a machine with several checkouts of the same project reaches this flow from whichever one the session started in. Run every step from there. A clone carries the rules but not the dependencies, and `rules-install.md` says where those go.
 
-Each step names the check that proves it finished; the check's command lives in `.agents/rules/rules-checklist.md`. Do not restate those commands here; open the rule.
+Each step names the check that proves it finished; the check lives in `.agents/rules/rules-checklist.md`. Do not restate those checks here; open the rule.
 
 ## 1. Confirm this is a clone of a waymark project
 
@@ -47,11 +47,7 @@ Read the GitHub account:
 gh api user --jq .login
 ```
 
-Then read the roster and ask the person one question:
-
-```sh
-awk '/^\[handles\]/{h=1;next} /^\[/{h=0} h && /^[A-Za-z0-9_.-]+[ \t]*=/{print}' .work-weave/issue/handles.toml
-```
+Then read the roster and ask the person one question. The roster is the `[handles]` table in `.work-weave/issue/handles.toml`; its keys are the owners.
 
 The two names are not derivable from each other. `git config user.name` is whatever this machine was set to, and the login is whichever account `gh` is signed in as; nothing proves they are the same person. So state both back and ask:
 
@@ -73,18 +69,7 @@ Check 11.
 
 Run the four bundle setups from the installed skill set in the same order as `start-a-project.md` step 8: `map`, `task`, `glossary`, `issue`. The glossary and issue setups copy their tools into `.work-weave/runtime/glossary/` and `.work-weave/runtime/issue/` and run `npm ci --omit=dev` there. Read each exit status and stop on a non-zero one.
 
-Then install any other project dependencies the clone needs. Find them outside the runtimes, Git, the installed skills, the skill source, and the root manifest:
-
-```sh
-find . -name package.json \
-  -not -path '*/node_modules/*' \
-  -not -path './.git/*' \
-  -not -path './.work-weave/*' \
-  -not -path './.agents/*' \
-  -not -path './.inbox/*' \
-  -not -path './weave-your-work/*' \
-  -not -path './package.json'
-```
+Then install any other project dependencies the clone needs. List every `package.json` under the project, excluding `node_modules`, `.git`, `.work-weave`, the installed skills under `.agents`, the skill source under `weave-your-work`, `.inbox`, and the root `package.json`. Use the file tools you have; the exclusions matter because the runtimes and installed skills carry their own manifests.
 
 Run `npm install` in each directory that comes back, and skip a directory whose `package.json` declares no dependencies. The four bundle setups already handled the installed skills, so never install under `.agents/skills/`. Do not run `npm install` at the root either, because a root `package.json` may not be what the project uses. When nothing comes back, report "this project has no other dependencies to install" and move on.
 
@@ -145,7 +130,7 @@ Check 16.
 
 ## 8. Run the checks
 
-Run all seventeen from `.agents/rules/rules-checklist.md`, not only the starred ones: a clone is the one moment when nothing local has been proven yet. Report the failures with the command that repairs each one; do not repair them.
+Run all seventeen with the checklist script, not only the starred ones: a clone is the one moment when nothing local has been proven yet. Report the failures and the repair each one names; do not repair them.
 
 Then give the person the same four-state table the other flow uses:
 

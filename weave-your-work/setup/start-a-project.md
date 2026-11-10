@@ -6,7 +6,7 @@ This assumes the skill set is installed and nothing else exists: no Git reposito
 
 Before step 1, settle the root. Print the current working directory and ask the person to confirm it is the project root or to name another directory. Do not silently use an enclosing Git repository. If the chosen directory is inside a Git repository but is not that repository's worktree root, stop and ask whether to use the enclosing root or create an independent repository; never run `git init` in a nested directory on your own. If the chosen directory has an ancestor Waymark configuration but no local `.waymark/config.toml`, stop and ask whether to use the enclosing project or initialize a separate tracker. Only after confirmation, create the missing `.git`, `.waymark/`, and `.work-weave/` markers in that root. Run every later step from there; nothing else infers the root.
 
-The commands below are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished, and the check's command lives in `.agents/rules/rules-checklist.md`, which step 2 installs. Do not restate those commands here; open the rule.
+The commands below are the shapes that were checked against waymark 0.1.2; where a command differs between Unix and Windows, both are given. Each step names the check that proves it finished; the checks live in `.agents/rules/rules-checklist.md`, which step 2 installs; the rule names the one script that runs them. Do not restate the checks here; open the rule.
 
 ## 1. Confirm the skill set is there
 
@@ -198,7 +198,7 @@ Check 14.
 
 ## 10. Run the checks
 
-Run all seventeen from `.agents/rules/rules-checklist.md`. Report the failures with the command that repairs each one; do not repair them.
+Run all seventeen with the checklist script. Report the failures and the repair each one names; do not repair them.
 
 Then give the person this table, one row per check, and the list of files this flow changed.
 
