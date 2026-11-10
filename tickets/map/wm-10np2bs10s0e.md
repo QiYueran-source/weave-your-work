@@ -3,11 +3,12 @@ schema: 1
 id: wm-10np2bs10s0e
 title: 'Publish the set: one-command install, tagged releases, a gate that catches what an install would skip'
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T04:15:35Z
-updated_at: 2026-11-10T12:27:12Z
+updated_at: 2026-11-10T12:41:36Z
+closed_at: 2026-11-10T12:41:36Z
 parent: wm-wjwa9081hse1
 custom_fields:
   split_as: task
@@ -53,16 +54,18 @@ Review point: that install log, read against the directory list under `weave-you
 
 ## Not yet specified
 
-- Whether a release also publishes to npm, which needs a package name and a scope. Installs work from GitHub without it.
-- Whether `skill-creator` and `talk-like-a-human` ship with the set or stay development-only. The CLI skips both today because the lock names them, not because the repo excludes them.
-- Which checks the verification workflow runs beyond discovery, and whether it blocks a merge or only reports.
-- `GLOSSARY.md` is gitignored while some skills refer to a shared glossary; whether it ships is unsettled.
+None. The items below were resolved before closing.
+
+- ~~Whether a release also publishes to npm, which needs a package name and a scope.~~ Resolved on 2026-11-10: publishing to npm is out of scope for this release; the tag and the release page are the release.
+- ~~Whether `skill-creator` and `talk-like-a-human` ship with the set or stay development-only.~~ Resolved on 2026-11-10: both stay development-only; neither is under `weave-your-work/`, so neither is installed.
+- ~~Which checks the verification workflow runs beyond discovery, and whether it blocks a merge or only reports.~~ Resolved on 2026-11-10: the workflow installs the set, compares the installed names with the directories under `weave-your-work/`, and parses every `SKILL.md` front matter; it only reports.
+- ~~`GLOSSARY.md` is gitignored while some skills refer to a shared glossary; whether it ships is unsettled.~~ Resolved on 2026-11-10: each project generates its own `GLOSSARY.md`; the set does not ship one.
 - ~~Where this project's roster lives once it leaves `.agents/skills/`: `.agents/issue-handles.toml`, or back to `.waymark/handles.toml` where it lived before 2026-11-09.~~
   Resolved on 2026-11-10: `.work-weave/issue/handles.toml`, shared in Git; task `wm-ssfcjp9hxbxh` is revised to that path. (user confirmed, 2026-11-10)
 
-## Out of scope
+## Review
 
-- The Claude Code plugin marketplace and `plugin.json`, which is matt's second distribution channel.
-- A Codex plugin manifest.
-- Publishing to any other registry or marketplace.
-- A docs site or landing page.
+passed
+
+- Goal: a stranger's `npx skills add qiyueran-source/weave-your-work -g` installed 22 skills with no skipped entry, the annotated tag `v0.1.0` has a release page whose changelog names the change, and the README carries the install command and Apache-2.0. Evidence: PRs #11, #12, and #13, the release page, and the install run against the public repository.
+- Convention: the work reached `main` through pull requests; nothing was published to npm and no assets were attached; the skills stay under `weave-your-work/`, with project data under each project's `.work-weave/`.

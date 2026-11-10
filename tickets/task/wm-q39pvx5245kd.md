@@ -3,11 +3,12 @@ schema: 1
 id: wm-q39pvx5245kd
 title: Give the repo a front page and a license
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T05:17:22Z
-updated_at: 2026-11-10T12:27:12Z
+updated_at: 2026-11-10T12:41:31Z
+closed_at: 2026-11-10T12:41:31Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -31,3 +32,20 @@ Both README versions explain the three characteristics and link to each other. T
 
 - No `CONTRIBUTING.md`, no code of conduct, no issue templates.
 - No docs site, no screenshots, no badges.
+
+## Result
+
+`README.md` and `README.zh-CN.md` install globally with `npx skills add qiyueran-source/weave-your-work -g` and name dropping `-g` as the project-local alternative; they link each other and `LICENSE`. `LICENSE` carries the full Apache License 2.0 text with `Copyright 2026 frank`. GitHub reports `Apache-2.0` in the repository's license slot.
+
+The install command was exercised against the public repository: 22 skills, all `installed`, no skipped entries.
+
+## Review
+
+passed
+
+- Goal: both READMEs explain the set, link each other, carry the install and setup instructions with the global command and the project-local alternative, and link Apache-2.0; GitHub displays Apache-2.0.
+- Convention: no badges, docs site, contributing guide, or issue templates were added.
+
+## Next step
+
+- None.

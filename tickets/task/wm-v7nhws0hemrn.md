@@ -3,11 +3,12 @@ schema: 1
 id: wm-v7nhws0hemrn
 title: Fail CI on anything an install would skip
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T05:17:22Z
-updated_at: 2026-11-10T12:27:12Z
+updated_at: 2026-11-10T12:41:27Z
+closed_at: 2026-11-10T12:41:27Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -35,3 +36,22 @@ A pull request that adds a `SKILL.md` with an unquoted `description` containing 
 - The workflow reports on pull requests; making it a required check is a repository setting, decided outside this task.
 - No formatting, linting, or link checking.
 - No publish step and no tag.
+
+## Result
+
+`.github/workflows/verify.yml` runs on pull requests and on push to `main`, installs with `npm ci`, installs `skills@1.7.6` into `$RUNNER_TEMP/home` with `-g -y -a codex --json`, and runs `scripts/check-skills.mjs`. The script fails when an entry is not `installed`, when the installed names differ from the directories under `weave-your-work/` that hold a `SKILL.md`, or when a `SKILL.md` front matter is unreadable or lacks `name` or `description`.
+
+PR #12 passed the workflow in 11 seconds. A deliberately broken skill on PR #14 failed it: the log named `weave-your-work/zzz-broken-demo/SKILL.md` and `Nested mappings are not allowed in compact mappings`, and the same run reported the skill missing from the install. PR #14 was closed without merging. A clean run on `main` (run 42816587860) reports 22 skills installed.
+
+The workflow cannot use `skills add . --list --json`: skills 1.7.6 rejects the two flags together and still exits 0, so the check reads the install result instead.
+
+## Review
+
+passed
+
+- Goal: a broken `SKILL.md` fails the verify job with the file and the parse error named, while the current set passes. Evidence: PR #14's failed run and PR #12's passed run.
+- Convention: the workflow only reports; no required check was configured, and no formatting, linting, or publish step was added.
+
+## Next step
+
+- None. Making the job a required check is a repository setting and stays outside this task.
