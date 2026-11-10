@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T15:30:29Z
-updated_at: 2026-11-10T00:44:24Z
+updated_at: 2026-11-10T00:59:26Z
 ---
 ## Question tree
 
@@ -21,12 +21,13 @@ updated_at: 2026-11-10T00:44:24Z
   - [x] The flow document is called `start-a-project`; no `usage.md`.
   - [x] The checklist's fifteen items in five groups; no remote marks two as not applicable.
   - [x] The rule set is `rules-git` and `rules-checklist`; no language rule.
-  - [ ] How the missing `usage.md` squares with the bundle convention.
-  - [ ] Where the fifteen checks live.
+  - [x] `.agents/rules/rules-bundles.md` is amended for usage documents.
+  - [x] The fifteen checks live only in `rules-checklist.md`, starred for the daily run.
+  - [ ] The tool floors after the dependency audit: Node 20.18 or 22.20, and what an unsupported platform does.
 - [ ] The daily startup check
   - [x] It is a rule, not a skill.
   - [x] It runs at session start and when a feature turns out to be unavailable.
-  - [ ] What it checks on each run, and how it avoids drifting from the checklist.
+  - [x] The checks are the starred ones; the unavailable-feature run covers all fifteen.
 - [ ] Joining a clone
   - [x] Its document is called `join-a-project`.
   - [ ] Its steps and conflicts; deferred until initialization is settled.
@@ -73,7 +74,7 @@ updated_at: 2026-11-10T00:44:24Z
 - Q20 Is the three flows one skill or more?
   A: "日常检查搞个rules吧，初始化就放两类". The daily check becomes a rule; the skill covers the two initialization flows.
 - Q21 Where the SOP document lives.
-  A: "从头初始化文档叫 start-a-project（相应的已有项目的叫join-a-project）". The flow documents are named `start-a-project` and `join-a-project`; the usage.md question is still open.
+  A: "从头初始化文档叫 start-a-project（相应的已有项目的叫join-a-project）". The flow documents are named `start-a-project` and `join-a-project`.
 - Q22 What first-time initialization assumes and does.
   A: "可以，假定技能已经装好，其他的都没有". The skill set is installed; nothing else exists.
 - Q23 The rule set.
@@ -89,3 +90,25 @@ updated_at: 2026-11-10T00:44:24Z
   A: "语言不要，按项目来". No language rule; the project's own convention applies. The set is `rules-git` and `rules-checklist`.
 - Q27 What the daily rule checks and when.
   A: "如果某个功能不可用时就整体查一下". Besides the session-start run, a feature that turns out to be unavailable triggers the whole check.
+- Q28 The usage document convention.
+  A: "那改现在的bundle规则。你看task的bundle就没有usage". Amend `.agents/rules/rules-bundles.md`.
+- Q29 Where the checks live.
+  A: "对". All fifteen in `rules-checklist.md`, starred for the daily run.
+
+### Dependency audit (agent, 2026-11-10)
+
+The person asked whether the dependency set is sufficient and whether cargo or Python is needed. Facts established by running the commands on this machine, all against waymark 0.1.2 and `skills` 1.7.6.
+
+- **Python: not needed.** No file under `weave-your-work/` mentions Python and there is no `.py` there. Python appears only in two installed third-party skills, `talk-like-a-human/scripts/check_terms.py` and `skill-creator/scripts/*.py`. `__pycache__/` in the root `.gitignore` is a leftover, not a dependency.
+- **cargo: not needed for the four supported platforms.** Waymark publishes prebuilt archives for linux-x86_64, macos-aarch64, macos-x86_64, and windows-x86_64, each with a `.sha256`; a prebuilt needs no Rust toolchain. `cargo install waymark-cli` is an alternative, not a requirement.
+- **cargo is the only path on linux-aarch64.** The v0.1.2 release has no `linux-aarch64` archive; on that platform the checklist cannot pass by download, and the SOP has no documented fallback.
+- **Node floor is 22.20, not 20.18.** The `skills` package that installs the set declares `engines: { node: ">=22.20.0" }`. The bundle tools accept 20.18 (`smee-client` declares `^20.18 || >=22`, `undici` `>=20.18.1`, the glossary MCP SDK `>=18`), but the install step that precedes setup needs 22.20.
+- **`jq` is not required.** `gh api --jq` works with `jq` removed from `PATH`; `gh` carries its own filter.
+- **The protection check must read `.protected`, not `/protection`.** `gh api repos/<owner>/<repo>/branches/<default>` returns `protected: true` for a non-admin member and exits 0; `gh api repos/<owner>/<repo>/branches/<default>/protection` returns 404 for the same account.
+- **`waymark init` takes one `--category`.** A second `--category` is a usage error, so the SOP adds the other two with `waymark config add category <key> <path>`.
+- **Re-running `waymark init` without `--force` is safe.** It reuses the existing configuration and exits 0. With `--force` it rewrites the file: storage root changed and all six custom fields disappeared, so the "never `--force`" decision is load-bearing.
+- **`config add` on an existing key exits 3.** Both `config add field` and `config add category` fail with `already declared` / `already exists`, so the SOP checks `waymark config show` before adding, or treats exit 3 as already done.
+- **A fresh init writes generation 1.8, not this repository's 1.9.** The generation is waymark's to write; the checklist must not pin it.
+- **The install source must be the subdirectory.** `add QiYueran-source/weave-your-work --list` finds 39 skills, including unrelated ones outside `weave-your-work/`; `add QiYueran-source/weave-your-work/weave-your-work --list` finds the 15 that belong to the set.
+- **The default install writes four copies.** Without `-a`, the CLI installs to `.claude/skills`, `.agents/skills`, `.kiro/skills`, and `.trae/skills`. `-a codex` writes only `.agents/skills`, which is the directory the checklist reads.
+- **The listener step is Linux-only as written.** `issue/bundle/setup.md` uses `systemctl --user` and `loginctl`; there is no macOS or Windows equivalent in the bundle, so item 14 cannot pass there as documented.

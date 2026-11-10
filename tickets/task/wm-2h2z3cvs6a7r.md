@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-10T00:47:51Z
-updated_at: 2026-11-10T00:47:51Z
+updated_at: 2026-11-10T01:00:58Z
 parent: wm-ygnttse5hd5k
 custom_fields:
   needs_human: false
@@ -19,10 +19,23 @@ custom_fields:
 Write `weave-your-work/setup/start-a-project.md`, the SOP that takes an empty directory to a configured project.
 
 1. Open with what it assumes: the skill set is installed and nothing else exists — no git repository, no waymark configuration, no remote.
-2. Write the steps in this order: confirm the five skill directories; run setup's own `bundle/setup.md` so its rules exist; walk the tools (git, waymark 0.1.2 or newer, node 20.18 or newer with npm, gh signed in), installing what can be installed and stopping for what a person must do; `git init` when the directory is not a repository, and set the git identity when it is missing; run `waymark init` with storage root `tickets` and the categories map, task, and testimony; add the six custom fields; ask the operator once and set it; run the four bundle setups in the order map, task, glossary, issue; write the AGENTS.md section; run the check.
+2. Write the steps in this order: confirm the five skill directories; run setup's own `bundle/setup.md` so its rules exist; walk the tools (git, waymark 0.1.2 or newer, node 22.20 or newer with npm, gh signed in), installing what can be installed and stopping for what a person must do; `git init` when the directory is not a repository, and set the git identity when it is missing; run `waymark init` with storage root `tickets` and one category; add the other two categories and the six custom fields; ask the operator once and set it; run the four bundle setups in the order map, task, glossary, issue; write the AGENTS.md section; run the check.
 3. Each step states the action and names the check that proves it, without repeating the check's command; the commands live in `.agents/rules/rules-checklist.md`.
 4. End with the result table and the changed files; commit nothing and create no remote.
 5. Give Unix and Windows commands where they differ.
+
+## Verified command shapes
+
+Run on 2026-11-10 against waymark 0.1.2. The document must use these, not the shapes sketched earlier.
+
+- `waymark init --storage-root tickets --category map --operator <name>` then `waymark config add category task tickets/task`, `waymark config add category testimony testimony`. A second `--category` is a usage error, so init takes one and `config add` takes the rest.
+- `waymark config add field <key> <type>` for each of the six. It exits 3 when the key already exists, so a re-run reads `waymark config show` first, or treats exit 3 as already done.
+- `waymark init` again without `--force` reuses the existing configuration and exits 0. With `--force` it rewrites the file, dropping every custom field; the step must say never to use `--force`.
+- `waymark config set operator <name>` sets the operator in `.waymark/user.toml`, defaulting from `git config user.name`.
+- Node floor is 22.20, not 20.18: the `skills` package that installs the set declares `engines: node >=22.20.0`. The bundle tools alone accept 20.18.
+- Waymark's own generation after a fresh init is 1.8; this repository carries 1.9 because its config grew. The document must not pin the generation.
+- Waymark ships prebuilt archives for linux-x86_64, macos-aarch64, macos-x86_64, and windows-x86_64; no Rust toolchain is needed. linux-aarch64 has no archive, so that platform needs `cargo install waymark-cli`.
+- `npx skills add <repo>/weave-your-work -a codex` writes only `.agents/skills/`; without `-a` it also writes `.claude/skills`, `.kiro/skills`, and `.trae/skills`.
 
 ## Acceptance signal
 
