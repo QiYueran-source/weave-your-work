@@ -73,13 +73,20 @@ Check 11.
 
 Run the four bundle setups from the installed skill set in the same order as `start-a-project.md` step 8: `map`, `task`, `glossary`, `issue`. The glossary and issue setups copy their tools into `.work-weave/runtime/glossary/` and `.work-weave/runtime/issue/` and run `npm ci --omit=dev` there. Read each exit status and stop on a non-zero one.
 
-Then install any other project dependencies the clone needs. Find them outside the runtimes and Git:
+Then install any other project dependencies the clone needs. Find them outside the runtimes, Git, the installed skills, the skill source, and the root manifest:
 
 ```sh
-find . -name package.json -not -path '*/node_modules/*' -not -path './.git/*' -not -path './.work-weave/*'
+find . -name package.json \
+  -not -path '*/node_modules/*' \
+  -not -path './.git/*' \
+  -not -path './.work-weave/*' \
+  -not -path './.agents/*' \
+  -not -path './.inbox/*' \
+  -not -path './weave-your-work/*' \
+  -not -path './package.json'
 ```
 
-Run `npm install` in each directory that comes back, and skip a directory whose `package.json` declares no dependencies. When nothing comes back, report "this project has no other dependencies to install" and move on; do not run `npm install` at the root, because a root `package.json` may not be what the project uses.
+Run `npm install` in each directory that comes back, and skip a directory whose `package.json` declares no dependencies. The four bundle setups already handled the installed skills, so never install under `.agents/skills/`. Do not run `npm install` at the root either, because a root `package.json` may not be what the project uses. When nothing comes back, report "this project has no other dependencies to install" and move on.
 
 A failed install can still leave a partial `node_modules`, so a directory that exists proves nothing. An unwritable npm cache is the usual cause; use `--cache <a directory you own>` for `npm ci` or `npm install`. Running the tool is not proof either: an import that cannot resolve prints `ERR_MODULE_NOT_FOUND` and exits 0. Check 15 is the exception — it starts the glossary MCP server and counts the tools it answers with.
 
