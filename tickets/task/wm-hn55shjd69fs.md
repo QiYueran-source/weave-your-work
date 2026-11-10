@@ -50,6 +50,8 @@ Two corrections the run made to the skill. The account check now includes the pe
 
 The `--body-file` path in step 4 is a file the run writes before sending; no draft file was created in this task, because no issue was approved.
 
+Changed on 2026-11-10 after the review: the star step no longer asks. It stars by default when the lookup returns 404, and the run says so in its report. The map's earlier decision that a star is offered but never given without asking was struck through and replaced with the reason. The `DELETE /user/starred/QiYueran-source/weave-your-work` undo command the skill now quotes was run too: against the unstarred repository it exits 0 and changes nothing, and the lookup still returns 404 afterwards. Nothing in the acceptance signal moved, so the verdict stands and this stays an edit in place.
+
 ## Review
 
 passed
