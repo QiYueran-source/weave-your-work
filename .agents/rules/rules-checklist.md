@@ -7,7 +7,7 @@ Run these checks at the start of a session, and run every one of them when a fea
 1. At session start, run the starred checks. They are local and cheap, and they catch a tool that vanished, a rule copy that drifted, or a tracker that stopped validating.
 2. When something you expect to work does not, run all seventeen. The unstarred ones cover the pieces that only matter when you reach for them: curl, the remote, the protection flag, the operator, the MCP server, the listener, and the ignore rules.
 3. Report the failures. Name the check and the command that repairs it. Do not run the repair, do not edit a config, and do not install anything. Repairing the setup is the person's decision; this rule only reports.
-4. Mark a check not applicable only where the check says so. A missing remote covers two of them, checks 9 and 16. Never mark a check passed without running it.
+4. Mark a check not applicable only where the check says so. A missing remote covers checks 9 and 16; a plan that does not offer server protection covers check 9 too. Never mark a check passed without running it.
 
 Every command below was run against waymark 0.1.2 and `skills` 1.7.6. The commands are written to be pasted as they are from the project root.
 
@@ -89,7 +89,13 @@ B=$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null)
 gh api "repos/$R/branches/$B" --jq .protected
 ```
 
-Passes when it prints `true`. Read the branch, never the `/protection` endpoint: that endpoint answers 404 for a non-admin member who can still read the branch's `protected` flag.
+Passes when it prints `true`. Read the branch rather than the `/protection` endpoint: that endpoint answers 404 for a non-admin member who can still read the branch's `protected` flag. When it prints `false`, probe that endpoint once to tell a missing rule from a plan that cannot have one:
+
+```sh
+gh api "repos/$R/branches/$B/protection" 2>&1 | head -1
+```
+
+A 403 whose message contains `Upgrade to GitHub Pro or make this repository public` means the plan does not offer server protection: mark the check not applicable, name the plan gate, and say the project relies on `.agents/rules/rules-git.md` and its own pre-push hook if it has one. A `false` with the feature available is a failure. A non-admin member's 404 or 403 without that message is unverifiable, as check 16 treats a missing permission.
 
 ## Tracker
 
