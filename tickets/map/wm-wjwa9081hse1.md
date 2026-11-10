@@ -7,7 +7,7 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-10T15:23:16Z
+updated_at: 2026-11-10T15:36:03Z
 custom_fields:
   split_as: submap
 ---
@@ -48,20 +48,24 @@ Review point: each skill named by a sub-map has a `SKILL.md` under `weave-your-w
 - A map is advanced by `execute-all` and `execute-one-task`, not by a session-level skill of its own. (user confirmed, 2026-11-10)
 - The entry skill `ask-me` landed as a router: it names the skill that fits the situation and invokes nothing. Its main route is `map` then `task`, `grill` sits beside every step, and five branch points open on a state. It carries no question protocol — `grill` owns every discussion, which supersedes the root decision that ask-me would cover one. (user confirmed, 2026-11-10)
 - Two of Matt's session skills joined the set: `handoff` and `wait-what`. `wait-what` was rewritten rather than ported — it stops the work and reports the state in a fixed table instead of re-pitching the last message. (user confirmed, 2026-11-10)
+- The shared glossary is owned by the glossary skill map [Glossary skill](wm-rq3exm0m5563.md); its sources are `.work-weave/glossary/<operator>.jsonl`, and `GLOSSARY.md` is the generated view. (`rules-glossary.md`; see the map)
+- Distribution is the `skills` CLI from the repository's default branch; releases are git tags created by the changesets workflow, and the set is not an npm package. (see [Publish the set](wm-10np2bs10s0e.md) and `README.md`)
+- The batch task [Walk every skill's paths and apply the fixes](wm-5nz6m9f8n7a4.md) owns the acceptance scenarios and eval prompts; there is no fixed count, and the batch record plus the root review decide passing. (agent decision, 2026-11-10)
+- A skill that reads testimonies to reconstruct a split is out of scope for this round; the split plan log is read directly when needed. (agent decision, 2026-11-10)
 
 ## Not yet specified
 
 - ~~Dependencies between skills: how ask-me routes to execution and communication skills.~~ Resolved on 2026-11-10: [Entry skill](wm-8wzzh4hp5evp.md) settled it. ask-me routes to the family entry, not to a skill, and each family entry routes inside its own family.
-- Which map maintains the shared glossary, and which file it lives in.
-- Installation and distribution: reference matt's skill configuration mechanism, optional.
-- Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.
+- ~~Which map maintains the shared glossary, and which file it lives in.~~ Resolved on 2026-11-10: the glossary skill map `wm-rq3exm0m5563`; sources in `.work-weave/glossary/<operator>.jsonl`, `GLOSSARY.md` generated. See Decisions so far.
+- ~~Installation and distribution: reference matt's skill configuration mechanism, optional.~~ Resolved on 2026-11-10: the `skills` CLI and the repository's tagged releases; see Decisions so far.
+- ~~Number of acceptance scenarios and eval prompts, and how passing is judged. The batch that does the worked examples is where this gets answered: it walks every skill's paths and reports what had to change.~~ Resolved on 2026-11-10: the batch task `wm-5nz6m9f8n7a4` owns the scenarios; there is no fixed count, and the batch record plus the root review decide passing.
 - ~~Whether the local comment category stays.~~ Resolved 2026-11-09 in the execution map: the category is removed, because the issue skill uses `comment` for a message category. See [Execution skills: map, task, glossary, and explore](wm-qhd3twqjzhma.md).
 - ~~Skills that may join each category later (retro, handoff, and so on); not this round.~~ Resolved on 2026-11-10: `handoff` and `wait-what` are taken up by [Session skills](wm-s4tvr121g3tv.md); `retro` is dropped, because its only caller was `chief-of-staff` and `chief-of-staff` does not come in.
-- A skill that reads testimonies to reconstruct how a layer was cut and what was considered before it settled.
-  Why it matters: the split's plan log has no reader today; such a skill would give it one and would notice when the log is missing.
+- ~~A skill that reads testimonies to reconstruct how a layer was cut and what was considered before it settled.~~ Resolved on 2026-11-10: out of scope for this round; the split plan log is read directly. See Out of scope.
 
 ## Out of scope
 
 - Software-specific workflows (TDD, code review, and so on).
 - The full issue triage state machine (if ever, a communication-category later design).
 - External connectors and automatic sync.
+- A skill that reads testimonies to reconstruct a split. The split plan log is read directly when needed; the set adds no reader in this round.
