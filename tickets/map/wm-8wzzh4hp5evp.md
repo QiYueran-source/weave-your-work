@@ -3,14 +3,16 @@ schema: 1
 id: wm-8wzzh4hp5evp
 title: 'Entry skill: ask-me routes a person to the skill that fits'
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:07Z
-updated_at: 2026-11-10T07:37:07Z
+updated_at: 2026-11-10T07:37:52Z
 parent: wm-wjwa9081hse1
 soft_links:
   - wm-bhxcbv4j8fyd
+custom_fields:
+  split_as: task
 ---
 ## Destination
 

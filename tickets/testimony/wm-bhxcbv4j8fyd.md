@@ -3,11 +3,12 @@ schema: 1
 id: wm-bhxcbv4j8fyd
 title: 'Entry skill: what ask-me is and how it routes'
 category: testimony
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T07:11:39Z
-updated_at: 2026-11-10T07:35:20Z
+updated_at: 2026-11-10T07:38:07Z
+closed_at: 2026-11-10T07:38:07Z
 soft_links:
   - wm-8wzzh4hp5evp
 ---
@@ -21,7 +22,7 @@ soft_links:
 - [x] What is the main route through the set?
 - [x] Which branch points sit beside it?
 - [x] Does ask-me read the project's tickets while routing?
-- [ ] Which file holds the route, and what does `usage.md` hold?
+- [x] Which file holds the route?
 
 ### Round 1
 
@@ -53,3 +54,16 @@ Settled: ask-me routes and stops there. It indexes the other skills, names the e
   A: 不读，只看人说的话。
 
 Settled: the main route is `map` then `task`; `grill` is not a step on it but reachable from every step. The branch points are `setup`, `fog-explore`, `split`, `update`, and `handoff`. Routing reads what the person said, never the ticket store.
+
+### Round 4
+
+- Q: ask-me 的路线写在哪几个文件？
+  A: 只写 SKILL.md，不另开文件。
+
+Settled: one file.
+
+## Split plan
+
+One task: write `SKILL.md`. The layer is a single document whose parts are sections of it, so splitting further would produce slices that cannot be checked on their own.
+
+- `Write the ask-me skill` — the router itself, one file, every skill reachable in one hop.
