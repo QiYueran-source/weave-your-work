@@ -12,7 +12,7 @@ node <setup-skill>/bundle/tools/check-setup.mjs --starred
 
 `--starred` runs the ten checks a session start covers. Use `--all` when something you expect to work does not. The script prints `ok`, `fail`, `not applicable`, or `unverified` for each check, and exits 1 when a check fails; on a failure it prints the repair. It reads state and repairs nothing.
 
-`<setup-skill>` is `.agents/skills/setup` for a project install or `~/.agents/skills/setup` for a global one. The script uses only Node and calls `git`, `gh`, `waymark`, and `curl` directly, so it does not depend on a shell.
+`<setup-skill>` is `.agents/skills/setup` for a project install, `~/.agents/skills/setup` for a global one, or `%USERPROFILE%\.agents\skills\setup` for a global one on Windows. The script uses only Node and calls `git`, `gh`, `waymark`, and `curl` directly, so it does not depend on a shell.
 
 ## What to do
 
@@ -47,7 +47,7 @@ The starred checks are 1, 2, 3, 4, 6, 7, 10, 12, 13, and 14.
 
 ### Skills and rules
 
-12. **Every installed skill is still there.** * For every directory named `skills` within three levels (skipping `.git` and `node_modules`) and for `~/.agents/skills`, each `<name>/SKILL.md` is present; each project root's tracked skills have `missing: none`, the root has no tracked skills yet, or the root repeats skills already reached through another root. The five skills the setup flow calls — `setup`, `map`, `task`, `glossary`, and `issue` — appear in at least one root. A skill source checkout (`weave-your-work/` and `skills.sh.json`) skips the required set. Repair: reinstall the missing skills.
+12. **Every installed skill is still there.** * For every directory named `skills` within three levels (skipping `.git` and `node_modules`) and for `~/.agents/skills` (`%USERPROFILE%\.agents\skills` on Windows), each `<name>/SKILL.md` is present; each project root's tracked skills have `missing: none`, the root has no tracked skills yet, or the root repeats skills already reached through another root. The five skills the setup flow calls — `setup`, `map`, `task`, `glossary`, and `issue` — appear in at least one root. A skill source checkout (`weave-your-work/` and `skills.sh.json`) skips the required set. Repair: reinstall the missing skills.
 13. **Every bundle's rules are registered.** * For every `<root>/<skill>/bundle/rules/*.md` in the project and global installs, `.agents/rules/<name>` exists and matches byte for byte. Repair: run the bundle setup that owns the missing rule.
 14. **AGENTS.md points at the rules.** * `AGENTS.md` contains a line with `Follow .agents/rules`. Repair: write the prompt at the top of the file.
 
