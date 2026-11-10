@@ -63,7 +63,8 @@ GH_TOKEN=$(gh auth token --user <account>) gh search issues \
 Search by the symptom, not the fix: "listener queue empty", not "fix to-routing". Also read the open issues once, because a symptom often has a different title than the reporter expected:
 
 ```
-gh issue list --repo QiYueran-source/weave-your-work --state all --limit 30
+GH_TOKEN=$(gh auth token --user <account>) gh issue list \
+  --repo QiYueran-source/weave-your-work --state all --limit 30
 ```
 
 When a matching issue is open, add a comment there instead of filing a new one. When it is closed, say so in the draft and reference it; a closed issue that came back is information.
@@ -82,7 +83,8 @@ Title: `[<skill>] <the symptom>`, for example `[issue] listener queues a message
 The label comes from the repository's own set:
 
 ```
-gh label list --repo QiYueran-source/weave-your-work
+GH_TOKEN=$(gh auth token --user <account>) gh label list \
+  --repo QiYueran-source/weave-your-work
 ```
 
 `bug` for a wrong behaviour, `enhancement` for a missing capability, `documentation` for a skill whose text is wrong or unclear. Do not invent a label; a rejected label fails the whole create call.
