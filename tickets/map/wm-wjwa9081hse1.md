@@ -7,20 +7,15 @@ status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:12:59Z
-updated_at: 2026-11-10T07:50:13Z
+updated_at: 2026-11-10T15:23:16Z
 custom_fields:
   split_as: submap
 ---
-## Destination
+## Target
 
 Form an installable skill set for general team collaboration under weave-your-work, using waymark as the single tracker and carrying goal, task, claim, and acceptance through one chain. Ownership is clear: one owner per item, the owner advances and accepts. It suits any domain and is not limited to software development.
 
-## Notes
-
-- Category split (decided): entry (ask-me), environment (setup), execution (map, task, glossary), communication (issue). Each category can hold several skills; this round opens one map per category, and each category's children are skill maps.
-- One map per category. Design decisions live in each sub-map; this map is an index only and does not restate them. The structure is read from each child's `parent` field, not from a list in this body.
-- Reference sources: matt skill set (.inbox/skills), reference skills (.inbox/skills-ref), design notes (.inbox/work-methods/).
-- Key findings (general-methods.md): name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts others can read; the primitive is the question protocol; three gaps to close (irreversibility, decision authority placement, ungrillable questions need probes).
+Why: it is the shared path from a goal to an accepted result; without it, each project invents its own, and the evidence stays in conversation instead of the tracker.
 
 ## Acceptance direction
 
@@ -28,8 +23,13 @@ The set is accepted when every skill the sub-maps name is delivered under `weave
 
 That run is one batch, not one per map: write the worked example each effort needs under `use-weave-your-work-examples/`, walk every skill's paths in it, and apply whatever the walk shows is wrong. A map is judged on the deliverable its own acceptance direction names; whether a reader can walk the set is judged here, once.
 
+Review point: each skill named by a sub-map has a `SKILL.md` under `weave-your-work/` and passes `scripts/check-skills.mjs`; a clean install lists the whole set; the batch record under this map names the example walk and the changes it forced.
+
 ## Decisions so far
 
+- The root map is an index: design decisions live in each sub-map, and the structure is read from each child's `parent`, not from a list in this body. (agent decision, recorded from the earlier Notes)
+- Design references: the matt skill set (`.inbox/skills`), reference skills (`.inbox/skills-ref`), and design notes (`.inbox/work-methods/`). (source note)
+- The design adopts the key findings in `.inbox/work-methods/general-methods.md`: name uncertainty explicitly, move judgment away from the executor, externalize conclusions into artifacts others can read. The question protocol is the primitive; the three gaps are irreversibility, decision authority placement, and ungrillable questions that need probes. (source note)
 - Delivery shape: a skill set under weave-your-work, one map per category (user confirmed).
 - Category split: entry/environment/execution/communication, one map per category (user confirmed).
 - Skill layer: a category's children are skill maps, and a skill's function details become tasks under its skill map (user confirmed).
@@ -49,7 +49,7 @@ That run is one batch, not one per map: write the worked example each effort nee
 - The entry skill `ask-me` landed as a router: it names the skill that fits the situation and invokes nothing. Its main route is `map` then `task`, `grill` sits beside every step, and five branch points open on a state. It carries no question protocol — `grill` owns every discussion, which supersedes the root decision that ask-me would cover one. (user confirmed, 2026-11-10)
 - Two of Matt's session skills joined the set: `handoff` and `wait-what`. `wait-what` was rewritten rather than ported — it stops the work and reports the state in a fixed table instead of re-pitching the last message. (user confirmed, 2026-11-10)
 
-## Not yet specified (cross-category coordination)
+## Not yet specified
 
 - ~~Dependencies between skills: how ask-me routes to execution and communication skills.~~ Resolved on 2026-11-10: [Entry skill](wm-8wzzh4hp5evp.md) settled it. ask-me routes to the family entry, not to a skill, and each family entry routes inside its own family.
 - Which map maintains the shared glossary, and which file it lives in.
