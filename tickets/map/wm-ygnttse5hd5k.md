@@ -58,6 +58,8 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 
 - Setup carries no `usage.md`: `SKILL.md` points at `start-a-project.md` and `join-a-project.md` directly. (user confirmed, 2026-11-10)
 - The rule set is `rules-git` and `rules-checklist`. There is no language rule; the project's own language convention applies. (user confirmed, 2026-11-10)
+- The rule set grows to three: `rules-install` states that a globally installed set still keeps the project's dependencies inside the project, and that the project root is resolved and confirmed before any step runs. The user asked for it as a bundle rule rather than a step, so that it constrains every install instead of one flow. (user confirmed, 2026-11-10)
+- The project root has no single definition today. `waymark` walks up to the nearest `.waymark/config.toml`, the checks compare against `git rev-parse --show-toplevel`, the listener reads `process.cwd()`, the glossary server takes `--project` and only falls back to walking up, and `adr`, `salvage-and-restart`, `stop-and-wait` write relative paths under whatever directory they were started in. `waymark init` creates at the current directory while every read finds the nearest ancestor, so the two disagree when a stray `.waymark` sits above. The new rule settles one definition and one confirmation step. (measured 2026-11-10)
 - The daily check also runs when a feature turns out to be unavailable, not only at session start. (user confirmed, 2026-11-10)
 
 - `.agents/rules/rules-bundles.md` is amended: the skill root carries `SKILL.md` and its usage documents; a skill with one usage document names it `usage.md`, and one whose use splits by flow names each document after the flow. (user confirmed, 2026-11-10)
