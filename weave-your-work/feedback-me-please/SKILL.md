@@ -99,6 +99,14 @@ GH_TOKEN=$(gh auth token --user <account>) gh issue create \
   --label bug
 ```
 
+Three rules make that gate mean something.
+
+- **No answer is not a yes.** A draft the person has not answered stays a draft, and the run ends with it filed in the ticket that owns the work, or in the session when no ticket does. Nothing is sent on the strength of a silence, a "sounds reasonable", or a yes given to a different draft.
+- **One yes buys one issue.** The approval covers the draft that was shown, with that title, that label, and that body. A corrected draft, a second symptom, or a resend after a failed command asks again.
+- **The person reads the real text, not a summary.** Show the title, the label, the body as it will be posted, and the exact command. Not "I'll file something about the listener queue": a summary approves the idea, while the body is what the repository keeps forever.
+
+The same three apply to a comment on an existing issue, the other public write this skill can make.
+
 Read the returned URL back. Then one line into the ticket that owns the work, or into the session if no ticket owns it, saying what was filed. Do not wait for the author's reply in this run.
 
 ## Step 5: the star
