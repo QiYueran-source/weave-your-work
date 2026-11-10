@@ -3,11 +3,12 @@ schema: 1
 id: wm-hxj76ykjqx4c
 title: Write the join-a-project SOP
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T04:36:43Z
-updated_at: 2026-11-10T04:37:26Z
+updated_at: 2026-11-10T04:40:24Z
+closed_at: 2026-11-10T04:40:24Z
 parent: wm-ygnttse5hd5k
 custom_fields:
   needs_human: false

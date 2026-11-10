@@ -42,6 +42,15 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - Setup covers three flows: first-time initialization, joining a cloned project, and the daily startup check. They are designed one at a time, starting with first-time initialization; the other two wait for it. The SOP is the whole initialization flow. (user confirmed, 2026-11-10; this replaces the earlier two-mode decision)
 - The daily startup check is a rule, not a skill. The setup skill covers the two initialization flows only. (user confirmed, 2026-11-10)
 - The first-time initialization document is `start-a-project`; the join document is `join-a-project`. (user confirmed, 2026-11-10)
+- Join runs on a clone of a project already using waymark, and does not install skills: the clone carries them. It runs all seventeen checks, not only the starred ones, because a clone is the one moment when no local piece has been proven. (user confirmed, 2026-11-10)
+- Join sets this clone's git identity and never edits `handles.toml`: the roster is a shared committed file, so a missing name goes through a branch and a pull request. (user confirmed, 2026-11-10)
+- The operator and the GitHub login are asked as one pair, because neither derives the other: `git config user.name` is this machine's name and `gh api user` is whichever account is signed in. Check 11 proves the operator matches a `[handles]` key, folded for case the way the listener folds it. (user confirmed, 2026-11-10)
+- The dependency step finds every `package.json` outside `node_modules` instead of assuming where the tools live, and reads each install's exit status: a partial `node_modules` and an import that exits 0 both look like success otherwise. (user confirmed, 2026-11-10)
+- The post-merge hook ships as `sh` only. Git runs the file named `post-merge` and reads its shebang, so a PowerShell variant would never be called; Git for Windows supplies the shell. (user confirmed, 2026-11-10)
+- The multi-agent question is settled by discovery, not by a list: any directory named `skills` holding `<name>/SKILL.md` is a root, so `.agents/skills` and an agent's own directory are both covered. Cursor reads `.agents/skills` itself; `.claude/skills`, `.kiro/skills`, and `.trae/skills` are written only by the CLI's other targets. (user confirmed, 2026-11-10)
+- `start-a-project.md` carries no `npx skills add` line: the reader is running the flow, so the set is installed. The install command belongs in the repository's README. (user confirmed, 2026-11-10)
+- Check 16 compares the listener unit's `WorkingDirectory` with the project root; `active` alone was true for a unit bound to a different checkout, whose queue can never grow. (user confirmed, 2026-11-10)
+- Where a platform has no service step, the flow names the alternative instead of only reporting the gap: run the listener in a terminal, and say a launch agent or a scheduled task is the person's to write. (user confirmed, 2026-11-10)
 - First-time initialization assumes the skill set is installed and nothing else exists. (user confirmed, 2026-11-10)
 - First-time initialization does not create a remote and does not commit; it lists the files it changed and the person commits. (user confirmed, 2026-11-10)
 - Setup's bundle carries several rules; the person named `rules-git` and `rules-checklist` among them. (user confirmed, 2026-11-10)
@@ -54,14 +63,13 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - `.agents/rules/rules-bundles.md` is amended: the skill root carries `SKILL.md` and its usage documents; a skill with one usage document names it `usage.md`, and one whose use splits by flow names each document after the flow. (user confirmed, 2026-11-10)
 - The `.gitignore` step belongs in `start-a-project.md`, not in the checklist: the checklist is read-only, and the file must exist before the bundles run `npm install`, because a `node_modules` already staged is not removed by a `.gitignore` written afterwards. `waymark init` writes `.waymark/.gitignore` itself; the glossary and issue bundles append their own lines; no bundle covers `node_modules/`, so setup writes it. (user confirmed, 2026-11-10)
 - The checklist carries seventeen checks, in the five groups, plus `curl`, which the issue bundle needs to build its smee channel. They are written for a new project, not for this repository. (user confirmed, 2026-11-10)
-- The skills-and-rules checks discover their targets instead of naming them: one reads `skills-lock.json` so the set can grow or shrink, and one walks `.agents/skills/*/bundle/rules/` so a bundle can be added without editing setup. (user confirmed, 2026-11-10)
+- The skills-and-rules checks discover their targets instead of naming them: a check for the skills themselves and one that walks every `<root>/<skill>/bundle/rules/` so a bundle can be added without editing setup. (user confirmed, 2026-11-10; the first no longer reads `skills-lock.json`, which listed two skills while 41 were installed, and now compares each skills root against what Git tracks)
 - A 404 on the webhook read is not a failure on its own: the check reads `permissions.admin` first, and only an admin's 404 is a real failure. (user confirmed, 2026-11-10)
 - The checks live only in `bundle/rules/rules-checklist.md`, one line each with its command and expected result, starred where the session-start run covers them; session start runs the starred checks, a feature that turns out unavailable runs all of them; `start-a-project.md` references the rule and restates no check. (user confirmed, 2026-11-10)
 
 ## Not yet specified
 
-- Joining a clone: its steps and conflicts.
-- What the join flow does about conflicts that a clone can have.
+- Whether a joined clone that finds a missing roster entry gets a task of its own to track the pull request.
 
 ## Out of scope
 
