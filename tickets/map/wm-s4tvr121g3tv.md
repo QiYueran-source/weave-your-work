@@ -1,14 +1,18 @@
 ---
 schema: 1
 id: wm-s4tvr121g3tv
-title: 'Session skills: re-pitch a message and hand off the session'
+title: 'Session skills: show where the work stands, and hand off the session'
 category: map
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-10T06:26:41Z
-updated_at: 2026-11-10T06:43:35Z
+updated_at: 2026-11-10T06:52:36Z
 parent: wm-wjwa9081hse1
+soft_links:
+  - wm-tky1bkwh57xp
+custom_fields:
+  split_as: task
 ---
 ## Target
 
@@ -20,7 +24,7 @@ Why: the set advances one ticket at a time and has no way to say "stop, show me 
 
 All children are complete and no further children are needed.
 
-Review point: each of the two skills carries a `SKILL.md` under `weave-your-work/` whose description names the state that triggers it; a worked example under `use-weave-your-work-examples/` walks each one once; and neither names a file this project does not have.
+Review point: each of the two skills carries a `SKILL.md` under `weave-your-work/` whose description quotes, names the state that triggers it, and holds `name` and `description` and nothing else; each carries a `usage.md` with one worked pass, as `glossary/usage.md` and `issue/usage.md` do; and neither names a file this project does not have.
 
 ## Notes
 
@@ -39,6 +43,7 @@ Review point: each of the two skills carries a `SKILL.md` under `weave-your-work
 - `handoff` copies Matt's text, with no redesign beyond what the set's own files require. (user confirmed, 2026-11-10)
 - `wait-what` is rewritten rather than ported: the person has lost the thread, the skill stops the work, reads the state off the tickets, and reports it in one short table. Matt's version re-pitches the previous message instead. (user confirmed, 2026-11-10)
 - `wait-what` keeps no language standard of its own: no ASD-STE100, no glossary reference. Wording is covered by `talk-like-a-human`, and naming by `02-english.md`. (user confirmed, 2026-11-10)
+- The worked pass lives in each skill's own `usage.md`, not in `use-weave-your-work-examples/`. That directory holds whole scenarios, so a page there would need both skills finished first, and a task that needs a sibling's output is a slice. (user confirmed the design; this placement follows the set's own convention)
 - `chief-of-staff` is not added. `execute-all` already advances a map's tasks, picks them by owner and status, and sends each to its own subagent, which is most of what the skill would do. (user confirmed, 2026-11-10)
 
 ## Not yet specified
@@ -47,13 +52,11 @@ Review point: each of the two skills carries a `SKILL.md` under `weave-your-work
 - ~~Decision to make: what `chief-of-staff` keeps its memory in — a free wiki as Matt's does, or the tickets and testimonies this set already has.~~ Resolved on 2026-11-10: moot for now, since the skill is dropped. If it returns, the answer is the tickets, because a second memory drifts from the first.
   Why it matters: two memories drift apart, and the record-in-tickets rule puts every settled detail in a ticket.
 - ~~Decision to make: where `handoff` writes its document. Matt writes to the OS temporary directory, which loses a settled decision the rule says belongs in a ticket.~~ Resolved on 2026-11-10: the copy keeps Matt's location. `handoff` is not in conflict with `03-record-in-tickets.md`: it forbids duplicating a spec, ticket, ADR or commit, and points at them by path instead, so the decisions stay in the tickets and the document carries the session state those tickets do not hold.
-- Decision to make: whether `handoff` also starts the next agent, as `claude-handoff` does.
-  Why it matters: `claude --bg` is Claude Code's command; this harness starts a subagent, which inherits the conversation rather than the document.
+- ~~Decision to make: whether `handoff` also starts the next agent, as `claude-handoff` does.~~ Resolved on 2026-11-10: no. `claude --bg` has no counterpart here, a subagent inherits the conversation rather than the document so the document would add nothing, and starting the next session is the person's act. `claude-handoff` is a source, not a second skill. (verified against the harness's tools)
 - ~~Decision to make: whether `wait-what` keeps asking for the glossary's words.~~ Resolved on 2026-11-10: neither reference survives. The rewrite names no file outside the tickets, and `talk-like-a-human` already requires one name for one thing.
 - ~~Decision to make: what language standard `wait-what` asks for. Matt's copy mandates ASD-STE100 Simplified Technical English, which is an English standard with an approved-word list and short-sentence limits; this project replies in Chinese and writes in English.~~ Resolved on 2026-11-10: no standard of its own. It asks for a table and short lines, which is a shape rather than a word list, and the wording rules stay with `talk-like-a-human`.
 - ~~Decision to make: whether `retro` joins too, since Matt's `chief-of-staff` runs one on about a session in five.~~ Resolved on 2026-11-10: no. A retro's only caller was `chief-of-staff`, and no skill here improves the environment after a run.
-- Decision to make: whether `chief-of-staff` comes back once the set has a skill that cuts a new layer from a closed one, which is the part `execute-all` does not reach.
-  Why it matters: it is the difference between advancing a map's tasks and advancing the map, and only the second one ends at the map's target.
+- ~~Decision to make: whether `chief-of-staff` comes back once the set has a skill that cuts a new layer from a closed one, which is the part `execute-all` does not reach.~~ Resolved on 2026-11-10: nothing here to decide. It is not added, and a future need for a skill that advances a whole map opens its own map rather than reopening this one.
 
 ## Out of scope
 
