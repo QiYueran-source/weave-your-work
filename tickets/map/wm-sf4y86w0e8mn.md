@@ -3,11 +3,12 @@ schema: 1
 id: wm-sf4y86w0e8mn
 title: 'Examples skill: keep only the examples that still match the skills'
 category: map
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T01:40:43Z
-updated_at: 2026-11-10T01:42:07Z
+updated_at: 2026-11-10T04:34:29Z
+closed_at: 2026-11-10T04:34:29Z
 parent: wm-wjwa9081hse1
 custom_fields:
   split_as: task
@@ -42,3 +43,10 @@ Review point: `ls` on the skill directory prints exactly those three entries; `S
 - New pages for either scenario.
 - Editing closed tickets that name the removed files; a closed ticket keeps what it recorded.
 - Rewriting the two design stories into a shorter form; what is unique in them is moved, and the rest is dropped.
+
+## Review
+
+passed
+
+- Goal: the three lines of the `Acceptance direction` and the review point hold. `ls` on the skill prints `SKILL.md`, `chemistry-research`, `data-analysis` and nothing else. The skill is one `SKILL.md` naming only those two directories, and a link scan over every Markdown file in it reports no broken relative link. Each of the five removed paths is gone from disk and appears in no file outside `tickets/`. The three facts that existed only in the deleted pages are readable in `docs/gitee-api-notes.md` and `docs/gaps.md`, including the Gitee differences matched by grep and every item of both gap lists. `waymark validate` reports no findings, and the child task's `Result` records each step with the command that read it back.
+- Convention: the children match `split_as: task` — one task, closed, carrying `Result` and this review's sibling on the child. The body holds no children index; the shape is read from `parent` with `waymark tree`. `Not yet specified` is empty of live entries and keeps both resolved ones struck, as `map/body.md` asks. The map was reviewed by its owner, and the review is written here rather than on the child.
