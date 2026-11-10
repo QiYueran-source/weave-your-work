@@ -10,13 +10,13 @@ Weave Your Work 是一组供 AI 智能体使用的技能，帮助团队组织和
 
 ## 安装
 
-安装 Node.js 22.20 或更新版本及 npm，然后在项目目录中运行：
+安装 Node.js 22.20 或更新版本及 npm，然后在任意目录运行一次：
 
 ```sh
-npx skills add qiyueran-source/weave-your-work
+npx skills add qiyueran-source/weave-your-work -g
 ```
 
-按照提示选择要安装的技能和智能体环境。要按下文的步骤开始使用，请选中 `setup` 和 `ask-me`。命令从仓库的默认分支安装，不依赖 npm 包发布。
+按照提示选择要安装的技能和智能体环境。要按下文的步骤开始使用，请选中 `setup` 和 `ask-me`。命令从仓库的默认分支安装，不依赖 npm 包发布。去掉 `-g` 则改为安装到当前项目。
 
 ## 开始使用
 

@@ -10,13 +10,13 @@ For team collaboration, each waymark item has one owner who advances and accepts
 
 ## Install
 
-Install Node.js 22.20 or newer and npm, then run this from your project's directory:
+Install Node.js 22.20 or newer and npm, then run this once for your machine:
 
 ```sh
-npx skills add qiyueran-source/weave-your-work
+npx skills add qiyueran-source/weave-your-work -g
 ```
 
-Select the skills and agent environments you want to install when prompted. Include `setup` and `ask-me` to follow the steps below. The command installs from the repository's default branch; it does not require an npm package release.
+Select the skills and agent environments you want to install when prompted. Include `setup` and `ask-me` to follow the steps below. The command installs from the repository's default branch; it does not require an npm package release. Drop `-g` to install into the current project instead.
 
 ## Get started
 
