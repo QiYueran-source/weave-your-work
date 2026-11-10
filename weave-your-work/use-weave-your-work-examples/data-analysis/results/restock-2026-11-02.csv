@@ -1,0 +1,4 @@
+supplier,sku,product,average_weekly_units,cover_weeks,quantity
+North Roast,SKU-1001,Dark roast coffee,42.00,1.43,24
+North Roast,SKU-1004,Vanilla syrup,7.50,1.60,3
+Pack Supply,SKU-1003,Paper cups,201.25,0.75,253

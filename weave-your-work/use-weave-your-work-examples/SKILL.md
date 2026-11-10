@@ -19,6 +19,7 @@ Read them when:
 
 - `building-work-weave/README.md`: how this project split its own tree, in order.
 - `chemistry-research/README.md`: a fictional lab scenario that walks the task skills and one grill, with a scratch waymark project and the findings from the walk.
+- `data-analysis/README.md`: a fictional shop's restock list, run end to end in its own waymark project: map, grill, both split types, a dependency edge, the task run, all three update dispositions, and the map reviews. The run was unattended, so its grill records accepted recommendations.
 - `designing-the-update-skill/README.md`: how one design map became the update skill, and the four decisions that were reversed on the way.
 - `designing-the-issue-skill/README.md`: how the communication map became a skill for GitHub and Gitee, and why the decisions landed in the ticket rather than a second document.
 - `map-example.md`: one complete map.

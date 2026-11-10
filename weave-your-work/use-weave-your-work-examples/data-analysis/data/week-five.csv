@@ -1,0 +1,6 @@
+date,sku,product,supplier,units_sold,unit_price,on_hand
+2026-11-02,SKU-1001,Dark roast coffee,North Roast,43,9.50,60
+2026-11-02,SKU-1002,Oat milk,Dairy Lane,33,3.80,70
+2026-11-02,SKU-1003,Paper cups,Pack Supply,198,0.12,150
+2026-11-02,SKU-1004,Vanilla syrup,North Roast,8,6.20,12
+2026-11-02,SKU-1005,Espresso beans,North Roast,26,14.00,90
