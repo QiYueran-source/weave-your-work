@@ -21,11 +21,11 @@ Find out whether `start-a-project.md` takes an empty directory to a passing chec
 1. Create an empty directory outside the repository.
 2. Install the skill set into it with the skills CLI.
 3. Follow `start-a-project.md` from its first step to the result table, recording every command that fails and every check that cannot pass.
-4. Record each of the fifteen checks with its state and, for a failure, the command and its output.
+4. Record each of the seventeen checks with its state and, for a failure, the command and its output.
 
 ## Acceptance signal
 
-The run reaches the result table, and the record lists all fifteen checks with a state each; every failure names the command and its output.
+The run reaches the result table, and the record lists all seventeen checks with a state each; every failure names the command and its output.
 
 ## Next step
 

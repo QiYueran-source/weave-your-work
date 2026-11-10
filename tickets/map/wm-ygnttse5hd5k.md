@@ -45,7 +45,7 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - First-time initialization assumes the skill set is installed and nothing else exists. (user confirmed, 2026-11-10)
 - First-time initialization does not create a remote and does not commit; it lists the files it changed and the person commits. (user confirmed, 2026-11-10)
 - Setup's bundle carries several rules; the person named `rules-git` and `rules-checklist` among them. (user confirmed, 2026-11-10)
-- The checklist's fifteen items in five groups are confirmed; without a remote, the protection and listener items are not applicable. (user confirmed, 2026-11-10)
+- The checklist's items in five groups are confirmed; without a remote, the protection and listener items are not applicable. The count settled at seventeen on 2026-11-10.
 
 - Setup carries no `usage.md`: `SKILL.md` points at `start-a-project.md` and `join-a-project.md` directly. (user confirmed, 2026-11-10)
 - The rule set is `rules-git` and `rules-checklist`. There is no language rule; the project's own language convention applies. (user confirmed, 2026-11-10)
@@ -53,11 +53,13 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 
 - `.agents/rules/rules-bundles.md` is amended: the skill root carries `SKILL.md` and its usage documents; a skill with one usage document names it `usage.md`, and one whose use splits by flow names each document after the flow. (user confirmed, 2026-11-10)
 - The `.gitignore` step belongs in `start-a-project.md`, not in the checklist: the checklist is read-only, and the file must exist before the bundles run `npm install`, because a `node_modules` already staged is not removed by a `.gitignore` written afterwards. `waymark init` writes `.waymark/.gitignore` itself; the glossary and issue bundles append their own lines; no bundle covers `node_modules/`, so setup writes it. (user confirmed, 2026-11-10)
-- The fifteen checks live only in `bundle/rules/rules-checklist.md`, one line each with its command and expected result, starred where the session-start run covers them; session start runs the starred checks, a feature that turns out unavailable runs all fifteen; `start-a-project.md` references the rule and restates no check. (user confirmed, 2026-11-10)
+- The checklist carries seventeen checks, in the five groups, plus `curl`, which the issue bundle needs to build its smee channel. They are written for a new project, not for this repository. (user confirmed, 2026-11-10)
+- The skills-and-rules checks discover their targets instead of naming them: one reads `skills-lock.json` so the set can grow or shrink, and one walks `.agents/skills/*/bundle/rules/` so a bundle can be added without editing setup. (user confirmed, 2026-11-10)
+- A 404 on the webhook read is not a failure on its own: the check reads `permissions.admin` first, and only an admin's 404 is a real failure. (user confirmed, 2026-11-10)
+- The checks live only in `bundle/rules/rules-checklist.md`, one line each with its command and expected result, starred where the session-start run covers them; session start runs the starred checks, a feature that turns out unavailable runs all of them; `start-a-project.md` references the rule and restates no check. (user confirmed, 2026-11-10)
 
 ## Not yet specified
 
-- The individual checklist items. The person confirmed the five groups and the count of fifteen; the items themselves were never written down. Reconstructing them yields sixteen, and `curl` is missing from that reconstruction even though the issue bundle needs it. The draft sits in [Write setup's rule bundle](../task/wm-q38jx2nmm18y.md) and the person settles it before the rule file is written.
 - Joining a clone: its steps and conflicts.
 - What the join flow does about conflicts that a clone can have.
 

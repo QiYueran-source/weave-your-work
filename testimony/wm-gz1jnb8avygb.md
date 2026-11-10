@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-09T15:30:29Z
-updated_at: 2026-11-10T00:59:26Z
+updated_at: 2026-11-10T01:26:34Z
 ---
 ## Question tree
 
@@ -19,15 +19,17 @@ updated_at: 2026-11-10T00:59:26Z
   - [x] Assumes the skill set is installed; nothing else exists.
   - [x] May run `git init`; creates no remote; does not commit.
   - [x] The flow document is called `start-a-project`; no `usage.md`.
-  - [x] The checklist's fifteen items in five groups; no remote marks two as not applicable.
+  - [x] The checklist's items in five groups; no remote marks two as not applicable. The count settled at seventeen.
   - [x] The rule set is `rules-git` and `rules-checklist`; no language rule.
   - [x] `.agents/rules/rules-bundles.md` is amended for usage documents.
-  - [x] The fifteen checks live only in `rules-checklist.md`, starred for the daily run.
-  - [ ] The tool floors after the dependency audit: Node 20.18 or 22.20, and what an unsupported platform does.
+  - [x] The checks live only in `rules-checklist.md`, starred for the daily run.
+  - [x] The tool floors after the dependency audit: Node 22.20 for the install, 20.18 for the bundle tools.
+  - [x] The seventeen checks, each with a command and a passing result.
+  - [x] `.gitignore` is written in the SOP, not checked only.
 - [ ] The daily startup check
   - [x] It is a rule, not a skill.
   - [x] It runs at session start and when a feature turns out to be unavailable.
-  - [x] The checks are the starred ones; the unavailable-feature run covers all fifteen.
+  - [x] The checks are the starred ones; the unavailable-feature run covers all of them.
 - [ ] Joining a clone
   - [x] Its document is called `join-a-project`.
   - [ ] Its steps and conflicts; deferred until initialization is settled.
@@ -80,7 +82,7 @@ updated_at: 2026-11-10T00:59:26Z
 - Q23 The rule set.
   A: "多几个，包括rules-git，rules-checklist等". More than one rule file; `rules-git` and `rules-checklist` are named.
 - Q24 The checklist items.
-  A: "可以". The fifteen items in five groups are confirmed.
+  A: "可以". The items in five groups are confirmed; the exact count settled later at seventeen.
 
 ### Round 4
 
@@ -93,7 +95,22 @@ updated_at: 2026-11-10T00:59:26Z
 - Q28 The usage document convention.
   A: "那改现在的bundle规则。你看task的bundle就没有usage". Amend `.agents/rules/rules-bundles.md`.
 - Q29 Where the checks live.
-  A: "对". All fifteen in `rules-checklist.md`, starred for the daily run.
+  A: "对". All the checks in `rules-checklist.md`, starred for the daily run.
+
+### Round 5: the gitignore and the checklist
+
+- Q30 Where `.gitignore` is created.
+  A: "可以". The person accepted the proposal: in `start-a-project.md`, before the bundle setups, not in the checklist.
+- Q31 Whether `curl` becomes a check.
+  A: "curl加". Seventeen checks.
+- Q32 Whether the checks are written for a new project or for this repository.
+  A: "B，新项目". A new project, where the five skill directories and all bundle rules are present.
+- Q33 How the rules check names its targets.
+  A: "检查skills中的bundle是否都注册完了，不用详细的说，要检查哪些，不然到时候加减bundle后面也要改setup". Discovery, not a list: walk `.agents/skills/*/bundle/rules/` and compare each against `.agents/rules/`.
+- Q34 What a 404 on the webhook read means.
+  A: "如果404，看看自己是不是管理员后再决定，不作为必然失败". Read `permissions.admin` first; only an admin's 404 is a failure.
+- Q35 Whether the issue bundle's unguarded append gets its own task.
+  A: "不用". Report it, do not track it.
 
 ### Dependency audit (agent, 2026-11-10)
 
