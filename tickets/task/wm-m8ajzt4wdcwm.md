@@ -3,11 +3,12 @@ schema: 1
 id: wm-m8ajzt4wdcwm
 title: Tag every release from changesets
 category: task
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-10T05:17:22Z
-updated_at: 2026-11-10T12:27:12Z
+updated_at: 2026-11-10T12:41:24Z
+closed_at: 2026-11-10T12:41:24Z
 parent: wm-10np2bs10s0e
 custom_fields:
   needs_human: false
@@ -39,3 +40,20 @@ Two evidence points, both openable by a reader who did not do the work: the two 
 
 - Nothing is published to npm. The package is private, and the tag is the release.
 - No release assets, no plugin manifest, no marketplace entry.
+
+## Result
+
+Changesets now owns the version and the changelog. `package.json` starts at `0.0.0` and carries the changeset scripts plus `@changesets/cli`, `@changesets/changelog-github`, `yaml`, and a pinned `@types/node` (the last one keeps `npm ci` resolving the optional `@types/node` peer of `@inquirer/external-editor`). `.changeset/config.json` points the GitHub changelog at `QiYueran-source/weave-your-work`. `.github/workflows/release.yml` runs on push to `main`, installs with `npm ci`, and calls `changesets/action@v1` with `npm run version` and `npx changeset tag`.
+
+The initial minor changeset went through PR #12; the workflow opened version PR #13, which bumped `package.json` to `0.1.0` and wrote `CHANGELOG.md`. Merging it produced the annotated tag `v0.1.0` and https://github.com/QiYueran-source/weave-your-work/releases/tag/v0.1.0, whose body is the changelog entry for PR #12 and commit `a4dd072`. The release has no assets, and the package stays private.
+
+## Review
+
+passed
+
+- Goal: one changeset merged to `main` made the workflow open a version PR; merging that PR left an annotated `v0.1.0` tag and a release page carrying the same changelog entry. Evidence: PRs #12 and #13, run 42816713288, and the release URL.
+- Convention: nothing was published to npm, no assets were attached, and `main` received the work through pull requests.
+
+## Next step
+
+- None. The next release starts from a new changeset on `main` and follows the same two pull requests.
