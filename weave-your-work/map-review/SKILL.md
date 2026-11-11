@@ -1,73 +1,63 @@
 ---
 name: map-review
-description: "Accept a map or send it back: read it against the acceptance direction it was written with, report both axes, and record one verdict on the ticket."
+description: "Judge a map against the acceptance direction it was written with, record one verdict with both axes and their evidence, and close it or send it back. Use when every child of a map is closed, or when a map's verdict is questioned."
+family: track
+invocation: user
 ---
 
 # Map review
 
-A map is not accepted because its owner says the children are done. The review reads the map against its acceptance direction and records one verdict and evidence for both axes in `Review`. Status remains the lifecycle state.
+A map is not accepted because its owner says the children are done. This skill reads the map against its acceptance direction and records one verdict with evidence for both axes. The shape of the section and the two axes are the `map` skill's.
 
 ## When it runs
 
-The map has at least one child, every child is closed, and each dependency is closed. Check required output availability, including failed blockers, using the map skill's `placement.md` before accepting the map. Moving a map to the point where it can be reviewed belongs to the operating procedure; this file is the check itself.
+Every child is closed, every dependency is closed, `Not yet specified` has no open entry, and no accepted part of the direction is uncovered. A map still carrying fog or known uncovered acceptance work is not ready: send it to `fog-explore` or `split` first.
 
-A map still carrying fog or known uncovered acceptance work is not ready. Send known ambiguity to `fog-explore` first. Completed and planned layers together must cover the full direction, but planned work is not evidence; review requires evidence for every requirement. A gap first discovered during review receives the appropriate verdict below.
+A map with no children can be reviewed, and the review is where the absence is explained: either the map was opened with nothing to deliver, or it should not have been opened.
 
 ## Who reviews
 
-The owner reviews and closes. A non-owner who has findings reports them to the owner and does not close the map. The owner is the standing acceptant: a passing review closes the map, and the owner may reopen it.
+The owner reviews and closes. A run that is not the owner's reports its findings and does not close the map.
 
-## What it reads
+## Steps
 
-The map: `Target`, `Acceptance direction`, the review point under it, and `Decisions so far` for what changed since the map was split.
+1. **Read the map**: `Target`, `Acceptance direction`, the review point under it, `Decisions so far`, and `Review` if one is there.
+2. **Read the actual children**: each type against `split_as`; each task's `Result`, `Review`, and deliverable; each child map's `Review` and evidence. `waymark validate` checks structure and does not establish acceptance.
+3. **Judge the goal axis** line by line against the acceptance direction. Completed and planned layers together cover it; a plan is not evidence.
+4. **Judge the convention axis**: body shape, child types against `split_as`, no children index, relations, and write ownership. A legacy map whose review never existed is not required to have had one retroactively.
+5. **Write `## Review`**: the verdict, then one line per axis with evidence. Every finding names its source; a finding that cites nothing is an opinion and is dropped.
+6. **Act on the verdict** below.
 
-The actual children: compare each type with `split_as`, read status and outcome, and inspect failed outcomes and replacements. For a legacy map split before `split_as` existed, inspect the actual child types and available history without inventing the field; mixed types remain a finding. Read task `Result`, `Review`, and actual deliverables against the map's acceptance direction. A task closed before task-review existed may lack Review: inspect its Acceptance signal, Result, and actual deliverables without inventing a past review. Missing evidence is not a pass. Read child maps' Review and supporting evidence; for a legacy child map without Review, inspect its acceptance direction, children, and available evidence without inventing a past review. `waymark validate` checks structure; it does not establish semantic acceptance.
+## The four verdicts
 
-The rules: the map skill's `body.md` for the body shape, the split skill for the child rules, and the map skill's `placement.md` for dependency readiness and required outputs, including failed dependencies.
+| Verdict | When | What follows |
+|---|---|---|
+| `passed` | both axes hold | close the map |
+| `needs changes` | an axis names a gap someone can close | stays `in_progress`; repair, then review again |
+| `needs discussion` | ambiguity prevents reading the direction as a standard, or the map's words contradict each other | stays `in_progress`; the recorded question goes to `grill` |
+| `wrong direction` | the map cannot be judged because it was the wrong target | `outcome=failed`, then close; the owner opens the sibling that replaces it and the two are soft-linked |
 
-The review point is not a checklist to open first. It was written before the work started, and reading the map against it is the check.
+A child reopened during the review voids it: wait for it to close and review again. When `Review` and `status` disagree, recheck the children and the evidence before either changes; neither status nor an old verdict alone proves a pass.
 
-## Two axes
+## Transformation
 
-**Goal check**: did the map do what its `Acceptance direction` says? Read the direction line by line and the review point with it. Every line has to be answered by what the map and its children delivered.
+```
+before: a map whose children are all closed and whose fog is cleared
+after:
+- Review carries exactly one verdict, then one line per axis, each with evidence
+- passed: status closed
+- wrong direction: outcome = failed, status closed, a sibling opened and linked
+- needs changes or needs discussion: status unchanged, the gap or the question recorded
+- an older verdict on the same subject is struck through with the reason it was superseded
+```
 
-**Convention check**: was the map built to the rules? Check the body shape and applicable sections against the map skill's `body.md`, actual child types against `split_as`, no children index in the body, dependencies against the map skill's `placement.md`, and ticket write ownership. Optional empty sections and a legacy Review that never existed are not required retroactively.
+## Hands off
 
-Read the two separately and report them separately. One holding does not cover the other, and merging them hides a failing axis behind a passing one.
-
-Every finding names its source: the acceptance direction line it did not meet, the map skill's `body.md` rule it broke, or the split rule it broke. A finding that cites nothing is an opinion, and it is dropped rather than reported.
-
-## Four verdicts
-
-**passed**: both axes hold. The map closes.
-
-**needs changes**: an axis names a gap someone can close. The map stays `in_progress`; the owner repairs the gap and asks for another review.
-
-**needs discussion**: ambiguity discovered during review prevents reading the acceptance direction or review point as a standard, or the map's words contradict each other. The map stays `in_progress` and the question goes to `grill`. The review does not invent the answer.
-
-**wrong direction**: the map cannot be judged because it was the wrong target: the parent no longer wants this, or the target was never reachable. The map closes as a failed attempt, `outcome=failed` is written, and the owner opens the sibling that replaces it. The two are soft-linked.
-
-## What it writes
-
-Write `Review` for all four verdicts, including the verdict, separate goal and convention checks with evidence, and any unresolved question. Cite evidence for passing checks as well as sources for findings. On same-subject re-review, strike through the previous current review and record why it is superseded, including when a non-passing review was resolved while the map stayed in progress. Retain that history with the fresh verdict, as the map skill's `body.md` and `update` specify.
-
-`passed` and `wrong direction`: close the map. With `wrong direction`, write `outcome=failed` before closing. If a failed outcome remains from an interrupted or invalidated review and the owner has freshly established `passed`, clear it with `waymark field update <map> --clear outcome` before closing; do not clear a failed outcome merely to make the fields match.
-
-`needs changes`: record the gap and its source. If a task's acceptance signal already required the missing work, use `update` to decide whether to reopen, fix, and re-review that task. If the task met its signal but the parent omitted a new requirement, discuss the target or structure first; do not automatically create a task dependent on a sibling's output. Respect the map's frozen child type.
-
-`needs discussion`: record the unresolved question in Review and take it to `grill` without choosing an answer.
-
-If a child reopens during review, the review is void; wait for it to close and review again. If Review and status disagree, the owner rechecks children and evidence before completing the appropriate state change. When an existing verdict is invalidated by changed evidence, strike it through with the reason even if the map is already `in_progress`; keep it as history, wait until review prerequisites hold, and write a fresh review. Neither status nor an old verdict alone proves a pass.
-
-## The report
-
-Four lines: what the map delivered, the two axes and what each read, the verdict, and what the verdict produced on the ticket. Sources stay on the ticket, not in the report.
-
-A report that names something the ticket does not hold is a missing write, not a report.
+- `update` when the verdict is `needs changes` and a closed child's verdict no longer holds.
+- `grill` when the verdict is `needs discussion`.
 
 ## What this skill does not do
 
-- Accept a task. That is `task-review`.
-- Split the map or clear its fog. Those are `split` and `fog-explore`.
-- Define the body sections or the fields. Those are the map skill's `body.md` and the waymark skill's `fields.md`.
+- Accept a task.
+- Split the map or clear its fog.
 - Open the replacement for a failed map. The owner does that.

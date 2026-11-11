@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Run every bundle test from one command. The file list is built here
+// Run every tool test from one command. The file list is built here
 // rather than by the shell so the same script works on Windows.
 import { spawnSync } from 'node:child_process'
 import { readdirSync } from 'node:fs'
@@ -8,9 +8,9 @@ import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const directories = [
-  'weave-your-work/setup/bundle/tools',
-  'weave-your-work/glossary/bundle/tools/tests',
-  'weave-your-work/issue/bundle/tools/tests',
+  'weave-your-work/setup/tools',
+  'weave-your-work/setup/tools/glossary/tests',
+  'weave-your-work/setup/tools/issue/tests',
 ]
 
 const files = []

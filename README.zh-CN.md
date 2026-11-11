@@ -16,13 +16,13 @@ Weave Your Work 是一组供 AI 智能体使用的技能，帮助团队组织和
 npx skills add qiyueran-source/weave-your-work -g
 ```
 
-按照提示选择要安装的技能和智能体环境。要按下文的步骤开始使用，建议选中整套技能；至少选中 `setup`、`ask-me`、字段参考 `waymark`，以及四个带 bundle 的技能 `map`、`task`、`glossary`、`issue`。命令从仓库的默认分支安装，不依赖 npm 包发布。去掉 `-g` 则改为安装到当前项目。
+按照提示选择要安装的技能和智能体环境。要按下文的步骤开始使用，建议选中整套技能；至少选中 `setup`、`ask-me`，以及记录参考 `waymark`、`map`、`task`。命令从仓库的默认分支安装，不依赖 npm 包发布。去掉 `-g` 则改为安装到当前项目。
 
 ## 开始使用
 
 让智能体为你的项目运行 `setup` 技能。它会引导你安装和配置 Git、waymark、Node.js 和 GitHub CLI，初始化项目或加入已有项目，并安装所需的规则和工具。GitHub 登录等步骤需要由你完成。
 
-完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。技能列表及其说明见 [weave-your-work/](weave-your-work/)。
+完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。整套技能分成两层：记录格式只在各记录技能的 `res/` 下定义一次，动作按 [MAINLINE.md](weave-your-work/MAINLINE.md) 的主线组织。每条规则都是断言，并写明由哪项检查判定；索引在 [ASSERTIONS.md](weave-your-work/ASSERTIONS.md)。
 
 ## 许可证
 

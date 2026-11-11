@@ -23,7 +23,7 @@ The table's `Action` starts by reading the probe's six run records. The probe ha
 
 The fault is not the batch filter. The table and the probe are siblings under one map, and a task that reads another task's output is not parallel with it. The task layer has no dependency edge. The correct shape is one task that runs the six experiments and compiles the table, or two child maps with a dependency edge. `waiting_on` is for a person, not for a task's output; putting the probe there would hide the split error and require a manual release every time.
 
-This is now stated in [split/task.md](../../split/task.md): a part that reads another task's output is a split error.
+This is now stated in the `split` skill: a part that reads another task's output is a split error.
 
 ## Why `waymark ready` is not a batch gate
 

@@ -16,13 +16,13 @@ Install Node.js 22.20 or newer and npm, then run this once for your machine:
 npx skills add qiyueran-source/weave-your-work -g
 ```
 
-Select the skills and agent environments you want to install when prompted. Select the whole set to follow the steps below; at minimum include `setup`, `ask-me`, the field reference `waymark`, and the four bundle skills `map`, `task`, `glossary`, and `issue`. The command installs from the repository's default branch; it does not require an npm package release. Drop `-g` to install into the current project instead.
+Select the skills and agent environments you want to install when prompted. Select the whole set to follow the steps below; at minimum include `setup`, `ask-me`, and the record references `waymark`, `map`, and `task`. The command installs from the repository's default branch; it does not require an npm package release. Drop `-g` to install into the current project instead.
 
 ## Get started
 
 Ask your agent to run the `setup` skill for your project. Setup guides you through installing and configuring Git, waymark, Node.js and the GitHub CLI, then initializes or joins the project and installs the required rules and tools. Some steps, such as signing in to GitHub, require you to act.
 
-Once setup is complete, ask the agent to use `ask-me` to find the right starting point for your work. For the available skills and their instructions, see [weave-your-work/](weave-your-work/).
+Once setup is complete, ask the agent to use `ask-me` to find the right starting point for your work. The set is built two ways: records are defined once under each record skill's `res/`, and actions follow the mainline in [MAINLINE.md](weave-your-work/MAINLINE.md). Every rule is an assertion with the check that decides it; [ASSERTIONS.md](weave-your-work/ASSERTIONS.md) indexes them.
 
 ## License
 
