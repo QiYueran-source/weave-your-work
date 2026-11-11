@@ -32,7 +32,7 @@ waymark create --category map --title "<the target>" --owner <name> \
 
 A root map has no `--parent`. A new map is `open` and has no children yet. It carries `Target` with its `Why`, `Acceptance direction` with a review point, and `Not yet specified` with its entries or the marker, all settled by the pass that opened it. A map that is created and then left alone for a week is in a normal state, not a broken one.
 
-Opening is one pass, and `open-a-map.md` runs it: settle the target, survey it at low resolution in the same round, and write the map once the survey is done. The fog rule it obeys is in `body.md`. A survey that finds neither a child nor an entry does not produce a map at all; `open-a-map.md` says what to report instead.
+Opening is one pass, and `open-a-map.md` runs it: settle the target, survey it at low resolution in the same round, and write the map once the survey is done. The fog rule it obeys is in `body.md`. A survey that finds neither a child nor an entry does not produce a map at all: report that the target is small enough to be a task, or still too vague to state, and write nothing.
 
 ## Explore
 

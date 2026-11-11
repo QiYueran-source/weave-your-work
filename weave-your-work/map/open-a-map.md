@@ -18,7 +18,7 @@ The target is settled before the target is surveyed, and the ticket is written a
 
 ### 1. Settle the target
 
-Ask one question large enough to hold the work, and ask it through `grill`: the map skill's `open-a-map` is a caller of grill, and grill owns the question protocol. The answer this step needs is small:
+Ask one question large enough to hold the work, and ask it through `grill`, which owns the question protocol. The answer this step needs is small:
 
 - The outcome, stated as a state of the world, with its `Why:` line.
 - The acceptance direction, with its review point: what a reviewer looks at, in checkable items.
