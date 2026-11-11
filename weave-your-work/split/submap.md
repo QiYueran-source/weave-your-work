@@ -62,7 +62,7 @@ Finally read the shape back:
 waymark tree --root <map>
 ```
 
-The parent's body is not edited. It holds no children list.
+The parent's body is not edited; the map skill's `body.md` gives the reason.
 
 Once `split_as` is `submap`, every later child of that map is a child map too. A part that needs to be a task opens a sibling map instead.
 

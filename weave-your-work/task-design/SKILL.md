@@ -31,7 +31,7 @@ Length is not the test. A task may run for days while it waits on a person or on
 ## What a task never carries
 
 - No child tasks.
-- No dependency edges. The tasks under one map are parallel; where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into sibling maps under the same parent, with the edge between them.
+- No dependency edges. Why, and what to do instead when two pieces must run in order, is in `placement.md`.
 - No dates as fields. A hard date that shapes the work goes in the opening sentence of Action.
 
 Order is carried by dependency edges between maps, never by a link. A link records a relationship worth following and nothing more, and it may point at any item, including a sibling in the same map.

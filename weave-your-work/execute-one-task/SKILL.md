@@ -13,9 +13,9 @@ Read the ticket: `Action`, `Acceptance signal`, `Boundaries`, `waiting_on`, and 
 
 If the ticket is `closed`, stop. A closed task is changed through `update`, not started again.
 
-If `parent` is not a map, or the ticket carries a `dependencies` block, stop and hand the ticket back. Waymark accepts both and `validate` does not flag them; the task layer does not.
+If `parent` is not a map, or the ticket carries a `dependencies` block, stop and hand the ticket back. Waymark accepts both and `validate` does not flag them; the task layer does not, and `task-design/placement.md` says why.
 
-Check the body against its kind: `Action` and `Acceptance signal` are there; `Failure recovery` is there for `one_way`; `Next step` is there for a probe; `needs_human` agrees with the `Person:` steps. A missing section or a mismatch is a design defect: stop and hand the ticket back. The executor does not write the missing section.
+Check the body against its kind: `Action` and `Acceptance signal` are there; `Failure recovery` is there for `one_way`; `Next step` is there for a probe; `needs_human` agrees with the `Person:` steps. A missing section or a mismatch is a design defect: stop and hand the ticket back. The executor does not write the missing section. This check is the one every run makes before it starts a task; a skill that hands a task to a run points here rather than listing it again.
 
 If `waiting_on` is set, stop. The value names a person the task waits on, so a run that sees it does not guess that the answer arrived. Who clears it is the waymark skill's `fields.md`.
 

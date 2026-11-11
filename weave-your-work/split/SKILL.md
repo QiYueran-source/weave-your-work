@@ -42,7 +42,7 @@ Decide the count before anything is written. It is the one thing a later child c
 
 The first split starts the parent and sets its `split_as`; later splits leave both unchanged. Each child records its own `parent` in its own front matter, and `waymark tree --root <map>` reads the shape back. The map procedure gives the first-split commands.
 
-Creating children does not edit the parent's body; it holds no list of children.
+Creating children does not edit the parent's body: the map skill's `body.md` says why.
 
 If a first split is interrupted, inspect status, `split_as`, the recorded plan, and actual children before resuming. If the map was started but has neither `split_as` nor children, record the already-decided type without starting it again. If the type is set, keep it and create only missing planned children. A legacy map that already had children before `split_as` existed needs an owner review of its actual shape and history, not a fabricated first-split field; stop before adding children until the type and repair are resolved.
 

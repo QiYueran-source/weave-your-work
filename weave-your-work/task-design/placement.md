@@ -20,7 +20,7 @@ The owner adds or removes a link when the relationship appears, through the waym
 
 No date fields. There is no start date and no deadline: the start is the moment the ticket is claimed, and a deadline would need an overdue check this layer does not have. A hard date that constrains the work goes in the opening sentence of Action, where a reader sees it.
 
-No dependency edges. The reason is the size rule in `body.md`: work that waits on a sibling is a slice, and a slice is not a result. Waymark still accepts `waymark dependency add` on a task and `validate` does not flag it, so the executor checks for a `dependencies` block before work.
+No dependency edges. The tasks under one map are parallel; where two pieces of work must run in sequence, either they are one action with several steps, or the map splits into sibling maps under the same parent, with the edge between them. The reason is the size rule in `body.md`: work that waits on a sibling is a slice, and a slice is not a result. Waymark still accepts `waymark dependency add` on a task and `validate` does not flag it, so the executor checks for a `dependencies` block before work.
 
 Waymark's own front matter fields, including id, title, status, parent, and dependencies, are documented by `waymark agent-doc` and are not repeated here. The `dependencies` key exists in waymark; a task never sets it.
 

@@ -67,7 +67,7 @@ Finally read the shape back:
 waymark tree --root <map>
 ```
 
-Writing all the tickets first leaves nothing half-done on the parent, and the tree read shows any ticket whose parent is wrong. The map's body is not edited: it holds no children list.
+Writing all the tickets first leaves nothing half-done on the parent, and the tree read shows any ticket whose parent is wrong. The map's body is not edited, for the reason the map skill's `body.md` gives.
 
 A task hangs under one map only. When it is related to another map, add a soft link:
 

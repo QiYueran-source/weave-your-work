@@ -55,7 +55,7 @@ waymark start <map>                    # open → in_progress
 waymark field update <map> --set split_as=submap   # or task
 ```
 
-Every later split adds children of that same type. The map's body is not edited by a split, because it holds no list of children.
+Every later split adds children of that same type. The map's body is not edited by a split; `body.md` gives the reason.
 
 ## The loop
 

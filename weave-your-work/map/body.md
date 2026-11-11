@@ -10,7 +10,7 @@ A section is written when it carries something. One with nothing to say is left 
 
 The body holds the target, decisions, unresolved content, and review evidence; operating instructions live in the procedure.
 
-A map body holds no list of its children. The `parent` field in each child's front matter is the structure, and `waymark tree --root <id>` reads the shape back. A reader who cannot tell what a child is for from that child's own `Target` is looking at a split that was never stated, not at a missing index.
+A map body holds no list of its children. This file is the only place that says so. The `parent` field in each child's front matter is the structure, and `waymark tree --root <id>` reads the shape back. A reader who cannot tell what a child is for from that child's own `Target` is looking at a split that was never stated, not at a missing index. A split, therefore, never edits the parent's body; the skills that do splits point here instead of repeating it.
 
 ## Target
 
