@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:07Z
-updated_at: 2026-11-10T07:50:01Z
+updated_at: 2026-11-10T15:23:38Z
 closed_at: 2026-11-10T07:50:01Z
 parent: wm-wjwa9081hse1
 soft_links:
@@ -15,23 +15,21 @@ soft_links:
 custom_fields:
   split_as: task
 ---
-## Destination
+## Target
 
 Design the ask-me skill: a person does not know which skill to use now, and ask-me names the entry to open. It is shaped after matt's `ask-matt` — one main flow with the branch points beside it, not a flat table of skills. It routes and stops: it indexes the other skills and invokes nothing itself.
 
-## Notes
-
-- Category: entry. Answers "which skill do I use now".
-- Trigger: a person who does not know which skill fits the situation in front of them.
-- Delivery location: weave-your-work/ask-me/ (directory already created by the user).
-- Source: .agents/matt-skills/ask-matt (the flow shape).
+Why: a person who cannot name the next skill either stalls or opens the wrong one; a router keeps the set usable without memorizing it.
 
 ## Acceptance direction
 
-Default clause. Review point: open `weave-your-work/ask-me/SKILL.md` alone; every skill it names exists under `weave-your-work/`, every skill in the set is reachable from it in one hop, it restates no rule from a skill it names, and it names no file this project does not have.
+All children are complete and no further children are needed.
+
+Review point: open `weave-your-work/ask-me/SKILL.md` alone; every skill it names exists under `weave-your-work/`, every skill in the set is reachable from it in one hop, it restates no rule from a skill it names, and it names no file this project does not have.
 
 ## Decisions so far
 
+- Delivery location: `weave-your-work/ask-me/`. (source note, from the earlier Notes)
 - ask-me is one whole skill, not part of the environment category, with its own map (user confirmed).
 - ask-me is shaped after matt's `ask-matt` (user confirmed, 2026-11-10).
 - The trigger is a person who does not know which skill to use now. The answer is the next skill to open, not a description of the whole set (user confirmed, 2026-11-10).
