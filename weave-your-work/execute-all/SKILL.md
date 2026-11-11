@@ -17,7 +17,7 @@ The tasks under the chosen map whose owner is the run's owner. Only `open` and `
 
 Left out:
 
-- A task whose `waiting_on` names a person, until the owner clears that value after handling the answer. A task with a value is never selected.
+- A task whose `waiting_on` names a person. A task with a value is never selected.
 - A task with `needs_human: true`. It is never sent to a subagent, because the field cannot tell a whole-human task from a partly-human one, so the rule is uniform.
 - A task whose required map output is unavailable or unusable. Check each candidate's actual inputs against the parent chain and its map dependencies as `execute-one-task` directs; unrelated tasks may run. Tell the owner which input is missing and follow the map skill's `placement.md` for failed dependencies and disposition.
 - A task that needs a sibling task's output. Hand it back as a split error; read `task.md` in the split skill.
@@ -40,7 +40,7 @@ When it finished:
 2. Review the task with `task-review`, against the ticket.
 3. Act on the verdict. `passed` closes the ticket. `needs changes` goes to a fresh subagent with the named gap. `needs discussion` stops that task and waits on the person. `wrong direction` closes it as a failed attempt.
 
-When it stopped: the ticket keeps `Progress` and, for a person wait, `waiting_on`. The subagent is released and its slot goes to the next ticket. The owner clears `waiting_on` after handling the answer; the next run checks inputs and selects the task by the same rules.
+When it stopped: the ticket keeps `Progress` and, for a person wait, `waiting_on`. The subagent is released and its slot goes to the next ticket. Once `waiting_on` is cleared, the next run checks inputs and selects the task by the same rules.
 
 ## Reviewing a large batch
 
@@ -54,7 +54,7 @@ Only the main agent talks to a person. When a task needs one, pause that task, l
 
 A stop about the map's direction stops the batch.
 
-When the answer a task waits for arrives, the owner clears `waiting_on` before the next selection. The next run then picks the task up by the same rule as any other.
+When the answer a task waits for arrives, `waiting_on` is cleared and the next run picks the task up by the same rule as any other.
 
 ## Committing
 

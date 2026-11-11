@@ -16,9 +16,9 @@ Every task passes all six. A gate that fails sends the part back to grill or tas
 
 1. **One action, one standard.** The action ends at a result that can be handed over whole, and the standard reads that result. When either half is missing, the part is not ready.
 2. **Evidence someone else can read.** The acceptance signal names a file, a page, a number, an answer — something a reader who did not do the work can open. "Done properly" names nothing.
-3. **Who does it.** The action marks every step a person has to perform, and `needs_human` agrees with what the action says.
-4. **What breaks if it goes wrong.** The answer sets `reversibility`: work that cannot be undone is `one_way` and carries `Failure recovery`.
-5. **Whether the output can be named.** Yes is a delivery. No is a probe: a question to answer, with both `Next step` lines written before it runs.
+3. **Who does it.** The action marks every step a person has to perform, and whoever writes the ticket sets `needs_human` from that. What the field means is the waymark skill's `fields.md`.
+4. **What breaks if it goes wrong.** The answer sets `reversibility`, and the values are in the waymark skill's `fields.md`. A `one_way` ticket carries `Failure recovery`, which task design's `body.md` defines.
+5. **Whether the output can be named.** Yes and no choose between the two kinds; what separates them is task design's `kind.md`. A probe carries both `Next step` lines before it runs.
 6. **Whether the ticket is writable.** Check its body, kind and fields against task design's `body.md`, `kind.md`, and `placement.md`, and the waymark skill's `fields.md`. A ticket that fails those checks goes back to task design.
 
 Gates 3, 4, 5, and 6 each decide a field, which is why a layer settles them before the ticket exists rather than during the work.

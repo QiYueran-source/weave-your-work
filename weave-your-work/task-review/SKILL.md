@@ -49,7 +49,7 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 `outcome=failed`, only with `wrong direction`. If an old failed outcome remains on a reopened task and the owner has freshly established `passed`, clear it with `waymark field update <task> --clear outcome` before closing. Do not clear it merely to make fields match.
 
-`waiting_on`: cleared on every close, and set only with `needs discussion`. A `passed` or `wrong direction` ticket cannot keep a value.
+`waiting_on`: set only with `needs discussion`, and cleared on every close, so a `passed` or `wrong direction` ticket cannot keep a value. The rule that owns the field is the waymark skill's `fields.md`.
 
 Nothing else. No comment ticket, no edit to `Result`, no rewrite of the `Action`. The review reads the work; it does not redo it.
 

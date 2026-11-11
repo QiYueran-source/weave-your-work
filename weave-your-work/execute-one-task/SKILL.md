@@ -17,7 +17,7 @@ If `parent` is not a map, or the ticket carries a `dependencies` block, stop and
 
 Check the body against its kind: `Action` and `Acceptance signal` are there; `Failure recovery` is there for `one_way`; `Next step` is there for a probe; `needs_human` agrees with the `Person:` steps. A missing section or a mismatch is a design defect: stop and hand the ticket back. The executor does not write the missing section.
 
-If `waiting_on` is set, stop. The owner clears it after handling the answer; the run does not guess that the answer arrived.
+If `waiting_on` is set, stop. The value names a person the task waits on, so a run that sees it does not guess that the answer arrived. Who clears it is the waymark skill's `fields.md`.
 
 Read `## Review` when present. If it says `needs changes`, fix only the gap it names. If it says `needs discussion`, stop and wait on the person. If it says `passed` or `wrong direction`, stop unless `Progress` explicitly says `update` invalidated that verdict and names why and what must be repaired. For that reopened task, do the named work and let task-review replace the Review; do not infer invalidation merely from an open status.
 
@@ -39,7 +39,7 @@ Claim it with `waymark start`. Say one line about where you are starting and wha
 
 If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's `placement.md`. If the missing input is a sibling task's output, hand the ticket back as a split error; read `task.md` in the split skill. If a person must supply or confirm the input, wait on that person.
 
-Person waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. For unavailable map output, record the stop and needed input in `Progress` without setting `waiting_on` to a ticket. Preserve any update invalidation marker in `Progress` across these stops until task-review records a new verdict. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
+Person waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. For unavailable map output, record the stop and needed input in `Progress` without setting `waiting_on` to a ticket. Preserve any update invalidation marker in `Progress` across these stops until task-review records a new verdict. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; releasing it clears `waiting_on`, and the field is not changed.
 
 A question about how the work is done is not on this list. Decide it, and say what you decided in `Result`.
 
