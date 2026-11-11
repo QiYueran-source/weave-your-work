@@ -20,6 +20,8 @@ This is a library, not an action. It writes nothing and decides nothing. It defi
 
 This skill holds what every record shares. A record's own body lives with the record: `map`, `task`, `grill` (a testimony), `adr`, `glossary`, `issue`, `handoff`, and `stop-and-wait` (a patrol report).
 
+A record is read twice: a person reads it to follow the work, and a machine reads it to decide whether a rule holds. It is written to be decided on, not to look uniform; the view a person wants is a report, not the record.
+
 ## How to read it
 
 Read only the file for the record in front of you. Every rule there is an assertion: a line that ends with the check that decides it. `ASSERTIONS.md` at the set root lists them once, so a change to a rule is one edit there and one here.

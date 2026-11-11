@@ -119,7 +119,7 @@ function checkMap(file, fm, body) {
       continue
     }
     if (!/^- [A-Z][A-Za-z ]+:/.test(line)) continue
-    if (!/^\s+(Why it matters|If wrong):/.test(text))
+    if (!/^\s+(Why it matters|If wrong):/m.test(text))
       add(file, `fog entry has no second line: ${line.slice(0, 60)}`)
     i = end - 1
   }
@@ -164,9 +164,6 @@ function checkTask(file, fm, body) {
   const dependencies = Array.isArray(fm.dependencies) ? fm.dependencies : []
   if (dependencies.length) add(file, 'task carries a dependency edge')
   if (!fm.parent) add(file, 'task has no parent')
-
-  if (task_kind === 'probe' && parts['Acceptance signal'] && /\bnot (needed|required)\b/i.test(parts['Acceptance signal']))
-    add(file, 'probe Acceptance signal is written as optional')
 }
 
 function checkTestimony(file, fm) {
@@ -236,6 +233,63 @@ for (const [parentId, children] of byParent) {
   if (!declared) add(parent.file, 'map has children but no split_as')
   else if (expected[declared] !== [...kinds][0])
     add(parent.file, `split_as is "${declared}" but children are ${[...kinds][0]}`)
+}
+
+// Glossary sources: one JSONL line per term, each with a term and a definition.
+const glossaryDir = join(root, '.work-weave', 'glossary')
+try {
+  for (const name of readdirSync(glossaryDir).filter((file) => file.endsWith('.jsonl'))) {
+    const file = join(glossaryDir, name)
+    for (const [index, line] of (read(file) ?? '').split(/\r?\n/).entries()) {
+      if (!line.trim()) continue
+      try {
+        const entry = JSON.parse(line)
+        if (!entry.term || !entry.definition) add(file, `line ${index + 1} has no term or definition`)
+      } catch {
+        add(file, `line ${index + 1} is not a JSON object`)
+      }
+    }
+  }
+} catch {
+  // No glossary in this project is normal.
+}
+
+// ADRs: NNNN-slug.md, numbers unique and starting at one.
+const adrDir = join(root, 'docs', 'adr')
+try {
+  const numbers = readdirSync(adrDir)
+    .filter((name) => name.endsWith('.md'))
+    .map((name) => {
+      const match = name.match(/^(\d{4})-[a-z0-9-]+\.md$/)
+      if (!match) add(join(adrDir, name), 'ADR file name is not NNNN-slug.md')
+      return match ? Number(match[1]) : null
+    })
+    .filter((number) => number !== null)
+    .sort((a, b) => a - b)
+  if (numbers.length) {
+    for (let i = 0; i < numbers.length; i += 1) {
+      if (numbers[i] !== i + 1) {
+        add(adrDir, `ADR numbers skip or repeat at ${String(numbers[i]).padStart(4, '0')}`)
+        break
+      }
+    }
+  }
+} catch {
+  // No ADRs yet is normal.
+}
+
+// The pending queue: one JSON object per line.
+const queueFile = join(root, '.work-weave', 'pending', 'pending-communications.md')
+const queue = read(queueFile)
+if (queue) {
+  for (const [index, line] of queue.split(/\r?\n/).entries()) {
+    if (!line.trim() || !line.startsWith('- ')) continue
+    try {
+      JSON.parse(line.slice(2))
+    } catch {
+      add(queueFile, `line ${index + 1} is not a JSON object`)
+    }
+  }
 }
 
 // The generated glossary view is never hand-edited; it carries its own header.

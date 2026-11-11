@@ -103,6 +103,13 @@ for (const file of new Set(resFiles)) {
   const text = read(file) ?? ''
   if (/^## (Steps|Process|Procedure)\s*$/m.test(text))
     add(file, 'resource holds a step procedure; procedures belong to an action')
+  const assertions = text.split(/^## Assertions\s*$/m)[1]
+  if (assertions) {
+    for (const bullet of assertions.split(/\r?\n/).filter((line) => line.startsWith('- '))) {
+      if (!/\[(waymark|check-records|review)\]`?\s*$/.test(bullet.trim()))
+        add(file, `assertion names no check: ${bullet.trim().slice(0, 60)}`)
+    }
+  }
   const lines = text.split(/\r?\n/).length
   if (lines > 60) add(file, `resource is ${lines} lines; the limit is 60`)
 }

@@ -53,13 +53,14 @@ Three kinds of check:
 - No `Subject`. `[check-records]`
 - A map or task field on a testimony. `[check-records]`
 - A settled line with no destination. `[review]`
+- A closed testimony with a round that records a question and no answer. `[review]`
 
 ## Other records
 
 - An entry without `term` or `definition`. `[check-records]`
 - A definition over two sentences, or one holding a command or a path. `[review]`
 - A hand edit to `GLOSSARY.md`. `[check-records]`
-- A handoff document inside the workspace. `[check-records]`
+- A handoff document inside the workspace. `[review]`
 - A secret or another person's data in a handoff. `[review]`
 - A queue line that is not one JSON object per line. `[check-records]`
 - An ADR that skips or repeats a number. `[check-records]`
