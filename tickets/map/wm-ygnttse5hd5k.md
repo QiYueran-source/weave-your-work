@@ -7,6 +7,10 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:52:39Z
+updated_at: 2026-11-11T13:17:05Z
+parent: wm-a08fwanmy5q6
+---
+created_at: 2026-11-06T12:52:39Z
 updated_at: 2026-11-10T15:21:00Z
 parent: wm-a08fwanmy5q6
 ---
@@ -95,6 +99,8 @@ A fresh project and a clone each run setup end to end; the checklist passes, the
 - Check 9 reads `false` as two different states. A private repository on a free plan cannot have server protection: the branch prints `false` and `/protection` answers 403 with `Upgrade to GitHub Pro or make this repository public`. The check probes that endpoint once, reports the plan gate as not applicable, and names the local fallback, `rules-git.md` plus the project's own hook if it has one. A `false` while the feature is available is still a failure. (user confirmed, 2026-11-10)
 
 - This repository works on the `qiyueran/dev` branch and lands changes on `main` through pull requests; direct commits to `main` stop. This removes the F4 contradiction without changing `rules-git.md`; a piece that needs its own branch can still branch from `qiyueran/dev`. (user confirmed, 2026-11-10)
+
+- **Where the first target comes from:** Setup configures a project but leaves no root map, so nothing owns the first node: `split` needs a parent, `map-review` refuses a map with no children, and `salvage-and-restart` assumes a root exists. A project that already carries work (a scene) has no rule saying how that work becomes a tree without being redone. Open question for 2026-11-11: does setup (first-time flow) end by asking one large target and raising an empty root map, and does a separate skill convert an existing scene — documents, a tree that outgrew its map, a running project without tickets — into maps and tasks with a stated coverage and a kill date? Neither is decided. (user opened, 2026-11-11)
 
 ## Not yet specified
 
