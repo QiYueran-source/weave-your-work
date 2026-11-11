@@ -1,6 +1,6 @@
 # Task body
 
-A task body says what one action is, what it hands over, and how someone checks it. This file defines every section a body may hold, the order they appear in, and ends with a whole ticket. Field rules are in `properties.md`; choosing the kind is in `kind.md`.
+A task body says what one action is, what it hands over, and how someone checks it. This file defines every section a body may hold, the order they appear in, and ends with a whole ticket. Field rules are in the waymark skill's `fields.md`; choosing the kind is in `kind.md`, and where a task sits is `placement.md`.
 
 ## How a body is laid out
 

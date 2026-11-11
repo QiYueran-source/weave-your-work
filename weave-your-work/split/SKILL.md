@@ -20,7 +20,7 @@ When grill has settled the layer: what it holds, which children it needs, and wh
 
 A split never clears fog and never invents a child's content. When the discussion cannot support a child's `Target`, or the evidence a task's acceptance signal would name, the part goes back to grill.
 
-A map with an unfinished dependency may still split. The wait stays on the map it was written on; the children inherit no edge. A child map may carry its own edge when it needs the output; a task carries no edge and checks its needed input at execution. Load the map skill and read its `frontmatter.md` for dependency and failed-output rules. When the next layer's content depends on the blocker's result, leave that part for later rather than guessing.
+A map with an unfinished dependency may still split. The wait stays on the map it was written on; the children inherit no edge. A child map may carry its own edge when it needs the output; a task carries no edge and checks its needed input at execution. Load the map skill and read its `placement.md` for dependency and failed-output rules. When the next layer's content depends on the blocker's result, leave that part for later rather than guessing.
 
 ## The freeze
 
@@ -51,7 +51,7 @@ If a first split is interrupted, inspect status, `split_as`, the recorded plan, 
 - `task.md`: when the parts are executable, and how each task body, field, and parent relation is written.
 - `submap.md`: when the parts are still goals, and how each child map body and parent relation is written.
 
-Both write child bodies against the map skill's `body.md` and the field rules in its `frontmatter.md`. Neither restates a rule that lives in those files.
+Both write child bodies against the map skill's `body.md` and the field rules in the waymark skill's `fields.md`. Neither restates a rule that lives in those files.
 
 ## What this skill does not do
 

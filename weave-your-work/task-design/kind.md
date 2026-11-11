@@ -1,6 +1,6 @@
 # Task kind
 
-Every task is one of two kinds, `delivery` or `probe`. The kind decides which sections the body carries and what failure means. This file covers the choice. Sections are in `body.md`; the field itself is in `properties.md`.
+Every task is one of two kinds, `delivery` or `probe`. The kind decides which sections the body carries and what failure means. This file covers the choice. Sections are in `body.md`; the field itself is in the waymark skill's `fields.md`.
 
 ## The question
 

@@ -6,7 +6,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const REQUIRED_SKILLS = ['setup', 'map', 'task', 'glossary', 'issue']
+const REQUIRED_SKILLS = ['setup', 'waymark', 'map', 'task', 'glossary', 'issue']
 const CATEGORIES = ['map', 'task', 'testimony']
 const FIELDS = ['needs_human', 'outcome', 'reversibility', 'split_as', 'task_kind', 'waiting_on']
 const NODE_FLOOR = '22.20.0'

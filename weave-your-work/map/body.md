@@ -1,6 +1,6 @@
 # Map body
 
-A map body says what you want and how someone else will know you got it. This file defines the six sections, what each one holds, and the shape of every entry in them. Field rules live in `frontmatter.md`. Who may write which section, and when a map moves between statuses, belongs to the operating procedure reference.
+A map body says what you want and how someone else will know you got it. This file defines the six sections, what each one holds, and the shape of every entry in them. Field rules live in the waymark skill's `fields.md`, and where a map sits in the tree is `placement.md`. Who may write which section, and when a map moves between statuses, belongs to the operating procedure reference.
 
 ## How a body is laid out
 

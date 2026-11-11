@@ -23,7 +23,7 @@ Read `## Review` when present. If it says `needs changes`, fix only the gap it n
 
 Read the map above it. Its `Target` says why the task matters; its `Acceptance direction` says what the branch is for. Work done correctly against the wrong map is still wrong work.
 
-Load the map and split skills for their dependency and task-split references; if either is unavailable, stop and ask the owner to install it. Read the parent chain and its maps' dependencies. If this task needs a sibling task's output, hand it back as a split error; read `task.md` in the split skill. For each map output this task actually needs, check that it exists and is usable before starting the task. An unfinished dependency does not stop unrelated tasks; a failed closed dependency does not establish that its output is usable. If a required output is missing or unusable, leave the task's status unchanged and tell the owner which input is unavailable. Follow the map skill's `frontmatter.md` for the owner's disposition. `waymark ready` alone cannot establish input availability.
+Load the map and split skills for their placement and task-split references; if either is unavailable, stop and ask the owner to install it. Read the parent chain and its maps' dependencies. If this task needs a sibling task's output, hand it back as a split error; read `task.md` in the split skill. For each map output this task actually needs, check that it exists and is usable before starting the task. An unfinished dependency does not stop unrelated tasks; a failed closed dependency does not establish that its output is usable. If a required output is missing or unusable, leave the task's status unchanged and tell the owner which input is unavailable. Follow the map skill's `placement.md` for the owner's disposition. `waymark ready` alone cannot establish input availability.
 
 Check that the task still holds: the action still serves what the map wants, and nothing has made it moot or impossible.
 
@@ -37,7 +37,7 @@ Claim it with `waymark start`. Say one line about where you are starting and wha
 - The task no longer holds.
 - The work lacks an input or a permission it needs.
 
-If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's `frontmatter.md`. If the missing input is a sibling task's output, hand the ticket back as a split error; read `task.md` in the split skill. If a person must supply or confirm the input, wait on that person.
+If a required map output becomes unavailable during execution, stop and tell the owner which input is missing. Do not put a task or map in `waiting_on`; the owner decides the dependency disposition under the map skill's `placement.md`. If the missing input is a sibling task's output, hand the ticket back as a split error; read `task.md` in the split skill. If a person must supply or confirm the input, wait on that person.
 
 Person waits write `Progress`, set `waiting_on` to the person, and leave the task `in_progress`. For unavailable map output, record the stop and needed input in `Progress` without setting `waiting_on` to a ticket. Preserve any update invalidation marker in `Progress` across these stops until task-review records a new verdict. The fourth is a hand-back, below. A `needs_human` task stays `needs_human: true`; the owner releases it by clearing `waiting_on`, not by changing the field.
 

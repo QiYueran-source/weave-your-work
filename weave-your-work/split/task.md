@@ -2,7 +2,7 @@
 
 How a settled layer becomes tasks.
 
-A map's layer splits into tasks when each part can be written as one complete action with one clearly auditable standard. This file is the judgment: whether the layer is ready, how many tasks it makes, and what each task has to pass before it is written. The writing itself belongs to task design — `body.md`, `kind.md`, and `properties.md` — which this file names and never repeats.
+A map's layer splits into tasks when each part can be written as one complete action with one clearly auditable standard. This file is the judgment: whether the layer is ready, how many tasks it makes, and what each task has to pass before it is written. The writing itself belongs to task design — `body.md`, `kind.md`, and `placement.md`, plus the waymark skill's `fields.md` — which this file names and never repeats.
 
 The criterion that sent the layer here lives in `SKILL.md`. This file applies it.
 
@@ -19,7 +19,7 @@ Every task passes all six. A gate that fails sends the part back to grill or tas
 3. **Who does it.** The action marks every step a person has to perform, and `needs_human` agrees with what the action says.
 4. **What breaks if it goes wrong.** The answer sets `reversibility`: work that cannot be undone is `one_way` and carries `Failure recovery`.
 5. **Whether the output can be named.** Yes is a delivery. No is a probe: a question to answer, with both `Next step` lines written before it runs.
-6. **Whether the ticket is writable.** Check its body, kind and fields against task design's `body.md`, `kind.md`, and `properties.md`. A ticket that fails those checks goes back to task design.
+6. **Whether the ticket is writable.** Check its body, kind and fields against task design's `body.md`, `kind.md`, and `placement.md`, and the waymark skill's `fields.md`. A ticket that fails those checks goes back to task design.
 
 Gates 3, 4, 5, and 6 each decide a field, which is why a layer settles them before the ticket exists rather than during the work.
 
@@ -75,9 +75,9 @@ A task hangs under one map only. When it is related to another map, add a soft l
 waymark link add <task> <other-map>
 ```
 
-The link says the two are related. It carries no wait and no shared acceptance. A map may depend on another map's output; tasks that need that input wait at execution when it is unavailable, while unrelated tasks may run. Load the map skill and read its `frontmatter.md` for the dependency rules.
+The link says the two are related. It carries no wait and no shared acceptance. A map may depend on another map's output; tasks that need that input wait at execution when it is unavailable, while unrelated tasks may run. Load the map skill and read its `placement.md` for the dependency rules.
 
-A part that reads another task's output cannot be a separate sibling task. The two may be one action with several steps, or child maps carrying an edge. Check task design's `body.md` and `properties.md` for the task-layer constraints.
+A part that reads another task's output cannot be a separate sibling task. The two may be one action with several steps, or child maps carrying an edge. Check task design's `body.md` and `placement.md` for the task-layer constraints.
 
 Once `split_as` is `task`, every later child of that map is a task too. A part that needs a map of its own opens a sibling map, not a child of this one.
 
@@ -88,5 +88,5 @@ Two situations send a part back instead of producing a ticket: the discussion gi
 ## What this reference does not do
 
 - Choose between tasks and child maps. That is `SKILL.md`.
-- Define a body section, a kind, or a field. Those are task design's `body.md`, `kind.md`, and `properties.md`.
+- Define a body section, a kind, or a field. Those are task design's `body.md`, `kind.md`, and `placement.md`, and the waymark skill's `fields.md`.
 - Advance a task. That is the execution skills.

@@ -19,7 +19,7 @@ Left out:
 
 - A task whose `waiting_on` names a person, until the owner clears that value after handling the answer. A task with a value is never selected.
 - A task with `needs_human: true`. It is never sent to a subagent, because the field cannot tell a whole-human task from a partly-human one, so the rule is uniform.
-- A task whose required map output is unavailable or unusable. Check each candidate's actual inputs against the parent chain and its map dependencies as `execute-one-task` directs; unrelated tasks may run. Tell the owner which input is missing and follow the map skill's `frontmatter.md` for failed dependencies and disposition.
+- A task whose required map output is unavailable or unusable. Check each candidate's actual inputs against the parent chain and its map dependencies as `execute-one-task` directs; unrelated tasks may run. Tell the owner which input is missing and follow the map skill's `placement.md` for failed dependencies and disposition.
 - A task that needs a sibling task's output. Hand it back as a split error; read `task.md` in the split skill.
 
 Claim every chosen task with `waymark start` before any of them goes out. The claim is what keeps two runs from picking up the same task.

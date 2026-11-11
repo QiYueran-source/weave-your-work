@@ -37,11 +37,12 @@ Each one opens on a state, not on a position in the route. When the state matche
 
 ## The records
 
-Three skills write what the route produces and leave the route where it is.
+Three skills write what the route produces and leave the route where it is, and a fourth says how to read and write the tracker itself.
 
 - **`glossary`** — one name for one thing: look a term up, or sharpen a fuzzy one.
 - **`adr`** — a decision a future reader cannot reconstruct from the repository.
 - **`issue`** — a message to another owner on GitHub, and the decision it brings back.
+- **`waymark`** — what each field means, and how to read the tree, the ready list, and the history back out of the tickets.
 
 ## Standalone
 

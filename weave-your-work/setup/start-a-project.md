@@ -10,7 +10,7 @@ The commands below are the shapes that were checked against waymark 0.1.2; where
 
 ## 1. Confirm the skill set is there
 
-You are reading this file out of the installed set, so the set is installed. Run check 12 anyway: it proves the five skills this flow calls are on disk in one of the roots it finds — `setup` and the four bundles `map`, `task`, `glossary`, and `issue` — and it discovers what is there rather than listing it, so it keeps working when the set grows. If it reports a missing skill, stop and repair it; the rest of this flow reads files out of those directories.
+You are reading this file out of the installed set, so the set is installed. Run check 12 anyway: it proves the six skills this flow calls are on disk in one of the roots it finds — `setup`, the field reference `waymark`, and the four bundles `map`, `task`, `glossary`, and `issue` — and it discovers what is there rather than listing it, so it keeps working when the set grows. If it reports a missing skill, stop and repair it; the rest of this flow reads files out of those directories.
 
 Do not run check 13 yet. It compares every bundle's rules against `.agents/rules/`, and nothing is registered there until step 2 writes setup's three rules and step 8 runs the four bundle setups, so on a fresh install it reports all seven as unregistered. Step 8 runs it.
 
@@ -88,6 +88,8 @@ waymark config add field split_as string
 waymark config add field task_kind string
 waymark config add field waiting_on string
 ```
+
+The names and types above are the declaration; what each field means and which values the set writes is the `waymark` skill's `fields.md`.
 
 Never pass `--force` to `waymark init`. Without it, a re-run reuses the existing configuration and changes nothing. With it, the file is rewritten from scratch and every custom field disappears.
 

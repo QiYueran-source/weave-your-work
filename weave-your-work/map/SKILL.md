@@ -7,6 +7,8 @@ description: "Write a map and run it: the target a team works toward, what its b
 
 A map is a target. It answers "what do I want", it can hold children that refine it, and it is accepted when its acceptance direction holds. Every target node is a map; the root is the one with no parent.
 
+The fields a map carries are the waymark skill's `fields.md`. This skill says what a map is and how it moves.
+
 This is the entry to the map skill. It says what a map is and sends you to the file that answers your question. `usage.md` gives the reading path; `bundle/setup.md` installs the work-record rule. Once installed, `.agents/rules/rules-map.md` governs when map work must be recorded.
 
 ## The references
@@ -14,11 +16,11 @@ This is the entry to the map skill. It says what a map is and sends you to the f
 | Question | File |
 |---|---|
 | What does a map body say, section by section, and when is fog written? | `body.md` |
-| What do the fields mean, and who may write which one? | `frontmatter.md` |
+| Where does a map sit in the tree, and what orders it? | `placement.md` |
 | How does a map move from a stated target to a closed ticket? | `procedure.md` |
 | What does the pass that opens a map do? | `open-a-map.md` |
 
-`body.md` holds the six sections, the fog entry forms, and the single rule for when a map's fog is written. `frontmatter.md` holds the custom fields, the dependency rules, and the list an accepting party checks. `procedure.md` holds the states, the steps, and what changing a split map does to its children.
+`body.md` holds the six sections, the fog entry forms, and the single rule for when a map's fog is written. The waymark skill's `fields.md` holds the fields, who may write each one, and the list an accepting party checks. `procedure.md` holds the states, the steps, and what changing a split map does to its children.
 
 ## The steps are other skills
 
@@ -45,6 +47,7 @@ A map is not a plan either. Sequence lives on dependency edges, and the body car
 
 - Define a body section or a fog entry. That is `body.md`.
 - Run the pass that opens a map. That is `open-a-map.md`.
-- Define a field, a custom field, or a dependency edge. That is `frontmatter.md`.
+- Define a field, a custom field, or a dependency edge. Those are the waymark skill's `fields.md` and `placement.md`.
 - Say what step comes next. That is `procedure.md`.
+- Say what a field means. That is the waymark skill's `fields.md`.
 - Clear fog, split, accept, or update. Those are the skills named above.

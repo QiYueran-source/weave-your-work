@@ -16,7 +16,7 @@ Weave Your Work 是一组供 AI 智能体使用的技能，帮助团队组织和
 npx skills add qiyueran-source/weave-your-work -g
 ```
 
-按照提示选择要安装的技能和智能体环境。要按下文的步骤开始使用，建议选中整套技能；至少选中 `setup`、`ask-me`，以及四个带 bundle 的技能 `map`、`task`、`glossary`、`issue`。命令从仓库的默认分支安装，不依赖 npm 包发布。去掉 `-g` 则改为安装到当前项目。
+按照提示选择要安装的技能和智能体环境。要按下文的步骤开始使用，建议选中整套技能；至少选中 `setup`、`ask-me`、字段参考 `waymark`，以及四个带 bundle 的技能 `map`、`task`、`glossary`、`issue`。命令从仓库的默认分支安装，不依赖 npm 包发布。去掉 `-g` 则改为安装到当前项目。
 
 ## 开始使用
 

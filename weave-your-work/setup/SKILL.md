@@ -20,6 +20,10 @@ Both flows end by running the checks in `.agents/rules/rules-checklist.md`. When
 
 Setup's own rules are installed by [bundle/setup.md](bundle/setup.md), which copies `rules-git.md`, `rules-checklist.md`, and `rules-install.md` into `.agents/rules/`. The other four skills that carry installable parts — `map`, `task`, `glossary`, and `issue` — each own a `bundle/setup.md` of their own. Setup names them and points at them; it never restates their steps.
 
+## The field reference
+
+The six custom fields setup declares, and every other field the set writes, are defined in the `waymark` skill's `fields.md`. Setup declares the names; that file says what they mean. A change to a field's name or type is a change in both places, and the project's `.waymark/config.toml` carries the third copy.
+
 ## What setup does not do
 
 - It does not install the skills. They are installed before setup runs, and `.agents/skills/` is where the checks look for them.

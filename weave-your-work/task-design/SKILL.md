@@ -40,7 +40,8 @@ Order is carried by dependency edges between maps, never by a link. A link recor
 
 - `body.md`: the sections a body may hold, the order they appear in, and a whole ticket as waymark stores it.
 - `kind.md`: how to choose between a delivery and a probe task, which kind suits which stage, and what failure means for each.
-- `properties.md`: the custom fields, including the ones written while the task runs, the owner, placement under a map, and the link rules.
+- `placement.md`: where a task hangs, what it may link to, and what it never carries.
+- The waymark skill's `fields.md`: every field a task carries, who writes it, and how a write lands.
 
 ## What this skill does not do
 

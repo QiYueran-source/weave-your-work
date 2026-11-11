@@ -33,7 +33,7 @@ function project(t) {
   git(root, 'init', '-q')
   git(root, 'config', 'user.name', 'Test User')
   git(root, 'config', 'user.email', 'test@example.test')
-  for (const name of ['setup', 'map', 'task', 'glossary', 'issue']) skill(root, name)
+  for (const name of ['setup', 'waymark', 'map', 'task', 'glossary', 'issue']) skill(root, name)
   write(path.join(root, '.agents', 'skills', 'setup', 'bundle', 'rules', 'rules-demo.md'), '# Demo rule\n')
   write(path.join(root, '.agents', 'rules', 'rules-demo.md'), '# Demo rule\n')
   write(path.join(root, 'AGENTS.md'), '# Follow .agents/rules/*.md\n')

@@ -2,7 +2,7 @@
 
 A map opened well is half of the work. This file is the pass that opens one: the discussion that settles the target, the pass over the target that finds what can be split now and what is still fog, and the two writes that leave a map ready for its first split.
 
-It uses two rules it does not restate: what a map body says, and when fog is written. Both are in `body.md`. The fields and the commands are in `frontmatter.md` and `procedure.md`. Reopening a map that was already split, or closed, belongs to `update`.
+It uses two rules it does not restate: what a map body says, and when fog is written. Both are in `body.md`. The fields and the commands are in the waymark skill's `fields.md`, and the lifecycle in `procedure.md`. Reopening a map that was already split, or closed, belongs to `update`.
 
 ## When it runs
 

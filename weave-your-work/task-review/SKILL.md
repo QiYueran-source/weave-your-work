@@ -35,7 +35,7 @@ The goal axis reads differently for the two kinds: `delivery.md` for a delivery,
 
 ## Four verdicts
 
-**passed**: both axes hold and `waiting_on` is empty. Recheck any map output required by the task: if it is missing or unusable, do not pass or close the task. That is `needs discussion`: record the missing input and the dependency question in `Review`, set `waiting_on` to the owner, and leave the ticket open for the disposition the map skill's `frontmatter.md` describes. A ticket that still carries a `waiting_on` value is waiting, not passed: return `needs discussion` instead. Otherwise the ticket closes.
+**passed**: both axes hold and `waiting_on` is empty. Recheck any map output required by the task: if it is missing or unusable, do not pass or close the task. That is `needs discussion`: record the missing input and the dependency question in `Review`, set `waiting_on` to the owner, and leave the ticket open for the disposition the map skill's `placement.md` describes. A ticket that still carries a `waiting_on` value is waiting, not passed: return `needs discussion` instead. Otherwise the ticket closes.
 
 **needs changes**: an axis names a gap an agent can close, and `waiting_on` is empty. The task goes back to the executor with the gap named, it changes only that, and the task is reviewed again. If `waiting_on` is set, the task is waiting on a person; that is `needs discussion`, not a change.
 

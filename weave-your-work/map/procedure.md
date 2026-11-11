@@ -1,6 +1,6 @@
 # Map procedure
 
-`body.md` says what a map says. `frontmatter.md` says which field holds what and who may write it. This file says what happens next: the steps a map goes through, who runs each one, what it hands back, and what a change to a map that has already been split does to its children.
+`body.md` says what a map says. `placement.md` says where it sits in the tree. The waymark skill's `fields.md` says which field holds what and who may write it. This file says what happens next: the steps a map goes through, who runs each one, what it hands back, and what a change to a map that has already been split does to its children.
 
 ## The life of a map
 
@@ -46,7 +46,7 @@ Explore is done when no open entry remains: every entry is struck through as res
 
 Runs when a layer is settled. `split` calls `grill` to settle what the layer holds, then asks one question: can one complete execution action and one clearly auditable standard be written for each part? Yes sends the parts to tasks, no to child maps.
 
-Each child map is opened by the same pass as its parent, and `split` writes the child's `Not yet specified` under the rule in `body.md` before the child ticket exists. The parent's own body is not touched: its fog was resolved at the pass that opened it, and a part still open at the parent is handed to `fog-explore` rather than carried down.
+Each child map is opened by the same pass as its parent, and `split` writes the child's `Not yet specified` under the rule in `body.md` before the child ticket exists. The parent's own body is not touched: its fog was resolved at the pass that opened it, and a part still open at the parent is handed to `fog-explore` rather than carried down. The pass starts the map and writes its child type; `split` carries both, under the field rules in the waymark skill's `fields.md`.
 
 The first split does two things beyond hanging children:
 
@@ -77,7 +77,7 @@ The type stays the one the map's first split wrote. A map that split into child 
 
 ## Review
 
-Runs when every child and dependency is closed, `Not yet specified` has no unresolved fog, and the acceptance direction has no known uncovered work. Check required dependency outputs, including failed blockers, as `frontmatter.md` directs. Known ambiguous standards go to `fog-explore` before review; a gap first discovered during review receives the appropriate verdict.
+Runs when every child and dependency is closed, `Not yet specified` has no unresolved fog, and the acceptance direction has no known uncovered work. Check required dependency outputs, including failed blockers, as `placement.md` directs. Known ambiguous standards go to `fog-explore` before review; a gap first discovered during review receives the appropriate verdict.
 
 A map with no children can be reviewed, and the review is where the absence is explained. One outcome closes it without work having been done: the map was opened with nothing to deliver. The other is a finding, because the split skill prefers a task and the map should not have been opened. Either way the review reads the absence rather than closing the ticket quietly; `map-review` names the verdict.
 
@@ -119,7 +119,7 @@ From the first split on, a map's children are what its target means, so editing 
 
 A change to `Not yet specified` is an update too, even though nothing waits on it. Fog has two directions: a target change can leave an entry that no longer holds, and a change can expose what is in scope and still not sharp. The first is struck and superseded like other content; the second is a new entry, which `update` writes under the `body.md` rule. An entry is never edited to mean something else without a mark.
 
-`frontmatter.md` defines who may write which fields. The update skill owns the impact scan, the two tests, the three dispositions, and cross-owner hand-off. This procedure only identifies the state that calls for update.
+The waymark skill's `fields.md` defines who may write which fields. The update skill owns the impact scan, the two tests, the three dispositions, and cross-owner hand-off. This procedure only identifies the state that calls for update.
 
 ## Who runs a step
 
@@ -130,6 +130,6 @@ A child closing is not something the procedure controls. After each close, the o
 ## What this file does not do
 
 - Define a body section or an entry format. That is `body.md`.
-- Define a field, a custom field, or a dependency edge. That is `frontmatter.md`.
+- Define a field, a custom field, or a dependency edge. Those are the waymark skill's `fields.md` and `placement.md`.
 - Clear fog, split, or accept a map. Those are `fog-explore`, `split`, and `map-review`.
 - Say what a change does to the nodes that depend on it. That is the update skill.
