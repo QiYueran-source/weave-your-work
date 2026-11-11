@@ -200,7 +200,15 @@ The installed copy in this repository is `.agents/rules/rules-glossary.md`.
 
    Git for Windows runs hooks with its bundled `sh`, so the shell hook works there; a Git distribution without that shell needs WSL or Git Bash. A project with no `.work-weave/glossary/` directory is left alone by the hook, so a clone without glossary sources pulls cleanly.
 
-3. **Read `usage.md`** for the CLI commands, the tool arguments, and troubleshooting.
+3. **Know the two ways in.** The MCP server (registered in step 4) exposes `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. The CLI does the same from a terminal:
+
+   ```sh
+   node .work-weave/runtime/glossary/glossary.js --project <root> list
+   node .work-weave/runtime/glossary/glossary.js --project <root> merge
+   node .work-weave/runtime/glossary/server.js --project <root>
+   ```
+
+   `list` prints the merged terms, one JSON object per line; `merge` rebuilds `GLOSSARY.md` from every source; `server` is the stdio entry the MCP registration points at. When a tool call fails, run `list` first: an empty output means the source directory or its files are missing, not that the server is broken.
 
 ## Verify
 

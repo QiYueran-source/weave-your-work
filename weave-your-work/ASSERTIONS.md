@@ -34,7 +34,7 @@ Three kinds of check:
 - A fog entry without its second line. `[check-records]`
 - A resolved entry not struck, or a struck entry without `Resolved on <date>`. `[check-records]`
 - `split_as` changed after children exist. `[check-records]`
-- A closed map without `## Review`, or a `Review` that disagrees with `status`. `[check-records]`
+- A closed map without `## Review`, or with a non-passing verdict. `[check-records]`
 - A decision bullet with no source. `[review]`
 - A `Review` that merges the two axes into one verdict. `[review]`
 
@@ -72,7 +72,7 @@ Three kinds of check:
 - A skill file linking into another skill's folder. `[check-references]`
 - A resource naming a skill. `[check-references]`
 - A skill missing `family` or `invocation`, or a value outside the allowed set. `[check-references]`
-- A skill the router does not name, or names twice. `[check-references]`
+- A skill the router does not name, or a name in the router that is not a skill. `[check-references]`
 - A mainline action missing from `MAINLINE.md`. `[check-references]`
 
 ## Running them

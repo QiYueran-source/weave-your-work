@@ -6,7 +6,7 @@ How a task is judged. The verdict lands in the task's `## Review` section, in th
 
 Read them separately and report them separately.
 
-- **Goal**: the evidence the signal names is there, and someone who did not do the work can read it by the method the signal names.
+- **Goal**: the evidence the signal names is there, and someone who did not do the work can read it by the method the signal names. For a `delivery` that means the named output exists where `Result` says; for a probe it means the finding is there and the answer it gives is the one the task asked for.
 - **Convention**: the run stayed inside `Boundaries` and the project's rules, and wrote only what it may write.
 
 Every finding names its source: the signal line, the boundary, or the rule.

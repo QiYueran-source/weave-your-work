@@ -44,7 +44,7 @@ waymark ready                # items whose own edges are all clear
 waymark blocked              # items waiting on an unfinished or missing dependency
 ```
 
-`ready` and `blocked` read edges only. They ignore `parent` and do not walk the tree: a blocked map does not freeze every task under it.
+`ready` and `blocked` read edges only. They ignore `parent` and do not walk the tree: a blocked map does not freeze every task under it. `list` stops at 100 rows unless `--limit 0` is passed, and `--compact` drops the relation columns: a sweep that needs every row passes the limit and skips `--compact`.
 
 ## Assertions
 

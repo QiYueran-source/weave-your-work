@@ -29,6 +29,14 @@ Relocating a record is the exception: a subtree moves in any state, because what
 
 `link add`, `link remove`, and `archive` write the other record by design. Their owner is told in the same run.
 
+## Moving a subtree
+
+A move changes where a record sits and nothing else: `waymark parent set <id> <new-parent>` writes one field, and the moved record keeps its content, its status, and its history. Read both parents afterwards: a parent whose acceptance direction counts its children may need reopening, and that is the same test as step 5. A move is not a category change, and the edges on the moved record do not move with it.
+
+## When the change needs new work
+
+A change that needs work is not written into a delivered record. It becomes a child of the map, of the type the map's `split_as` froze, written by `split`; the run then commits to it only when the record's own acceptance direction requires it, and otherwise leaves it open for a later run.
+
 ## Transformation
 
 ```

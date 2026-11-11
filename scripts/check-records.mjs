@@ -156,6 +156,10 @@ function checkTask(file, fm, body) {
   if (task_kind === 'probe' && !parts['Next step']) add(file, 'probe has no ## Next step section')
 
   if (fm.status === 'closed' && !parts.Result) add(file, 'closed task has no ## Result section')
+  if (parts.Review) {
+    const verdict = firstVerdict(parts.Review)
+    if (verdict === 'passed' && fm.custom.waiting_on) add(file, 'passed task still carries waiting_on')
+  }
   if (fm.custom.outcome === 'failed' && parts.Review) {
     const verdict = firstVerdict(parts.Review)
     if (verdict !== 'wrong direction') add(file, 'outcome=failed without verdict "wrong direction"')
