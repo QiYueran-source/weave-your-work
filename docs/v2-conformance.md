@@ -36,6 +36,43 @@ The set is about 55% of its former size in prose, and the part that remains is m
 | 14 | Setup follows the configuration-first shape | `configure-project.md` explores, presents, confirms, writes; `join-project.md`; `check-project.md` reports only | met |
 | 15 | v1 keeps working beside v2 | v1 stays on `qiyueran/dev` and its parents; this work is on a branch | met |
 
+## v1 functionality, skill by skill
+
+Every v1 skill and where its capability lives now. "Same" means the skill exists under the same name with its job intact.
+
+| v1 | v2 | What changed |
+|---|---|---|
+| `ask-me` | `ask-me` | rewritten for the v2 routes; still the only router |
+| `waymark` | `waymark` | fields and relations kept; `queries.md` folded into `res/relations.md`, with the `--limit` and `--compact` traps |
+| `map` | `open-map` (action) + `map` (resources) | the entry and the opening pass are one action; the body, placement, and lifecycle are resources |
+| `split` | `split` | child templates replaced by the `map` and `task` resources |
+| `fog-explore` | `fog-explore` | same; the fog forms now live in `map/res/body.md` |
+| `map-review` | `map-review` | same; the axes and verdicts are `map/res/review.md` |
+| `task` | `task` | now the record reference, not an entry that routes |
+| `task-design` | `task` | body, kind, and placement are the task resources; placement's dependency rule is `waymark/res/relations.md` |
+| `execute-one-task` | `advance-task` | same preflight, stops, and `Result` |
+| `execute-all` | `advance-task` (batch) | claim, dispatch, one commit per task, collision list |
+| `task-review` | `task-review` | same; axes and verdicts in `task/res/review.md` |
+| `update` | `update` | impact scan, two tests, three dispositions, reopening ancestors, foreign owner; moving a subtree and "a change that needs new work" folded in |
+| `grill` | `grill` | rounds and frontier kept; the testimony is `grill/res/testimony.md`; `how-to-grill.md` folded into the steps |
+| `adr` | `adr` | same; format and gates in `adr/res/format.md` |
+| `glossary` | `glossary` | same; the entry shape is `glossary/res/entry.md`, the CLI usage is in its install guide |
+| `issue` | `issue` | five actions and the queue kept; the format is `issue/res/format.md`, the listener setup is in `setup/install-issue.md` |
+| `handoff` | `handoff` | the five sections are `handoff/res/body.md` |
+| `wait-what` | `wait-what` | same table, same columns |
+| `stop-and-wait` | `stop-and-wait` | six classes and read set kept; the report shape is `stop-and-wait/res/report.md` |
+| `salvage-and-restart` | `salvage-and-restart` | five steps and five checks kept |
+| `setup` | `setup` + `configure-project` + `join-project` + `check-project` + `install.md` | the two flow documents rewritten in the configuration-first shape; installs consolidated |
+| `feedback-me-please` | `feedback-me-please` | same gates; trimmed |
+| `use-weave-your-work-examples` | `use-weave-your-work-examples` | same two examples; two links repointed |
+
+What v1 did that v2 no longer does, and why:
+
+- **The `task` entry router.** It routed by the question a reader had; `ask-me` now does that once for the whole set, so the per-family entry was a second index.
+- **`usage.md` walkthroughs** for map, handoff, glossary, issue, and wait-what. They are what the skill does, told twice; the walk that remains is the two worked examples.
+- **Per-kind review pages** (`delivery.md`, `probe.md`). Their one operative difference is now a sentence in `task/res/review.md`.
+- **`update/content.md`'s seven-step ordering.** The order that still matters — strike before reopen, children before a parent's archive — is in `waymark/res/disposition.md` and `update`; the rest was a walkthrough.
+
 ## Where Matt's set was the reference
 
 | Pattern | Matt | v2 |
