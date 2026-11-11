@@ -13,7 +13,7 @@ It answers one question: which skill fits the situation in front of me. Whether 
 
 Two steps, in order. Each step is a family entry: open it, and it routes inside its own family.
 
-1. **`map`** — what is wanted, and when it counts as done. Its own skills are `map-review`, `fog-explore`, and `split`.
+1. **`map`** — what is wanted, and when it counts as done. Its own skills are `open-a-map`, `map-review`, `fog-explore`, and `split`.
 2. **`task`** — the one action that produces a result someone can check. Its own skills are `task-design`, `execute-one-task`, `execute-all`, and `task-review`.
 
 A finished child is judged by its own family — `task-review` for a task, `map-review` for a map — and both are reached through the entry that owns them.
@@ -29,6 +29,7 @@ It writes the testimony, and it hands off the terms and decisions to the branche
 Each one opens on a state, not on a position in the route. When the state matches, open the branch; when it does not, stay on the route.
 
 - **`setup`** — the project is not configured yet. Nothing else runs before this does.
+- **`open-a-map`** — the project is configured but has no root map, or a map has to be opened to replace a retired one.
 - **`fog-explore`** — a map still holds fog it has not cleared.
 - **`split`** — a layer is settled and its children do not exist yet.
 - **`update`** — a node other tickets already rely on has to change, so editing it in place stops being enough.

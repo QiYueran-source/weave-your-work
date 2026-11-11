@@ -5,15 +5,15 @@ description: "Clear a map's fog: resolve every entry in Not yet specified into a
 
 # Fog explore
 
-A map's `Not yet specified` section holds fog: in-scope content that is not yet specific enough to become a decision, a child, or a right to skip. This skill clears it. When no unresolved entry remains, the map's next move is a split, not another round of exploring.
+A map's `Not yet specified` section holds fog. The map skill's `body.md` defines what fog is, when it is written, and the form each entry takes; this file only clears it. When no open entry remains, the map's next move is a split, not another round of exploring.
 
-The entries come from `body.md` in the map skill. Explore reads them as written and does not reclassify them.
+Explore reads the entries as written and does not reclassify them. It does not write new entries either: fog arrives when a map is created or through `update`, and a thing that turns up while clearing either lands where it belongs or goes back to whoever is opening the map.
 
 ## When it runs
 
-The section holds an unresolved entry. That is the whole trigger.
+The section holds an open entry. That is the whole trigger.
 
-It ends when every entry has been resolved or dropped, so no unresolved entry remains. When that happens, anything that became splittable is handed to split. The trigger, the completion check, and that hand-off belong to the map operating procedure; this file covers only the clearing.
+It ends when every entry has been resolved or dropped, so no open entry remains. When that happens, anything that became splittable is handed to split. The trigger, the completion check, and that hand-off belong to the map operating procedure; this file covers only the clearing.
 
 ## The skeleton
 
@@ -33,7 +33,7 @@ An assumption is a belief the map's shape rests on. It usually cannot be confirm
 Research first, the same as for a fact. Then one of three things is true:
 
 - **Supported.** Land it in `Decisions so far` with the evidence and its source.
-- **Refuted.** Do not land it as a decision. Update whatever depended on it — `Target`, `Acceptance direction`, `Out of scope` — or open new fog for what the refutation exposes. Record the counter-evidence where the update lands.
+- **Refuted.** Do not land it as a decision. Update whatever depended on it — `Target`, `Acceptance direction`, `Out of scope` — and record the counter-evidence where the update lands. What the refutation exposes that is still in scope and still not sharp goes back as a new entry through the route above; explore does not write it.
 - **Neither.** No support and no refutation. Two ways forward: accept it as reasonable, which is legitimate for small consequences and should say so in the entry it becomes; or recommend a probe task, strongly when the consequence is large. A probe is a recommendation, not a requirement.
 
 ## Fact to establish
@@ -62,6 +62,12 @@ Talk it through with the owner, then rewrite `Target` in the words the discussio
 
 A clarified goal updates the target. It does not become a child of its own.
 
+## Decision that needs an artifact
+
+How something should look or behave cannot be settled by talking it through. Build the cheap, rough artifact the entry names, then judge it with the owner against what the artifact was meant to show. With the judgment in hand the entry lands like any other decision, and the artifact is linked from the landing so a reader can see what was judged.
+
+Making the artifact is work. When it is more than a sketch the owner can react to in the clearing, it becomes a probe task, handed to split the way a decision that needs its own ticket is.
+
 ## Where the landings go
 
 | What was resolved | Where it lands |
@@ -77,4 +83,5 @@ A clarified goal updates the target. It does not become a child of its own.
 - It never settles what a discussion decided. Grill runs the discussion; explore writes the landing.
 - It never decides that something is a term. Grill decides whether a word goes into the glossary; explore records the fact as a fact.
 - It never forces a decision the owner cannot make. Missing information becomes an assumption entry or a probe, not a coin flip.
+- It never writes a new fog entry. Entries arrive when a map is opened or through `update`; explore clears them.
 - It never touches a map it does not own. Fog on someone else's map is cleared by that map's owner.

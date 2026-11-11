@@ -209,8 +209,22 @@ Then give the person this table, one row per check, and the list of files this f
 | conflict | A file differed and the person has to decide. |
 | not applicable | The check said so, for example because there is no remote. |
 
-Commit nothing. The person reads the list and commits. This flow also creates no remote; joining an existing repository is a different flow.
+Do not commit yet. The root map in step 11 belongs to the same first commit.
+
+## 11. Open the root map
+
+A configured project is not a working project until it has a target. Run the map skill's `open-a-map.md` from the project root: it asks the person for the one large target this project works toward, surveys that target with them, and writes the root map and the children the survey found.
+
+A project that is not empty goes through the same pass, and its files are the scene it opens on: what already exists is recorded as settled in the map's `Decisions so far` and its `Target`, so the first split can decide what continues.
+
+Two outcomes are not failures, and neither writes a map: the target turns out to be small enough to be a single task, or it is too vague to state. Report which, leave the project configured, and let the person decide. A failing write is reported the same way; nothing is repaired here.
+
+The pass does not run waymark's checks. It is not one of the seventeen, because a project without a target is configured and cannot be measured by a check.
+
+Then commit. The person reads the list of changed files, the map included, and commits.
+
+This flow creates no remote; joining an existing repository is a different flow.
 
 ## What this flow changes
 
-Nothing outside the project directory except what a bundle setup writes: the listener's environment file and unit, and a service the person enables. Inside the project it writes `.waymark/`, `tickets/`, `.agents/rules/`, `.gitignore`, and `AGENTS.md`, plus whatever the four bundle setups add.
+Nothing outside the project directory except what a bundle setup writes: the listener's environment file and unit, and a service the person enables. Inside the project it writes `.waymark/`, `tickets/`, `.agents/rules/`, `.gitignore`, `AGENTS.md`, and the root map with its first children, plus whatever the four bundle setups add.

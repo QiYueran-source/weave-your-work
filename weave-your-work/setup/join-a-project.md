@@ -4,7 +4,7 @@ Take a clone of a project that already uses waymark to a checkout that passes th
 
 The project arrives with the tracker and the rules committed. A project install of the skills is committed too; with a global install, the machine's global set supplies them. What a clone does not carry is everything that was never committed: the operator, the dependencies, the git hooks, the MCP registration, and the listener. Those are this flow's work.
 
-This is not what to run on an empty directory, and not what to run on a project that has no tracker yet; that is [start-a-project.md](start-a-project.md).
+This is not what to run on an empty directory, and not what to run on a project that has no tracker yet; that is [start-a-project.md](start-a-project.md). The clone carries the project's root map, so this flow opens no map. A clone whose tickets hold no root map is a third case: configure it here, then open the root with the map skill's `open-a-map.md`.
 
 Before step 1, settle the directory. Run `git rev-parse --show-toplevel` and print the absolute path it gives, then ask the person to confirm it is the clone they mean; a machine with several checkouts of the same project reaches this flow from whichever one the session started in. Run every step from there. A clone carries the rules but not the dependencies, and `rules-install.md` says where those go.
 

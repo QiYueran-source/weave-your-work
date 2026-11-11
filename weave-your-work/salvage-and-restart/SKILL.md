@@ -45,6 +45,8 @@ Close the file with `## What was not examined`: the parts of the tree the pass d
 
 ### 3. Raise the new root
 
+Open it with the map skill's `open-a-map.md`, the same pass that opens any map: the target, the survey, and the fog all come from it. A restart adds one thing to that pass, the salvage record as the source of what is already settled, and the command below is what the pass writes. Reading the pass first keeps the new root from being opened under a rule this skill invented.
+
 ```
 waymark create --category map --title "<the new target>" --owner <name> \
   --body-file <the body>

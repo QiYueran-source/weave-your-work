@@ -10,7 +10,7 @@ Write each child body against the map skill's `body.md` and keep it to what the 
 
 - `Target` is required, with its `Why` line. A child with no `Why` is a title, not a goal.
 - `Acceptance direction` takes the default clause and a review point, unless the discussion produced a specific result the child can be checked against.
-- `Not yet specified` is written when the part still carries fog. When the discussion settled everything, say so explicitly: `(none; the fog is cleared)`.
+- `Not yet specified` is written before the ticket exists, under the rule in the map skill's `body.md`: a part of this child's own target that is in scope and still not sharp enough to act on becomes an entry, and a child with no open entry and no known uncovered work carries the marker instead.
 - `Decisions so far` and `Out of scope` are written when the discussion produced something for them, and left out when it did not.
 
 There is no minimum size. A child map that holds one target and one review point is a complete child map.
@@ -23,6 +23,7 @@ What a child does not carry:
 
 - The parent's `Decisions so far`. A child records what its own discussion settled. When it needs a parent decision, it links that decision rather than restating it.
 - The parent's `Out of scope`. A child's exclusions are the ones its own discussion decided.
+- The parent's fog. The pass that opened the parent resolved it; the child's entries are its own, found by the pass that opens the child.
 
 A child that would conflict with its parent or with a sibling is not written as it stands: the conflict is merged, adjusted, or taken back to the owner before the ticket exists.
 
@@ -69,18 +70,16 @@ Once `split_as` is `submap`, every later child of that map is a child map too. A
 
 A layer may split into a single child when that child is a pure refinement of the parent: the same target, stated more specifically, with a bar a reviewer can check. Fanning out is not the goal; being able to write the next level is.
 
-## Going back to grill
+## When a part is not ready
 
-Two things send the part back instead of producing a ticket:
+A part that reaches neither gate — the discussion cannot state the child's `Target` in a sentence, or cannot say what is still open in it — does not become a ticket. A child written that way carries a goal nobody agreed to, and its own acceptance fails later with no one to ask.
 
-- the discussion cannot state the child's `Target` in a sentence,
-- it cannot say what is still unknown in the child, so `Not yet specified` would have to be invented.
-
-A child written from either one carries a goal nobody agreed to, and its own acceptance will fail later with no one to ask.
+The part goes back to the discussion rather than being written: grill it, and either it sharpens into something openable, or it becomes an entry in `Not yet specified` of the map that owns it, by the `body.md` rule. Writing the entry is not a fallback for a missing `Target`; a part whose target cannot be stated is not in scope of the layer, and the layer is not settled enough to split.
 
 ## What this reference does not do
 
 - Choose between child maps and tasks. That is `SKILL.md`.
 - Define a body section. That is the map skill's `body.md`.
 - Clear the fog a child carries. That is `fog-explore`, after the split.
+- Define what fog is or when it is written. That is the map skill's `body.md`.
 - Decide a child's content. That is the grill discussion.

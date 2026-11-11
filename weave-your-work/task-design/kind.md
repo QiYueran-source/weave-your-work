@@ -20,7 +20,7 @@ For a probe task, a negative finding is a normal and complete result. The ticket
 
 ## Which stage of a map
 
-A map starts with parts of its target still unsettled. The map skill keeps those in its `Not yet specified` section until they are sharp enough to become a decision, a child map, or a task. Work that turns one of them into an answer leans probe. A map about improving code review might open with whether a checklist helps; the probe asks three reviewers to comment on a sample change without one and records what they say.
+A map starts with parts of its target still unsettled. Those are its fog, defined in the map skill's `body.md`, and they stay in its `Not yet specified` section until they are sharp enough to become a decision, a child map, or a task. Work that turns one of them into an answer leans probe. A map about improving code review might open with whether a checklist helps; the probe asks three reviewers to comment on a sample change without one and records what they say.
 
 Once that answer lands as a decision, the map has committed to an output, and the work that produces it is a delivery task. After the decision, the same map's next task writes the checklist into the review template.
 

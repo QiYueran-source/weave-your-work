@@ -6,7 +6,7 @@ A map body says what you want and how someone else will know you got it. This fi
 
 Six sections, in the order this file lists them. Each is a `##` heading carrying the English name given here, whatever language the text under it is written in.
 
-A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`. The exception is `Not yet specified`: when the fog has been settled and no entry remains, the section carries the marker `(none; the fog is cleared)` instead of being left out.
+A section is written when it carries something. One with nothing to say is left out, never filled with a placeholder such as `TBD`. The exception is `Not yet specified`: every map carries it from creation, with its entries or with the marker below when no entry is open, instead of leaving it out.
 
 The body holds the target, decisions, unresolved content, and review evidence; operating instructions live in the procedure.
 
@@ -21,6 +21,7 @@ Format:
 - A `Why:` line under it: what the outcome is for, or what the absence costs. One or two sentences.
 - Deliberate exclusions stay out of here; they belong in `Out of scope`.
 - A map that already reads as one action still states a target a reviewer can judge. "Build the onboarding checklist" is an action; use what the checklist should achieve.
+- A statement that names no state a reviewer could read is a goal to clarify: it goes in `Not yet specified` until the discussion settles it. A map opened with a placeholder target, to be filled later, is not a map yet.
 
 Example:
 
@@ -47,7 +48,7 @@ Format:
 - Follow either one with a `Review point:` line. It is required in both cases. It names what a reviewer looks at and what evidence they see, as checkable items rather than a summary of the goal.
 - Keep the section short. It carries the goal; the review point carries the detail.
 - Keep the full acceptance direction across successive task layers. Completed and planned layers together cover it; plans are not evidence of completion. Unclear uncovered work stays in `Not yet specified`.
-- A review point that cannot be written as checkable items means the goal is not settled yet. That is fog, not a review to get through.
+- A review point that cannot be written as checkable items means the goal is not settled yet, and what is left is a goal to clarify in `Not yet specified`, not a review to get through. When the acceptance direction cannot be written at all, the map is not opened yet.
 - "Best effort", "as good as possible", and "reasonable progress" are not results.
 
 Example, the default:
@@ -96,12 +97,38 @@ Example:
 
 Purpose: hold the fog — in-scope content that is not yet specific enough to become a decision, a child, or an exclusion.
 
+This section is the single place that defines fog. Every other file that names fog — `procedure.md`, `split`, `fog-explore`, `open-a-map`, `update` — reads this section and does not restate it.
+
 Format:
-- Each entry uses one of the four built-in forms below, or a custom type when none of them fits. Every form carries a second line saying what resolving the entry would change. That line is what tells a reader how much the answer matters; an entry without it is a note, not fog.
+- Each entry uses one of the four built-in forms below, or the catch-all form below, or a custom type when none of them fits. Every form carries a second line saying what resolving the entry would change. That line is what tells a reader how much the answer matters; an entry without it is a note, not fog.
 - A resolved entry stays in place, struck through, with a `Resolved on <date>:` line saying what it became and where. The history shows what the map considered before it settled.
-- An entry that is struck through is resolved. A section whose entries are all struck carries no fog even though it still has content; the marker is for a section that ends with no entries.
+- An entry that is struck through is resolved. A section whose entries are all struck carries no fog even though it still has content.
 - Fog that turned out to be irrelevant may be deleted instead of struck through.
-- When the fog has been settled and no entry remains, say so: `(none; the fog is cleared)`. A section left out and a section that carries the marker mean different things, and only one of them is a state worth reporting.
+- When no entry is open and no uncovered work is known, say so: `(none; no open fog, no known uncovered work)`. A section left out and a section that carries the marker mean different things, and only one of them is a state worth reporting.
+
+### When fog is written
+
+Fog is written once, when the map is created, and later only through `update`. A map whose body exists carries the section: with entries, or with the marker.
+
+The way this works:
+
+1. **Fog gathers toward the target.** A map's fog is the part of its own target that is in scope and still not sharp enough to act on. Scope is settled by `Target` and `Acceptance direction`; content beyond them is `Out of scope`, not fog. How sharp the content is decides fog; whether it is in scope decides `Out of scope`. An item is never both.
+2. **A question that can be stated now is a child, not fog.** The test is whether the question can be phrased precisely, not whether it can be answered. A clear question that waits on someone else, on a dependency, or on a person's decision is still a child, and the wait is recorded where it belongs.
+3. **One entry is larger than one child.** Do not pre-slice fog into child-sized pieces. One entry may later arrive as several children, or as none. An entry that already names each of its parts is a split that has not happened yet.
+4. **Fog is found by a breadth pass, not by drilling.** After `Target` and `Acceptance direction` are written, cover the whole target once at low resolution: the parts whose next move is clear become children, the parts whose next move is not become fog, and the parts beyond the target go to `Out of scope`. The pass ends when another question would repeat one already answered.
+5. **The parent's fog settles when its layer splits.** A split runs on a layer whose fog is resolved. Each child carries its own fog, written in the same pass that creates it, under this section.
+6. **A pass that finds neither a child nor an entry is a stop.** The map is not written: the target is small enough to be a task, or still too vague to state at all. Say which, and do not create an empty map.
+
+`split` writes the fog of a child map and of an opened root the same way: it calls this section, not a rule of its own.
+
+### Catch-all: decision that needs an artifact
+
+When to use: how something should look or behave cannot be settled by talking it through, and a cheap, rough version made first would raise the quality of the discussion. Use it when the entry is about what to judge rather than which fact to look up or what to decide.
+
+```
+- Decision that needs an artifact: [what to build roughly, and what judging it would settle].
+  Why it matters: [what the answer changes].
+```
 
 ### Assumption
 
@@ -213,7 +240,7 @@ Invalidated on 2026-11-09: a checklist task reopened when its link stopped worki
 
 ## Keeping a body short
 
-`Target` and `Acceptance direction` are required from creation. The other sections record settled decisions, fog, exclusions, and review evidence when they exist.
+`Target` and `Acceptance direction` are required from creation. `Not yet specified` is written from creation too, with its entries or the `(none; …)` marker once the breadth pass in "When fog is written" finds neither a child nor an entry. The other sections record settled decisions, exclusions, and review evidence when they exist.
 
 ## A whole map
 
