@@ -49,6 +49,6 @@ A cleared entry stays in place, struck through, followed by `Resolved on <date>:
 - `Not yet specified` missing. [check-records]
 - A fog entry without its second line. [check-records]
 - A resolved entry not struck, or a struck entry without `Resolved on <date>`. [check-records]
-- `split_as` changed after children exist. [check-records]
+- `split_as` changed after children exist: a map with children carries `split_as`, and its value matches the children's category (`submap` for maps, `task` for tasks). [check-records]
 - A decision bullet with no source. [review]
 - A map whose `Not yet specified` was never walked: every part of its target is already a child, a decision, or an exclusion, and no entry was ever struck. [review]

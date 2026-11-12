@@ -21,7 +21,7 @@ One entry per conflict:
 - **Class** — one of the six.
 - **What it costs if left** — the work that will be done twice, or the claim that is already false.
 
-Plus a short preamble: what was read, and what was deliberately skipped.
+Plus a short preamble: what was read, and what was deliberately skipped. `stop-and-wait/SKILL.md` says how the read walks the project and which parts it skips.
 
 ## Assertions
 

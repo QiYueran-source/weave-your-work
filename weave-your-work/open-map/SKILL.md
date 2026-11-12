@@ -21,7 +21,7 @@ One map per run. A root map and a child map are the same record, so this one act
 ## Steps
 
 1. **Settle the target.** The answers needed are small: the outcome as a state of the world with its `Why:` line, the acceptance direction with its review point, what is already true in the project, and what the discussion ruled out. Decisions that need a person go through `grill`.
-2. **Walk the target once, using the `map` skill's fog rules.** The `map` skill decides what becomes a child, a fog entry, an exclusion, or a decision, and what an entry looks like. This step runs that walk and no rule of its own: draft the entries, show them to the owner, keep what the owner keeps. A part the walk sends to a child is not written here; it is work for a later split.
+2. **Walk the target once, using the `map` skill's fog rules.** `map/res/body.md` says what becomes a child, a fog entry, an exclusion, or a decision, and how an entry is written. This step runs that walk and no rule of its own: draft the entries, show them to the owner, keep what the owner keeps. A part the walk sends to a child is not written here; it is work for a later split.
 3. **Write the map.** `waymark create --category map --title "<the outcome, not the method>" --owner <name> --body-file <body> --dry-run`, then again without the flag. `--parent <map>` for a child map; a root map has none. The body is what the `map` skill requires, filled from steps 1 and 2. No `Review` and no `split_as`: the first split writes the type.
 
 When the target turns out to be small enough for one task, or too vague to state, write nothing: report which. Deciding that the part belongs in another record is not this run's call.

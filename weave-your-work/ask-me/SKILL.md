@@ -28,7 +28,7 @@ A child map re-enters at `split`; closing runs bottom-up. A record that turns ou
 
 Each opens on a state, not on a position in the route.
 
-- **`setup`** when the project is not configured: it routes to `configure-project`, `join-project`, or `check-project`.
+- **`setup`** when the project is not configured: it takes an empty directory to a working one, or fills in what a clone cannot carry.
 - **`update`** when a closed record, or a map that has already split, has to change.
 - **`issue`** when a decision or an ask has to reach another owner, or when the queue holds a message.
 - **`wait-what`** when the person lost the thread; **`handoff`** when the work continues in another session.

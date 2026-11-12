@@ -20,11 +20,11 @@ The layer goes back to `grill` when it cannot support a child's `Target`, or the
 1. **Decide the type.** Ask the question above for the layer as a whole. A layer is all one type; a direction that needs the other type opens a sibling map instead.
 2. **Decide the count before writing anything.** A layer is cut by the decisions the map already settled: each child's part comes from a decision in `Decisions so far`, and several decisions may feed one child or one decision may feed several. A part with no decision behind it is not cut; it goes back to `grill`, or stays in `Not yet specified` until it settles. For tasks, write the count and a one-line plan per task into the discussion's testimony.
 3. **Open each child, one at a time, by calling the action that writes that record.** This skill does not write a child's body.
-   - A child map: call `open-map` once per child map, with that child's part of the parent's target. It writes the body and its `Not yet specified`; this skill supplies the parent.
+   - A child map: call `open-map` once per child map, with that child's part of the parent's target. It writes the body and its `Not yet specified`.
    - A task: call `open-task` once per task, with the action, the acceptance signal, the kind, and `reversibility` and `needs_human`.
 
    A layer is all one type, so a run calls one of the two actions for every child, never both.
-4. **Hang them.** Each child records its own `parent`; the parent's file is not edited for it. Neither writer sets the parent on its own: this step does.
+4. **Hang them.** Each child records its own `parent`: on the create command, or with `waymark parent set <child> <map>` after it. Neither writer sets it, and the parent's file is not edited for it.
 5. **Start the map on its first split.** `waymark start <map>` and `waymark field update <map> --set split_as=<submap|task>`. Later splits change neither.
 6. **Read the shape back.** `waymark tree --root <map>`.
 

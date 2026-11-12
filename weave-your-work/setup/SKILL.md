@@ -23,7 +23,7 @@ When the project matches none of the three, the checks alone say what is missing
 
 ## What setup installs
 
-`install.md` covers it: seven rules copied into `.agents/rules/`, two tools run in place, and two runtimes installed only when the project uses them (the glossary store, the issue listener). Every installable part lives under this skill; the other skills carry none.
+`install.md` covers it: eight rules copied into `.agents/rules/`, two tools run in place, and two runtimes installed only when the project uses them (the glossary store, the issue listener). Every installable part lives under this skill; the other skills carry none.
 
 ## The field reference
 

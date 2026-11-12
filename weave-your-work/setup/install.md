@@ -62,11 +62,11 @@ foreach ($name in 'rules-git.md','rules-checklist.md','rules-install.md','rules-
 Run in place; nothing to copy for these two.
 
 - `node <setup>/tools/project-root-cli.cjs [--project <dir>]` prints the physical project root, or fails.
-- `node <setup>/tools/check-setup.mjs --starred` runs the checks in `rules-checklist.md` and exits 1 on a failure. Use `--all` when a feature you expect to work does not.
+- `node <setup>/tools/check-setup.mjs --starred` runs the checks in `rules-checklist.md` and exits 1 on a failure. Use `--all` when a feature you expect to work does not; the checklist says which checks are starred.
 
 Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`.
 
-The glossary and issue tools each carry a byte-identical copy of `project-root.cjs`; the setup test checks that the copies still match.
+The glossary and issue tools each carry a byte-identical copy of `project-root.cjs`. The setup install has no test that runs that comparison; the copies are kept equal by hand.
 
 ## Install the two runtimes
 
