@@ -13,7 +13,7 @@ The three gates and the file format are `res/format.md`. This skill applies them
 
 ## When it runs
 
-A discussion settles a decision, or `update` changes one. Ask the three gates in order: hard to reverse, surprising without context, a real trade-off. If any fails, write nothing: the decision stays in the map's `Decisions so far`.
+A decision is settled — by a discussion, by a split, or by `update` changing one — and the caller reaches the checkpoint `MAINLINE.md` names for it. Ask the three gates in order: hard to reverse, surprising without context, a real trade-off. If any fails, write nothing: the decision stays in the map's `Decisions so far`.
 
 ## Steps
 
