@@ -25,6 +25,6 @@ Plus a short preamble: what was read, and what was deliberately skipped.
 
 ## Assertions
 
-- A finding that names one side only. `[review]`
-- A finding whose class is not one of the six. `[review]`
-- A report that changes a record. `[review]`
+- A finding that names one side only. [review]
+- A finding whose class is not one of the six. [review]
+- A report that changes a record. [review]

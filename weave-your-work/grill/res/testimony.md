@@ -15,7 +15,7 @@ A testimony cites the records it produced; it never restates them.
 
 ## Assertions
 
-- A testimony with no `Subject`. `[check-records]`
-- A round with a question and no answer recorded, while the testimony is closed. `[check-records]`
-- A testimony that carries a map or task field (`split_as`, `task_kind`, `reversibility`, `needs_human`, `waiting_on`). `[check-records]`
-- A settled line with no destination. `[review]`
+- A testimony with no `Subject`. [check-records]
+- A round with a question and no answer recorded, while the testimony is closed. [check-records]
+- A testimony that carries a map or task field (`split_as`, `task_kind`, `reversibility`, `needs_human`, `waiting_on`). [check-records]
+- A settled line with no destination. [review]

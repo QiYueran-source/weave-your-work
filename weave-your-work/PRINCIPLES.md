@@ -17,18 +17,18 @@ What counts as one fact:
 
 What is shared, and shared on purpose, is only what truly belongs to every record at once: the command that writes a field, the meaning of `parent`, and the three dispositions a change can take.
 
-## Two: no cycles
+## Two: no dependency for a call, no cycle in the graph
 
-A skill is one complete action. It may hand its result to another skill; it may not depend on a skill that depends on it.
+A record is written by one action. A reader never writes another skill's record, and a skill never calls back into a skill that calls it.
 
-Two kinds of mention, and only one of them counts as a dependency:
+Two kinds of mention, and only one of them counts in the graph:
 
-- **Call** — the steps actually go to another skill: "call `grill` for the decision", "call `open-map` once per child". A call is a dependency.
-- **Hand-off** — the skill names where its result goes and stops: "what happens after the map is written is not this action's concern"; "the verdict goes to the owner". A hand-off carries no dependency.
+- **Call** — the steps go to another skill now, in the same run: "call `grill` for the decision". Write it as `call \`name\``, with the backticks on the name. A call is an edge.
+- **Reference** — the skill says where its result goes, what a reader should read, or what happens next, and stops. "The record's shape is the `map` skill's"; "this flow does not restate those steps"; "`update` repairs a map that already exists." A reference carries no edge, and a skill with many references is not one with many dependencies.
 
-The **call graph** — every skill's calls, no hand-offs — must have no cycle. Two skills that each call the other are one action split across two files, and the split is what to fix, not the wording.
+The **call graph** is every edge. It must have no cycle: two skills that each call the other are one action split across two files, and the split is what to fix, not the wording.
 
-A caller decides whether to act on a hand-off. The callee never names the caller as a step.
+A node is not a file. `split` calling `open-map` once per child map, which writes each child, is a tree: the child is work, and the child's own opening is a lower node. `split` → `open-map` → back into `split` for that child's layer is a cycle, and it is one to cut. The line is that going down a tree is not going back up it.
 
 ## Three: when unsure, follow Matt
 
@@ -63,6 +63,6 @@ This applies to records. An action still says what it does and in what order; "s
 | Rule | How it is checked |
 |---|---|
 | One: one fact | `scripts/check-references.mjs` fails a skill file that links into another skill's folder; a person checks, at review, that no record's definition is split across two folders |
-| Two: no cycles | `scripts/check-references.mjs` builds the call graph from each `SKILL.md` and fails on a cycle |
+| Two: no cycles for calls | `scripts/check-references.mjs` reads every `call \`name\`` from each `SKILL.md`, builds the graph, and fails on a cycle; every other mention is a reference and carries no edge |
 | Three: follow Matt | no check; the reviewer says which skill in mattpocock/skills they followed, or why none applies |
 | Four: direction, not layout | `scripts/check-references.mjs` fails an assertion that names no check, which is how a contract without a reader is caught; a person checks, at review, that no rule spends words on layout that no check reads |

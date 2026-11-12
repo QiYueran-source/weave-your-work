@@ -31,8 +31,8 @@ Each one is read for one question: does this relation still mean what it meant?
 
 ## Assertions
 
-- A closed record whose text changed without its `Review` being struck through or rewritten. `[check-records]`
-- A record that changed subject but kept its id and its review. `[review]`
-- A superseded entry without a date, or a struck passage with no `Superseded on` line under it. `[check-records]`
-- An archived record that still has an unarchived child. `[waymark]`
-- A change carried into a record owned by someone else without telling that owner. `[review]`
+- A closed record whose text changed without its `Review` being struck through or rewritten. [check-records]
+- A record that changed subject but kept its id and its review. [review]
+- A superseded entry without a date, or a struck passage with no `Superseded on` line under it. [check-records]
+- An archived record that still has an unarchived child. [waymark]
+- A change carried into a record owned by someone else without telling that owner. [review]

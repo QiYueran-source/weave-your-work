@@ -15,6 +15,6 @@ Ask what the task commits to. A `delivery` can name its output now; a `probe` ca
 
 ## Assertions
 
-- `task_kind` missing or outside the two values. `[check-records]`
-- A `delivery` with no named output in its `Action`. `[review]`
-- A probe whose signal can only pass or fail, with no room for "the answer is the other way". `[review]`
+- `task_kind` missing or outside the two values. [check-records]
+- A `delivery` with no named output in its `Action`. [review]
+- A probe whose signal can only pass or fail, with no room for "the answer is the other way". [review]

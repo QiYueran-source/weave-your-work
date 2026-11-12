@@ -105,6 +105,20 @@ npx skills add (clean checkout) 22 installed, front matter valid
 
 The first three are new in v2 and wired into `verify.yml`.
 
+## Changes after the first review
+
+The fog design was found to be split across two files: the `map` skill defined what fog is, and `open-map` carried the generation rule, which is the one fact PRINCIPLES rule one names by hand. It now reads:
+
+| Where | Holds |
+|---|---|
+| `map/res/body.md` | the fog definition, the walk that sends each part to a child, an entry, an exclusion, or a decision, the entry shape, and the stop rule |
+| `open-map/SKILL.md` | step 2 runs that walk and no rule of its own; every action that creates a map does the same, and none carries a copy |
+| `split/SKILL.md` | a child map's fog is written when the child is opened; a split calls `open-map` or `open-task` once per child and writes no child body |
+
+PRINCIPLES rule two was made decidable. A call is written `call \`name\`` and is the only edge in the graph; every other mention is a reference and carries no edge; `check-references.mjs` builds that graph and fails on a cycle. It was checked both ways: `split` calls `open-map` and `open-task` with no cycle, and an injected `open-map → split` fails with the cycle printed. The rule now also says a node is not a file: descending a tree is not returning up it.
+
+The cycle check found one defect while being written: `split`'s step 3 phrased its call as a bare backticked name, which is the shape that let the v1 loops go unnoticed.
+
 ## Gaps and residual risks
 
 1. **The two worked examples were not migrated.** Their inner ticket stores were written under v1 rules, so `check-records.mjs` skips them (it reads the project's `tickets/` only). A reader following an example sees records that would fail the assertions this set now states. This is fog on the v2 map, not a hidden fact.

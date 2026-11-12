@@ -48,9 +48,9 @@ waymark blocked              # items waiting on an unfinished or missing depende
 
 ## Assertions
 
-- More than one parent on one item. `[waymark]`
-- A `parent` naming an item that is gone. `[waymark]`
-- A task whose `parent` is a task. `[check-records]`
-- An explicit dependency edge between a parent and its child. `[check-records]`
-- A dependency edge on a task. `[check-records]`
-- A dependency cycle, or a direction where the blocker needs the item that waits on it. `[review]`
+- More than one parent on one item. [waymark]
+- A `parent` naming an item that is gone. [waymark]
+- A task whose `parent` is a task. [check-records]
+- An explicit dependency edge between a parent and its child. [check-records]
+- A dependency edge on a task. [check-records]
+- A dependency cycle, or a direction where the blocker needs the item that waits on it. [review]

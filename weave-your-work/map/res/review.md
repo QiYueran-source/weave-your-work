@@ -28,8 +28,8 @@ A verdict that no longer holds stays in place, struck through, with a line sayin
 
 ## Assertions
 
-- A closed map with no `## Review`. `[check-records]`
-- A closed map whose `Review` carries a non-passing verdict. `[check-records]`
-- `outcome=failed` with a verdict other than `wrong direction`. `[check-records]`
-- A `Review` that merges the two axes into one verdict. `[review]`
-- A finding with no source. `[review]`
+- A closed map with no `## Review`. [check-records]
+- A closed map whose `Review` carries a non-passing verdict. [check-records]
+- `outcome=failed` with a verdict other than `wrong direction`. [check-records]
+- A `Review` that merges the two axes into one verdict. [review]
+- A finding with no source. [review]

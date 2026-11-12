@@ -41,8 +41,8 @@ A field the config does not declare is refused. A value outside the table above 
 
 ## Assertions
 
-- A custom field the config does not declare is refused by the command. `[waymark]`
-- `status` outside the three live values is refused by the command. `[waymark]`
-- A custom field value outside the table above is a finding. `[review]`
-- `needs_human` is absent on a task written by this set. `[check-records]`
-- A front matter value differs from what the last command on that item would have written, and `updated_at` is older than the body around it. `[review]`
+- A custom field the config does not declare is refused by the command. [waymark]
+- `status` outside the three live values is refused by the command. [waymark]
+- A custom field value outside the table above is a finding. [review]
+- `needs_human` is absent on a task written by this set. [check-records]
+- A front matter value differs from what the last command on that item would have written, and `updated_at` is older than the body around it. [review]

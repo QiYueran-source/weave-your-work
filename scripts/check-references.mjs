@@ -106,7 +106,7 @@ for (const file of new Set(resFiles)) {
   const assertions = text.split(/^## Assertions\s*$/m)[1]
   if (assertions) {
     for (const bullet of assertions.split(/\r?\n/).filter((line) => line.startsWith('- '))) {
-      if (!/\[(waymark|check-records|review)\]`?\s*$/.test(bullet.trim()))
+      if (!/\[(waymark|check-records|review)\]\s*$/.test(bullet.trim()))
         add(file, `assertion names no check: ${bullet.trim().slice(0, 60)}`)
     }
   }
@@ -136,21 +136,48 @@ else {
   }
 }
 
-// 6. One writer per record: the actions that write a record do not decide
-//    how many there are or call each other.
-const writers = ['open-map', 'open-task']
+// 6. No cycles in the call graph (PRINCIPLES.md, rule two). A call is a line
+//    that tells the run to go to another skill now ("call `x`", "calls `x`").
+//    A hand-off names where the result goes and stops; it carries no edge.
+const calls = new Map()
+for (const skill of skills) {
+  const text = read(join(setDir, skill, 'SKILL.md')) ?? ''
+  const found = new Set()
+  for (const match of text.matchAll(/\b(?:call|calls|calling) (?:the )?`([a-z][a-z-]*)`/g)) {
+    if (skillSet.has(match[1]) && match[1] !== skill) found.add(match[1])
+  }
+  calls.set(skill, found)
+}
+const state = new Map()
+const stack = []
+function visit(skill) {
+  if (state.get(skill) === 'done') return
+  if (state.get(skill) === 'open') {
+    const start = stack.indexOf(skill)
+    add(join(setDir, skill, 'SKILL.md'), `call cycle: ${[...stack.slice(start), skill].join(' -> ')}`)
+    return
+  }
+  state.set(skill, 'open')
+  stack.push(skill)
+  for (const next of calls.get(skill) ?? []) visit(next)
+  stack.pop()
+  state.set(skill, 'done')
+}
+for (const skill of skills) visit(skill)
+
+// 7. One writer per record: a record's own skill defines it, and a single
+//    action writes it. A second writer would let two actions disagree about
+//    a record's shape; the call graph above already forbids them calling
+//    each other.
+const writers = ['open-map', 'open-task', 'grill']
 for (const writer of writers) {
   if (!skillSet.has(writer)) add(setDir, `record writer ${writer} has no skill`)
   const text = read(join(setDir, writer, 'SKILL.md')) ?? ''
-  for (const other of writers) {
-    if (other !== writer && text.includes('`' + other + '`'))
-      add(join(setDir, writer, 'SKILL.md'), `record writer names ${other}; writers never call each other`)
-  }
   if (!/does not decide how many/.test(text))
     add(join(setDir, writer, 'SKILL.md'), 'record writer does not say it is one record per run')
 }
 
-// 7. Installable parts live under setup, not under a skill of their own.
+// 8. Installable parts live under setup, not under a skill of their own.
 for (const skill of skills) {
   if (skill === 'setup') continue
   if (read(join(setDir, skill, 'bundle', 'setup.md'))) add(join(setDir, skill), 'carries a bundle; installs belong under setup')

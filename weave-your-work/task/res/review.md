@@ -28,7 +28,7 @@ The verdict, then one line per axis with its evidence. An older verdict on the s
 
 ## Assertions
 
-- `outcome=failed` with a verdict other than `wrong direction`. `[check-records]`
-- A `passed` task that still carries `waiting_on`. `[check-records]`
-- A `Review` that merges the two axes into one verdict. `[review]`
-- A finding with no source. `[review]`
+- `outcome=failed` with a verdict other than `wrong direction`. [check-records]
+- A `passed` task that still carries `waiting_on`. [check-records]
+- A `Review` that merges the two axes into one verdict. [review]
+- A finding with no source. [review]

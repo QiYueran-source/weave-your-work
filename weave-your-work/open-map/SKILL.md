@@ -20,20 +20,8 @@ One map per run. A root map and a child map are the same record, so this one act
 
 ## Steps
 
-1. **Settle the target, with a stated source.** The answers needed are small: the outcome as a state of the world with its `Why:` line, the acceptance direction with its review point, what is already true in the project, and what the discussion ruled out. Decisions that need a person go through `grill`.
-
-   The target has a source, and the body says what it is: the person asked for it, a parent map's layer produced it, an archived record it replaces, a decision on another record called for it, or something else the run can name. The source is a line, not a citation graph: say where the direction came from, and stop there. This action does not check the source, does not require a particular kind of source, and does not follow it anywhere.
-2. **Survey the target once, at low resolution.** Walk the whole target rather than drilling into one thread. For each part, ask where its next move is:
-
-   | The part | Where it goes |
-   |---|---|
-   | in scope, and the question cannot be stated precisely yet | an entry in `Not yet specified` |
-   | beyond what `Target` and `Acceptance direction` state | `Out of scope`, with the reason |
-   | already settled | `Decisions so far`, with its source |
-
-   A part whose next move is one action and one checkable result is reported, not written: it is work that will be hung by a later split, and this action writes only the map itself.
-
-   Draft the fog entries and show them to the owner: the pass is the agent's, the call is theirs. Do not pre-slice an entry into the shape of a child. An entry that already names each of its parts separately is a child someone has not hung yet; hanging it is not this action's job.
+1. **Settle the target.** The answers needed are small: the outcome as a state of the world with its `Why:` line, the acceptance direction with its review point, what is already true in the project, and what the discussion ruled out. Decisions that need a person go through `grill`.
+2. **Walk the target once, using the `map` skill's fog rules.** The `map` skill decides what becomes a child, a fog entry, an exclusion, or a decision, and what an entry looks like. This step runs that walk and no rule of its own: draft the entries, show them to the owner, keep what the owner keeps. A part the walk sends to a child is not written here; it is work for a later split.
 3. **Write the map.** `waymark create --category map --title "<the outcome, not the method>" --owner <name> --body-file <body> --dry-run`, then again without the flag. `--parent <map>` for a child map; a root map has none. The body is what the `map` skill requires, filled from steps 1 and 2. No `Review` and no `split_as`: the first split writes the type.
 
 When the target turns out to be small enough for one task, or too vague to state, write nothing: report which. Deciding that the part belongs in another record is not this run's call.
@@ -44,7 +32,7 @@ When the target turns out to be small enough for one task, or too vague to state
 before: no map for the target
 after:
 - the map exists, status open, with no split_as and no Review
-- Target carries an outcome, a Why line, and a stated source
+- Target carries an outcome and a Why line
 - Acceptance direction carries a Review point
 - Not yet specified carries its entries, or the marker
 - every part of the survey became an entry, an exclusion, or a decision; none became a child
@@ -54,7 +42,7 @@ after:
 
 The map is written, and that is the whole result: the action writes one record and decides nothing that comes after it. Who acts next — the person, a flow that called this action, or an automated pass that splits until nothing more can be split — is not this action's concern, and no reader of it should infer one.
 
-The one thing a caller may do with the result is close the gap into children: a part the survey reported as work becomes a child map by calling this action again, or a task by calling the action that writes tasks. That is the caller's call, not a step here, and this action never names it as a step of its own.
+The one thing a caller may do with the result is close the gap into children: a part the walk reported as work becomes a child map, or a task, through the action for that record. That is the caller's call, not a step here.
 
 ## What this skill does not do
 

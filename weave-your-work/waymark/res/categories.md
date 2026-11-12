@@ -12,7 +12,7 @@ A testimony is a record item, not a work item: it has an owner and a body, it ne
 
 ## Assertions
 
-- A category outside the three above. `[waymark]`
-- A body section that belongs to another category. `[review]`
-- A testimony carrying a field that belongs to a map or a task. `[check-records]`
-- A task hanging under anything but a map. `[check-records]`
+- A category outside the three above. [waymark]
+- A body section that belongs to another category. [review]
+- A testimony carrying a field that belongs to a map or a task. [check-records]
+- A task hanging under anything but a map. [check-records]

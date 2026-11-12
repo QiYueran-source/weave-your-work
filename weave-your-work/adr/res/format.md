@@ -34,7 +34,7 @@ Name the record that owns the decision, by id. The record says who asked and wha
 
 ## Assertions
 
-- An ADR with no paragraph explaining why. `[review]`
-- A new ADR whose number skips or repeats. `[check-records]`
-- An edited old ADR instead of a new one that supersedes it. `[review]`
-- An ADR that fails one of the three gates. `[review]`
+- An ADR with no paragraph explaining why. [review]
+- A new ADR whose number skips or repeats. [check-records]
+- An edited old ADR instead of a new one that supersedes it. [review]
+- An ADR that fails one of the three gates. [review]

@@ -36,7 +36,7 @@ Written with a serializer, never by interpolating issue text. The queue is local
 
 ## Assertions
 
-- An issue without `kind: communicate`, or with a `to` list that is not exactly one handle. `[check-records]`
-- A `tickets` entry that names no existing record. `[review]`
-- A queue line that is not one JSON object per line. `[check-records]`
-- Issue text interpolated into the queue line rather than serialized. `[review]`
+- An issue without `kind: communicate`, or with a `to` list that is not exactly one handle. [check-records]
+- A `tickets` entry that names no existing record. [review]
+- A queue line that is not one JSON object per line. [check-records]
+- Issue text interpolated into the queue line rather than serialized. [review]

@@ -20,6 +20,6 @@ When the person says what the next session is for, tailor the document to it.
 
 ## Assertions
 
-- A handoff document inside the workspace or a ticket store. `[check-records]`
-- A section restating a record instead of citing it. `[review]`
-- A secret, a token, or another person's data in the document. `[review]`
+- A handoff document inside the workspace or a ticket store. [check-records]
+- A section restating a record instead of citing it. [review]
+- A secret, a token, or another person's data in the document. [review]

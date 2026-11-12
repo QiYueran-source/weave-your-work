@@ -28,7 +28,7 @@ One canonical name per concept. When two names exist, pick one and list the othe
 
 ## Assertions
 
-- An entry without `term` or `definition`. `[check-records]`
-- A definition over two sentences, or one containing a command or a path. `[review]`
-- A hand edit to `GLOSSARY.md`. `[check-records]`
-- A write to another operator's source file. `[review]`
+- An entry without `term` or `definition`. [check-records]
+- A definition over two sentences, or one containing a command or a path. [review]
+- A hand edit to `GLOSSARY.md`. [check-records]
+- A write to another operator's source file. [review]

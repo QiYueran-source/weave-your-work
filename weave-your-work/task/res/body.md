@@ -23,9 +23,9 @@ A task ends at a result that can be handed over whole and checked on its own; th
 
 ## Assertions
 
-- `Action` or `Acceptance signal` missing. `[check-records]`
-- A `one_way` delivery without `Failure recovery`, or a probe without `Next step`. `[check-records]`
-- A closed task with no `Result`. `[check-records]`
-- A task with a dependency edge, or a parent that is not a map. `[check-records]`
-- An `Acceptance signal` that names no evidence, or two readings of it disagree. `[review]`
-- A `Result` claiming a deliverable that cannot be found. `[review]`
+- `Action` or `Acceptance signal` missing. [check-records]
+- A `one_way` delivery without `Failure recovery`, or a probe without `Next step`. [check-records]
+- A closed task with no `Result`. [check-records]
+- A task with a dependency edge, or a parent that is not a map. [check-records]
+- An `Acceptance signal` that names no evidence, or two readings of it disagree. [review]
+- A `Result` claiming a deliverable that cannot be found. [review]
