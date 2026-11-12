@@ -24,6 +24,12 @@ Ask your agent to run the `setup` skill for your project. Setup guides you throu
 
 Once setup is complete, ask the agent to use `ask-me` to find the right starting point for your work. The set is built two ways: records are defined once under each record skill's `res/`, and actions follow the mainline in [MAINLINE.md](weave-your-work/MAINLINE.md). Every rule is an assertion with the check that decides it; [ASSERTIONS.md](weave-your-work/ASSERTIONS.md) indexes them.
 
+## What is in the set
+
+Seven actions carry a project from a settled map to a closed one, in order: `open-map` writes a map, `split` turns a settled layer into child maps or tasks, `open-map` and `open-task` write what it decided, `advance-task` takes a task to a written result, `task-review` judges it, and `map-review` judges the map. Fog that blocks a layer goes to `fog-explore` first. All but `map-review` are model-invoked, so the line runs without a person restarting it; closing a map stays a person's decision.
+
+The rest act on a record without adding a step: `update` changes a record others already rely on, `grill` settles a decision with a person, `adr` and `glossary` record what a step settled, `issue` and `handoff` carry work to another owner or another session, `resplit` recuts a task layer that should have been child maps, and `whole-review` reads a map's children as a set when a person asks for it. Three more read and change nothing: `wait-what` shows where the work stands, `stop-and-wait` reports where the project contradicts itself, and `salvage-and-restart` restarts a tree that no longer describes its work off that report. `feedback-me-please` reports a skill bug upstream, `use-weave-your-work-examples` walks two worked examples, and `setup` configures a project in the first place.
+
 ## What a review does now
 
 A task or a map is judged on two axes, and each gives its own verdict: **goal** asks whether the acceptance signal or direction was met, **convention** asks whether the work followed the rules. Both have to pass for the record to close, and the record keeps both verdicts as they stand. `whole-review` is the one pass nobody calls by itself: a person runs it when a map's children are worth reading as a set, so two contradictory children are reported instead of both passing alone, and `map-review` judges the map whether that paragraph is there or not.

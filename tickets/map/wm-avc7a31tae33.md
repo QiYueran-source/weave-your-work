@@ -7,9 +7,11 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T06:48:16Z
-updated_at: 2026-11-08T10:31:24Z
+updated_at: 2026-11-12T12:13:56Z
 closed_at: 2026-11-08T10:31:24Z
 parent: wm-87pgn0b75yy5
+custom_fields:
+  split_as: submap
 ---
 ## Target
 

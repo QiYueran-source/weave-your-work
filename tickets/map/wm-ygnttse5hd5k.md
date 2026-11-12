@@ -7,8 +7,10 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T12:52:39Z
-updated_at: 2026-11-11T13:17:05Z
+updated_at: 2026-11-12T12:13:56Z
 parent: wm-a08fwanmy5q6
+custom_fields:
+  split_as: task
 ---
 created_at: 2026-11-06T12:52:39Z
 updated_at: 2026-11-10T15:21:00Z

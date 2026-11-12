@@ -6,7 +6,7 @@ A check of the v2 set on branch `v2-resources-and-actions` against what the desi
 
 | | v1 | v2 |
 |---|---|---|
-| Skills | 23 | 22 |
+| Skills | 23 | 25 |
 | Skill `SKILL.md` lines | 1,730 | 1,180 |
 | Reference and resource lines | 2,367 | 526 |
 | Record definitions per kind | one per skill, several overlapping | one per kind, under its own skill's `res/` |
@@ -23,10 +23,10 @@ The set is about 55% of its former size in prose, and the part that remains is m
 | 1 | A record is read by a machine and by a person; uniformity is not what a machine needs | `waymark/SKILL.md` opens with the two readers; the constraints are assertions, not templates | met |
 | 2 | An assertion is the unit, and it names what decides it | every `## Assertions` bullet ends with one of three tags; `scripts/check-references.mjs` fails an untagged bullet | met, enforced |
 | 3 | A resource defines, never runs; short, with the required parts and the assertions | 15 resources, none over 56 lines, none with a `## Steps` section | met, enforced |
-| 4 | An action states its writing as before/after | five mainline actions and the auxiliary actions carry a `## Transformation` block | met |
-| 5 | Architecture: resources vs actions, actions split into mainline and auxiliary | `MAINLINE.md` names the five and the twelve | met, enforced |
-| 6 | Mainline: split, fog-explore, advance-task, task-review, map-review; open-map auxiliary | `MAINLINE.md`; `check-references.mjs` requires the five names | met, enforced |
-| 7 | An auxiliary action changes what the line reads, never adds a step | stated in `MAINLINE.md` "The one rule between them" | met (stated; not machine-checked) |
+| 4 | ~~An action states its writing as before/after~~ | ~~a `## Transformation` block per action~~ | **superseded 2026-11-12**: the blocks restated the record's `res/` and nothing read them; each action now ends on one line saying the record exists, and `docs/adr/0004` covers what an action writes |
+| 5 | Architecture: resources vs actions, actions split into mainline and auxiliary | `MAINLINE.md` names the seven on the line and the twelve beside it | met, enforced |
+| 6 | ~~Mainline: split, fog-explore, advance-task, task-review, map-review; open-map auxiliary~~ | ~~`MAINLINE.md`; `check-references.mjs` requires the five names~~ | **superseded 2026-11-12**: the line is seven actions — `open-map`, `split`, `open-task`, `advance-task`, `task-review`, `map-review`, with `fog-explore` beside it; all but `map-review` are model-invoked |
+| 7 | An auxiliary action changes what the line reads, never adds a step | stated in `MAINLINE.md` "The one rule between them" | met (stated; not machine-checked). `resplit` writes several records in one run and is the one auxiliary action this reads loosely |
 | 8 | Recursion is the line itself; a child map re-enters at split; no depth limit | `MAINLINE.md` recursion paragraph | met |
 | 9 | `submap` is a map: no resource, no action of its own | `map/res/body.md` covers root, child, and grandchild alike; `split` writes one | met |
 | 10 | Handoff is a resource plus an action; no `dispatch` | `handoff/res/body.md` and `handoff/SKILL.md` | met |

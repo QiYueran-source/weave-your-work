@@ -7,9 +7,11 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-07T09:41:55Z
-updated_at: 2026-11-08T13:16:23Z
+updated_at: 2026-11-12T12:13:56Z
 closed_at: 2026-11-08T13:16:23Z
 parent: wm-avc7a31tae33
+custom_fields:
+  split_as: task
 ---
 ## Target
 
