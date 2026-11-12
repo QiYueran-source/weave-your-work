@@ -1,6 +1,6 @@
 # weave-your-work v2: the mainline and the auxiliary actions
 
-Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
+Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Every one of them but `map-review` is model-invoked, so the line runs from its first step to its last without a person restarting it; the map's close is the one decision left to a person. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
 
 ## The mainline
 
@@ -36,7 +36,7 @@ Each of them is one job and stops where it ends. `open-map` writes and decides n
 
 `resplit` is a return path too, and rarer: a task that waits on a sibling's output means the layer was cut wrong, and `advance-task` sends that case to `resplit`, which turns the wait into a dependency edge between two child maps. A task runs alone, or its order is the order of two maps; nothing in between.
 
-Recursion is the line itself: a child map re-enters at `split`. A map takes children while its acceptance direction holds something one task cannot show, and no depth is set in advance; that condition is also the stop, because a layer whose every part fits one action and one standard is written as tasks. Closing is bottom-up, because a parent's `Acceptance direction` counts its children. There is no separate close action.
+Recursion is the line itself: a child map re-enters at `split`. A map takes children while its acceptance direction holds something one task cannot show, and no depth is set in advance; that condition is also the stop, because a layer whose every part fits one action and one standard is written as tasks. A split that writes child maps keeps going on each of them the same way, and one that writes tasks hands them to `advance-task`; nothing between the two needs a person to restart it. Closing is bottom-up, because a parent's `Acceptance direction` counts its children. There is no separate close action.
 
 ## The auxiliary actions
 

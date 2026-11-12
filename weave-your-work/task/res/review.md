@@ -25,13 +25,13 @@ Every finding names its source: the signal line, the boundary, or the rule.
 | Goal | Convention | The record |
 |---|---|---|
 | `passed` | `passed` | `waiting_on` cleared, the task closes |
-| anything else | anything else | stays open; the next step comes from the worse of the two, below |
+| `wrong direction` on either axis | any verdict | `outcome=failed`, `waiting_on` cleared, the task closes |
+| `needs discussion` on either axis, and no `wrong direction` | any verdict | the question is recorded, `waiting_on` is set, the task stays open |
+| anything else | anything else | the task stays open, the gap is named, `advance-task` takes it back |
 
-A ticket that still carries `waiting_on` is waiting, not passed: its review takes `needs discussion` on both axes. When the two verdicts disagree on the next step, `wrong direction` outranks `needs discussion`, which outranks `needs changes`, which outranks `passed`.
+The rows are read top to bottom, so the first one that fits decides. A `wrong direction` on either axis means the task asked for the wrong thing and no repair reaches it; the other axis being `passed` does not save it. A ticket that still carries `waiting_on` is waiting, not passed: its review takes `needs discussion` on both axes.
 
-- `passed` or `wrong direction`: `waiting_on` is cleared. For `wrong direction`, `outcome=failed` is written first, then the task closes.
-- `needs changes`: leave the task open and name only the gap.
-- `needs discussion`: record the question, set `waiting_on`, leave the task open.
+A failed task leaves nothing behind to inherit. If the work still matters, it is a new decision: the person settles it in `grill`, and a new task is written from what that settles. Nothing opens a replacement for a task that closed `failed`.
 
 ## The section
 

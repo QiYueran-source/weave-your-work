@@ -2,7 +2,7 @@
 name: advance-task
 description: "Advance one task to its end, or every ready task under a map as a batch, and stop only where something blocks it. Use when a person asks to work a task, to run a batch, or to continue what a previous run left in Progress."
 family: track
-invocation: user
+invocation: model
 ---
 
 # Advance task

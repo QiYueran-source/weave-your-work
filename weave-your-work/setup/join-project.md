@@ -33,7 +33,7 @@ Check 7. Then confirm the pair: the operator is `<name>` and the GitHub account 
 
 Follow `install.md`:
 
-- the seven rules — absent, write; identical, skip; different, ask (check 13);
+- the eight rules — absent, write; identical, skip; different, ask (check 13);
 - the tools run in place, nothing to install;
 - the runtimes the project uses: `install-glossary.md` and `install-issue.md`, each copying into `.work-weave/runtime/` and running `npm ci --omit=dev` there.
 

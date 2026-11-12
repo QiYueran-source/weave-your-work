@@ -2,7 +2,7 @@
 name: fog-explore
 description: "Clear a map's Not yet specified: settle each open entry into a decision, a target update, an exclusion, or a hand-off to split, one entry at a time. Use when a map's next layer is blocked by an open entry."
 family: track
-invocation: user
+invocation: model
 ---
 
 # Fog explore

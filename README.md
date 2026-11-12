@@ -26,7 +26,7 @@ Once setup is complete, ask the agent to use `ask-me` to find the right starting
 
 ## What a review does now
 
-A task or a map is judged on two axes, and each gives its own verdict: **goal** asks whether the acceptance signal or direction was met, **convention** asks whether the work followed the rules. Both have to pass for the record to close, and the record keeps both verdicts as they stand. A map's children are read as a set by `whole-review` before the map is judged, so two children that contradict each other are reported instead of both passing alone.
+A task or a map is judged on two axes, and each gives its own verdict: **goal** asks whether the acceptance signal or direction was met, **convention** asks whether the work followed the rules. Both have to pass for the record to close, and the record keeps both verdicts as they stand. `whole-review` is the one pass nobody calls by itself: a person runs it when a map's children are worth reading as a set, so two contradictory children are reported instead of both passing alone, and `map-review` judges the map whether that paragraph is there or not.
 
 A record's decisions, review, and exclusions are never rewritten in place: a new fact adds an entry beside the old one, and an entry that no longer holds is struck with `Superseded on <date>` and replaced under it.
 

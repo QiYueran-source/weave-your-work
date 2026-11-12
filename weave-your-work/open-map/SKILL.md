@@ -2,7 +2,7 @@
 name: open-map
 description: "Write one map: turn the target it is given into a body with its fog and exclusions, and record where the target came from. The same action writes a root map and a child map. Use when a target is settled and has no map yet, or when a split is writing child maps."
 family: track
-invocation: user
+invocation: model
 ---
 
 # Open map

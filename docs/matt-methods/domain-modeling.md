@@ -1,6 +1,6 @@
 # domain-modeling
 
-Source: `.agents/matt-skills/domain-modeling/SKILL.md`, `ADR-FORMAT.md`, and `GLOSSARY-FORMAT.md`.
+Source: `skills/engineering/domain-modeling/` and its `ADR-FORMAT.md` and `GLOSSARY-FORMAT.md` in [`mattpocock/skills`](https://github.com/mattpocock/skills), read from the vendored copy while it existed.
 
 ## Where a record's format lives
 

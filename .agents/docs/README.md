@@ -8,7 +8,7 @@ The only skill set in this repository is `weave-your-work/`. It is the source; t
 
 The copies under `.agents/skills/` are stale. They hold files this branch does not have (`res/map.md`, `res/task.md`) and lack files it does, so a reader who opens them reads a different set with the same names. That is why the copies were moved out of the workspace root, to `.inbox/.agents-skills/`, on 2026-11-12. `.inbox/` is ignored by Git; the copies were never tracked.
 
-The copies of [`mattpocock/skills`](https://github.com/mattpocock/skills) that `weave-your-work/` learns from are in `.agents/matt-skills/`. They are a reading reference for the development of this repository, not part of its set, and are not installed for anyone using it.
+The copies of [`mattpocock/skills`](https://github.com/mattpocock/skills) that `weave-your-work/` learns from used to live in `.agents/matt-skills/`. That directory is gone: commit `bb4b5be` dropped it on 2026-11-12 because it drifted from this branch. Nothing of his set is kept here now; `docs/matt-methods/` names the file each answer was read from, and the file itself is fetched from his repository.
 
 ## Installing again
 

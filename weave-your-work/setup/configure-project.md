@@ -69,7 +69,7 @@ printf '%s\n' 'pending/' 'runtime/' 'local/' >> .work-weave/.gitignore   # same 
 
 Do not touch `.waymark/.gitignore`; waymark writes it.
 
-**Rules, tools, runtimes.** Follow `install.md`: seven rules into `.agents/rules/`, then whichever runtimes round two chose. The MCP registration and the GitHub webhook are harness and service steps that need a person; leave them to the person and record them as pending. Copy the rule even when the runtime is skipped: check 13 compares every rule copy.
+**Rules, tools, runtimes.** Follow `install.md`: eight rules into `.agents/rules/`, then whichever runtimes round two chose. The MCP registration and the GitHub webhook are harness and service steps that need a person; leave them to the person and record them as pending. Copy the rule even when the runtime is skipped: check 13 compares every rule copy.
 
 **The pointer.** Put this at the top of `AGENTS.md`:
 

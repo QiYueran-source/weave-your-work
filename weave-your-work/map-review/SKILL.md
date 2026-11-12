@@ -37,7 +37,7 @@ before: a map whose children are all closed and whose fog is cleared
 after:
 - Review carries a Goal verdict and a Convention verdict, each with its evidence
 - both passed: status closed
-- wrong direction on either axis: outcome = failed, status closed, a sibling opened and linked
+- wrong direction on either axis: outcome = failed, status closed, nothing opened in its place
 - otherwise: status unchanged, the gap or the question recorded
 - an older block that no longer holds is struck with the reason it was superseded
 ```
@@ -53,4 +53,4 @@ after:
 - Find a contradiction between two children; `whole-review` does that.
 - Define the axes, the verdicts, or the shape of `## Review`; the `map` skill does.
 - Split the map or clear its fog.
-- Open the replacement for a failed map. The owner does that.
+- Open a replacement for a failed map. Nothing does: a failed map is a closed subject, and a new one comes from a new decision.

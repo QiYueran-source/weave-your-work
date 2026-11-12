@@ -1,6 +1,6 @@
 # writing-for-agents
 
-Source: `.agents/matt-skills/writing-for-agents/SKILL.md`, `SKILL-MECHANICS.md`, and `.agents/matt-skills/.agents/invocation.md`.
+Source: `skills/productivity/writing-for-agents/SKILL.md` and `.agents/invocation.md` in [`mattpocock/skills`](https://github.com/mattpocock/skills), read from the vendored copy while it existed.
 
 ## What a skill holds, and how much
 

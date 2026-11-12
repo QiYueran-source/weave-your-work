@@ -25,13 +25,13 @@ Every finding names its source: the direction line it did not meet, or the rule 
 | Goal | Convention | The record |
 |---|---|---|
 | `passed` | `passed` | the map closes |
-| anything else | anything else | it stays where it was; the next step comes from the worse of the two, below |
+| `wrong direction` on either axis | any verdict | `outcome=failed`, and the map closes |
+| `needs discussion` on either axis, and no `wrong direction` | any verdict | the question is recorded and the map stays open until it is answered |
+| anything else | anything else | repair, then review again |
 
-When the two verdicts disagree on the next step, `wrong direction` outranks `needs discussion`, which outranks `needs changes`.
+The rows are read top to bottom, so the first one that fits decides. A `wrong direction` on either axis means the map asked for the wrong thing; the other axis being `passed` does not save it.
 
-- `needs changes`: repair, then review again.
-- `needs discussion`: the recorded question goes to a discussion.
-- `wrong direction`: `outcome=failed`, then the map closes; the owner opens the sibling that replaces it.
+A failed map leaves nothing behind to inherit. If that part of the work still matters, it is a new decision: the person settles it in `grill`, and the replacement map is opened from what that settles. Nothing opens a replacement for a map that closed `failed`.
 
 ## The section
 

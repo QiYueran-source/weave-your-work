@@ -39,7 +39,7 @@ after:
 
 - `advance-task` for the tasks that can now run.
 - `split` when a group is still too coarse and needs its own layer cut.
-- `whole-review` before the parent is judged, if a recut leaves the parent without a whole review.
+- `whole-review` is not sent from here: a recut can leave the parent without one, and whether to read its children as a set is still the person's call.
 
 ## What this skill does not do
 
