@@ -1,24 +1,34 @@
 # weave-your-work v2: the mainline and the auxiliary actions
 
-Five actions carry a project from a settled map to a closed one. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
+Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
 
 ## The mainline
 
 ```
-split ──▶ fog-explore ──▶ split ──▶ advance-task ──▶ task-review ──▶ map-review
-   ▲                                        │                        │
-   └──────────── a child map re-enters ─────┴── map-review per map ───┘
+open-map ─▶ split ─▶ open-map / open-task ─▶ advance-task ─▶ task-review ─▶ map-review
+             │                                                              ▲
+             ├─▶ fog-explore ─▶ split    (the layer still has fog: clear it first)
+             │                                                              │
+             └─ a child map re-enters at split; its own map-review joins above
+
+split, fog-explore ─▶ grill    (the step that met the question cannot settle it)
+                         │
+                         └─ the testimony comes back to the caller, which carries on
 ```
 
 | Action | Does one thing | Hands off |
 |---|---|---|
-| `split` | turns a settled layer into child maps or tasks; it decides the type and the count, then calls the action that writes each record | `advance-task` for a task, `split` for a child map |
+| `open-map` | writes one map from the target it is given: the root, or one child of a split | `split`, once the map has a layer to cut |
+| `open-task` | writes one task from the part, action, and signal the split gives it | `advance-task` |
+| `split` | turns a settled layer into child maps or tasks: it decides the type and the count, then calls `open-map` or `open-task` once per child | `advance-task` for a task, `split` for a child map |
 | `fog-explore` | clears one open fog entry | `update` for a landing in the map's body, `split` when no entry remains |
 | `advance-task` | takes one task, or a batch, to a written `Result` | `task-review` |
 | `task-review` | judges one task against its acceptance signal | the owner, or `advance-task` for a named gap |
 | `map-review` | judges one map against its acceptance direction | the owner |
 
-Each of them is one job and stops where it ends. `split` decides and writes nothing; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; the two reviews judge and execute nothing. An action that meets a record it may not write calls the action that writes it.
+Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides and writes nothing; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; the two reviews judge and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes what it decided, which is why both stand on the line.
+
+`grill` is not a step of the line. A step that cannot settle a question calls it, waits for the testimony, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
 
 Recursion is the line itself: a child map re-enters at `split`. A map takes children while its acceptance direction holds something one task cannot show, and no depth is set in advance; that condition is also the stop, because a layer whose every part fits one action and one standard is written as tasks. Closing is bottom-up, because a parent's `Acceptance direction` counts its children. There is no separate close action.
 
@@ -26,8 +36,6 @@ Recursion is the line itself: a child map re-enters at `split`. A map takes chil
 
 | Action | Produces | Called when |
 |---|---|---|
-| `open-map` | one map, `open`, with its fog, written from the target it is given; a root map and a child map alike | a target is settled and has no map yet, or a split is writing child maps |
-| `open-task` | one task | a split is writing tasks, or a person records one task |
 | `update` | a changed record, carried to what relies on it | a record that others rely on has to change |
 | `grill` | a testimony | a decision needs a person |
 | `adr` | an ADR | the line reaches a checkpoint where a settled decision passes the three gates |
@@ -63,15 +71,7 @@ A checkpoint with nothing to write writes nothing, and says so in one line. The 
 
 ## Records and their writers
 
-Three record kinds, one writer each: `open-map` writes a map, `open-task` writes a task, `grill` writes a testimony. A writer never decides how many records there are or where they hang; `split` decides that and calls the writer once per record, with the parent. The definitions those writers read are `waymark`'s and the record skill's (`map`, `task`); a write that changes a map's body after it exists is `update`'s, and an append to a record that exists is `advance-task`'s or a review's.
-
-```
-person ──▶ open-map            (a root map, or any map opened on its own)
-split  ──▶ open-map ── (one per child map)
-       ╚═▶ open-task ── (one per task)
-fog-explore ──▶ update         (a landing in the map's body)
-             ╚═▶ split         (an entry that became work)
-```
+Three record kinds, one writer each: `open-map` writes a map, `open-task` writes a task, `grill` writes a testimony. A writer never decides how many records there are or where they hang; `split` decides that and calls the writer once per record, with the parent. A map opened on its own, with no split above it, is the one call a person makes directly; `fog-explore` sends a landing in a map's body through `update`, and an entry that became work through `split`. The definitions those writers read are `waymark`'s and the record skill's (`map`, `task`); a write that changes a map's body after it exists is `update`'s, and an append to a record that exists is `advance-task`'s or a review's.
 
 Neither writer calls `split`, and `split` calls only writers. That single direction is what keeps a root map and a child map from growing two different opening paths, which is how the first set ended up with a rule written twice.
 
