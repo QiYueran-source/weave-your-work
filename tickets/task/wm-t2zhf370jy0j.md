@@ -1,13 +1,13 @@
 ---
 schema: 1
 id: wm-t2zhf370jy0j
-title: 'Fix the six skill faults a rule-by-rule read found: source line, Action shape, layout copies, split_as, checks, and conformance rows'
+title: 'Fix the skill faults a rule-by-rule read found: source line, Action shape, layout copies, split_as and the checks'
 category: task
 status: open
 owner: frank
 creator: frank
 created_at: 2026-11-12T01:49:04Z
-updated_at: 2026-11-12T01:49:07Z
+updated_at: 2026-11-12T01:51:37Z
 parent: wm-09z3dt73e7t6
 custom_fields:
   needs_human: false
