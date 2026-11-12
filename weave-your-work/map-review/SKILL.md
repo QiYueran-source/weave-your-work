@@ -11,7 +11,7 @@ A map is not accepted because its owner says the children are done. This skill r
 
 ## When it runs
 
-Every child is closed, every dependency is closed, `Not yet specified` has no open entry, and no accepted part of the direction is uncovered. A map still carrying fog or known uncovered acceptance work is not ready: send it to `fog-explore` or `split` first. Children that contradict each other are `whole-review`'s question, and it answers before this one runs.
+Every child is closed, every dependency is closed, `Not yet specified` has no open entry, and no accepted part of the direction is uncovered. A map still carrying fog or known uncovered acceptance work is not ready: send it to `fog-explore` or `split` first. Children that contradict each other are `whole-review`'s question; that pass runs only when a person asks for it, so a map judged here may not have had one. When two children look contradictory while reading them, say so in a finding instead of judging which one wins.
 
 A map with no children can be reviewed, and the review is where the absence is explained: either the map was opened with nothing to deliver, or it should not have been opened.
 

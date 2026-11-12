@@ -1,11 +1,11 @@
 # weave-your-work v2: the mainline and the auxiliary actions
 
-Eight actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
+Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
 
 ## The mainline
 
 ```
-open-map ─▶ split ─▶ open-map / open-task ─▶ advance-task ─▶ task-review ─▶ whole-review ─▶ map-review
+open-map ─▶ split ─▶ open-map / open-task ─▶ advance-task ─▶ task-review ─▶ map-review
              │                                                                          ▲
              ├─▶ fog-explore ─▶ split    (the layer still has fog: clear it first)
              │                                                              │
@@ -24,14 +24,15 @@ split, fog-explore ─▶ grill    (the step that met the question cannot settle
 | `fog-explore` | clears one open fog entry | `update` for a landing in the map's body, `split` when no entry remains |
 | `advance-task` | takes one task, or a batch, to a written `Result` | `task-review` |
 | `task-review` | judges one task against its acceptance signal, one verdict per axis | the owner, or `advance-task` for a named gap |
-| `whole-review` | reads a map's closed children together and reports where two of them contradict each other | `map-review` |
 | `map-review` | judges one map against its acceptance direction, one verdict per axis | the owner |
 
-`whole-review` runs once per map, after its last child closes and before `map-review` judges it. A map that is its parent's child gets the same pass before that parent is judged.
+A person may run `whole-review` before this last step; see the note below the table.
 
-Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides and writes nothing; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `whole-review` reads the set; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes what it decided, which is why both stand on the line.
+Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides and writes nothing; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes what it decided, which is why both stand on the line.
 
 `grill` is not a step of the line. A step that cannot settle a question calls it, waits for the testimony, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
+
+`whole-review` is off the line: a person runs it when a map's children are worth reading as a set, and `map-review` judges the map with or without the paragraph it writes. It is the one pass in the set that nobody calls by itself.
 
 `resplit` is a return path too, and rarer: a task that waits on a sibling's output means the layer was cut wrong, and `advance-task` sends that case to `resplit`, which turns the wait into a dependency edge between two child maps. A task runs alone, or its order is the order of two maps; nothing in between.
 

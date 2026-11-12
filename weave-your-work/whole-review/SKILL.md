@@ -1,8 +1,8 @@
 ---
 name: whole-review
-description: "Read the children of one map together and report where they contradict each other, promise the same result twice, or reach past the map's acceptance direction. Use after every child of a map is closed and before the map is judged."
+description: "Read the children of one map against themselves, their siblings, and their parent, and report where the set does not hold together: a child that contradicts its own review, two that promise the same result, or one that reaches past the map's acceptance direction. Use when a person asks for a whole-map check before judging a map."
 family: track
-invocation: model
+invocation: user
 ---
 
 # Whole review
@@ -11,7 +11,9 @@ Each child of a map is reviewed on its own, and each one can pass while two of t
 
 ## When it runs
 
-Every child of a map is closed, and the map is about to be judged by `map-review`. A child reopened after this pass makes it stale: run it again once the child closes.
+A person asks for it, usually with a map whose children are all closed and about to be judged by `map-review`, or a map whose children lean on each other enough that the set is worth reading as one. Nothing calls this skill by itself: `map-review` judges the map without it, and a map judged without this pass carries no `Whole review` paragraph, which is not a finding.
+
+A child reopened after this pass makes it stale: run it again once the child closes.
 
 ## Steps
 

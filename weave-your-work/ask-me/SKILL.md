@@ -20,8 +20,9 @@ The route a project travels from a settled map to a closed one, in order.
 3. **`split`** to turn a settled layer into child maps or tasks. It does not write them: it calls `open-map` once per child map, or `open-task` once per task.
 4. **`advance-task`** to take one task, or a batch, to a written `Result`.
 5. **`task-review`** to judge a finished task against its acceptance signal.
-6. **`whole-review`** when a map's children are all closed: it reads them together and reports where two of them contradict each other.
-7. **`map-review`** to accept the map or send it back.
+6. **`map-review`** to accept the map or send it back.
+
+**`whole-review`** is not a step of the route: a person runs it when a map's children are worth reading as a set, before or instead of judging the map.
 
 A child map re-enters at `split`; closing runs bottom-up. A record that turns out wrong is changed through **`update`**, not rewritten. A layer cut into tasks where one task needs another's output is recut by **`resplit`**: the wait becomes a dependency edge between child maps.
 
