@@ -13,15 +13,15 @@ Ask in order and stop at the first one that fails.
 
 | Tests | What is written | Status |
 |---|---|---|
-| same subject, verdict holds | the text, replaced; a substantive change keeps the old text struck through | unchanged |
+| same subject, verdict holds | the record's content changes; how each entry changes is the record's own section rule | unchanged |
 | same subject, verdict fails | old text struck with `Superseded on <date>: <reason>`, the new text under it; the record reopens | open, until a review closes it again |
 | different subject | the record is archived with a reason, and a parallel record opens under the same parent | archived |
 
 The second exists because a closed child is how its parent counts itself done: a child left closed on a verdict that no longer holds makes the parent's claim false too. Reopening a child does not reopen the parent, so the run that reopens a child also checks the closed ancestors whose acceptance counted it.
 
-The third exists because a record that answers a different question is not the same record. Retiring it keeps the old text readable and gives the new one a clean review. A map with children is retired bottom-up: each child takes its own disposition first.
+This file decides whether a change is carried and what happens to the record's status. How the entries inside it change is the record's own section rule: `map/res/body.md` for a map, `task/res/body.md` for a task.
 
-Which entries are struck inside a reopened record follows the record's own section rule; for a map that is `map/res/body.md`'s.
+The third exists because a record that answers a different question is not the same record. Retiring it keeps the old text readable and gives the new one a clean review. A map with children is retired bottom-up: each child takes its own disposition first.
 
 `outcome=failed` is not used for any of this. Failure is a verdict on an attempt; retirement is a verdict on a subject.
 

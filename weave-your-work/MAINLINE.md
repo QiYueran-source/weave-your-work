@@ -28,7 +28,7 @@ split, fog-explore ─▶ grill    (the step that met the question cannot settle
 
 A person may run `whole-review` before this last step; see the note below the table.
 
-Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides and writes nothing; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes what it decided, which is why both stand on the line.
+Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides a layer and writes no record; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes each child it decided, which is why both stand on the line. What `split` writes itself is the field only it can judge, `split_as`, and the status the first cut starts; `docs/adr/0004-the-writer-is-the-action-that-decided.md` says why.
 
 `grill` is not a step of the line. A step that cannot settle a question calls it, waits for the testimony, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
 

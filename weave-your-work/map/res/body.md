@@ -17,7 +17,7 @@ A body holds no list of its children: the `parent` field is the structure. A par
 
 ## When a section changes
 
-`Decisions so far`, `Review`, and `Out of scope` follow one rule. A new fact **adds** an entry beside the old one, with its date and its source, when the old one still holds; it **strikes** the old one where it stands, with `Superseded on <date>: <why>` on the line below and the replacement under that, when it does not. An entry present at creation takes the record's `created_at`; later writes carry their own date. Strike only the part that is overturned and keep the rest. Archive is for a whole record, never for an entry inside one.
+`Decisions so far`, `Not yet specified`, `Review`, and `Out of scope` hold entries, and their entries follow one rule. A new fact **adds** an entry beside the old one, with its date and its source, when the old one still holds; it **strikes** the old one where it stands, with `Superseded on <date>: <why>` on the line below and the replacement under that, when it does not. An entry present at creation takes the record's `created_at`; later writes carry their own date. Strike only the part that is overturned and keep the rest. Archive is for a whole record, never for an entry inside one. `Target` and `Acceptance direction` are not entries: they are replaced where they stand, with their date.
 
 ## Fog
 
