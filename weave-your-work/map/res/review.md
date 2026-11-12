@@ -1,10 +1,10 @@
 # Map review
 
-How a map is judged. The verdict lands in the map's `## Review` section, in the shape below; the action that writes it is `map-review`.
+How a map is judged, and the shape its `## Review` takes. The action that writes it is `map-review`.
 
-## Two axes
+## Two axes, one verdict each
 
-Read them separately and report them separately: one holding does not cover the other, and merging them hides a failing axis behind a passing one.
+Each axis is judged on its own and reports its own verdict from the four below. One holding does not cover the other, and merging them hides a failing axis behind a passing one.
 
 - **Goal**: did the map do what its `Acceptance direction` says? Read the direction line by line, and the review point with it. Every line has to be answered by what the map and its children delivered.
 - **Convention**: was the map built to the rules? The body shape from `body.md`, the child types against `split_as`, no children index, the relations from `waymark/res/relations.md`, and one owner per write.
@@ -13,18 +13,29 @@ Every finding names its source: the direction line it did not meet, or the rule 
 
 ## Four verdicts
 
-| Verdict | When | What it does to the status |
+| Verdict | When |
+|---|---|
+| `passed` | this axis holds |
+| `needs changes` | this axis names a gap someone can close |
+| `needs discussion` | ambiguity prevents reading the direction as a standard, or the map's words contradict each other |
+| `wrong direction` | the map cannot be judged because it was the wrong target |
+
+## What the pair does to the record
+
+| Goal | Convention | The record |
 |---|---|---|
-| `passed` | both axes hold | `closed` |
-| `needs changes` | an axis names a gap someone can close | stays `in_progress`; repair, then review again |
-| `needs discussion` | ambiguity prevents reading the direction as a standard, or the map's words contradict each other | stays `in_progress`; the recorded question goes to a discussion |
-| `wrong direction` | the map cannot be judged because it was the wrong target | `outcome=failed`, then `closed`; the owner opens the sibling that replaces it |
+| `passed` | `passed` | the map closes |
+| anything else | anything else | it stays where it was; the next step comes from the worse of the two, below |
+
+When the two verdicts disagree on the next step, `wrong direction` outranks `needs discussion`, which outranks `needs changes`.
+
+- `needs changes`: repair, then review again.
+- `needs discussion`: the recorded question goes to a discussion.
+- `wrong direction`: `outcome=failed`, then the map closes; the owner opens the sibling that replaces it.
 
 ## The section
 
-A short entry for every verdict: the verdict, then one line per axis with its evidence.
-
-A verdict that no longer holds stays in place, struck through, with a line saying why it was invalidated. The fresh verdict is written above it.
+One block per review: `Goal: <verdict>` and `Convention: <verdict>`, each on its own line with that axis's evidence under it. A later review adds a new block; when an older block no longer holds, it is struck under the rule `body.md` gives every section.
 
 ## Assertions
 

@@ -1,10 +1,10 @@
 # Task review
 
-How a task is judged. The verdict lands in the task's `## Review` section, in the shape below; the action that writes it is `task-review`.
+How a task is judged, and the shape its `## Review` takes. The action that writes it is `task-review`.
 
-## Two axes
+## Two axes, one verdict each
 
-Read them separately and report them separately.
+Each axis is judged on its own and reports its own verdict from the four below. Neither covers the other, and merging them hides a failing axis behind a passing one.
 
 - **Goal**: the evidence the signal names is there, and someone who did not do the work can read it by the method the signal names. For a `delivery` that means the named output exists where `Result` says; for a probe it means the finding is there and the answer it gives is the one the task asked for.
 - **Convention**: the run stayed inside `Boundaries` and the project's rules, and wrote only what it may write.
@@ -13,18 +13,29 @@ Every finding names its source: the signal line, the boundary, or the rule.
 
 ## Four verdicts
 
-| Verdict | When | What follows |
-|---|---|---|
-| `passed` | both axes hold and `waiting_on` is empty | clear `waiting_on`, close |
-| `needs changes` | an axis names a gap an agent can close, and `waiting_on` is empty | leave it open, name only the gap |
-| `needs discussion` | the signal or the standard is unclear, or the task waits on a person | record the question, set `waiting_on`, leave it open |
-| `wrong direction` | the task itself was wrong | clear `waiting_on`, `outcome=failed`, close |
+| Verdict | When |
+|---|---|
+| `passed` | this axis holds |
+| `needs changes` | this axis names a gap an agent can close |
+| `needs discussion` | the signal or the standard is unclear, or the task waits on a person |
+| `wrong direction` | the task itself was wrong |
 
-A ticket that still carries `waiting_on` is waiting, not passed: it takes `needs discussion`.
+## What the pair does to the record
+
+| Goal | Convention | The record |
+|---|---|---|
+| `passed` | `passed` | `waiting_on` cleared, the task closes |
+| anything else | anything else | stays open; the next step comes from the worse of the two, below |
+
+A ticket that still carries `waiting_on` is waiting, not passed: its review takes `needs discussion` on both axes. When the two verdicts disagree on the next step, `wrong direction` outranks `needs discussion`, which outranks `needs changes`, which outranks `passed`.
+
+- `passed` or `wrong direction`: `waiting_on` is cleared. For `wrong direction`, `outcome=failed` is written first, then the task closes.
+- `needs changes`: leave the task open and name only the gap.
+- `needs discussion`: record the question, set `waiting_on`, leave the task open.
 
 ## The section
 
-The verdict, then one line per axis with its evidence. An older verdict on the same subject is struck through with the reason it was superseded.
+One block per review: `Goal: <verdict>` and `Convention: <verdict>`, each on its own line with that axis's evidence under it. A later review adds a new block; when an older block no longer holds, it is struck under the rule `map/res/body.md` gives every section.
 
 ## Assertions
 
