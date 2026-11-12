@@ -92,6 +92,14 @@ function firstVerdict(review) {
 function checkMap(file, fm, body) {
   const parts = sections(body)
   if (!parts.Target) add(file, 'map has no ## Target section')
+  else {
+    const target = parts.Target
+    const lines = target.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+    const hasWhy = lines.some((line) => /^Why:/.test(line))
+    const sourceLine = lines.filter((line) => /^Source:/.test(line))
+    if (!hasWhy) add(file, 'map Target has no Why line')
+    if (sourceLine.length !== 1) add(file, 'map Target names no source, or names more than one')
+  }
   if (!parts['Acceptance direction']) add(file, 'map has no ## Acceptance direction section')
   else if (!/Review point:/.test(parts['Acceptance direction']))
     add(file, 'map Acceptance direction has no Review point line')

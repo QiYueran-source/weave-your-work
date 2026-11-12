@@ -18,6 +18,8 @@ The skill set is organised as records defined once and actions that follow a mai
 
 Why: the first set wrote each record's shape into the skills that acted on it and pointed them at one another for the parts they shared. That produced reference loops, two homes for one rule, and constraint text that cost more than the work it guarded.
 
+Source: the person, in the v2 design discussion on 2026-11-11, after comparing the set with Matt's.
+
 ## Acceptance direction
 
 All children are complete and no further children are needed.

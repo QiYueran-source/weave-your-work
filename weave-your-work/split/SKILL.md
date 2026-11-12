@@ -18,7 +18,7 @@ The layer goes back to `grill` when it cannot support a child's `Target`, or the
 ## Steps
 
 1. **Decide the type.** Ask the question above for the layer as a whole. A layer is all one type; a direction that needs the other type opens a sibling map instead.
-2. **Decide the count before writing anything.** The count comes from the discussion that settled the layer, not from the number of decisions: several decisions may feed one child, and one decision may feed several. For tasks, write the count and a one-line plan per task into the discussion's testimony.
+2. **Decide the count before writing anything.** A layer is cut by the decisions the map already settled: each child's part comes from a decision in `Decisions so far`, and several decisions may feed one child or one decision may feed several. A part with no decision behind it is not cut; it goes back to `grill`, or stays in `Not yet specified` until it settles. For tasks, write the count and a one-line plan per task into the discussion's testimony.
 3. **Open each child, one at a time, by calling the action that writes that record.** This skill does not write a child's body.
    - A child map: `open-map`, once per child map, with that child's part of the parent's target. It writes the body and its `Not yet specified`; this skill supplies the parent.
    - A task: `open-task`, once per task, with the action, the acceptance signal, the kind, and `reversibility` and `needs_human`.

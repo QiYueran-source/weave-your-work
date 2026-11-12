@@ -28,6 +28,7 @@ Three kinds of check:
 ## Map
 
 - `Target` or `Acceptance direction` missing. `[check-records]`
+- `Target` without exactly one `Source:` line, or without its `Why:` line. `[check-records]`
 - `Acceptance direction` without a `Review point:` line. `[check-records]`
 - A body listing its children. `[check-records]`
 - `Not yet specified` missing. `[check-records]`

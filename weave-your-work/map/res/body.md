@@ -6,7 +6,7 @@ What a map contains, and the states it moves through. The field rules are `wayma
 
 Six sections, each a `##` heading with the English name below, whatever language the text under it uses. A section is written when it carries something; one with nothing to say is left out, except `Not yet specified`, which every map carries from creation.
 
-- `Target` — one outcome as a state of the world, then a `Why:` line: what it is for, or what its absence costs.
+- `Target` — one outcome as a state of the world, then a `Why:` line: what it is for, or what its absence costs. It also names its source in one line: who or what the direction came from. Any source is acceptable; what is not acceptable is a target with no source stated.
 - `Acceptance direction` — how someone other than the owner confirms it. Either `All children are complete and no further children are needed.` or the observable result. Either way, a `Review point:` line names what the reviewer looks at, as checkable items.
 - `Decisions so far` — one decision per bullet, in its concrete form, with its source at the end: `(user confirmed)`, `(verified in waymark 0.1.2)`, or a link to the record it came from.
 - `Not yet specified` — the fog, or `(none; no open fog, no known uncovered work)`.
@@ -45,6 +45,7 @@ There is no `reviewing` state: a map under review stays `in_progress` until the 
 ## Assertions
 
 - `Target` or `Acceptance direction` missing. `[check-records]`
+- `Target` without exactly one `Source:` line, or without its `Why:` line. `[check-records]`
 - `Acceptance direction` without a `Review point:` line. `[check-records]`
 - A body listing its children. `[check-records]`
 - `Not yet specified` missing. `[check-records]`

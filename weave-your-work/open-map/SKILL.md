@@ -20,7 +20,9 @@ One map per run. A root map and a child map are the same record, so this one act
 
 ## Steps
 
-1. **Settle the target.** The answers needed are small: the outcome as a state of the world with its `Why:` line, the acceptance direction with its review point, what is already true in the project, and what the discussion ruled out. Decisions that need a person go through `grill`.
+1. **Settle the target, with a stated source.** The answers needed are small: the outcome as a state of the world with its `Why:` line, the acceptance direction with its review point, what is already true in the project, and what the discussion ruled out. Decisions that need a person go through `grill`.
+
+   The target has a source, and the body says what it is: the person asked for it, a parent map's layer produced it, an archived record it replaces, a decision on another record called for it, or something else the run can name. The source is a line, not a citation graph: say where the direction came from, and stop there. This action does not check the source, does not require a particular kind of source, and does not follow it anywhere.
 2. **Survey the target once, at low resolution.** Walk the whole target rather than drilling into one thread. For each part, ask where its next move is:
 
    | The part | Where it goes |
@@ -42,7 +44,7 @@ When the target turns out to be small enough for one task, or too vague to state
 before: no map for the target
 after:
 - the map exists, status open, with no split_as and no Review
-- Target carries an outcome and a Why line
+- Target carries an outcome, a Why line, and a stated source
 - Acceptance direction carries a Review point
 - Not yet specified carries its entries, or the marker
 - every part of the survey became an entry, an exclusion, or a decision; none became a child
