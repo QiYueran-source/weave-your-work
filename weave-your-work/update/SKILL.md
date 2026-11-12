@@ -21,7 +21,7 @@ Relocating a record is the exception: a subtree moves in any state, because what
 ## Steps
 
 1. **Scan what relies on it.** Children, the parent, dependency edges in both directions, soft links, and any body naming it by id or title. `waymark --json show <id>` returns the relations in one answer; `waymark search "<text>"` finds the bodies.
-2. **Apply the two tests** to the record, and to each record the scan reaches: same question? then, verdict still holds? A closed descendant does not reopen because an ancestor changed; its own verdict has to fail.
+2. **Apply the two tests** to the record, and to each record the scan reaches: same question? then, do the verdicts still hold? A verdict holds when both axes of its latest block pass on the content as it now stands; a closed descendant does not reopen because an ancestor changed, its own verdicts have to fail.
 3. **Pick the disposition** from `waymark`'s `res/disposition.md` and apply it: edit in place, strike and reopen, or retire and replace. Which entries inside the record are struck and which are added follows the record's own section rule — `map/res/body.md` for a map, `task/res/body.md` for a task — and only what the new fact overturns is struck.
 4. **Carry the change** to the records the scan named, within one owner: every child that refined the old text, every dependent that waited on it, every link that now points at nothing.
 5. **Reopen what counted it.** Reopening a child does not reopen its parent; a map whose acceptance direction ends with "all children are complete" is falsified by reopening any child. Reopen the closed ancestors whose acceptance counted the changed record, and write one line under the reopened record's `Review` saying why it is open again.

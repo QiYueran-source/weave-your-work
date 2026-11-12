@@ -36,7 +36,7 @@ Three kinds of check:
 - A fog entry without its second line. [check-records]
 - A resolved entry not struck, or a struck entry without `Resolved on <date>`. [check-records]
 - `split_as` changed after children exist. [check-records]
-- A closed map without `## Review`, or with a non-passing verdict. [check-records]
+- A closed map without `## Review`, or with a non-passing verdict in its latest block. [check-records]
 - A decision bullet with no source. [review]
 - A map whose `Not yet specified` was never walked: every part of its target is already a child, a decision, or an exclusion, and no entry was ever struck. [review]
 - A `Review` that merges the two axes into one verdict. [review]

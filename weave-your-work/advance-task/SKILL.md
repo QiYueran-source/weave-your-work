@@ -19,7 +19,7 @@ Stop and hand the ticket back, without writing, when any of these is true:
 - `parent` is not a map, or the ticket carries a `dependencies` block;
 - a section the kind requires is missing (`Failure recovery` for a `one_way` delivery, `Next step` for a probe), or `needs_human` disagrees with the `Person:` steps;
 - `waiting_on` is set;
-- `## Review` says `needs discussion` or `passed`, unless `Progress` records that `update` invalidated that verdict.
+- `## Review`'s latest block says `needs discussion`, or `passed` on both axes, unless `Progress` records that `update` invalidated that block.
 
 A required input the task needs is missing or unusable: leave the status unchanged, record the missing input in `Progress`, and tell the owner. If the missing input is a sibling task's output, hand the ticket back as a split error.
 
