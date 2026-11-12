@@ -2,7 +2,7 @@
 
 What a task contains. The field rules are `waymark/res/fields.md`; the kinds are `kind.md`, and the review is `review.md`.
 
-A task is the finest node of the tree: one action that ends at a result someone can hand over and someone else can check. It takes no children and no dependency edge.
+A task is the finest node of the tree: one action that ends at a result someone can hand over and someone else can check. A task ends at a result that can be handed over whole and checked on its own, and its action may cross several stages to reach it. A slice — one stage finished before anything downstream can use it — needs a sibling to mean anything, and that need is the sign it belongs inside the task that delivers the result. Length is not the test: a task may run for days while it waits. It takes no children and no dependency edge.
 
 ## Body
 
@@ -16,10 +16,6 @@ A task is the finest node of the tree: one action that ends at a result someone 
 - `Review` — the verdict, then one line per axis with evidence.
 
 A delivery that is `one_way` carries `Failure recovery`; a probe carries `Next step`. `Result`, `Progress`, and `Review` are written after creation: `advance-task` writes the first two, a review writes the last.
-
-## The size rule
-
-A task ends at a result that can be handed over whole and checked on its own; the action may cross several stages to reach it. A slice — one stage finished before anything downstream can use it — needs a sibling to mean anything, and that need is the sign it belongs inside the task that delivers the result. Length is not the test: a task may run for days while it waits.
 
 ## Assertions
 
