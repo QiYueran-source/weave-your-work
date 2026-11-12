@@ -130,9 +130,25 @@ const mainline = join(setDir, 'MAINLINE.md')
 const mainlineText = read(mainline)
 if (!mainlineText) add(mainline, 'MAINLINE.md is missing')
 else {
-  for (const action of ['split', 'fog-explore', 'advance-task', 'task-review', 'map-review']) {
+  // The line is the steps that carry a project from a settled map to a closed
+  // one; every skill it runs belongs in its table, and none of them is also
+  // listed as auxiliary, which would say two things about one action.
+  const mainlineActions = [
+    'open-map',
+    'open-task',
+    'split',
+    'fog-explore',
+    'advance-task',
+    'task-review',
+    'whole-review',
+    'map-review',
+  ]
+  const auxiliary = mainlineText.split(/^## The auxiliary actions\s*$/m)[1] ?? ''
+  for (const action of mainlineActions) {
     if (!skillSet.has(action)) add(mainline, `mainline action ${action} has no skill`)
     if (!mainlineText.includes(action)) add(mainline, `MAINLINE.md does not name ${action}`)
+    if (auxiliary.split(/\r?\n/).some((line) => line.startsWith(`| \`${action}\` |`)))
+      add(mainline, `mainline action ${action} is also listed as auxiliary`)
   }
 }
 
