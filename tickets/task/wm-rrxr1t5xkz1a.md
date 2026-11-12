@@ -7,7 +7,8 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-12T08:10:28Z
-updated_at: 2026-11-12T08:10:28Z
+updated_at: 2026-11-12T08:14:10Z
+parent: wm-4n3skak99g1c
 custom_fields:
   needs_human: false
   reversibility: one_way
@@ -29,3 +30,7 @@ The tracker's records do not all match the shapes the branch now states, so the 
 ## Boundaries
 
 - No rule is loosened to clear a finding.
+
+## Failure recovery
+
+All changes are to tracked records and one baseline file under Git; a bad bulk edit is undone with `git revert` of the migration commit, and nothing outside the repository changes.
