@@ -140,7 +140,6 @@ else {
     'fog-explore',
     'advance-task',
     'task-review',
-    'whole-review',
     'map-review',
   ]
   const auxiliary = mainlineText.split(/^## The auxiliary actions\s*$/m)[1] ?? ''
