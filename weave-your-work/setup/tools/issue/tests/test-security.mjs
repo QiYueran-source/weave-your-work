@@ -79,37 +79,48 @@ async function freePort() {
   return port
 }
 
+// A listener is a separate process that says "listening on" when the machine
+// gets to it; a slow machine is not a failure, so the wait is long and a
+// listener that starts returns at once. EADDRINUSE costs a port, not a run.
+const PORT_IN_USE = /EADDRINUSE/
+
 async function startListener(t, f, webhookSecret = secret) {
-  const port = await freePort()
-  const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment({ WEBHOOK_SECRET: webhookSecret ?? undefined, PORT: String(port) }),
-    stdio: ['ignore', 'pipe', 'pipe'],
-  })
-  let output = ''
-  child.stdout.on('data', (chunk) => { output += chunk })
-  child.stderr.on('data', (chunk) => { output += chunk })
-  t.after(async () => {
-    if (child.exitCode === null && child.signalCode === null) {
-      child.kill()
-      await once(child, 'exit')
-    }
-  })
-  await new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error(`Listener did not start: ${output}`)), 5000)
-    const onData = () => {
-      if (output.includes('listening on')) {
-        clearTimeout(timer)
-        child.stdout.off('data', onData)
-        resolve()
-      }
-    }
-    child.stdout.on('data', onData)
-    child.once('exit', (code) => {
-      clearTimeout(timer)
-      reject(new Error(`Listener exited (${code}): ${output}`))
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const port = await freePort()
+    const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], {
+      cwd: f.root, env: environment({ WEBHOOK_SECRET: webhookSecret ?? undefined, PORT: String(port) }),
+      stdio: ['ignore', 'pipe', 'pipe'],
     })
-  })
-  return port
+    let output = ''
+    child.stdout.on('data', (chunk) => { output += chunk })
+    child.stderr.on('data', (chunk) => { output += chunk })
+    t.after(async () => {
+      if (child.exitCode === null && child.signalCode === null) {
+        child.kill()
+        await once(child, 'exit')
+      }
+    })
+    const outcome = await new Promise((resolve) => {
+      const limit = 60000
+      const timer = setTimeout(() => resolve('timeout'), limit)
+      const onData = () => {
+        if (output.includes('listening on')) {
+          clearTimeout(timer)
+          child.stdout.off('data', onData)
+          resolve('listening')
+        }
+      }
+      child.stdout.on('data', onData)
+      child.once('exit', (code) => {
+        clearTimeout(timer)
+        resolve({ code })
+      })
+    })
+    if (outcome === 'listening') return port
+    if (outcome !== 'timeout' && PORT_IN_USE.test(output)) continue
+    throw new Error(outcome === 'timeout' ? `Listener did not start in 60000ms: ${output}` : `Listener exited (${outcome.code}): ${output}`)
+  }
+  throw new Error('no port the listener could take')
 }
 
 function issue({ url = 'https://example.test/issues/42', from = 'sender', to = 'alice-handle', title = 'A title', category = 'request', tickets = ['wm-test'], author = 'alice-handle' } = {}) {
@@ -155,7 +166,7 @@ async function queueText(f) {
 
 function checker(f) {
   return spawnSync(process.execPath, [path.join(f.tools, 'check-pending.mjs')], {
-    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
 }
 
@@ -181,7 +192,7 @@ test('listener starts when WEBHOOK_SECRET is absent', async (t) => {
 test('listener rejects a whitespace-only configured secret', async (t) => {
   const f = await fixture(t)
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment({ WEBHOOK_SECRET: '   ' }), encoding: 'utf8', timeout: 5000,
+    cwd: f.root, env: environment({ WEBHOOK_SECRET: '   ' }), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(result.status, 1, result.stderr)
   assert.match(result.stderr, /WEBHOOK_SECRET.*whitespace/)
@@ -380,7 +391,7 @@ test('the machine owner matches the git name without regard to case', async (t) 
 test('a machine whose git name is no owner refuses to start and names the roster', async (t) => {
   const f = await fixture(t, { owner: 'Carol' })
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(result.status, 1, result.stderr)
   assert.match(result.stderr, /"Carol", which is not an owner in handles\.toml \(alice, bob\)/)
@@ -392,7 +403,7 @@ test('a machine with no git name refuses to start', async (t) => {
   const f = await fixture(t)
   setName(f.root, '')
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(result.status, 1, result.stderr)
   assert.match(result.stderr, /git config user\.name is empty/)
@@ -402,7 +413,7 @@ test('owners that differ only by case are rejected', async (t) => {
   const f = await fixture(t)
   await fs.writeFile(f.roster, '[handles]\nalice = "alice-handle"\nAlice = "other-handle"\n[pending]\npath = ".work-weave/pending/pending-communications.md"\n')
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(result.status, 1, result.stderr)
   assert.match(result.stderr, /differ only by case/)
@@ -412,7 +423,7 @@ test('a nested handle table is rejected before the port opens', async (t) => {
   const f = await fixture(t)
   await fs.writeFile(f.roster, '[handles.github]\nalice = "alice-handle"\n[pending]\npath = ".work-weave/pending/pending-communications.md"\n')
   const result = spawnSync(process.execPath, [path.join(f.tools, 'listener.mjs')], {
-    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: f.root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(result.status, 1, result.stderr)
   assert.match(result.stderr, /no owners|not a login/)

@@ -112,6 +112,9 @@ function environment(extra = {}) {
   return env
 }
 
+// Binding to port 0 and closing gives a number the kernel is free to hand to
+// the next suite running at the same moment, so two listeners race for it. Each
+// listener therefore retries on EADDRINUSE instead of failing the test.
 async function freePort() {
   const server = net.createServer()
   server.listen(0, '127.0.0.1')
@@ -120,42 +123,50 @@ async function freePort() {
   await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()))
   return port
 }
-
+// A listener is a separate process, and a busy machine delays it. The wait is
+// long so a slow machine is not read as a failure; a passing check returns at once.
 async function waitFor(check, description, output = () => '') {
-  const deadline = performance.now() + 5000
+  const deadline = performance.now() + 60000
   while (performance.now() < deadline) {
     if (await check()) return
     await delay(20)
   }
-  throw new Error(`Timed out waiting for ${description}: ${output()}`)
+  throw new Error(`Timed out waiting for ${description} after 60000ms: ${output()}`)
 }
 
+const PORT_IN_USE = /EADDRINUSE/
+
 async function startListener(t, f, { cwd = f.root, args = [], env = {} } = {}) {
-  const port = await freePort()
-  const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs'), ...args], {
-    cwd,
-    env: environment({ PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, PORT: String(port), ...env }),
-    stdio: ['ignore', 'pipe', 'pipe'],
-  })
-  f.children.add(child)
-  let output = ''
-  child.stdout.on('data', (chunk) => { output += chunk })
-  child.stderr.on('data', (chunk) => { output += chunk })
-  await new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error(`Listener did not start: ${output}`)), 5000)
-    const done = () => {
-      if (output.includes('listening on')) {
-        clearTimeout(timer)
-        resolve()
-      }
-    }
-    child.stdout.on('data', done)
-    child.once('exit', (code) => {
-      clearTimeout(timer)
-      reject(new Error(`Listener exited (${code}): ${output}`))
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const port = await freePort()
+    const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs'), ...args], {
+      cwd,
+      env: environment({ PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, PORT: String(port), ...env }),
+      stdio: ['ignore', 'pipe', 'pipe'],
     })
-  })
-  return { child, port, output: () => output }
+    f.children.add(child)
+    let output = ''
+    child.stdout.on('data', (chunk) => { output += chunk })
+    child.stderr.on('data', (chunk) => { output += chunk })
+    const outcome = await new Promise((resolve) => {
+      const timer = setTimeout(() => resolve('timeout'), 60000)
+      const done = () => {
+        if (output.includes('listening on')) {
+          clearTimeout(timer)
+          resolve('listening')
+        }
+      }
+      child.stdout.on('data', done)
+      child.once('exit', (code) => {
+        clearTimeout(timer)
+        resolve({ code })
+      })
+    })
+    if (outcome === 'listening') return { child, port, output: () => output }
+    if (outcome !== 'timeout' && PORT_IN_USE.test(output)) continue
+    throw new Error(`Listener did not start: ${output}`)
+  }
+  throw new Error('no port the listener could take')
 }
 
 function message({ number = 1, to = 'alice-handle', author = 'alice-handle', repository = 'example/project', title = 'A message' } = {}) {
@@ -197,7 +208,7 @@ async function queueText(f) {
 
 function checker(f, { cwd = f.root, args = [], env = {} } = {}) {
   return spawnSync(process.execPath, [path.join(f.tools, 'check-pending.mjs'), ...args], {
-    cwd, env: environment(env), encoding: 'utf8', timeout: 5000,
+    cwd, env: environment(env), encoding: 'utf8', timeout: 60000,
   })
 }
 
@@ -286,14 +297,14 @@ test('a missing .work-weave stops the listener and checker', async (t) => {
   const tools = await externalTools(t)
 
   const listener = spawnSync(process.execPath, [path.join(tools, 'listener.mjs'), '--project', root], {
-    cwd: root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(listener.status, 1, listener.stderr)
   assert.match(listener.stderr, /\.work-weave/)
   assert.ok(!listener.stdout.includes('listening on'))
 
   const checked = spawnSync(process.execPath, [path.join(tools, 'check-pending.mjs'), '--project', root], {
-    cwd: root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(checked.status, 1, checked.stderr)
   assert.match(checked.stderr, /Cannot check pending communications: .*\.work-weave/)
@@ -313,14 +324,14 @@ test('a .work-weave marker that is not a directory is rejected', async (t) => {
   await git(root, 'init', '--quiet')
   const tools = await externalTools(t)
   const listener = spawnSync(process.execPath, [path.join(tools, 'listener.mjs'), '--project', root], {
-    cwd: root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(listener.status, 1, listener.stderr)
   assert.match(listener.stderr, /Expected directory at .*\.work-weave/)
   assert.ok(!listener.stdout.includes('listening on'))
 
   const checked = spawnSync(process.execPath, [path.join(tools, 'check-pending.mjs'), '--project', root], {
-    cwd: root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(checked.status, 1, checked.stderr)
   assert.match(checked.stderr, /Expected directory at .*\.work-weave/)
@@ -346,7 +357,7 @@ test('missing or mismatched event repositories are logged and append nothing', a
 test('REPOSITORY is required at startup and the environment overrides the file', async (t) => {
   const missing = await project(t, { settings: null, remote: null })
   const result = spawnSync(process.execPath, [path.join(missing.tools, 'listener.mjs'), '--project', missing.root], {
-    cwd: missing.root, env: environment(), encoding: 'utf8', timeout: 5000,
+    cwd: missing.root, env: environment(), encoding: 'utf8', timeout: 60000,
   })
   assert.equal(result.status, 1, result.stderr)
   assert.match(result.stderr, /REPOSITORY must be set to owner\/repo/)

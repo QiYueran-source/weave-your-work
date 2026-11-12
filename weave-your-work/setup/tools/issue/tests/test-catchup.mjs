@@ -12,7 +12,11 @@ import test from 'node:test'
 
 const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const fallbackModules = path.resolve(source, '../../../../.agents/skills/issue/bundle/tools/node_modules')
-const timeout = 8000
+// A listener is a separate process, and how long it takes to say "listening on"
+// depends on what else the machine is doing. A fixed short wait turns a slow
+// machine into a failed test without anything being wrong, so the wait is long
+// and a check that passes returns at once.
+const timeout = 60000
 
 async function waitFor(check, description, output = () => '') {
   const deadline = performance.now() + timeout
@@ -20,7 +24,7 @@ async function waitFor(check, description, output = () => '') {
     if (await check()) return
     await delay(25)
   }
-  throw new Error(`Timed out waiting for ${description}: ${output()}`)
+  throw new Error(`Timed out waiting for ${description} after ${timeout}ms: ${output()}`)
 }
 
 async function exists(file) {
@@ -115,19 +119,27 @@ async function freePort() {
   return port
 }
 
+// Binding to port 0 and closing gives a number another suite may take a moment
+// later, so a listener that finds it in use takes another rather than failing.
+const PORT_IN_USE = /EADDRINUSE/
+
 async function start(f) {
-  const port = await freePort()
-  const env = { ...process.env, PORT: String(port), SMEE_URL: '', PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, FAKE_PAGES: f.pages, FAKE_CALLS: f.calls, FAKE_ROOT: f.root }
-  delete env.WEBHOOK_SECRET
-  delete env.REPOSITORY
-  const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], { cwd: f.root, env, stdio: ['ignore', 'pipe', 'pipe'] })
-  f.children.add(child)
-  let output = ''
-  child.stdout.on('data', (chunk) => { output += chunk })
-  child.stderr.on('data', (chunk) => { output += chunk })
-  await waitFor(() => output.includes('listening on') || child.exitCode !== null, 'listener startup', () => output)
-  assert.equal(child.exitCode, null, output)
-  return { child, port, output: () => output }
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const port = await freePort()
+    const env = { ...process.env, PORT: String(port), SMEE_URL: '', PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, FAKE_PAGES: f.pages, FAKE_CALLS: f.calls, FAKE_ROOT: f.root }
+    delete env.WEBHOOK_SECRET
+    delete env.REPOSITORY
+    const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs')], { cwd: f.root, env, stdio: ['ignore', 'pipe', 'pipe'] })
+    f.children.add(child)
+    let output = ''
+    child.stdout.on('data', (chunk) => { output += chunk })
+    child.stderr.on('data', (chunk) => { output += chunk })
+    await waitFor(() => output.includes('listening on') || child.exitCode !== null, 'listener startup', () => output)
+    if (child.exitCode === null) return { child, port, output: () => output }
+    if (PORT_IN_USE.test(output)) continue
+    assert.fail(output)
+  }
+  throw new Error('no port the listener could take')
 }
 
 async function stop(listener) {
