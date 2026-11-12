@@ -30,25 +30,13 @@ The **call graph** is every edge. It must have no cycle: two skills that each ca
 
 A node is not a file. `split` calling `open-map` once per child map, which writes each child, is a tree: the child is work, and the child's own opening is a lower node. `split` → `open-map` → back into `split` for that child's layer is a cycle, and it is one to cut. The line is that going down a tree is not going back up it.
 
-## Three: when unsure, follow Matt
+## Three: Matt's set is a reference, not a rule
 
-This set adapts [mattpocock/skills](https://github.com/mattpocock/skills). When a question about structure is open, look at how that set solves it and follow that before inventing a new shape.
+This set adapts [mattpocock/skills](https://github.com/mattpocock/skills). His set is worth reading before inventing a shape, and reading it settles nothing formally: no skill file, assertion, or review verdict names him.
 
-The places his set has already answered:
+When a shape follows his, `docs/matt-methods/` records which file was read and what it settled. A change that reached its shape from this repository's own rules, records, or discussion writes nothing there.
 
-| Question | His answer | Where |
-|---|---|---|
-| What a `SKILL.md` holds | when to use it, what to do, what to write | every `SKILL.md` |
-| Where a format reference lives | inside the skill that owns the record, as a file beside the skill that writes it | `domain-modeling` in mattpocock/skills |
-| How one skill reaches another | an explicit instruction to call the Skill tool, never a path into another folder | `invocation` doc in mattpocock/skills |
-| Who can reach a skill | user-invoked (only a person) or model-invoked (any run) | `invocation` doc in mattpocock/skills |
-| How the set is indexed | one router, and it must list every skill or it lies | `ask-matt` in mattpocock/skills |
-| How setup works | explore, present, confirm, write text; no script | `setup-matt-pocock-skills` in mattpocock/skills |
-| How a phase hands off | a portable file with the things the records do not carry | `handoff` in mattpocock/skills |
-
-His set is a reference for developing this one, not a rule the set carries. It does not appear in a skill file, an assertion, or a review verdict; where a particular answer came from is written in `docs/matt-methods/`, so a reader who asks why a thing is shaped this way has one place to open.
-
-When it has no answer, the fallback is the smallest thing that keeps the first two.
+When his set has no answer, the fallback is the smallest thing that keeps the other three.
 
 ## Four: rules set direction, not layout
 
@@ -66,5 +54,5 @@ This applies to records. An action still says what it does and in what order; "s
 |---|---|
 | One: one fact | `scripts/check-references.mjs` fails a skill file that links into another skill's folder; a person checks, at review, that no record's definition is split across two folders |
 | Two: no cycles for calls | `scripts/check-references.mjs` reads every `call \`name\`` from each `SKILL.md`, builds the graph, and fails on a cycle; every other mention is a reference and carries no edge |
-| Three: follow Matt | no check. The rule is a direction for the author; `docs/matt-methods/` records where an answer came from |
+| Three: Matt is a reference | no check. A shape that follows his is recorded in `docs/matt-methods/`; one that does not needs nothing |
 | Four: direction, not layout | `scripts/check-references.mjs` fails an assertion that names no check, which is how a contract without a reader is caught; a person checks, at review, that no rule spends words on layout that no check reads |

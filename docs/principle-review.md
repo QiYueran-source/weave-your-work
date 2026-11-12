@@ -36,7 +36,7 @@ Findings are grouped by principle. Each one gives the contradiction, the file th
 
 **One document outside the graph contradicts it.** `docs/v2-conformance.md` §12 says "no action links into another action's folder" and marks it met and enforced, while `split` calls `open-map` and `open-task` by design and by the same document's §6. A reference is not a link, so the skill set is right and the document's row is stale. I left the document alone: it is the record of an earlier review, and correcting it is a separate edit for whoever owns it.
 
-## Three: when unsure, follow Matt
+## Three: Matt as the reference
 
 **No skill names the Matt skill it followed.** The table in `PRINCIPLES.md` names where each question was answered, and the check for this rule is a reviewer's word. No document in the repository gives that word for any skill, and `docs/v2-conformance.md` marks rows "met" without naming one. This rule is stated and never exercised. It needs a reviewer's pass over the structure, not a text edit, so I did not write names I could not stand behind.
 
