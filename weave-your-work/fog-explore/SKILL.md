@@ -7,7 +7,7 @@ invocation: user
 
 # Fog explore
 
-A map's `Not yet specified` holds fog. This skill clears it, one entry at a time. What fog is, and how an entry is written, is the `map` skill's; this file only clears it.
+A map's `Not yet specified` holds fog. This skill clears it, one entry at a time. What fog is, how an entry is written, and where a cleared entry lands are the `map` skill's; this file covers the clearing: how to judge an entry, how to get the missing part, and how to mark it finished.
 
 ## When it runs
 
@@ -21,17 +21,7 @@ Run these four for one entry, then start again at the top for the next.
 
 1. **Judge.** Can this be settled now? An assumption someone has already tested, a fact one page answers, a decision with nothing missing — go to step 3. The rest go to step 2.
 2. **Act.** Get the missing part: read, measure, or ask. A decision only a person can make goes through `grill`; the rounds go into a testimony as they happen. An answer that needs to be seen rather than discussed becomes a probe task, handed to `split`.
-3. **Land it** where it belongs:
-
-   | What was settled | Where it goes |
-   |---|---|
-   | a decision the map now holds | `Decisions so far`, in its concrete form, with its source |
-   | a clarified goal | `Target`, and `Acceptance direction` with it when the bar moves |
-   | something the map will not do | `Out of scope`, with the reason |
-   | work that needs its own ticket | handed to `split`; the entry is struck through naming what was handed over |
-
-   An entry whose kind is `Assumption` is not settled by research alone: support it, refute it, or record that it is accepted as reasonable and say so.
-
+3. **Land it** where the `map` skill's landings send it: a decision to `Decisions so far`, a sharpened goal to `Target` and `Acceptance direction`, a refusal to `Out of scope`, work to a child through the action that opens that record. An `Assumption` is not settled by research alone: support it, refute it, or record that it is accepted as reasonable and say so.
 4. **Strike the entry through** and add `Resolved on <date>: <what it became and where>`. An entry that turned out to be irrelevant is deleted instead.
 
 ## Transformation

@@ -20,7 +20,7 @@ Read it before writing a map, changing one, or judging one. It defines; it does 
 
 The field rules are `waymark/res/fields.md`; where a map sits in the tree, and what a dependency means, are `waymark/res/relations.md`.
 
-Fog is defined here, including what becomes an entry and how the walk decides. Every action that creates a map runs that walk; none carries a second copy of the rule.
+Fog is defined here: what becomes an entry, how the walk decides, and where a cleared entry lands. Every action that creates a map runs that walk, and the action that clears fog writes to those landings; neither carries a copy of the rule.
 
 ## What this skill does not do
 

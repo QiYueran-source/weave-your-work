@@ -119,6 +119,8 @@ PRINCIPLES rule two was made decidable. A call is written `call \`name\`` and is
 
 The cycle check found one defect while being written: `split`'s step 3 phrased its call as a bare backticked name, which is the shape that let the v1 loops go unnoticed.
 
+Writing a fog entry and clearing one were owned in different places, and neither file said where the line was. `map/res/body.md` now owns both halves as one fact: the walk that decides what becomes an entry, and where a cleared entry lands (a decision, a sharpened goal, a refusal, or a child). `fog-explore` keeps the execution — judge, get the missing part, write, strike — and reads the landings instead of restating them.
+
 ## Gaps and residual risks
 
 1. **The two worked examples were not migrated.** Their inner ticket stores were written under v1 rules, so `check-records.mjs` skips them (it reads the project's `tickets/` only). A reader following an example sees records that would fail the assertions this set now states. This is fog on the v2 map, not a hidden fact.
