@@ -1,6 +1,6 @@
 # Principles
 
-Four rules this set is built on. They outrank any skill file, and a change that breaks one does not land.
+Four rules this set is built on. The first three outrank any skill file, and a change that breaks one of them does not land. The fourth is a reference, not a requirement.
 
 ## One: one fact, in one place
 
@@ -46,7 +46,9 @@ The places his set has already answered:
 | How setup works | explore, present, confirm, write text; no script | `setup-matt-pocock-skills` in mattpocock/skills |
 | How a phase hands off | a portable file with the things the records do not carry | `handoff` in mattpocock/skills |
 
-When Matt's set has no answer, the fallback is the smallest thing that keeps the other three.
+His set is a reference for developing this one, not a rule the set carries. It does not appear in a skill file, an assertion, or a review verdict; where a particular answer came from is written in `docs/matt-methods/`, so a reader who asks why a thing is shaped this way has one place to open.
+
+When it has no answer, the fallback is the smallest thing that keeps the first two.
 
 ## Four: rules set direction, not layout
 
@@ -64,5 +66,5 @@ This applies to records. An action still says what it does and in what order; "s
 |---|---|
 | One: one fact | `scripts/check-references.mjs` fails a skill file that links into another skill's folder; a person checks, at review, that no record's definition is split across two folders |
 | Two: no cycles for calls | `scripts/check-references.mjs` reads every `call \`name\`` from each `SKILL.md`, builds the graph, and fails on a cycle; every other mention is a reference and carries no edge |
-| Three: follow Matt | no check; the reviewer says which skill in mattpocock/skills they followed, or why none applies |
+| Three: follow Matt | no check. The rule is a direction for the author; `docs/matt-methods/` records where an answer came from |
 | Four: direction, not layout | `scripts/check-references.mjs` fails an assertion that names no check, which is how a contract without a reader is caught; a person checks, at review, that no rule spends words on layout that no check reads |
