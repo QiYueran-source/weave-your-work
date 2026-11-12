@@ -9,6 +9,7 @@ A skill does one job. A record is defined once, and the action that writes it is
 3. **An action names another skill only as a call.** "Read the `task` skill" or "hand the layer to `split`" is a call. A path into another skill's folder is not: it breaks the moment that skill moves a file.
 4. **Installable parts live under `setup/`.** Rules, tools, and install guides belong to setup. A skill that needs something installed says so; it does not carry a `bundle/`.
 5. **Every rule is an assertion with a check.** A rule names what decides it: the tracker refuses it, `scripts/check-records.mjs` reports it, or a review finds it. A rule with no check is advice, and advice stays out of `res/`.
+6. **A review gives each axis its own verdict, and the reviewer writes the record's way.** The axes and the verdicts are the record's, in its `res/`; the action judges and cites them, and the section's shape is the resource's too. A second copy in the action drifts the day the resource changes.
 
 ## Before adding a skill or a rule
 
