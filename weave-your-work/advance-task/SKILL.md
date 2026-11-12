@@ -21,7 +21,7 @@ Stop and hand the ticket back, without writing, when any of these is true:
 - `waiting_on` is set;
 - `## Review`'s latest block says `needs discussion`, or `passed` on both axes, unless `Progress` records that `update` invalidated that block.
 
-A required input the task needs is missing or unusable: leave the status unchanged, record the missing input in `Progress`, and tell the owner. If the missing input is a sibling task's output, hand the ticket back as a split error.
+A required input the task needs is missing or unusable: leave the status unchanged, record the missing input in `Progress`, and tell the owner. When the missing input is a sibling task's output, this layer needs a clearer split: say so, name the task that waits and the task it waits on, and hand the map to `resplit`, which turns the wait into a dependency edge between two child maps. A task never waits on another task, and `waiting_on` stays for a person.
 
 The first write of a run is preceded by one check of the tracker: `waymark validate --json` is healthy. Run it once per session, not once per write.
 
@@ -37,7 +37,7 @@ A question about how the work is done is not a stop: decide it and say what you 
 
 ## The batch
 
-A batch is the tasks under one map that the run's owner owns, `open` or `in_progress`, with no `waiting_on`, no `needs_human`, and their inputs available. Skip a task that needs a sibling's output and hand it back as a split error.
+A batch is the tasks under one map that the run's owner owns, `open` or `in_progress`, with no `waiting_on`, no `needs_human`, and their inputs available. A task that needs a sibling's output is not a batch case: the layer needs a clearer split, and the map goes to `resplit`.
 
 - Claim every chosen task with `waymark start` before any of them goes out.
 - Send each to its own worker with the same preflight this skill opens with; the worker stops at `Result`.

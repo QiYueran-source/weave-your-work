@@ -15,11 +15,13 @@ Every child of a map is closed, and the map is about to be judged by `map-review
 
 ## Steps
 
+Every child is read against three things: itself, its siblings, and its parent. `task-review` and `map-review` judge one record each and establish that; this pass asks only whether the set holds together.
+
 1. **Read the set**: every child's `Target` or `Action`, its `Acceptance signal`, its `Result`, and both verdicts in its `Review`. Read `Decisions so far` and `Acceptance direction` of the map above them.
-2. **Look for the same result promised twice**: two children whose results cannot both be the deliverable, or whose finished work has to be replaced by the other. Name both ids.
-3. **Look for an overturned premise**: two children that lean on one decision or one deliverable, where one of them has since struck that decision or replaced that deliverable.
-4. **Look for reach past the direction**: a child that delivers something `Acceptance direction` never asked for, and that no decision in `Decisions so far` rules into scope.
-5. **Write the report** as a paragraph of the map's `## Review`, headed `Whole review, <date>`. One bullet per finding, naming both sides by id and citing the line in each that contradicts; when there is nothing, say so in one line. It sits beside the two axis blocks and carries no verdict; the section rule for adding or striking it is `map/res/body.md`'s.
+2. **Against its own review**: a child whose two verdicts cannot both be true of what its `Result` says.
+3. **Against its siblings**: two children whose results cannot both be the deliverable, or whose finished work has to be replaced by the other; two children that lean on one decision or one deliverable, where one of them has since struck that decision or replaced that deliverable. Name both ids.
+4. **Against its parent**: a child that delivers something `Acceptance direction` never asked for and that no decision in `Decisions so far` rules into scope, and a line of the direction no child answers.
+5. **Write the report** as a paragraph of the map's `## Review`, headed `Whole review, <date>`. One bullet per finding, naming both sides by id and citing the line in each that contradicts; the fourth check is the exception that names one side, and it cites the direction line that nothing answers; when there is nothing, say so in one line. It sits beside the two axis blocks and carries no verdict; the section rule for adding or striking it is `map/res/body.md`'s.
 
 ## Transformation
 

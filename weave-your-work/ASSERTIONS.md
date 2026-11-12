@@ -78,8 +78,10 @@ Three kinds of check:
 - A skill missing `family` or `invocation`, or a value outside the allowed set. `[check-references]`
 - A skill the router does not name, or a name in the router that is not a skill. `[check-references]`
 - A mainline action missing from `MAINLINE.md`, or a skill `MAINLINE.md` calls a mainline action that is listed as auxiliary. `[check-references]`
+- A `resplit` that leaves a task waiting on a sibling instead of on the other child map. `[review]`
+- A recut parent map whose `Decisions so far` does not say what the flawed cut was. `[review]`
 - A map whose children are all closed and whose `## Review` carries no `Whole review` paragraph. `[review]`
-- A `Whole review` finding that names one child only. `[review]`
+- A `Whole review` finding that names one child only, except a direction line no child answers. `[review]`
 - An archived record named by a live record, or a struck decision that a live child still leans on. `[review]`
 - A record writer that does not say it writes one record per run, or that does not leave the count and the parent to its caller. `[check-references]`
 

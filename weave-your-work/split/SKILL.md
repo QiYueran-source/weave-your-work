@@ -17,7 +17,7 @@ The layer goes back to `grill` when it cannot support a child's `Target`, or the
 
 ## Steps
 
-1. **Decide the type.** Ask the question above for the layer as a whole. A layer is all one type; a direction that needs the other type opens a sibling map instead.
+1. **Decide the type.** Ask the question above for the layer as a whole. A layer is all one type; a direction that needs the other type opens a sibling map instead. Parts that read each other's output are not tasks: they are child maps with an edge between them.
 2. **Decide the count before writing anything.** A layer is cut by the decisions the map already settled: each child's part comes from a decision in `Decisions so far`, and several decisions may feed one child or one decision may feed several. A part with no decision behind it is not cut; it goes back to `grill`, or stays in `Not yet specified` until it settles. For tasks, write the count and a one-line plan per task into the discussion's testimony.
 3. **Open each child, one at a time, by calling the action that writes that record.** This skill writes no record: the writer hangs the child under the parent it is given.
    - A child map: call `open-map` once per child map, with that child's part of the parent's target and the decision it came from, and `--parent <map>`.
@@ -50,4 +50,5 @@ after:
 - Clear fog, or decide a child's content. Fog is `fog-explore`'s; the child's body is the writer's.
 - Write a child, or set a child's parent: `open-map` and `open-task` do both, for the parent passed with the call.
 - Write a child against a guess: an unsettled part waits for a later split.
-- Change a map that has already split. That is `update`.
+- Cut parts that read each other's output into tasks. That layer is child maps, with an edge between them, and a layer already cut wrongly is recut by `resplit`.
+- Change a map that has already split. Its content is `update`'s; recutting a task layer whose tasks wait on each other is `resplit`'s.

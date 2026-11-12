@@ -33,6 +33,8 @@ Each of them is one job and stops where it ends. `open-map` writes and decides n
 
 `grill` is not a step of the line. A step that cannot settle a question calls it, waits for the testimony, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
 
+`resplit` is a return path too, and rarer: a task that waits on a sibling's output means the layer was cut wrong, and `advance-task` sends that case to `resplit`, which turns the wait into a dependency edge between two child maps. A task runs alone, or its order is the order of two maps; nothing in between.
+
 Recursion is the line itself: a child map re-enters at `split`. A map takes children while its acceptance direction holds something one task cannot show, and no depth is set in advance; that condition is also the stop, because a layer whose every part fits one action and one standard is written as tasks. Closing is bottom-up, because a parent's `Acceptance direction` counts its children. There is no separate close action.
 
 ## The auxiliary actions
@@ -44,6 +46,7 @@ Recursion is the line itself: a child map re-enters at `split`. A map takes chil
 | `adr` | an ADR | the line reaches a checkpoint where a settled decision passes the three gates |
 | `glossary` | a glossary entry | the line reaches a checkpoint where a term resolved |
 | `issue` | a remote issue and a queue line | a message has to reach another owner |
+| `resplit` | a task layer recut into child maps with a dependency edge between them | a task cannot start because a sibling task has not finished |
 | `handoff` | a handoff document | the work continues in another session |
 | `wait-what` | a four-column table, changing nothing | the person lost the thread |
 | `stop-and-wait` | a patrol report, changing nothing | the project may contradict itself |

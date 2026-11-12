@@ -23,7 +23,7 @@ The route a project travels from a settled map to a closed one, in order.
 6. **`whole-review`** when a map's children are all closed: it reads them together and reports where two of them contradict each other.
 7. **`map-review`** to accept the map or send it back.
 
-A child map re-enters at `split`; closing runs bottom-up. A record that turns out wrong is changed through **`update`**, not rewritten.
+A child map re-enters at `split`; closing runs bottom-up. A record that turns out wrong is changed through **`update`**, not rewritten. A layer cut into tasks where one task needs another's output is recut by **`resplit`**: the wait becomes a dependency edge between child maps.
 
 ## Branch points
 
@@ -32,6 +32,7 @@ Each opens on a state, not on a position in the route.
 - **`setup`** when the project is not configured: it takes an empty directory to a working one, or fills in what a clone cannot carry.
 - **`update`** when a closed record, or a map that has already split, has to change.
 - **`issue`** when a decision or an ask has to reach another owner, or when the queue holds a message.
+- **`resplit`** when a task cannot start because a sibling task has not finished.
 - **`wait-what`** when the person lost the thread; **`handoff`** when the work continues in another session.
 - **`stop-and-wait`** when a person asks whether the whole project is still consistent; **`salvage-and-restart`** when the tree no longer describes the work.
 
