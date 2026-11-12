@@ -15,7 +15,9 @@ A task is the finest node of the tree: one action that ends at a result someone 
 - `Progress` — written when a run stops: the step it reached, what it waits for, and what happens next.
 - `Review` — the verdict, then one line per axis with evidence.
 
-A delivery that is `one_way` carries `Failure recovery`; a probe carries `Next step`. `Result`, `Progress`, and `Review` are written after creation: `advance-task` writes the first two, a review writes the last.
+A delivery that is `one_way` carries `Failure recovery`; a probe carries `Next step`. `Failure recovery` says who does what, by which means, to restore what to which state; "we will handle it" is not a recovery. `Result`, `Progress`, and `Review` are written after creation: `advance-task` writes the first two, a review writes the last.
+
+When a section changes, the rule is `map/res/body.md`'s: a new fact adds an entry beside the old one when the old one still holds, and strikes it with `Superseded on <date>: <why>` when it does not.
 
 ## Assertions
 
@@ -23,5 +25,7 @@ A delivery that is `one_way` carries `Failure recovery`; a probe carries `Next s
 - A `one_way` delivery without `Failure recovery`, or a probe without `Next step`. [check-records]
 - A closed task with no `Result`. [check-records]
 - A task with a dependency edge, or a parent that is not a map. [check-records]
+- A `Failure recovery` that names nobody and no means: "will handle it", "notify the team". [review]
+- An entry changed in place, where the record's rule asked for an addition or a strike. [review]
 - An `Acceptance signal` that names no evidence, or two readings of it disagree. [review]
 - A `Result` claiming a deliverable that cannot be found. [review]

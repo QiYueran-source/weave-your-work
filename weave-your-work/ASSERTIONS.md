@@ -29,9 +29,9 @@ Three kinds of check:
 
 - `Target` or `Acceptance direction` missing. [check-records]
 - `Target` without its `Why:` line. [check-records]
-- `Target` without its `Why:` line. [check-records]
 - `Acceptance direction` without a `Review point:` line. [check-records]
 - A body listing its children. [check-records]
+- An entry changed in place, where the record's rule asked for an addition or a strike. [review]
 - `Not yet specified` missing. [check-records]
 - A fog entry without its second line. [check-records]
 - A resolved entry not struck, or a struck entry without `Resolved on <date>`. [check-records]
@@ -46,6 +46,7 @@ Three kinds of check:
 - `Action` or `Acceptance signal` missing. [check-records]
 - `task_kind`, `reversibility`, or `needs_human` missing or outside its values. [check-records]
 - A `one_way` delivery without `Failure recovery`, or a probe without `Next step`. [check-records]
+- A `Failure recovery` that names nobody and no means. [review]
 - A closed task with no `Result`. [check-records]
 - `outcome=failed` with a verdict other than `wrong direction`. [check-records]
 - An `Acceptance signal` that names no evidence, or two readings of it disagree. [review]
