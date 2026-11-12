@@ -52,6 +52,7 @@ after:
 ## Hands off
 
 - `task-review` or `map-review` to judge the changed record again.
+- `adr` when the change overturns a decision an ADR records: the new ADR supersedes the old one, and the changed record names it.
 - `issue` for a foreign owner.
 
 ## What this skill does not do
