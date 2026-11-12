@@ -1,6 +1,6 @@
 # Principles
 
-Three rules this set is built on. They outrank any skill file, and a change that breaks one does not land.
+Four rules this set is built on. They outrank any skill file, and a change that breaks one does not land.
 
 ## One: one fact, in one place
 
@@ -46,7 +46,17 @@ The places his set has already answered:
 | How setup works | explore, present, confirm, write text; no script | `setup-matt-pocock-skills` in mattpocock/skills |
 | How a phase hands off | a portable file with the things the records do not carry | `handoff` in mattpocock/skills |
 
-When Matt's set has no answer, the fallback is the smallest thing that keeps the first two rules.
+When Matt's set has no answer, the fallback is the smallest thing that keeps the other three.
+
+## Four: rules set direction, not layout
+
+A rule says what must exist. It does not say how many paragraphs, lines, bullets, or symbols to use. A rule that describes layout is either a machine contract or decoration, and only one of those earns its place.
+
+- **A machine contract names its check.** If a check needs a fixed shape, the rule states that shape and says which check reads it. "A fog entry's second line says what resolving it would change. `[check-records]`" is a contract: the checker looks for that line.
+- **Decoration goes.** "One or two sentences", "one line per axis", "an entry is one line": nothing decides on those, and a writer spends attention satisfying them. Say what the rule is for and stop.
+- **A rule that several layouts satisfy is finished.** When more than one way of writing it meets the rule, the rule needs no more words.
+
+This applies to records. An action still says what it does and in what order; "set direction, not layout" is not a licence to turn a step into a slogan.
 
 ## How these are checked
 
@@ -55,3 +65,4 @@ When Matt's set has no answer, the fallback is the smallest thing that keeps the
 | One: one fact | `scripts/check-references.mjs` fails a skill file that links into another skill's folder; a person checks, at review, that no record's definition is split across two folders |
 | Two: no cycles | `scripts/check-references.mjs` builds the call graph from each `SKILL.md` and fails on a cycle |
 | Three: follow Matt | no check; the reviewer says which skill in mattpocock/skills they followed, or why none applies |
+| Four: direction, not layout | `scripts/check-references.mjs` fails an assertion that names no check, which is how a contract without a reader is caught; a person checks, at review, that no rule spends words on layout that no check reads |
