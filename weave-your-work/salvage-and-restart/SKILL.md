@@ -53,16 +53,7 @@ All five, or the restart is not done.
 4. The salvage record cites every kept item, and its `## What was not examined` is not empty.
 5. The new root names the salvage record and the old root in its `Decisions so far`.
 
-## Transformation
-
-```
-before: a tree that no longer describes its work
-after:
-- one salvage record under docs/salvage/, citing everything kept
-- one root, standing
-- every retired record archived with a reason naming the salvage record
-- every surviving branch under the new root, with its content and history intact
-```
+One root stands, `salvage/res/salvage.md` says what the salvage record holds, and every surviving branch hangs under the new root.
 
 ## What this skill does not do
 

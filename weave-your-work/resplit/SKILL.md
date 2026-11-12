@@ -24,16 +24,7 @@ This is not `split`'s case: `split` cuts a layer that has no children yet, and t
 5. **Re-hang the tasks.** `waymark parent set <task> <group-map>` for every task, in the group it was cut into. Content, status, owner, and review stay as they are; only `parent` changes.
 6. **Record the recut on the parent map.** One line in its `Decisions so far`: what the flawed cut was, which two maps replaced it, and the date. The parent's `split_as` stays `submap`, which is what it now is.
 
-## Transformation
-
-```
-before: a map with task children, one of them waiting on a sibling's output
-after:
-- two child maps under the parent, each with a target of its own
-- the waiting map depends on the delivering map
-- every former task hangs under one of the two maps, unchanged otherwise
-- the parent map records the recut, and no task was deleted or rewritten
-```
+Two child maps exist with an edge between them, and every former task hangs under one of them, unchanged otherwise.
 
 ## Hands off
 

@@ -21,19 +21,11 @@ A task is never a child of a task. The parent is a map, written with `--parent` 
 1. **Read the part it comes from.** The parent map's `Target` and `Acceptance direction`, and the decision the caller says this task serves. The action serves a part of the map's direction; if it serves something else, the map is wrong.
 2. **Write the body** as `task/res/body.md` requires: `Action` with its result first, `Acceptance signal`, the sections the kind requires, and `Boundaries` when the work could be mistaken for more than it is.
 3. **Set the fields** the `task` skill defines: `task_kind`, `reversibility`, and `needs_human`. `waymark/res/fields.md` says when each is written and which values it takes.
-4. **Create the record.** `waymark create --category task --title "<the result>" --owner <name> --parent <map> --field task_kind=… --field reversibility=… --field needs_human=… --body-file <body> --dry-run`, then again without the flag.
+4. **Create the record**, hung under the map given with the call. `waymark create --category task --title "<the result>" --owner <name> --parent <map> --field task_kind=… --field reversibility=… --field needs_human=… --body-file <body> --dry-run`, then again without the flag.
 
 If the part turns out to need a child map instead, write nothing and report it: the layer's type is `split`'s decision, and a layer is all one type.
 
-## Transformation
-
-```
-before: a settled part of a map, and no task for it
-after:
-- one task exists, hung under its map, with Action and Acceptance signal
-- task_kind, reversibility, and needs_human are written
-- the sections the kind requires are there
-```
+The task exists, and `task/res/body.md` says what it holds.
 
 ## Hands off
 

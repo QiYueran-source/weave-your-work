@@ -23,15 +23,7 @@ A decision is settled — by a discussion, by a split, or by `update` changing o
 4. **Link back** to the record that owns the decision, by id, and to the testimony when there is one.
 5. **Supersede, never edit.** A new ADR names the old one; the old one gets `## Status` with `Superseded by ADR-NNNN.`; the old file keeps its number.
 
-## Transformation
-
-```
-before: a decision with no record, or an older decision that no longer holds
-after:
-- one new file under docs/adr/, numbered one above the highest
-- the decision's record names the ADR id
-- an older ADR marked superseded, never rewritten
-```
+One new file sits under `docs/adr/`, and `adr/res/format.md` says what it holds.
 
 ## What this skill does not do
 

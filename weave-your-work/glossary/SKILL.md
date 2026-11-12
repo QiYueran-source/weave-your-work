@@ -35,15 +35,7 @@ Never write to another operator's file, and never edit `GLOSSARY.md` by hand: th
 
 The MCP server and the CLI live in the project runtime at `.work-weave/runtime/glossary/`, installed by `setup`. Use `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge` when they are running; use the CLI when they are not.
 
-## Transformation
-
-```
-before: a fuzzy or conflicting word, and the existing sources
-after:
-- one line added to the operator's own source file, with term, definition, avoid, and timestamps
-- the generated view rebuilt, or the next merge will do it
-- no other operator's file touched
-```
+One line is in the operator's own source file, in the shape `glossary/res/entry.md` defines.
 
 ## What this skill does not do
 

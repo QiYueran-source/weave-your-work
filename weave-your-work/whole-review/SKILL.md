@@ -25,15 +25,7 @@ Every child is read against three things: itself, its siblings, and its parent. 
 4. **Against its parent**: a child that delivers something `Acceptance direction` never asked for and that no decision in `Decisions so far` rules into scope, and a line of the direction no child answers.
 5. **Write the report** as a paragraph of the map's `## Review`, headed `Whole review, <date>`. One bullet per finding, naming both sides by id and citing the line in each that contradicts; the fourth check is the exception that names one side, and it cites the direction line that nothing answers; when there is nothing, say so in one line. It sits beside the two axis blocks and carries no verdict; the section rule for adding or striking it is `map/res/body.md`'s.
 
-## Transformation
-
-```
-before: a map whose children are all closed, each judged alone
-after:
-- the map carries one Whole review paragraph, dated, with a bullet per contradiction and both sides cited
-- no record other than the map is written
-- no verdict and no status changed
-```
+The map carries one dated `Whole review` paragraph, and nothing else in the tree moved.
 
 ## Hands off
 

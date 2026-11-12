@@ -25,16 +25,7 @@ The owner reviews and closes. The owner may be the agent that did the work, when
 4. **Write `## Review`** by the `task` skill's rule: one block, `Goal:` and `Convention:` each with its own verdict and evidence. How an older block is struck is that skill's rule too.
 5. **Act on the pair** as the `task` skill's table says: both `passed` closes the ticket; otherwise the worse verdict decides what happens next.
 
-## Transformation
-
-```
-before: a task with a Result and no current Review
-after:
-- Review carries a Goal verdict and a Convention verdict, each with its evidence
-- both passed: status closed, waiting_on cleared
-- otherwise: the task is open, its waiting_on set only for a person, and the next step named
-- an older block that no longer holds is struck with the reason it was superseded
-```
+The task carries the review block `task/res/review.md` defines, and its status follows that file's table.
 
 ## Hands off
 

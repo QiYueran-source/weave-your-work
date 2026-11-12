@@ -30,7 +30,7 @@ The first write of a run is preceded by one check of the tracker: `waymark valid
 1. **Claim.** `waymark start <id>`.
 2. **Say one line**: where you are starting and what the first step is.
 3. **Do the work** in the order `Action` gives, or in any order when it is prose. Do not stop between steps.
-4. **Write `Result`**: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` unless it carries an update invalidation marker.
+4. **Write `Result`**: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` unless it carries an update invalidation marker. No section the designer wrote changes.
 5. **Hand the result to `task-review`** when the run is the owner's; otherwise stop at `Result` and report.
 
 A question about how the work is done is not a stop: decide it and say what you decided in `Result`. Whether the result meets the acceptance signal is not this skill's question; `task-review` decides that one, and the run stops at the record it wrote.
@@ -44,17 +44,7 @@ A batch is the tasks under one map that the run's owner owns, `open` or `in_prog
 - Commit one task at a time, staged from the file list the worker reports. Read the collision list before dispatch: two tasks that edit one file do not run together.
 - The main agent reviews each result; a worker does not close a task.
 
-## Transformation
-
-```
-before: a task that is open, or in_progress with Progress
-after:
-- the task is in_progress, or closed by a review
-- Result is written, with the evidence the signal names
-- Progress records where it stopped, when it stopped
-- waiting_on names a person and the answer they owe, or is empty
-- no section written by the designer changed
-```
+The task has a `Result`, and `task/res/body.md` says what the ticket holds; no section the designer wrote changed.
 
 ## Hands off
 

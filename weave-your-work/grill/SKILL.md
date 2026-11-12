@@ -43,15 +43,7 @@ The caller writes the records these become, and the caller decides whether a ter
 
 At the end, name the decisions and facts that are clear, the terms the testimony fixed, the work handed off, and anything that will need an ADR. A caller that asked a specific question gets the answer first.
 
-## Transformation
-
-```
-before: an open question and a person who has not answered it
-after:
-- the testimony exists and every round in it carries its questions, the recommended answers, and what the person said
-- every term the discussion fixed and every decision that changed a recorded ADR is written in the testimony
-- the caller has, for each decision or work hand-off, the record that will hold it, and knows which terms and decisions still have to be written
-```
+The testimony exists, and `grill/res/testimony.md` says what it holds.
 
 ## What this skill does not do
 

@@ -29,15 +29,7 @@ The layer goes back to `grill` when it cannot support a child's `Target`, or the
 
 A map carries one type for its whole life, so a split that finds a settled layer needing the other type is not this skill's job: it reports the mismatch and stops.
 
-## Transformation
-
-```
-before: a map, a settled layer, and no children for it
-after:
-- the map carries split_as, unchanged if it was already set
-- the map is in_progress
-- every new child hangs under the map, was written by the action for its record, and is of the layer's type
-```
+Each child exists, hung under the map, written by the action for its record; `waymark/res/fields.md` says what `split_as` is.
 
 ## Hands off
 

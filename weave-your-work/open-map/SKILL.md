@@ -26,15 +26,7 @@ One map per run. A root map and a child map are the same record, and the only di
 
 When the target turns out to be small enough for one task, or too vague to state, write nothing: report which. Whether the part belongs in another record is not this run's call.
 
-## Transformation
-
-```
-before: a settled target and no map for it
-after:
-- one map exists, hung under its parent or standing as the root
-- the body carries what map/res/body.md requires, with no Review and no split_as
-- every part of the walk became an entry, an exclusion, or a decision; none became a child
-```
+The map exists, and `map/res/body.md` says what it holds; the file this action wrote is that record, not a copy of the rule.
 
 ## Hands off
 

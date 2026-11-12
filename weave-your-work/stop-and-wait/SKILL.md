@@ -34,14 +34,7 @@ Deliberately skipped: testimony bodies, the worked examples, and `.inbox/`. They
 
 Above roughly forty open records, split the read by subtree and read each subtree in a separate pass, then verify the citations once, in one place.
 
-## Transformation
-
-```
-before: a project whose records advance one at a time
-after:
-- one report under docs/stop-and-wait/, one entry per conflict, both sides citable
-- no record changed
-```
+One report sits under `docs/stop-and-wait/`, one entry per conflict, and no record changed.
 
 ## What this skill does not do
 

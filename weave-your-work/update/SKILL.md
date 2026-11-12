@@ -39,17 +39,7 @@ A move changes where a record sits and nothing else: `waymark parent set <id> <n
 
 A change that needs work is not written into a delivered record. It becomes a child of the map, of the type the map's `split_as` froze, written by `split`; the run then commits to it only when the record's own acceptance direction requires it, and otherwise leaves it open for a later run.
 
-## Transformation
-
-```
-before: a record that others rely on, and its dependents
-after:
-- the record carries the disposition it earned, and its status matches it
-- every struck passage carries Superseded on <date> and the reason
-- every reopened record is left open for a review, not closed by this run
-- every dependent whose relation still means something was updated, or still waits in the shape it had
-- every foreign owner reached was told in an issue, with the relation and the replacement named
-```
+The record carries the disposition it earned, and `waymark/res/disposition.md` says what each one writes.
 
 ## Hands off
 

@@ -30,17 +30,7 @@ The owner reviews and closes. A run that is not the owner's reports its findings
 
 A child reopened during the review voids it: wait for it to close and review again. When `Review` and `status` disagree, recheck the children and the evidence before either changes; neither status nor an old verdict alone proves a pass.
 
-## Transformation
-
-```
-before: a map whose children are all closed and whose fog is cleared
-after:
-- Review carries a Goal verdict and a Convention verdict, each with its evidence
-- both passed: status closed
-- wrong direction on either axis: outcome = failed, status closed, nothing opened in its place
-- otherwise: status unchanged, the gap or the question recorded
-- an older block that no longer holds is struck with the reason it was superseded
-```
+The map carries the review block `map/res/review.md` defines, and its status follows that file's table.
 
 ## Hands off
 

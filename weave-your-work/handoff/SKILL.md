@@ -25,15 +25,7 @@ The handoff document is that missing part. It is not a copy of the records and n
 4. **Redact.** No keys, no passwords, no tokens, no personal data. When a detail is needed and sensitive, name where it lives.
 5. **Save it in the operating system's temporary directory**: `$TMPDIR` when it is set, else `/tmp`; `%TEMP%` on Windows. Not the workspace, and not a ticket.
 
-## Transformation
-
-```
-before: a session ending, and records that do not say where it stopped
-after:
-- one file outside the repository, carrying the five sections
-- every claim in it names the record or path it comes from
-- what comes next is one step, not a plan
-```
+One file outside the repository carries the five sections `handoff/res/` defines.
 
 ## What this skill does not do
 

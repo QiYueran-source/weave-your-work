@@ -24,16 +24,7 @@ Run these four for one entry, then start again at the top for the next.
 3. **Land it** where `map/res/body.md`'s landings send it: a decision to `Decisions so far`, a sharpened goal to `Target` and `Acceptance direction`, a refusal to `Out of scope`, work to a child through the action that opens that record. On a map that is open and has no children, this step writes the landing itself, by the section rule `map/res/body.md` gives every section. A map that is closed, or that has already split, has a body others stand on: its landing goes through `update`. An `Assumption` is not settled by research alone: support it, refute it, or record that it is accepted as reasonable and say so.
 4. **Strike the entry through** and add `Resolved on <date>: <what it became and where>`. An entry that turned out to be irrelevant is deleted instead.
 
-## Transformation
-
-```
-before: one open entry in Not yet specified
-after:
-- the entry is struck through, or deleted when it was irrelevant
-- a struck entry carries Resolved on <date> and what it became
-- the result appears in exactly one of Decisions so far, Target, Out of scope, or a new child
-- a result that changes the target changed Acceptance direction in the same pass, or through the same `update` when the map is closed or already split
-```
+The entry is cleared and what it became is where `map/res/body.md`'s landings send it.
 
 ## Hands off
 
