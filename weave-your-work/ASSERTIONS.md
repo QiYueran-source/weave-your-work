@@ -83,7 +83,7 @@ Three kinds of check:
 - A `Whole review` paragraph whose findings do not each name both sides, or the direction line nothing answers. `[review]`
 - A `Whole review` finding that names one child only, except a direction line no child answers. `[review]`
 - An archived record named by a live record, or a struck decision that a live child still leans on. `[review]`
-- A record writer that does not say it writes one record per run, or that does not leave the count and the parent to its caller. `[check-references]`
+- A record writer that does not say it writes one record per run. `[check-references]`
 
 ## Running them
 

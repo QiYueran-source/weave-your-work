@@ -42,6 +42,4 @@ after:
 
 ## What this skill does not do
 
-- Judge a child, or a map. The two reviews do that.
-- Close, reopen, archive, or move anything. The contradiction is reported, and its owner settles it.
-- Find a contradiction inside one child; that child's own review does.
+- Decide whether a child is acceptable; that is `map-review`.

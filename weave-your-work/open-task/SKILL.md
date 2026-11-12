@@ -41,6 +41,4 @@ The task exists, and this action writes nothing after it. `split` started the ma
 
 ## What this skill does not do
 
-- Decide how many tasks a layer has, or which parts it serves. `split` does.
-- Decide whether the part is a task or a child map. `split` does.
-- Advance the task, judge it, or change the map's type. Those are `advance-task`, `task-review`, and `update`.
+- Decide how many parts the layer has; `split` does.

@@ -43,7 +43,4 @@ after:
 
 ## What this skill does not do
 
-- Decide whether the task really needs the other's output. `advance-task` finds the wait, and the person confirms a recut is worth its cost.
-- Delete, rewrite, reopen, or re-review a task. A task keeps its content and its verdict; only its parent changes.
-- Cut a layer that has no children yet: that is `split`'s.
-- Change a record's content: that is `update`'s.
+- Decide that the layer was cut wrong; `advance-task` reaches that.

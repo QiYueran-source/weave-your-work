@@ -49,8 +49,4 @@ after:
 
 ## What this skill does not do
 
-- Accept a task.
-- Find a contradiction between two children; `whole-review` does that.
-- Define the axes, the verdicts, or the shape of `## Review`; the `map` skill does.
-- Split the map or clear its fog.
-- Open a replacement for a failed map. Nothing does: a failed map is a closed subject, and a new one comes from a new decision.
+- Accept a task; that is `task-review`.

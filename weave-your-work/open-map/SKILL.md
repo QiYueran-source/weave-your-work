@@ -42,7 +42,4 @@ The map is written, and that is the whole result. `split` writes `split_as` and 
 
 ## What this skill does not do
 
-- Settle the target, or decide whether it deserves a map. `grill` settles it, and a person decides whether it is worth one.
-- Decide how many children a layer has, or what type they are. `split` decides.
-- Write a child, or clear the fog it wrote. Children come from `split`; fog is cleared by `fog-explore`.
-- Change a map that already exists. `update` does that.
+- Decide whether the target deserves a map; a person does.

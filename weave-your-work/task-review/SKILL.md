@@ -43,7 +43,4 @@ after:
 
 ## What this skill does not do
 
-- Do the work or fix it.
-- Define the axes, the verdicts, or the shape of `## Review`; the `task` skill does.
-- Review a map, or check that the ticket was designed completely.
-- Pass a task on its executor's word, or on the absence of a complaint.
+- Do the work or fix it; that is `advance-task`.

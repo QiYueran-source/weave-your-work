@@ -43,7 +43,4 @@ after:
 
 ## What this skill does not do
 
-- Create a child of its own: it hands the work to `split`.
-- Write a new fog entry. A thing that turns up while clearing either lands where it belongs or goes back to whoever opened the map.
-- Write the body of a map others rely on: a closed map, or one that has already split, takes its landing through `update`.
-- Settle a decision on a guess. A decision made on missing information is worse than fog, because it lands as settled.
+- Decide what a cleared entry becomes; `map/res/body.md` does.

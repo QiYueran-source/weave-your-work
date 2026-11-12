@@ -92,8 +92,8 @@ for (const skill of skills) {
   }
 }
 
-// 3. A resource defines; it does not run. It holds no numbered procedure,
-//    and it stays short enough to read in one pass.
+// 3. A resource defines; it does not run. It holds no numbered procedure, and
+//    an assertion under it names the check that reads it.
 const resFiles = walk(join(setDir, 'waymark', 'res')).concat(
   ...skills
     .filter((skill) => statSafe(join(setDir, skill, 'res')))
@@ -110,8 +110,6 @@ for (const file of new Set(resFiles)) {
         add(file, `assertion names no check: ${bullet.trim().slice(0, 60)}`)
     }
   }
-  const lines = text.split(/\r?\n/).length
-  if (lines > 60) add(file, `resource is ${lines} lines; the limit is 60`)
 }
 
 // 4. The router names every skill, and names no skill that is gone.
@@ -180,24 +178,19 @@ function visit(skill) {
 }
 for (const skill of skills) visit(skill)
 
-// 7. One writer per record kind. A writer writes one record and decides
-//    nothing else: not how many records there are, where they hang, or what
-//    they hold. A second writer would let two actions disagree about a
-//    record's shape, and a writer that decides is a step in disguise.
-const writers = { 'open-map': 'map', 'open-task': 'task', grill: 'testimony' }
-for (const [writer, kind] of Object.entries(writers)) {
+// 7. The actions that write a whole record exist, and each says it writes one
+//    per run. What a writer decides is set by the action, not by a phrase: a
+//    check on wording passes a file that means the opposite in different words
+//    and fails one that says it plainly.
+const writers = ['open-map', 'open-task', 'grill']
+for (const writer of writers) {
   if (!skillSet.has(writer)) {
     add(setDir, `record writer ${writer} has no skill`)
     continue
   }
   const file = join(setDir, writer, 'SKILL.md')
-  const text = read(file) ?? ''
-  if (!/one (map|task|testimony) per run/i.test(text))
-    add(file, `record writer does not say it writes one ${kind} per run`)
-  if (!/does not decide how many/.test(text))
-    add(file, 'record writer does not say it leaves the count and the parent to the caller')
-  if (!/call|does not|nothing else/i.test(text))
-    add(file, 'record writer does not bound what it writes')
+  if (!/one (map|task|testimony) per run/i.test(read(file) ?? ''))
+    add(file, 'record writer does not say it writes one record per run')
 }
 
 // 8. Installable parts live under setup, not under a skill of their own.

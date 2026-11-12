@@ -63,6 +63,4 @@ after:
 
 ## What this skill does not do
 
-- Judge the result against its acceptance signal: that is `task-review`, and a run that wrote the result is not the judge of it.
-- Change the `Action` or the `Acceptance signal`, or split the task.
-- Run several tasks at once outside a batch, which is the section above.
+- Judge the result; that is `task-review`.

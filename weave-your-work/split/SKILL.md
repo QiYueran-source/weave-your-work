@@ -47,8 +47,4 @@ after:
 
 ## What this skill does not do
 
-- Clear fog, or decide a child's content. Fog is `fog-explore`'s; the child's body is the writer's.
-- Write a child, or set a child's parent: `open-map` and `open-task` do both, for the parent passed with the call.
-- Write a child against a guess: an unsettled part waits for a later split.
-- Cut parts that read each other's output into tasks. That layer is child maps, with an edge between them, and a layer already cut wrongly is recut by `resplit`.
 - Change a map that has already split. Its content is `update`'s; recutting a task layer whose tasks wait on each other is `resplit`'s.

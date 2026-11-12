@@ -55,8 +55,4 @@ after:
 
 ## What this skill does not do
 
-- Clear a map's fog: it answers a question; `fog-explore` lands it.
-- Split a map, or create a task. It hands work off.
-- Review anything.
-- Write the decision into a map or task. The caller owns that write; the testimony keeps what was said.
-- Write a glossary entry or an ADR. It records what the discussion settled; `MAINLINE.md` says where that record is written.
+- Decide; the person does.

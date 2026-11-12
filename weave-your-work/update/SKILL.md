@@ -60,6 +60,4 @@ after:
 
 ## What this skill does not do
 
-- Change an open record with no children: that is a plain edit, and its owner does it.
-- Decide whether a map should split, or a task should exist. A layer whose tasks wait on each other is `resplit`'s, not this one's.
-- Use `outcome=failed` for a retirement. Failure is a verdict on an attempt; retirement is a verdict on a subject.
+- Decide whether the new fact is right; the owner does.
