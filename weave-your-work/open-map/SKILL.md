@@ -1,53 +1,48 @@
 ---
 name: open-map
-description: "Write one map: settle the target through a discussion, survey it once at low resolution, and write the body with its fog and exclusions. The same action writes a root map and a child map. Use when a target has no map yet, or a parent is about to split into child maps."
+description: "Write one map: turn the target it is given into a body with its fog and exclusions, and record where the target came from. The same action writes a root map and a child map. Use when a target is settled and has no map yet, or when a split is writing child maps."
 family: track
 invocation: user
 ---
 
 # Open map
 
-A map opened well is half of the work. This skill is the pass that opens one, and it produces the map the mainline then runs on. It is auxiliary: it is not a stage of the line, it is where the line gets its input.
+A map is a target written down: what the team wants, why, how someone else confirms it, and what is still unclear underneath it. This action writes one record per run; it does not decide how many maps a layer has or which type the layer is. The target it writes came in with the call, from the parent map's decision or from a grill.
 
 ## When it runs
 
-- A project has no root map. The setup flow ends with a configured project and no target; this is what makes the first one.
-- A map was retired and its sibling has to be opened. Its target differs from the one it replaces, so it is a new map, not an edit.
-- A target was settled in discussion and the map for it does not exist yet.
-- `split` decided a layer is child maps: it calls this skill once per child, with that child's part of the parent's target.
+- A project has no root map, and a target was settled in discussion. This is the first map.
+- `split` decided a layer is child maps, and calls this action once per child, with that child's part of the parent's target and the decision it came from.
+- A map was retired and its replacement has a target that differs from the one it replaces; it is a new map, not an edit.
 
-One map per run. A root map and a child map are the same record, so this one action writes both, and the only difference is the `--parent` argument. It does not decide how many children a layer has, or what they are: `split` decided that before calling it.
+One map per run. A root map and a child map are the same record, and the only difference is the parent it hangs under.
 
 ## Steps
 
-1. **Settle the target.** The answers needed are small: the outcome as a state of the world with its `Why:` line, the acceptance direction with its review point, what is already true in the project, and what the discussion ruled out. Decisions that need a person go through `grill`.
-2. **Walk the target once, using the `map` skill's fog rules.** `map/res/body.md` says what becomes a child, a fog entry, an exclusion, or a decision, and how an entry is written. This step runs that walk and no rule of its own: draft the entries, show them to the owner, keep what the owner keeps. A part the walk sends to a child is not written here; it is work for a later split.
-3. **Write the map.** `waymark create --category map --title "<the outcome, not the method>" --owner <name> --body-file <body> --dry-run`, then again without the flag. `--parent <map>` for a child map; a root map has none. The body is what the `map` skill requires, filled from steps 1 and 2. No `Review` and no `split_as`: the first split writes the type.
+1. **Take the target.** It comes from the parent map's `Decisions so far` when a split sends it, or from a `grill` when a person settles it. State it as an outcome and record where it came from; a target nobody agreed to is not this action's to invent.
+2. **Walk the target once**, by `map/res/body.md`'s walk: each part becomes a child, a fog entry, an exclusion, or a decision. What cannot be stated precisely yet becomes a fog entry; a part that needs its own record is left for `split` and is not written here.
+3. **Write the body** as `map/res/body.md` requires: `Target` with its `Why:` line, `Acceptance direction` with its `Review point:`, `Decisions so far`, `Not yet specified`, `Out of scope` when something was ruled out. No `Review`: a review writes that after the children close.
+4. **Create the record.** `waymark create --category map --title "<the outcome, not the method>" --owner <name> --parent <map> --body-file <body> --dry-run`, then again without the flag. A root map passes no `--parent`.
 
-When the target turns out to be small enough for one task, or too vague to state, write nothing: report which. Deciding that the part belongs in another record is not this run's call.
+When the target turns out to be small enough for one task, or too vague to state, write nothing: report which. Whether the part belongs in another record is not this run's call.
 
 ## Transformation
 
 ```
-before: no map for the target
+before: a settled target and no map for it
 after:
-- the map exists, status open, with no split_as and no Review
-- Target carries an outcome and a Why line
-- Acceptance direction carries a Review point
-- Not yet specified carries its entries, or the marker
-- every part of the survey became an entry, an exclusion, or a decision; none became a child
+- one map exists, hung under its parent or standing as the root
+- the body carries what map/res/body.md requires, with no Review and no split_as
+- every part of the walk became an entry, an exclusion, or a decision; none became a child
 ```
 
 ## Hands off
 
-The map is written, and that is the whole result: the action writes one record and decides nothing that comes after it. Who acts next — the person, a flow that called this action, or an automated pass that splits until nothing more can be split — is not this action's concern, and no reader of it should infer one.
-
-The one thing a caller may do with the result is close the gap into children: a part the walk reported as work becomes a child map, or a task, through the action for that record. That is the caller's call, not a step here.
+The map is written, and that is the whole result. `split` writes `split_as` and starts the map when it first splits it; the map is judged by `map-review` once its children close; a change after that is `update`.
 
 ## What this skill does not do
 
-- Decide how many children a layer has, or what type they are. `split` decides, then calls this action once per child map.
-- Write a child. A root map and a child map go through this action one at a time, never in the same pass.
-- Clear the fog it wrote.
-- Judge the map.
-- Repair a map that already exists. `update` does that.
+- Settle the target, or decide whether it deserves a map. `grill` settles it, and a person decides whether it is worth one.
+- Decide how many children a layer has, or what type they are. `split` decides.
+- Write a child, or clear the fog it wrote. Children come from `split`; fog is cleared by `fog-explore`.
+- Change a map that already exists. `update` does that.
