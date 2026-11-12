@@ -33,7 +33,7 @@ The first write of a run is preceded by one check of the tracker: `waymark valid
 4. **Write `Result`**: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` unless it carries an update invalidation marker.
 5. **Hand the result to `task-review`** when the run is the owner's; otherwise stop at `Result` and report.
 
-A question about how the work is done is not a stop: decide it and say what you decided in `Result`.
+A question about how the work is done is not a stop: decide it and say what you decided in `Result`. Whether the result meets the acceptance signal is not this skill's question; `task-review` decides that one, and the run stops at the record it wrote.
 
 ## The batch
 
@@ -63,5 +63,6 @@ after:
 
 ## What this skill does not do
 
-- Review the result, rewrite the `Action`, or split the task.
+- Judge the result against its acceptance signal: that is `task-review`, and a run that wrote the result is not the judge of it.
+- Change the `Action` or the `Acceptance signal`, or split the task.
 - Run several tasks at once outside a batch, which is the section above.
