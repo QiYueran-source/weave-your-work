@@ -14,7 +14,7 @@ A glossary keeps one name for one thing. Each operator writes only their own sou
 - A term is fuzzy, overloaded, or used two ways in one discussion.
 - A word conflicts with the glossary.
 - Someone asks what the project means by a term.
-- A discussion settles a term.
+- A discussion settles a term, and the caller reaches the checkpoint `MAINLINE.md` names for it.
 
 A discussion decides when a term has resolved. This skill decides how it is written.
 
