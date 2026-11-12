@@ -24,6 +24,12 @@ npx skills add qiyueran-source/weave-your-work -g
 
 完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。整套技能分成两层：记录格式只在各记录技能的 `res/` 下定义一次，动作按 [MAINLINE.md](weave-your-work/MAINLINE.md) 的主线组织。每条规则都是断言，并写明由哪项检查判定；索引在 [ASSERTIONS.md](weave-your-work/ASSERTIONS.md)。
 
+## 现在的评审方式
+
+一项任务或一张图按两个轴评审，每个轴各自给出判定：**目标**轴看验收信号或验收方向是否达成，**规范**轴看工作是否按规则完成。两个轴都通过，记录才能关闭，并且两个判定都保留在记录里。图的子记录由 `whole-review` 在评审图之前整组读一遍，互相矛盾的两条会被报出来，而不是各自通过。
+
+记录里的决策、评审和不做的事不会原地改写：新事实在原条目旁边补一条，不再成立的条目划掉，写上 `Superseded on <date>`，替代内容写在下面。
+
 ## 许可证
 
 [Apache License 2.0](LICENSE)。
