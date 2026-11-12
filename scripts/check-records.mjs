@@ -82,11 +82,59 @@ const VERDICTS = ['passed', 'needs changes', 'needs discussion', 'wrong directio
 const MAP_FIELDS = ['split_as']
 const TASK_FIELDS = ['task_kind', 'reversibility', 'needs_human', 'waiting_on']
 
-function firstVerdict(review) {
-  const line = review.split(/\r?\n/).find((l) => l.trim() && !l.startsWith('~~'))
-  if (!line) return null
-  const text = line.trim()
-  return VERDICTS.find((verdict) => text.startsWith(verdict)) ?? null
+// A review is a block per review: `Goal: <verdict>` and `Convention: <verdict>`,
+// each with its evidence under it. The latest block that is not struck is the
+// one that counts, and it counts only when both axes name a verdict; a block
+// that merges the axes into one line is the legacy shape and is read as before.
+const AXIS = /^(Goal|Convention):\s*(.+)$/
+
+function reviewBlocks(review) {
+  const blocks = []
+  let block = null
+  for (const line of review.split(/\r?\n/)) {
+    if (line.startsWith('~~')) continue
+    const axis = line.match(AXIS)
+    if (axis) {
+      if (!block || (block.Convention && axis[1] === 'Goal')) {
+        block = { Goal: [], Convention: [] }
+        blocks.push(block)
+      }
+      block[axis[1]].push(axis[2].trim())
+    }
+  }
+  return blocks
+}
+
+function verdictOf(value) {
+  return VERDICTS.find((verdict) => value.startsWith(verdict)) ?? null
+}
+
+// The verdict pair of the latest block, or one legacy verdict for both axes.
+function latestVerdicts(review) {
+  const blocks = reviewBlocks(review)
+  const last = blocks.at(-1)
+  if (!last) {
+    const line = review.split(/\r?\n/).find((l) => l.trim() && !l.startsWith('~~'))
+    const verdict = line ? verdictOf(line.trim()) : null
+    return { goal: verdict, convention: verdict, legacy: Boolean(verdict) }
+  }
+  const pick = (values) => values.map(verdictOf).find(Boolean) ?? null
+  return { goal: pick(last.Goal), convention: pick(last.Convention), legacy: false }
+}
+
+// What the pair does to the record: both pass, or the worse verdict decides.
+const VERDICT_RANK = ['passed', 'needs changes', 'needs discussion', 'wrong direction']
+function worseOf(pair) {
+  return VERDICT_RANK.find((verdict) => verdict === pair.goal || verdict === pair.convention) ?? null
+}
+
+// A block written before the axes were split names one verdict for both. It is
+// read as that verdict on each axis and reported once, as a note to migrate,
+// under `ASSERTIONS.md`'s "two axes into one verdict" rule.
+function mergedAxisFinding(file, review) {
+  if (reviewBlocks(review).length === 0 && latestVerdicts(review).legacy)
+    add(file, 'Review block names no Goal and Convention; the two axes are merged')
+  return latestVerdicts(review).legacy
 }
 
 function checkMap(file, fm, body) {
@@ -135,16 +183,20 @@ function checkMap(file, fm, body) {
   if (fm.status === 'closed') {
     if (!parts.Review) add(file, 'closed map has no ## Review section')
     else {
-      const verdict = firstVerdict(parts.Review)
-      if (!verdict) add(file, 'map Review has no verdict')
-      else if (verdict === 'needs changes' || verdict === 'needs discussion')
-        add(file, `closed map carries verdict "${verdict}"`)
+      const pair = latestVerdicts(parts.Review)
+      const legacy = mergedAxisFinding(file, parts.Review)
+      if (legacy) {
+        // one finding per legacy block, above; its verdict already passed when it was written
+      } else if (!pair.goal && !pair.convention) add(file, 'map Review carries no verdict')
+      else if (!pair.goal || !pair.convention) add(file, 'map Review block names a verdict on one axis only')
+      else if (pair.goal !== 'passed' || pair.convention !== 'passed')
+        add(file, `closed map closes with Goal "${pair.goal}" and Convention "${pair.convention}"`)
     }
   }
 
   if (fm.custom.outcome === 'failed' && parts.Review) {
-    const verdict = firstVerdict(parts.Review)
-    if (verdict !== 'wrong direction') add(file, 'outcome=failed without verdict "wrong direction"')
+    const pair = latestVerdicts(parts.Review)
+    if (worseOf(pair) !== 'wrong direction') add(file, 'outcome=failed without a "wrong direction" on an axis')
   }
 }
 
@@ -165,12 +217,19 @@ function checkTask(file, fm, body) {
 
   if (fm.status === 'closed' && !parts.Result) add(file, 'closed task has no ## Result section')
   if (parts.Review) {
-    const verdict = firstVerdict(parts.Review)
-    if (verdict === 'passed' && fm.custom.waiting_on) add(file, 'passed task still carries waiting_on')
+    const pair = latestVerdicts(parts.Review)
+    const legacy = mergedAxisFinding(file, parts.Review)
+    if (!legacy && !pair.goal && !pair.convention) add(file, 'task Review carries no verdict')
+    else if (!legacy && (!pair.goal || !pair.convention))
+      add(file, 'task Review block names a verdict on one axis only')
+    if (!legacy && fm.status === 'closed' && pair.goal && pair.convention && (pair.goal !== 'passed' || pair.convention !== 'passed'))
+      add(file, `closed task closes with Goal "${pair.goal}" and Convention "${pair.convention}"`)
+    if (!mergedAxisFinding(file, parts.Review) && pair.goal === 'passed' && pair.convention === 'passed' && fm.custom.waiting_on)
+      add(file, 'passed task still carries waiting_on')
   }
   if (fm.custom.outcome === 'failed' && parts.Review) {
-    const verdict = firstVerdict(parts.Review)
-    if (verdict !== 'wrong direction') add(file, 'outcome=failed without verdict "wrong direction"')
+    const pair = latestVerdicts(parts.Review)
+    if (worseOf(pair) !== 'wrong direction') add(file, 'outcome=failed without a "wrong direction" on an axis')
   }
 
   const dependencies = Array.isArray(fm.dependencies) ? fm.dependencies : []
