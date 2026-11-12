@@ -63,18 +63,20 @@ When the line needs something an auxiliary action produces, it names the state i
 
 ## Where a term and an ADR are written
 
-The discussion itself writes no glossary entry and no ADR. `grill` keeps what the person said, the terms the discussion fixed, and the decisions that a recorded ADR no longer matches, and the line writes the rest here.
+The discussion itself writes no glossary entry and no ADR. `grill` keeps what the person said, the terms the discussion fixed, and the decisions that a recorded ADR no longer matches. Everything below says what a step leaves behind worth writing; which action writes it is decided by whoever holds the context, since these are readings, not calls.
 
-| After the step | Check | Written by |
-|---|---|---|
-| `grill` returns to its caller, whichever step sent it | each term the testimony fixed; each settled decision that passes the three gates | the caller calls `glossary` or `adr` |
-| `split` has opened a layer | a decision that becomes a child's part and is hard to reverse, surprising, and a real trade-off | `split` calls `adr` before it calls the writer |
-| `open-map` or `open-task` has written a record | a word that conflicts with the glossary, or a decision that contradicts a recorded ADR | the writer hands the word or decision to its caller, which calls `glossary` or `adr` |
-| `fog-explore` lands an entry | a landed decision that passes the three gates | `fog-explore` calls `adr` after `update` has written the landing |
-| `advance-task` hands over its `Result` | a term the work coined, or a decision it made on the way | the run writes both in `Result`; `task-review` calls `glossary` or `adr` for them |
-| `update` has carried a change | a decision the change overturns | `update` calls `adr`, which supersedes the old one |
+| A step leaves behind | Where it may land |
+|---|---|
+| a discussion that fixed a term, or settled a decision the three gates pass | a glossary entry, or an ADR |
+| a split whose decision becomes a child's part, hard to reverse, surprising, and a real trade-off | an ADR |
+| a record whose word conflicts with the glossary, or whose decision contradicts a recorded ADR | a glossary entry, or an ADR that supersedes the old one |
+| a landed fog entry whose decision passes the three gates | an ADR |
+| a `Result` that coined a term or made a decision on the way | a glossary entry, or an ADR |
+| a change that overturns a recorded decision | an ADR that supersedes the old one |
 
-A checkpoint with nothing to write writes nothing, and says so in one line. The three gates are `adr/res/format.md`'s; the shape of an entry is `glossary/res/entry.md`'s.
+Most of these are written by the action that produced them, because it read the thing the gates judge on: `split`, `fog-explore`, and `update` each reach their own. `grill` and `open-map`/`open-task` do not: what they produce is a decision or a word their caller went looking for, so the caller decides whether it earned a file. `advance-task` writes the term or the decision into `Result`, and `task-review` reads that and decides.
+
+Nothing here is a call, and no step waits on one. A step that finds nothing worth writing writes nothing, and says so in one line. The three gates are `adr/res/format.md`'s; the shape of an entry is `glossary/res/entry.md`'s.
 
 ## Records and their writers
 
