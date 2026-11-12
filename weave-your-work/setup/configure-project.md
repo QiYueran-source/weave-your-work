@@ -96,7 +96,7 @@ Run `check-project.md`. Report every failure with the repair it names; do not re
 
 ## 5. Open the root map
 
-A configured project is not a working project until it has a target. Run `open-map` from the project root: it asks for the one large target, surveys it with the person, and writes the root map and its first children.
+A configured project is not a working project until it has a target. Run `open-map` from the project root: it asks for the one large target, surveys it with the person, and writes the root map. Its first children come from `split`, which calls `open-map` or `open-task` once per child; this flow does not restate those steps.
 
 A project that is not empty goes through the same pass, and its files are the scene it opens on: what already exists is recorded as settled in `Decisions so far` and `Target`, so the first split decides what continues.
 

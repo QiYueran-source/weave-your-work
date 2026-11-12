@@ -30,7 +30,7 @@ Run them in order, and do not start a later one before the earlier is written do
    - **Keep the decision** — ADRs that still bind, and the record each came from.
    - **Do not repeat** — dead ends: what was tried, why it failed, the record that shows it.
    Close with `## What was not examined`; an empty section is not allowed.
-3. **Raise the new root** with `open-map`, the same pass that opens any map. A restart adds one thing to that pass: the salvage record as the source of what is already settled, cited in the new root's `Decisions so far`, with a link and the archived root's id.
+3. **Raise the new root** with `open-map`, the same action that writes any map, root or child. A restart adds one thing to that pass: the salvage record as the source of what is already settled, cited in the new root's `Decisions so far`, with a link and the archived root's id.
 4. **Move what survives.** A subtree that is still the right shape moves with `waymark parent set <id> <new-root>`: one field, keeping content, owner, and history. Move only whole branches that still answer a question the new root asks; a branch moved because it is nearly right is the restart already failing.
 5. **Clear, then archive, bottom-up.** For every node not carried over:
 

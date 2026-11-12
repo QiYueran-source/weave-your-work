@@ -136,7 +136,21 @@ else {
   }
 }
 
-// 6. Installable parts live under setup, not under a skill of their own.
+// 6. One writer per record: the actions that write a record do not decide
+//    how many there are or call each other.
+const writers = ['open-map', 'open-task']
+for (const writer of writers) {
+  if (!skillSet.has(writer)) add(setDir, `record writer ${writer} has no skill`)
+  const text = read(join(setDir, writer, 'SKILL.md')) ?? ''
+  for (const other of writers) {
+    if (other !== writer && text.includes('`' + other + '`'))
+      add(join(setDir, writer, 'SKILL.md'), `record writer names ${other}; writers never call each other`)
+  }
+  if (!/does not decide how many/.test(text))
+    add(join(setDir, writer, 'SKILL.md'), 'record writer does not say it is one record per run')
+}
+
+// 7. Installable parts live under setup, not under a skill of their own.
 for (const skill of skills) {
   if (skill === 'setup') continue
   if (read(join(setDir, skill, 'bundle', 'setup.md'))) add(join(setDir, skill), 'carries a bundle; installs belong under setup')
