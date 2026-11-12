@@ -77,6 +77,7 @@ Three kinds of check:
 - A skill missing `family` or `invocation`, or a value outside the allowed set. `[check-references]`
 - A skill the router does not name, or a name in the router that is not a skill. `[check-references]`
 - A mainline action missing from `MAINLINE.md`. `[check-references]`
+- A record writer that does not say it writes one record per run, or that does not leave the count and the parent to its caller. `[check-references]`
 
 ## Running them
 

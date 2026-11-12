@@ -165,16 +165,24 @@ function visit(skill) {
 }
 for (const skill of skills) visit(skill)
 
-// 7. One writer per record: a record's own skill defines it, and a single
-//    action writes it. A second writer would let two actions disagree about
-//    a record's shape; the call graph above already forbids them calling
-//    each other.
-const writers = ['open-map', 'open-task', 'grill']
-for (const writer of writers) {
-  if (!skillSet.has(writer)) add(setDir, `record writer ${writer} has no skill`)
-  const text = read(join(setDir, writer, 'SKILL.md')) ?? ''
+// 7. One writer per record kind. A writer writes one record and decides
+//    nothing else: not how many records there are, where they hang, or what
+//    they hold. A second writer would let two actions disagree about a
+//    record's shape, and a writer that decides is a step in disguise.
+const writers = { 'open-map': 'map', 'open-task': 'task', grill: 'testimony' }
+for (const [writer, kind] of Object.entries(writers)) {
+  if (!skillSet.has(writer)) {
+    add(setDir, `record writer ${writer} has no skill`)
+    continue
+  }
+  const file = join(setDir, writer, 'SKILL.md')
+  const text = read(file) ?? ''
+  if (!/one (map|task|testimony) per run/i.test(text))
+    add(file, `record writer does not say it writes one ${kind} per run`)
   if (!/does not decide how many/.test(text))
-    add(join(setDir, writer, 'SKILL.md'), 'record writer does not say it is one record per run')
+    add(file, 'record writer does not say it leaves the count and the parent to the caller')
+  if (!/call|does not|nothing else/i.test(text))
+    add(file, 'record writer does not bound what it writes')
 }
 
 // 8. Installable parts live under setup, not under a skill of their own.
