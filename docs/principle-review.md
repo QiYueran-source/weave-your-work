@@ -74,3 +74,22 @@ Findings are grouped by principle. Each one gives the contradiction, the file th
 | `weave-your-work/setup/check-project.md` | the check count is left to `rules-checklist.md` |
 | `weave-your-work/setup/install.md` | same, and it no longer claims a test that does not run |
 | `weave-your-work/setup/tools/project-root-copies.test.cjs` | a test that fails when a guide claims that comparison again |
+
+## New findings from this pass
+
+The four principles were written to rule on structure the checks cannot see, and applying them turned up conflicts of their own. None is fixed here; each needs the owner's decision because either side is defensible.
+
+**A task's `Action` shape is defined twice, and the records read both ways.** `task/res/body.md` defines the `Action` section: "the result in the first sentence; a constraint that shapes the work … in that sentence too. Then the steps". `open-task/SKILL.md` step 2 repeats it and adds one clause ("A hard constraint that shapes the work — a date, a fixed budget — goes in that first sentence"). Rule one gives the definition to `task/res/body.md`. In the 82 task records, 33 `Action` sections open with "Write", 11 with "Deliver", 6 with "Add". Whether a sentence that opens with a verb states "the result" is the reviewer's call, and no check reads it either way. The duplication is the finding; the records are not broken by it.
+
+**A map's `Target` needs a `Source:` line that the record file does not state.** `scripts/check-records.mjs` fails a `Target` that does not carry exactly one `Source:` line, `ASSERTIONS.md` indexes "`Target` without its `Where it came from`", and `map/res/body.md` says only "one outcome …, then a `Why:` line". A writer reading the map resource alone cannot produce a passing map. This is the same defect as the `split_as` row above, and the fix belongs wherever the owner decides the source line lives: under rule one, a record fact belongs to the record.
+
+**`open-map` carries two rules of layout word for word.** Its `Transformation` block lists "Target carries an outcome and a Why line" and "Acceptance direction carries a Review point", which are two of `map/res/body.md`'s assertions. The `Transformation` blocks were already open under rule four; this is the one place where a block repeats a resource's assertions instead of describing the action's own end state.
+
+## The state the checks are in
+
+`npm test` passes (86 tests, 10 files), and `check-references.mjs` reports 0 findings. `npm run check:records` passes against its baseline with 213 known findings, and fails 213 times without it. Most of that count is one cause: `waymark init` does not declare `split_as`, so 55 of the 57 maps carry children and none carries a value, and a map with children and no `split_as` is a finding. The rest are old maps without a `Source:` line, fog entries written before the current shape, and tasks and maps closed without a `Review` or a `Result`.
+
+The baseline was written when the `split_as` assertion was indexed and not stated in `map/res/body.md`, so it holds a `split_as is X` row that the check no longer produces. Bringing that one record to the current shape now adds a finding the baseline does not have: `wm-qhd3twqjzhma` has five closed children, all maps, and no `split_as`, so the row above marks it for a value only after the record is repaired.
+
+Nothing in this pass changed the record findings: the count was 213 before the first edit and after the last. The repository cannot pass `check:records` without its baseline until the tracker declares the six custom fields and the old records are brought to the current shape, which is a migration, not a skill edit.
+
