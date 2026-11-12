@@ -23,7 +23,7 @@ split, fog-explore ─▶ grill    (the step that met the question cannot settle
 | `split` | turns a settled layer into child maps or tasks: it decides the type and the count, then calls `open-map` or `open-task` once per child | `advance-task` for a task, `split` for a child map |
 | `fog-explore` | clears one open fog entry | `update` for a landing in the map's body, `split` when no entry remains |
 | `advance-task` | takes one task, or a batch, to a written `Result` | `task-review` |
-| `task-review` | judges one task against its acceptance signal | the owner, or `advance-task` for a named gap |
+| `task-review` | judges one task against its acceptance signal, one verdict per axis | the owner, or `advance-task` for a named gap |
 | `whole-review` | reads a map's closed children together and reports where two of them contradict each other | `map-review` |
 | `map-review` | judges one map against its acceptance direction, one verdict per axis | the owner |
 
