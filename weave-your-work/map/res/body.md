@@ -8,12 +8,16 @@ Six sections, each a `##` heading with the English name below. A section is writ
 
 - `Target` — one outcome as a state of the world, then a `Why:` line: what it is for, or what its absence costs.
 - `Acceptance direction` — how someone other than the owner confirms it: the default `All children are complete…`, or the observable result; either way a `Review point:` line names the checkable items.
-- `Decisions so far` — one decision per bullet, in its concrete form, with its source at the end: `(user confirmed)`, `(verified in waymark 0.1.2)`, or a link to the record it came from.
+- `Decisions so far` — one decision per bullet, in its concrete form, with its source at the end: `(user confirmed)`, `(verified in waymark 0.1.2)`, or a link to the record it came from. A decision added later also carries the date it was settled.
 - `Not yet specified` — the fog, or `(none; no open fog, no known uncovered work)`.
 - `Out of scope` — one bullet per excluded item, with the reason.
 - `Review` — the verdict, then one line per axis with evidence.
 
 A body holds no list of its children: the `parent` field is the structure. A parent's body is never edited to record a new child.
+
+## When a section changes
+
+`Decisions so far`, `Review`, and `Out of scope` follow one rule. A new fact **adds** an entry beside the old one, with its date and its source, when the old one still holds; it **strikes** the old one where it stands, with `Superseded on <date>: <why>` on the line below and the replacement under that, when it does not. An entry present at creation takes the record's `created_at`; later writes carry their own date. Strike only the part that is overturned and keep the rest. Archive is for a whole record, never for an entry inside one.
 
 ## Fog
 
