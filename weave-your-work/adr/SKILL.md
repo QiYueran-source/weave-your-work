@@ -1,72 +1,32 @@
 ---
 name: adr
-description: >-
-  Record a decision as an ADR when it is hard to reverse, surprising without
-  context, and the result of a real trade-off: write the next numbered file,
-  link it to its ticket, and supersede an older record without deleting it.
+description: "Record a decision as an ADR when it is hard to reverse, surprising without context, and the result of a real trade-off: write the next numbered file, link it to its record, and supersede an older one without deleting it. Use when a discussion settles a decision that passes the three gates."
+family: method
+invocation: model
 ---
 
 # ADR
 
-An ADR records a decision a future reader cannot reconstruct from the repository: what was decided, and why. It is not a design document and not a meeting note. It earns its place only when the decision will still surprise someone later.
+An ADR records a decision a future reader cannot reconstruct from the records around it: what was decided, and why. It earns its place only when the decision will still surprise someone later.
 
-## The three gates
+The three gates and the file format are `res/format.md`. This skill applies them.
 
-Write an ADR only when all three hold:
+## When it runs
 
-1. **Hard to reverse.** Changing your mind later costs something meaningful.
-2. **Surprising without context.** A future reader will wonder why it was done this way.
-3. **A real trade-off.** There were alternatives, and one was chosen for specific reasons.
+A decision is settled — by a discussion, by a split, or by `update` changing one — and it reaches the checkpoint `MAINLINE.md` names for it, where the action holding that decision decides whether it earned a file. The table is `MAINLINE.md`'s list of what a step leaves behind; it is not a call anybody makes. Ask the three gates in order: hard to reverse, surprising without context, a real trade-off. If any fails, write nothing: the decision stays in the map's `Decisions so far`.
 
-If any gate fails, skip the ADR. The decision stays in the ticket's `Decisions so far`. A decision that is easy to reverse will be reversed; one that is not surprising needs no explanation; one with no alternative has nothing to explain.
+## Steps
 
-## What qualifies
+1. **Judge the gates.** Say which one carried it, in one line, when you write.
+2. **Number it.** Read the highest number in `docs/adr/` and add one. Create the directory only with the first ADR.
+3. **Write the file**: a title and one paragraph — what was decided and why, with whatever context the reason needs. The three optional sections only when they add something a reader cannot infer.
+4. **Link back** to the record that owns the decision, by id, and to the testimony when there is one.
+5. **Supersede, never edit.** A new ADR names the old one; the old one gets `## Status` with `Superseded by ADR-NNNN.`; the old file keeps its number.
 
-The gates are abstract; these are the common shapes of a decision that passes them. The list helps a reader recognize one; it is not a checklist.
+One new file sits under `docs/adr/`, and `adr/res/format.md` says what it holds.
 
-- **Where a document lives.** A kind of material gets its own root, or a generated file stops being the source.
-- **What counts as a record.** A record type, its category, owner, status, and body.
-- **How work moves.** A hand-off rule, a review gate, or when a record is written.
-- **Who owns what.** Which skill or role decides, which one only records it, and what may parent what.
+## What this skill does not do
 
-## The file
-
-`docs/adr/NNNN-slug.md`
-
-`NNNN` is the next number: read the highest number in `docs/adr/` and add one. `slug` is a short kebab-case name for the decision. Create `docs/adr/` only when the first ADR is needed.
-
-The record is a title and one paragraph: what was decided and why, including whatever context the reason needs.
-
-```md
-# Usage-based pricing for the API
-
-The API is priced per request rather than per seat because most customers call it from their own product, where seats do not map to usage. A flat subscription would make the price unpredictable for the smallest customers and unprofitable for the largest.
-```
-
-A paragraph is enough. The value is in recording that the decision was made and why.
-
-Three sections are optional, and only when they add something a reader cannot infer:
-
-- `## Status` — `proposed`, `accepted`, `deprecated`, or `superseded by ADR-NNNN`.
-- `## Considered Options` — the alternatives that lost, when their rejection is not obvious.
-- `## Consequences` — downstream effects that are not obvious from the decision.
-
-## Superseding a record
-
-Do not edit the old decision into the new one. Write a new ADR and leave the old file in place:
-
-1. The new record names the old one: `Supersedes ADR-0003.`
-2. The old record gets `## Status` with `Superseded by ADR-0007.`
-3. The old file keeps its number. A number is a position in history, not a version.
-
-When only part of the old record is superseded, name the part in both records and say the rest still stands.
-
-## Linking back
-
-Name the ticket that owns the decision, by id. When a testimony exists, link it next to the decision. The record says why; the ticket says who asked and what was settled around it.
-
-## What it does not do
-
-- Make or recommend a decision. The owner decides; this skill writes it down.
-- Write the ticket or the testimony.
+- Make or recommend the decision. The owner decides; this skill writes it down.
+- Write the map, the task, or the testimony.
 - Record a decision that fails a gate.

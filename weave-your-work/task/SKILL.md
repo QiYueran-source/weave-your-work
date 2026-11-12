@@ -1,27 +1,28 @@
 ---
 name: task
-description: "Start here for task work: write a task ticket, advance one task, run a batch under a map, or review a finished one, and open the skill that owns the question."
+description: "The reference for a task record: the sections a body may hold, the delivery and probe kinds, and the two review axes. Read it before writing, advancing, or judging a task."
+family: track
+invocation: model
 ---
 
 # Task
 
-A task is the finest node of the target tree: one action that ends at a result someone can check. This file is the entry to the task skills. It routes; it does not define the task body, the execution steps, or the review. `usage.md` gives the reading path; `bundle/setup.md` installs the work-record rule. Once installed, `.agents/rules/rules-task.md` governs when task work must be recorded.
+A task is the finest node of the target tree: one action that ends at a result someone can check. This skill is the reference for the record; the actions that write it are `split` and `advance-task`, and the review is `task-review`.
 
-## Which skill
+Read it before writing a task, advancing one, or judging one. It defines; it does not run.
 
-- Writing a task ticket: `task-design` holds the sections, the two kinds, and the fields.
-- Advancing one task: `execute-one-task` holds the run, its stops, and what it writes.
-- Advancing every task under a map: `execute-all` holds the batch, the dispatch, and the reports.
-- Judging a finished task: `task-review` holds the axes, the verdicts, and the close.
+## What is here
 
-Two adjacent skills own what this entry does not:
+| File | Defines |
+|---|---|
+| `res/body.md` | the sections a body may hold, and the size rule |
+| `res/kind.md` | `delivery` and `probe`, and what failure means for each |
+| `res/review.md` | the two review axes, the four verdicts, and the `## Review` shape |
 
-- `update` changes a task that is already closed, or a map that has already split.
-- `split` decides whether a piece of work is a task or a child map.
+The field rules are `waymark/res/fields.md`; where a task sits, and what it may never carry, are `waymark/res/relations.md`.
 
-## What this entry does not do
+## What this skill does not do
 
-- It does not write the ticket. That is `task-design`.
-- It does not advance the work. That is `execute-one-task` or `execute-all`.
-- It does not judge the result. That is `task-review`.
-- It does not decide that the work is a task. That is `split`.
+- Write a task. `split` does, reading this skill's files.
+- Advance or judge one. Those are `advance-task` and `task-review`.
+- Define a field. `waymark` does.

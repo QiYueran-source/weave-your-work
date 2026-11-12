@@ -1,0 +1,56 @@
+---
+name: advance-task
+description: "Advance one task to its end, or every ready task under a map as a batch, and stop only where something blocks it. Use when a person asks to work a task, to run a batch, or to continue what a previous run left in Progress."
+family: track
+invocation: model
+---
+
+# Advance task
+
+Take a task from unclaimed to handed over, and keep working until it is done. The run stops only where something blocks it. This skill covers one task and a batch; the difference is how many are claimed at once and who judges each result.
+
+## Before the work
+
+Read the ticket: `Action`, `Acceptance signal`, `Boundaries`, `waiting_on`, and the front matter — `task_kind`, `reversibility`, `needs_human`. Read `## Review` too when it is there, and the map above it: its `Target` says why the task matters, its `Acceptance direction` says what the branch is for.
+
+Stop and hand the ticket back, without writing, when any of these is true:
+
+- the ticket is `closed`;
+- `parent` is not a map, or the ticket carries a `dependencies` block;
+- a section the kind requires is missing (`Failure recovery` for a `one_way` delivery, `Next step` for a probe), or `needs_human` disagrees with the `Person:` steps;
+- `waiting_on` is set;
+- `## Review`'s latest block says `needs discussion`, or `passed` on both axes, unless `Progress` records that `update` invalidated that block.
+
+A required input the task needs is missing or unusable: leave the status unchanged, record the missing input in `Progress`, and tell the owner. When the missing input is a sibling task's output, this layer needs a clearer split: say so, name the task that waits and the task it waits on, and hand the map to `resplit`, which turns the wait into a dependency edge between two child maps. A task never waits on another task, and `waiting_on` stays for a person.
+
+The first write of a run is preceded by one check of the tracker: `waymark validate --json` is healthy. Run it once per session, not once per write.
+
+## Steps
+
+1. **Claim.** `waymark start <id>`.
+2. **Say one line**: where you are starting and what the first step is.
+3. **Do the work** in the order `Action` gives, or in any order when it is prose. Do not stop between steps.
+4. **Write `Result`**: for a delivery, where the deliverable is, how to open it, and what a person handed back; for a probe, the finding and the verdict. Remove `Progress` unless it carries an update invalidation marker. No section the designer wrote changes.
+5. **Hand the result to `task-review`** when the run is the owner's; otherwise stop at `Result` and report.
+
+A question about how the work is done is not a stop: decide it and say what you decided in `Result`. Whether the result meets the acceptance signal is not this skill's question; `task-review` decides that one, and the run stops at the record it wrote.
+
+## The batch
+
+A batch is the tasks under one map that the run's owner owns, `open` or `in_progress`, with no `waiting_on`, no `needs_human`, and their inputs available. A task that needs a sibling's output is not a batch case: the layer needs a clearer split, and the map goes to `resplit`.
+
+- Claim every chosen task with `waymark start` before any of them goes out.
+- Send each to its own worker with the same preflight this skill opens with; the worker stops at `Result`.
+- Commit one task at a time, staged from the file list the worker reports. Read the collision list before dispatch: two tasks that edit one file do not run together.
+- The main agent reviews each result; a worker does not close a task.
+
+The task has a `Result`, and `task/res/body.md` says what the ticket holds; no section the designer wrote changed.
+
+## Hands off
+
+- `task-review` for the verdict.
+- The owner, for a task that no longer holds, and for a stop that is not a person wait.
+
+## What this skill does not do
+
+- Judge the result; that is `task-review`.

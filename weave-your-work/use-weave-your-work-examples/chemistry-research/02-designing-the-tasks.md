@@ -1,6 +1,6 @@
 # Designing the tasks
 
-The entry [task/SKILL.md](../../task/SKILL.md) routes by the question a reader has. Writing a ticket goes to `task-design`; advancing one goes to `execute-one-task`; a batch goes to `execute-all`; judging a finished one goes to `task-review`. The scenario used the entry four times, once per question, and the routing held.
+The scenario treated the task work as three steps: writing a ticket, advancing one, and judging a finished one. In the set of that date the entry `task/SKILL.md` routed by the question a reader had; in the current set the record is defined by [task](../../../task/SKILL.md), written by `split`, advanced by `advance-task`, and judged by `task-review`.
 
 ## Two kinds
 

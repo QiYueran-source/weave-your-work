@@ -7,8 +7,10 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-06T09:24:08Z
-updated_at: 2026-11-09T02:54:20Z
+updated_at: 2026-11-12T12:13:56Z
 parent: wm-wjwa9081hse1
+custom_fields:
+  split_as: submap
 ---
 ## Target
 

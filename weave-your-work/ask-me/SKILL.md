@@ -1,60 +1,61 @@
 ---
 name: ask-me
-description: "Pick the skill that fits the situation in front of you: a route from a target to its checked result, the branch points that interrupt it, and every other skill named where its owner is. Use when a person does not know which skill to use now."
+description: "Pick the skill that fits the situation in front of you: the mainline a project runs on, the auxiliary actions, the records, and the branch points. Use when a person does not know which skill to use now."
+family: none
+invocation: user
 ---
 
 # Ask me
 
-You do not remember every skill, so ask. This file names the one to open next. It invokes nothing, reads no ticket, and writes nothing; open the skill it names and let that skill run.
+You do not remember every skill, so ask. This file names the one to open next. It invokes nothing, reads no record, and writes nothing; open the skill it names and let it run.
 
-It answers one question: which skill fits the situation in front of me. Whether the work is going well is a different question, and `wait-what` is what answers it.
+Before saying what a skill does, read its `SKILL.md`. The summaries here are for orientation.
 
-## The route
+## The mainline
 
-Two steps, in order. Each step is a family entry: open it, and it routes inside its own family.
+The route a project travels from a settled map to a closed one, in order.
 
-1. **`map`** — what is wanted, and when it counts as done. Its own skills are `map-review`, `fog-explore`, and `split`.
-2. **`task`** — the one action that produces a result someone can check. Its own skills are `task-design`, `execute-one-task`, `execute-all`, and `task-review`.
+1. **`open-map`** when a target is settled and has no map: it writes the map with its fog and exclusions. A project's first map is opened by the flow that configures the project.
+2. **`fog-explore`** while the map carries entries the next layer cannot be written without. A decision inside one goes through **`grill`**.
+3. **`split`** to turn a settled layer into child maps or tasks. It does not write them: it calls `open-map` once per child map, or `open-task` once per task.
+4. **`advance-task`** to take one task, or a batch, to a written `Result`.
+5. **`task-review`** to judge a finished task against its acceptance signal.
+6. **`map-review`** to accept the map or send it back.
 
-A finished child is judged by its own family — `task-review` for a task, `map-review` for a map — and both are reached through the entry that owns them.
+**`whole-review`** is not a step of the route: a person runs it when a map's children are worth reading as a set, before or instead of judging the map.
 
-## Beside every step: `grill`
-
-A discussion can be needed at any point, so `grill` is not a step on the route: something is still fuzzy — a term, a decision, an assumption nobody tested — and the discussion is what settles it. It is reachable from every step.
-
-It writes the testimony, and it hands off the terms and decisions to the branches that own them, `glossary` and `adr`.
+A child map re-enters at `split`; closing runs bottom-up. A record that turns out wrong is changed through **`update`**, not rewritten. A layer cut into tasks where one task needs another's output is recut by **`resplit`**: the wait becomes a dependency edge between child maps.
 
 ## Branch points
 
-Each one opens on a state, not on a position in the route. When the state matches, open the branch; when it does not, stay on the route.
+Each opens on a state, not on a position in the route.
 
-- **`setup`** — the project is not configured yet. Nothing else runs before this does.
-- **`fog-explore`** — a map still holds fog it has not cleared.
-- **`split`** — a layer is settled and its children do not exist yet.
-- **`update`** — a node other tickets already rely on has to change, so editing it in place stops being enough.
-- **`handoff`** — the session ends and the work continues in another one.
+- **`setup`** when the project is not configured: it takes an empty directory to a working one, or fills in what a clone cannot carry.
+- **`update`** when a closed record, or a map that has already split, has to change.
+- **`issue`** when a decision or an ask has to reach another owner, or when the queue holds a message.
+- **`resplit`** when a task cannot start because a sibling task has not finished.
+- **`wait-what`** when the person lost the thread; **`handoff`** when the work continues in another session.
+- **`stop-and-wait`** when a person asks whether the whole project is still consistent; **`salvage-and-restart`** when the tree no longer describes the work.
 
 ## The records
 
-Three skills write what the route produces and leave the route where it is.
+Reached from the action that writes them, and named here so they can be found.
 
-- **`glossary`** — one name for one thing: look a term up, or sharpen a fuzzy one.
-- **`adr`** — a decision a future reader cannot reconstruct from the repository.
-- **`issue`** — a message to another owner on GitHub, and the decision it brings back.
+- **`waymark`**: what every record shares: the fields, the relations, the categories, and the change dispositions.
+- **`map`** and **`task`**: the record definitions, for the map and the task bodies and their reviews.
+- **`open-map`** and **`open-task`**: the actions that write one record of each kind. A root map, a child map, and a task written outside a split all go through them.
+- **`grill`**: the discussion that settles decisions, and the testimony it writes; the terms and decisions it settles are written by whoever called it.
+- **`adr`**: a decision a future reader cannot reconstruct.
+- **`glossary`**: one name for one thing.
+
+`MAINLINE.md` says at which step of the route a term or a gated decision is written, and which action writes it there.
 
 ## Standalone
 
-Opened for their own sake, on no route.
-
-- **`wait-what`** — where the work stands, read off the tickets into one short table.
-- **`stop-and-wait`** — read the whole project and report where two targets, a promise and its artifact, or two rules disagree.
-- **`salvage-and-restart`** — the tree no longer describes the work: write down what is still usable and start again.
-- **`feedback-me-please`** — a skill bug or a good experience goes upstream.
-- **`use-weave-your-work-examples`** — two worked examples, for when a skill's rules are too abstract to act on.
+Opened for their own sake, on no route: **`feedback-me-please`** sends a skill bug upstream, and **`use-weave-your-work-examples`** holds two worked examples.
 
 ## What this does not do
 
-- It does not invoke a skill. The person opens the one it names.
-- It does not read the tickets. What the person said is the whole input; `wait-what` is what reads state.
-- It does not restate a rule. Each skill owns its own, and this file only says which one.
-- It does not run a discussion. That is `grill`.
+- Invoke a skill. The person opens the one it names.
+- Read the records. `wait-what` does that.
+- Restate a rule. Each skill owns its own, and this file only says which one.

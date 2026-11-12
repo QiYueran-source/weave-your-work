@@ -10,8 +10,11 @@
   },
   "scripts": {
     "changeset": "changeset",
-    "test": "node scripts/test.mjs",
-    "version": "changeset version"
+    "test": "node scripts/check-dev-deps.mjs . && node scripts/test.mjs",
+    "check:set": "node scripts/check-references.mjs .",
+    "check:records": "node scripts/check-records.mjs . --baseline scripts/check-records-baseline.json",
+    "version": "changeset version",
+    "check:dev-deps": "node scripts/check-dev-deps.mjs ."
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.7.0",

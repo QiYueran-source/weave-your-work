@@ -1,70 +1,44 @@
 ---
 name: glossary
-description: >-
-  Keep one vocabulary for the project: look up a term, sharpen a fuzzy word into
-  a canonical one, and write it to your own JSONL source so the generated
-  GLOSSARY.md view stays whole.
+description: "Keep one vocabulary for the project: look a term up, sharpen a fuzzy word into a canonical one, and write it to your own source file so the generated view stays whole. Use when a term is fuzzy or overloaded, when a word conflicts with the glossary, or when a discussion settles a term."
+family: method
+invocation: model
 ---
 
 # Glossary
 
 A glossary keeps one name for one thing. Each operator writes only their own source file; the readable view is generated from all of them, so no two people edit the same file.
 
-## When to use it
+## When it runs
 
 - A term is fuzzy, overloaded, or used two ways in one discussion.
 - A word conflicts with the glossary.
 - Someone asks what the project means by a term.
-- A grill settles a term.
+- A discussion settles a term, and it reaches the checkpoint `MAINLINE.md` names for it. Whoever holds that term writes the entry; the table is a list of what a step leaves behind, not a call.
 
-A grill decides when a term has resolved. This skill decides how it is written.
+A discussion decides when a term has resolved. This skill decides how it is written.
 
 ## The four moves
 
 1. **Challenge the term against the glossary.** If the word in use conflicts with the recorded meaning, say so and ask which one is meant.
 2. **Sharpen fuzzy language.** When a word covers two things, propose the precise term for each and pick one as canonical.
 3. **Test the boundary with a concrete scenario.** Invent a case at the edge of the definition; if the term cannot decide the case, it is not sharp enough.
-4. **Check the project's actual behavior, not just the word.** Read the ticket, the process, or the output. If the recorded definition and what the project does disagree, say so and fix one of them; searching for the word is not enough.
+4. **Check the project's actual behavior, not just the word.** Read the record, the process, or the output. If the definition and what the project does disagree, say so and fix one of them.
 
-## Writing a term
+## Writing it
 
-Write one JSONL line to your own source with `glossary_write`:
+Write one line to your own source with `glossary_write`, in the shape `res/entry.md` defines. Write it the moment it resolves, one term at a time; do not batch a discussion's terms into one write at the end.
 
-```json
-{"term":"map","definition":"A target node that answers what is wanted.","avoid":["goal","project"],"group":"target tree","created_at":"2026-11-08T10:00:00Z","updated_at":"2026-11-08T10:00:00Z"}
-```
+Never write to another operator's file, and never edit `GLOSSARY.md` by hand: the next merge overwrites it.
 
-- `term` is the canonical name.
-- `definition` says what it is, in one or two sentences.
-- `avoid` lists the words that mean the same thing but should not be used.
-- `group` is optional; use it when terms cluster.
-- `created_at` and `updated_at` are ISO 8601 timestamps.
+## The tools
 
-Write the term the moment it resolves, one term at a time. Do not batch a discussion's terms into one write at the end.
+The MCP server and the CLI live in the project runtime at `.work-weave/runtime/glossary/`, installed by `setup`. Use `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge` when they are running; use the CLI when they are not.
 
-The source is `.work-weave/glossary/<operator>.jsonl`. Never write to another operator's file.
+One line is in the operator's own source file, in the shape `glossary/res/entry.md` defines.
 
-## Reading a term
+## What this skill does not do
 
-`glossary_lookup` returns one term with its definition, avoid list, group, and source. `glossary_list` returns the terms. Read the generated view when you need the whole vocabulary at once.
-
-## Running the tools
-
-The MCP server and the CLI live in the project runtime at `.work-weave/runtime/glossary/`. `bundle/setup.md` copies the tools there and installs their dependencies; `usage.md` has the CLI commands, the stdio config shape, and troubleshooting. Read it when the tools are not running or when you need the CLI instead of the MCP.
-
-## The generated view
-
-`GLOSSARY.md` at the project root is generated from `.work-weave/glossary/*.jsonl`. Never edit it by hand; the next merge overwrites it. Rebuild it with `glossary_merge`, or let the post-merge hook do it after a pull.
-
-The merge reads every source, keeps the latest `updated_at` for each term, and writes the view with a `_Source_` line per term. Same-name conflicts are not resolved in this version.
-
-## The rules file
-
-The rule at `bundle/rules/rules-glossary.md` carries the writing constraints and is installed under `.agents/rules/rules-glossary.md` by setup. Read it before writing a term; it holds the conventions this file does not repeat.
-
-## What it does not do
-
-- Record decisions. That is the `adr` skill.
-- Record a discussion. That is the grill's testimony.
-- Resolve a same-name conflict.
-- Edit another operator's source or `GLOSSARY.md` by hand.
+- Record decisions. That is `adr`.
+- Record a discussion. That is `grill`.
+- Resolve a same-name conflict between two sources.

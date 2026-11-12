@@ -1,46 +1,50 @@
 ---
 name: grill
-description: >-
-  Grill a plan, decision, or idea until it is clear: ask the questions that can
-  be answered now, record the answers in the testimony, write resolved terms
-  and ADRs through their skills, and hand off the work the discussion produces.
+description: "Grill a plan, decision, or idea until it is clear: ask the questions that can be answered now, record the answers in a testimony, and name the terms and decisions the caller still has to write down. Use when a plan is still fuzzy, or when another skill reaches a decision it cannot settle alone."
+family: method
+invocation: model
 ---
 
 # Grill
 
-Grill is a discussion that ends with a shared understanding and a written record. It asks the questions the person has not answered, waits for the answers, and moves outward as the answers settle.
+A discussion that ends with a shared understanding and a written record. It asks the questions a person has not answered, waits for the answers, and moves outward as the answers settle. One testimony per run: this action writes it and does not decide how many discussions there are; the caller asked for this one.
 
 Use it when a plan, decision, or idea is still fuzzy, or when `fog-explore`, `split`, `map-review`, or `task-review` reaches a decision it cannot settle alone.
 
 ## Before the first question
 
-Name the subject in one sentence: what is being decided. Create the testimony item for this grill, link it to the discussion's work item when there is one, and open `testimony.md` for what it holds.
+Name the subject in one sentence: what is being decided. Create the testimony with `waymark create --category testimony`, link it to the record the discussion serves, and keep its body to `res/testimony.md`.
 
-Read `how-to-grill.md` before the first round. It defines the question tree, the askable set, the fact rule, and the hand-off.
+Ask in the project's vocabulary: use the words `GLOSSARY.md` defines, and stay inside decisions `docs/adr/` already records. When the discussion needs a word the glossary does not have, or would overturn a recorded decision, say so in that round's testimony and leave the write to whoever asked for the discussion; this action adds no glossary entry and no ADR.
 
-## What the grill writes
+## The rounds
 
-The grill has three record branches and a work hand-off. Testimony is a reference file in this skill; glossary and ADR are independent skills.
+Think of the discussion as a tree of questions, where a child is a narrower part of its parent. Work it in rounds.
 
-- **Testimony**: the record of this grill. `testimony.md` holds the item and body rules. Append what the person said after each round.
-- **Map and task decisions**: as a decision settles, write it into the owning map or task during the discussion. The caller owns that ticket write; testimony preserves what was said, while the ticket carries the current decision.
-- **Glossary terms**: when a term resolves, write it through the `glossary` skill.
-- **ADRs**: when a decision may pass the ADR skill's gates, call the `adr` skill; it decides and writes the record.
-- **Work**: when a question becomes work, write `work: <what>` in the testimony and hand it to the caller. The caller creates the map or task; the grill does not.
+- **The frontier** is every question whose prerequisites are already settled: what can be asked now without guessing at answers not yet heard.
+- **Ask the whole frontier in one round.** Number each question and give your recommended answer, worded so that "yes" accepts it.
+- **Then wait** for the answers before the next round. A question whose answer depends on another question open in this round belongs to a later round.
+- **Facts are your job, not the person's.** Look it up in the repository, the documents, or online; ask a person only for what only a person knows. A running lookup is an unsettled prerequisite, so only the questions downstream of it wait.
 
-Before a project-design grill, the caller finds or creates its map. A standalone grill that is pure consultation needs no work ticket. When a grill settles a project target or produces work, return the owning ticket for each decision or work hand-off; do not leave it only in testimony or chat.
+Done when the frontier is empty: every branch visited, nothing left silently assumed, and the person confirms the shared understanding.
+
+## What the discussion writes
+
+Everything this action writes goes into the testimony, as each round happens and not batched to the end:
+
+- **The rounds**: the questions, the recommended answers, and what the person said.
+- **The settled decisions**, with the alternative that lost, for the caller to write into the map or task the discussion serves.
+- **The terms** the discussion fixed and will not change again, and the decisions that a recorded ADR no longer matches.
+- **Work**: a question that becomes work is written as `work: <what>` for the caller, which opens the record.
+
+The caller writes the records these become, and the caller decides whether a term or a decision is worth a `glossary` entry or an ADR: `MAINLINE.md` lists what a step leaves behind, and the testimony keeps what was said and what it named.
 
 ## The output contract
 
-At the end, name the decisions and facts that are clear, the testimony path, the terms and ADRs written, and the work handed off. A caller that asked a specific question gets the answer first.
+At the end, name the decisions and facts that are clear, the terms the testimony fixed, the work handed off, and anything that will need an ADR. A caller that asked a specific question gets the answer first.
 
-## Finish
+The testimony exists, and `grill/res/testimony.md` says what it holds.
 
-Close the testimony when the askable set is empty and the user confirms the shared understanding. Tickets cite it after it closes.
+## What this skill does not do
 
-## What it does not do
-
-- Clear a map's fog. `fog-explore` does that.
-- Split a map or create tasks. The split skill does that; the grill hands work off.
-- Review a map or a task.
-- Write a work ticket or an issue.
+- Decide; the person does.

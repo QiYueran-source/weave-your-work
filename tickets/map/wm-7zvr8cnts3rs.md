@@ -7,11 +7,13 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-06T16:48:15Z
-updated_at: 2026-11-09T00:22:03Z
+updated_at: 2026-11-12T12:14:04Z
 closed_at: 2026-11-09T00:22:03Z
 parent: wm-qhd3twqjzhma
 soft_links:
   - wm-25b3q7mg88c7
+custom_fields:
+  split_as: submap
 ---
 ## Target
 

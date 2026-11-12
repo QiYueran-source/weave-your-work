@@ -1,4 +1,0 @@
-schema_version: "1.1"
-name: zh-error-messages
-expected_outcome: |
-  每条报错说清出了什么问题、下一步怎么办，带上具体的值，不道歉。

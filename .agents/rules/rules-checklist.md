@@ -7,7 +7,7 @@ Run these checks at the start of a session, and run every one of them when a fea
 Run the setup skill's check script from the project root:
 
 ```sh
-node <setup-skill>/bundle/tools/check-setup.mjs --starred
+node <setup-skill>/tools/check-setup.mjs --starred
 ```
 
 `--starred` runs the ten checks a session start covers. Use `--all` when something you expect to work does not. The script prints `ok`, `fail`, `not applicable`, or `unverified` for each check, and exits 1 when a check fails; on a failure it prints the repair. It reads state and repairs nothing.
@@ -19,7 +19,7 @@ node <setup-skill>/bundle/tools/check-setup.mjs --starred
 1. At session start, run the starred checks.
 2. When a feature you expect to work does not, run all seventeen.
 3. Report the failing check and its repair. Do not run the repair, edit a config, or install anything. Repairing the setup is the person's decision.
-4. Mark a check not applicable only where it says so. A missing remote covers 9 and 16; a plan without server protection covers 9; a platform without a bundled service covers 16. Never mark a check passed without running it.
+4. Mark a check not applicable only where it says so. A missing remote covers 8 and 16; a plan without server protection covers 9; a platform without a service covers 16. Never mark a check passed without running it.
 
 ## The checks
 
@@ -31,7 +31,7 @@ The starred checks are 1, 2, 3, 4, 6, 7, 10, 12, 13, and 14.
 2. **Waymark is installed and recent.** * `waymark --version` prints `waymark 0.1.2` or newer on stdout. The binary can also write a linker warning to stderr; read stdout. Repair: install waymark 0.1.2 or newer.
 3. **Node and npm clear the floor.** * Node is 22.20.0 or newer and `npm --version` prints a version. Compare the numbers, not the strings. Repair: install Node 22.20 or newer with its bundled npm.
 4. **The GitHub CLI is signed in.** * `gh auth status` exits 0 and names a logged-in account. Repair: `gh auth login`.
-5. **curl is available.** `curl --version` prints a version. The issue bundle creates its smee channel with curl; nothing else uses it. Repair: install curl.
+5. **curl is available.** `curl --version` prints a version. The issue listener creates its smee channel with curl; nothing else uses it. Repair: install curl.
 
 ### Repository
 
@@ -47,12 +47,12 @@ The starred checks are 1, 2, 3, 4, 6, 7, 10, 12, 13, and 14.
 
 ### Skills and rules
 
-12. **Every installed skill is still there.** * For every directory named `skills` within three levels (skipping `.git` and `node_modules`) and for `~/.agents/skills` (`%USERPROFILE%\.agents\skills` on Windows), each `<name>/SKILL.md` is present; each project root's tracked skills have `missing: none`, the root has no tracked skills yet, or the root repeats skills already reached through another root. The five skills the setup flow calls — `setup`, `map`, `task`, `glossary`, and `issue` — appear in at least one root. A skill source checkout (`weave-your-work/` and `skills.sh.json`) skips the required set. Repair: reinstall the missing skills.
-13. **Every bundle's rules are registered.** * For every `<root>/<skill>/bundle/rules/*.md` in the project and global installs, `.agents/rules/<name>` exists and matches byte for byte. Repair: run the bundle setup that owns the missing rule.
+12. **Every installed skill is still there.** * For every directory named `skills` within three levels (skipping `.git` and `node_modules`) and for `~/.agents/skills` (`%USERPROFILE%\.agents\skills` on Windows), each `<name>/SKILL.md` is present; each project root's tracked skills have `missing: none`, the root has no tracked skills yet, or the root repeats skills already reached through another root. The six skills the setup flow calls — `setup`, `waymark`, `map`, `task`, `glossary`, and `issue` — appear in at least one root. A skill source checkout (`weave-your-work/` and `skills.sh.json`) skips the required set. Repair: reinstall the missing skills.
+13. **Every setup rule is registered.** * For `<root>/setup/rules/*.md` in the project and global installs, `.agents/rules/<name>` exists and matches byte for byte. Repair: run the setup install that copies the missing rule.
 14. **AGENTS.md points at the rules.** * `AGENTS.md` contains a line with `Follow .agents/rules`. Repair: write the prompt at the top of the file.
 
 ### Registered tools
 
-15. **The glossary MCP server answers.** It lists four tools: `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. Repair: run the glossary bundle setup and start its server from the project runtime.
+15. **The glossary MCP server answers.** It lists four tools: `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. Repair: run the glossary install in setup and start its server from the project runtime.
 16. **The listener runs and the webhook reaches it.** On Linux, the generated unit is active, its `WorkingDirectory` is this project root, and the repository webhook URL matches the `SMEE_URL` in `.work-weave/local/issue-listener.env`. `active` alone does not say which checkout the service serves. A 404 on the hooks read is not a failure by itself: read `permissions.admin` first; `false` means unverified. On macOS and Windows there is no bundled service: the check is not applicable, and the alternative is to run the listener in a terminal while you work; a launch agent or scheduled task is the person's to write. Repair: start the listener for this checkout.
 17. **The queue and the build output are ignored.** `git check-ignore` prints all three paths: `node_modules/`, `GLOSSARY.md`, and `.work-weave/pending/pending-communications.md`. Count the printed paths, not the exit code: `git check-ignore` exits 0 when any one matches. Repair: add the three ignore rules.

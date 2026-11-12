@@ -25,12 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install bundle dependencies
+      - name: Install tool dependencies
         run: |
-          npm ci --prefix weave-your-work/glossary/bundle/tools
-          npm ci --prefix weave-your-work/issue/bundle/tools
+          npm ci --prefix weave-your-work/setup/tools/glossary
+          npm ci --prefix weave-your-work/setup/tools/issue
 
-      - name: Run the bundle tests
+      - name: Run the tool tests
         run: npm test
 
       - name: Install the skill set
@@ -42,3 +42,9 @@ jobs:
 
       - name: Check what the install produced
         run: node scripts/check-skills.mjs . "$RUNNER_TEMP/skills.json"
+
+      - name: Check the set's structure
+        run: node scripts/check-references.mjs .
+
+      - name: Check the records against their assertions
+        run: node scripts/check-records.mjs . --baseline scripts/check-records-baseline.json
