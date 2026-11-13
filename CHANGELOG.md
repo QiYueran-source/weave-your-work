@@ -1,5 +1,40 @@
 # weave-your-work
 
+## 1.0.1
+
+### Patch Changes
+
+- [#27](https://github.com/QiYueran-source/weave-your-work/pull/27) [`2850c6f`](https://github.com/QiYueran-source/weave-your-work/commit/2850c6f4518441b45eb426ce429e669886030b66) Thanks [@QiYueran-source](https://github.com/QiYueran-source)! - Draw the line as a diagram a reader can follow, and stop naming the set's root files
+
+  The ASCII drawing in `what-is-the-mainline` used arrows to mean two different things, ran two flows through the same line of text, and left the reader to work out which one a branch belonged to. It is a mermaid flowchart now: solid arrows are the line, a step handing to the next, and dotted arrows are the return paths -- `grill-and-records` back to the step that sent it, `resplit` back to `advance-task`, and `whole-review` as a person's detour. The worked example's question tree is mermaid too.
+
+  Two pointers to files a reader of the installed set does not have are gone. `waymark` told the reader that `ASSERTIONS.md` at the set root lists every assertion once, which is a rule about maintaining this repository rather than about writing a record. `adr` and `glossary` sent the reader to a checkpoint table that no longer exists.
+
+- [#27](https://github.com/QiYueran-source/weave-your-work/pull/27) [`2850c6f`](https://github.com/QiYueran-source/weave-your-work/commit/2850c6f4518441b45eb426ce429e669886030b66) Thanks [@QiYueran-source](https://github.com/QiYueran-source)! - Separate the discussion from what it writes, and draw the line as a diagram
+
+  `grill` both ran a discussion and left its terms and decisions for the caller to write, which is why `MAINLINE.md` carried a table saying which step writes an ADR and which writes a glossary entry. The table existed to patch a hole in one action.
+
+  `grilling` now asks the questions and writes the testimony, and nothing else. `grill-and-records` assembles: it runs the discussion, then `adr` for each settled decision and `glossary` for each fixed term. Like Matt's `grill-with-docs`, it holds no rules of its own -- the questions are `grilling`'s, the three gates are `adr`'s, and the canonical name is `glossary`'s.
+
+  With nothing else in the line needing a checkpoint, that table is gone. `what-is-the-mainline` says a discussion writes its own records, and that a decision made anywhere else stays where it was made until a person decides it earned a file. Callers of `grill` now call `grill-and-records`.
+
+- [#25](https://github.com/QiYueran-source/weave-your-work/pull/25) [`38fe0e5`](https://github.com/QiYueran-source/weave-your-work/commit/38fe0e5fb18e205de1d12bb7e2b0ddfc7263596d) Thanks [@QiYueran-source](https://github.com/QiYueran-source)! - Move the mainline into a skill, so an install carries it
+
+  `MAINLINE.md` sat at the set root, and a root file is one an install never
+  copies: `skills add` takes skill folders, and only skill folders. Four
+  skills sent a reader to it -- `adr`, `ask-me`, `glossary`, `grilling` -- so a
+  person who installed the set found four pointers to a file that was not
+  there.
+
+  It is `what-is-the-mainline` now, a skill like `waymark` and `task`:
+  model-invoked, it describes the order and runs nothing, and it says so in
+  its own last line. The pointers name the skill. `check-references.mjs` reads
+  the actions out of `what-is-the-mainline/SKILL.md` instead of the root file.
+
+  `PRINCIPLES.md` and `ASSERTIONS.md` stay where they are: they say how this
+  repository is built and what checks it, and no skill in the set points at
+  either one.
+
 ## 1.0.0
 
 ### Major Changes
