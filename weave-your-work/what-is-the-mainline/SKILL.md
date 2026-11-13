@@ -13,16 +13,27 @@ This skill is the one place the order and the hand-offs between them are written
 
 ## The mainline
 
-```
-open-map ─▶ split ─▶ open-map / open-task ─▶ advance-task ─▶ task-review ─▶ map-review
-             │                                                                          ▲
-             ├─▶ fog-explore ─▶ split    (the layer still has fog: clear it first)
-             │                                                              │
-             └─ a child map re-enters at split; its own map-review joins above
-
-split, fog-explore ─▶ grill-and-records    (the step cannot settle the question)
-                         │
-                         └─ the testimony comes back to the caller, which carries on
+```mermaid
+flowchart TD
+  A[open-map] --> B[split]
+  B -->|child map| A
+  B -->|task| C[open-task]
+  C --> D[advance-task]
+  D --> E{task-review}
+  E -->|named gap| D
+  E -->|both axes passed| F{map-review}
+  F -->|both axes passed| G([closed])
+  F -->|wrong direction| G
+  F -->|needs discussion| I
+  A -->|layer still has fog| H[fog-explore]
+  H -->|landing in the body| A
+  H -->|no entry remains| B
+  B -.->|cannot settle| I[grill-and-records]
+  H -.->|cannot settle| I
+  I -.->|testimony returns| B
+  D -.->|task waits on a sibling| J[resplit]
+  J -.-> D
+  K([person asks for whole-review]) -.-> F
 ```
 
 | Action | Does one thing | Hands off |
@@ -34,6 +45,8 @@ split, fog-explore ─▶ grill-and-records    (the step cannot settle the quest
 | `advance-task` | takes one task, or a batch, to a written `Result` | `task-review` |
 | `task-review` | judges one task against its acceptance signal, one verdict per axis | the owner, or `advance-task` for a named gap |
 | `map-review` | judges one map against its acceptance direction, one verdict per axis | the owner |
+
+The solid arrows are the line: a step hands to the next. The dotted arrows are the return paths, and none of them is a step: `grill-and-records` comes back to the step that sent it, `resplit` comes back to `advance-task`, and `whole-review` is a person's detour before a map is judged. A child map re-enters at `split`, which is what makes this a tree rather than a longer line.
 
 A person may run `whole-review` before this last step.
 

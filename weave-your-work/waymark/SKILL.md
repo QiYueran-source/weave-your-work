@@ -24,7 +24,7 @@ A record is read twice: a person reads it to follow the work, and a machine read
 
 ## How to read it
 
-Read only the file for the record in front of you. Every rule there is an assertion: a line that ends with the check that decides it. `ASSERTIONS.md` at the set root lists them once, so a change to a rule is one edit there and one here.
+Read only the file for the record in front of you. Every rule there is an assertion: a line that ends with the check that decides it.
 
 ## What this skill does not do
 
