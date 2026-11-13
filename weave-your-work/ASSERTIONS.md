@@ -77,7 +77,7 @@ Three kinds of check:
 - A resource naming a skill. `[check-references]`
 - A skill missing `family` or `invocation`, or a value outside the allowed set. `[check-references]`
 - A skill the router does not name, or a name in the router that is not a skill. `[check-references]`
-- A mainline action missing from `MAINLINE.md`, or a skill `MAINLINE.md` calls a mainline action that is listed as auxiliary. `[check-references]`
+- A mainline action the `mainline` skill does not name, or one it names that is also listed there as auxiliary. `[check-references]`
 - A `resplit` that leaves a task waiting on a sibling instead of on the other child map. `[review]`
 - A recut parent map whose `Decisions so far` does not say what the flawed cut was. `[review]`
 - A `Whole review` paragraph whose findings do not each name both sides, or the direction line nothing answers. `[review]`

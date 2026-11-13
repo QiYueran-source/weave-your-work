@@ -22,13 +22,13 @@ npx skills add qiyueran-source/weave-your-work -g
 
 让智能体为你的项目运行 `setup` 技能。它会引导你安装和配置 Git、waymark、Node.js 和 GitHub CLI，初始化项目或加入已有项目，并安装所需的规则和工具。GitHub 登录等步骤需要由你完成。
 
-完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。整套技能分成两层：记录格式只在各记录技能的 `res/` 下定义一次，动作按 [MAINLINE.md](weave-your-work/MAINLINE.md) 的主线组织。每条规则都是断言，并写明由哪项检查判定；索引在 [ASSERTIONS.md](weave-your-work/ASSERTIONS.md)。
+完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。整套技能分成两层：记录格式只在各记录技能的 `res/` 下定义一次，动作的顺序由 `what-is-the-mainline` 技能描述。每条规则都是断言，并写明由哪项检查判定；索引在 [ASSERTIONS.md](weave-your-work/ASSERTIONS.md)。
 
 ## 技能集里有什么
 
-七个动作按顺序把一个项目从"目标已定"送到关闭：`open-map` 写一张图，`split` 把一层切成子图或任务，`open-map` 和 `open-task` 写下它切出来的记录，`advance-task` 把一项任务做到写出结果，`task-review` 评判它，`map-review` 评判整张图。挡路还没清的雾先交给 `fog-explore`。除 `map-review` 外都由模型调用，所以这条线不用人重启；关图仍然由人决定。
+七个动作按顺序把一个项目从"目标已定"送到关闭，这个顺序由 `what-is-the-mainline` 技能描述：`open-map` 写一张图，`split` 把一层切成子图或任务，`open-map` 和 `open-task` 写下它切出来的记录，`advance-task` 把一项任务做到写出结果，`task-review` 评判它，`map-review` 评判整张图。挡路还没清的雾先交给 `fog-explore`。除 `map-review` 外都由模型调用，所以这条线不用人重启；关图仍然由人决定。
 
-其余动作改一条记录，但不往线上加步：`update` 改动别人已经依赖的记录，`grill` 和人把一件事讨论清楚，`adr` 和 `glossary` 记下某一步定下来的东西，`issue` 和 `handoff` 把工作交给另一个持有者或下一个 session，`resplit` 重新切分本该是子图却被切成任务的那一层，`whole-review` 在人要求时把一张图的子记录合起来读。还有三个只看不改：`wait-what` 说工作现在到哪了，`stop-and-wait` 报告项目哪里自相矛盾，`salvage-and-restart` 根据那份报告把说不清现状的树重启。`feedback-me-please` 把技能的问题报给上游，`use-weave-your-work-examples` 走完两个完整例子，`setup` 负责把项目配置起来。
+其余动作改一条记录，但不往线上加步：`update` 改动别人已经依赖的记录，`grill-and-records` 跑一场讨论（`grilling`）并把定下来的东西写下来，`adr` 和 `glossary` 记下某一步定下来的东西，`issue` 和 `handoff` 把工作交给另一个持有者或下一个 session，`resplit` 重新切分本该是子图却被切成任务的那一层，`whole-review` 在人要求时把一张图的子记录合起来读。还有三个只看不改：`wait-what` 说工作现在到哪了，`stop-and-wait` 报告项目哪里自相矛盾，`salvage-and-restart` 根据那份报告把说不清现状的树重启。`feedback-me-please` 把技能的问题报给上游，`use-weave-your-work-examples` 走完两个完整例子，`setup` 负责把项目配置起来。
 
 ## 现在的评审方式
 

@@ -13,7 +13,7 @@ The three gates and the file format are `res/format.md`. This skill applies them
 
 ## When it runs
 
-A decision is settled — by a discussion, by a split, or by `update` changing one — and it reaches the checkpoint `MAINLINE.md` names for it, where the action holding that decision decides whether it earned a file. The table is `MAINLINE.md`'s list of what a step leaves behind; it is not a call anybody makes. Ask the three gates in order: hard to reverse, surprising without context, a real trade-off. If any fails, write nothing: the decision stays in the map's `Decisions so far`.
+A decision is settled — by a discussion, by a split, or by `update` changing one — and whoever holds it decides whether it earned a file. Ask the three gates in order: hard to reverse, surprising without context, a real trade-off. If any fails, write nothing: the decision stays in the map's `Decisions so far`.
 
 ## Steps
 

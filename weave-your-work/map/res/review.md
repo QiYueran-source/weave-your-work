@@ -31,7 +31,7 @@ Every finding names its source: the direction line it did not meet, or the rule 
 
 The rows are read top to bottom, so the first one that fits decides. A `wrong direction` on either axis means the map asked for the wrong thing; the other axis being `passed` does not save it.
 
-A failed map leaves nothing behind to inherit. If that part of the work still matters, it is a new decision: the person settles it in `grill`, and the replacement map is opened from what that settles. Nothing opens a replacement for a map that closed `failed`.
+A failed map leaves nothing behind to inherit. If that part of the work still matters, it is a new decision: the person settles it in `grill-and-records`, and the replacement map is opened from what that settles. Nothing opens a replacement for a map that closed `failed`.
 
 ## The section
 

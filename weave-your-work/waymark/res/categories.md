@@ -6,7 +6,7 @@ Three categories, and what each one is for. The category is the record's kind: i
 |---|---|---|---|
 | `map` | a target, refined by child maps or tasks | `map/res/` | a target is opened, or one that has not split changes |
 | `task` | one action that ends at a checkable result | `task/res/` | a settled layer is written down as work |
-| `testimony` | the record of one discussion | `grill/res/` | a discussion is held |
+| `testimony` | the record of one discussion | `grilling/res/` | a discussion is held |
 
 A testimony is a record item, not a work item: it has an owner and a body, it never carries `split_as`, `task_kind`, or `waiting_on`, and no one accepts it as work.
 

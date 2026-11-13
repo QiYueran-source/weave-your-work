@@ -35,7 +35,7 @@ The map carries the review block `map/res/review.md` defines, and its status fol
 ## Hands off
 
 - `update` when a verdict names `needs changes` and a closed child's verdict no longer holds.
-- `grill` when either axis says `needs discussion`.
+- `grill-and-records` when either axis says `needs discussion`.
 
 ## What this skill does not do
 

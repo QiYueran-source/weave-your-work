@@ -20,7 +20,7 @@ It ends when no open entry remains. When that happens, the map's next move is a 
 Run these four for one entry, then start again at the top for the next.
 
 1. **Judge.** Can this be settled now? An assumption someone has already tested, a fact one page answers, a decision with nothing missing — go to step 3. The rest go to step 2.
-2. **Act.** Get the missing part: read, measure, or ask. A decision only a person can make goes through `grill`; the rounds go into a testimony as they happen. An answer that needs to be seen rather than discussed becomes a probe task, handed to `split`.
+2. **Act.** Get the missing part: read, measure, or ask. A decision only a person can make goes through `grill-and-records`; the rounds go into a testimony as they happen. An answer that needs to be seen rather than discussed becomes a probe task, handed to `split`.
 3. **Land it** where `map/res/body.md`'s landings send it: a decision to `Decisions so far`, a sharpened goal to `Target` and `Acceptance direction`, a refusal to `Out of scope`, work to a child through the action that opens that record. On a map that is open and has no children, this step writes the landing itself, by the section rule `map/res/body.md` gives every section. A map that is closed, or that has already split, has a body others stand on: its landing goes through `update`. An `Assumption` is not settled by research alone: support it, refute it, or record that it is accepted as reasonable and say so.
 4. **Strike the entry through** and add `Resolved on <date>: <what it became and where>`. An entry that turned out to be irrelevant is deleted instead.
 
@@ -30,7 +30,7 @@ The entry is cleared and what it became is where `map/res/body.md`'s landings se
 
 - `split` when no open entry remains, or when an entry became work.
 - `update` for a landing on a map that is closed or has already split.
-- `grill` for a decision the owner has to make.
+- `grill-and-records` for a decision the owner has to make.
 
 ## What this skill does not do
 

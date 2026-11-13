@@ -27,14 +27,15 @@ The subject is the root of the question tree. It is not a question the pilot lea
 
 The full tree; round 1 asks every leaf except the one that waits on the approval:
 
-```text
-Choose the catalyst for production
-├── What would a second nickel campaign change — goal
-├── Is the 4-bromotoluene gap a ligand problem — fact, checked in the screening table
-├── What is the cost gap at production scale — fact, the pilot lead
-├── Who can approve the reactor week — decision, the pilot lead
-│   └── Can the ligand screen run in that week — fact, the lab lead
-└── What happens to the route lock if the campaign slips — fact, the supply team
+```mermaid
+flowchart TD
+  R[Choose the catalyst for production]
+  R --> Q1[What would a second nickel campaign change?<br/>goal]
+  R --> Q2[Is the 4-bromotoluene gap a ligand problem?<br/>fact, checked in the screening table]
+  R --> Q3[What is the cost gap at production scale?<br/>fact, the pilot lead]
+  R --> Q4[Who can approve the reactor week?<br/>decision, the pilot lead]
+  R --> Q5[What happens to the route lock if the campaign slips?<br/>fact, the supply team]
+  Q4 --> Q6[Can the ligand screen run in that week?<br/>fact, the lab lead]
 ```
 
 The screening question is a fact the agent can check. The cost, the route lock, and the lab's ligand inventory are facts the people in the room know. The approval is the pilot lead's decision.
