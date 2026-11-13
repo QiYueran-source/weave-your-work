@@ -18,7 +18,7 @@ This is a library, not an action. It writes nothing and decides nothing. It defi
 | `res/categories.md` | the three record categories and where each body is defined |
 | `res/disposition.md` | the three ways a change to a relied-on record is carried |
 
-This skill holds what every record shares. A record's own body lives with the record: `map`, `task`, `grill` (a testimony), `adr`, `glossary`, `issue`, `handoff`, and `stop-and-wait` (a patrol report).
+This skill holds what every record shares. A record's own body lives with the record: `map`, `task`, `grilling` (a testimony), `adr`, `glossary`, `issue`, `handoff`, and `stop-and-wait` (a patrol report).
 
 A record is read twice: a person reads it to follow the work, and a machine reads it to decide whether a rule holds. It is written to be decided on, not to look uniform; the view a person wants is a report, not the record.
 

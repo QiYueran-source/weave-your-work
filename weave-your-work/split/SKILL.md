@@ -13,12 +13,12 @@ One question decides the whole layer: can one complete action and one auditable 
 
 A layer is settled — what it holds, which children it needs, and what is still unknown in each — and none of those children exists yet. A map may split while fog remains elsewhere; the part this layer covers has no open fog. The fog of a child is not this layer's: it is written when the child is opened.
 
-The layer goes back to `grill` when it cannot support a child's `Target`, or the evidence a task's acceptance signal would name.
+The layer goes back to `grill-and-records` when it cannot support a child's `Target`, or the evidence a task's acceptance signal would name.
 
 ## Steps
 
 1. **Decide the type.** Ask the question above for the layer as a whole. A layer is all one type; a direction that needs the other type opens a sibling map instead. Parts that read each other's output are not tasks: they are child maps with an edge between them.
-2. **Decide the count before writing anything.** A layer is cut by the decisions the map already settled: each child's part comes from a decision in `Decisions so far`, and several decisions may feed one child or one decision may feed several. A part with no decision behind it is not cut; it goes back to `grill`, or stays in `Not yet specified` until it settles. For tasks, write the count and a one-line plan per task into the discussion's testimony.
+2. **Decide the count before writing anything.** A layer is cut by the decisions the map already settled: each child's part comes from a decision in `Decisions so far`, and several decisions may feed one child or one decision may feed several. A part with no decision behind it is not cut; it goes back to `grill-and-records`, or stays in `Not yet specified` until it settles. For tasks, write the count and a one-line plan per task into the discussion's testimony.
 3. **Open each child, one at a time, by calling the action that writes that record.** This skill writes no record: the writer hangs the child under the parent it is given.
    - A child map: call `open-map` once per child map, with that child's part of the parent's target and the decision it came from, and `--parent <map>`.
    - A task: call `open-task` once per task, with the action, the acceptance signal, the kind, `reversibility`, `needs_human`, the decision it serves, and `--parent <map>`.
@@ -35,7 +35,7 @@ Each child exists, hung under the map, written by the action for its record; `wa
 
 - A task: `advance-task`, when the person asks for it.
 - A child map: back into this skill, one level down, when its own layer is settled.
-- A layer that cannot be written: `grill`.
+- A layer that cannot be written: `grill-and-records`.
 
 ## What this skill does not do
 

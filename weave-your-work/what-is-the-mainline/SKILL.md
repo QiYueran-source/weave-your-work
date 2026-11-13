@@ -1,15 +1,15 @@
 ---
-name: mainline
-description: "The order the line runs in: the seven actions from a settled map to a closed one, what each hands to, the auxiliary actions that change a record without adding a step, where a term or an ADR is written, and who writes which record kind. Read it to see what runs next and where a step stops; it defines the order and runs nothing."
+name: what-is-the-mainline
+description: "What the order of the set is: the seven actions from a settled map to a closed one, what each hands to, the auxiliary actions that change a record without adding a step, and who writes which record kind. Read it to see what runs next and where a step stops; it describes the order and runs nothing."
 family: track
 invocation: model
 ---
 
-# Mainline
+# What is the mainline
 
 Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Every one of them but `map-review` is model-invoked, so the line runs from its first step to its last without a person restarting it; the map's close is the one decision left to a person. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line.
 
-This skill is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end. Read it before starting a step you cannot place.
+This skill is the one place the order and the hand-offs between them are written; an action file says what one action does and stops at that action's own end. Read it before starting a step you cannot place.
 
 ## The mainline
 
@@ -20,7 +20,7 @@ open-map ─▶ split ─▶ open-map / open-task ─▶ advance-task ─▶ tas
              │                                                              │
              └─ a child map re-enters at split; its own map-review joins above
 
-split, fog-explore ─▶ grill    (the step that met the question cannot settle it)
+split, fog-explore ─▶ grill-and-records    (the step cannot settle the question)
                          │
                          └─ the testimony comes back to the caller, which carries on
 ```
@@ -39,7 +39,7 @@ A person may run `whole-review` before this last step.
 
 Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides a layer and writes no record; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes each child it decided, which is why both stand on the line. What `split` writes itself is the field only it can judge, `split_as`, and the status the first cut starts.
 
-`grill` is not a step of the line. A step that cannot settle a question calls it, waits for the testimony, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
+`grill-and-records` is not a step of the line. A step that cannot settle a question calls it, waits for what it settled and wrote, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
 
 `whole-review` is off the line: a person runs it when a map's children are worth reading as a set, and `map-review` judges the map with or without the paragraph it writes. It is the one pass in the set that nobody calls by itself.
 
@@ -52,9 +52,9 @@ Recursion is the line itself: a child map re-enters at `split`. A map takes chil
 | Action | Produces | Called when |
 |---|---|---|
 | `update` | a changed record, carried to what relies on it | a record that others rely on has to change |
-| `grill` | a testimony | a decision needs a person |
-| `adr` | an ADR | the line reaches a checkpoint where a settled decision passes the three gates |
-| `glossary` | a glossary entry | the line reaches a checkpoint where a term resolved |
+| `grill-and-records` | a testimony, the glossary entries and ADRs the discussion settled | a decision needs a person |
+| `adr` | an ADR | a settled decision passes the three gates |
+| `glossary` | a glossary entry | a term resolves, or someone asks what the project means by a word |
 | `issue` | a remote issue and a queue line | a message has to reach another owner |
 | `resplit` | a task layer recut into child maps with a dependency edge between them | a task cannot start because a sibling task has not finished |
 | `handoff` | a handoff document | the work continues in another session |
@@ -72,28 +72,17 @@ When the line needs something an auxiliary action produces, it names the state i
 
 ## Where a term and an ADR are written
 
-The discussion itself writes no glossary entry and no ADR. `grill` keeps what the person said, the terms the discussion fixed, and the decisions that a recorded ADR no longer matches. Everything below says what a step leaves behind worth writing; which action writes it is decided by whoever holds the context, since these are readings, not calls.
+A discussion writes them itself: `grill-and-records` runs `grilling` for the words and the decisions, then `glossary` for each term and `adr` for each decision whose three gates pass. Nothing else in the line keeps a checkpoint list, because nothing else needs one: the action that settles a decision is the action that reaches `adr`.
 
-| A step leaves behind | Where it may land |
-|---|---|
-| a discussion that fixed a term, or settled a decision the three gates pass | a glossary entry, or an ADR |
-| a split whose decision becomes a child's part, hard to reverse, surprising, and a real trade-off | an ADR |
-| a record whose word conflicts with the glossary, or whose decision contradicts a recorded ADR | a glossary entry, or an ADR that supersedes the old one |
-| a landed fog entry whose decision passes the three gates | an ADR |
-| a `Result` that coined a term or made a decision on the way | a glossary entry, or an ADR |
-| a change that overturns a recorded decision | an ADR that supersedes the old one |
-
-Most of these are written by the action that produced them, because it read the thing the gates judge on: `split`, `fog-explore`, and `update` each reach their own. `grill` and `open-map`/`open-task` do not: what they produce is a decision or a word their caller went looking for, so the caller decides whether it earned a file. `advance-task` writes the term or the decision into `Result`, and `task-review` reads that and decides.
-
-Nothing here is a call, and no step waits on one. A step that finds nothing worth writing writes nothing, and says so in one line. The three gates are `adr/res/format.md`'s; the shape of an entry is `glossary/res/entry.md`'s.
+A decision made anywhere else stays where it was made, in a map's `Decisions so far` or in a `Result`, until someone decides it earned a file. That is a person's call, not a step's.
 
 ## Records and their writers
 
-Three record kinds, one writer each: `open-map` writes a map, `open-task` writes a task, `grill` writes a testimony. A writer never decides how many records there are or where they hang; `split` decides that and calls the writer once per record, with the parent. A map opened on its own, with no split above it, is the one call a person makes directly; `fog-explore` sends a landing in a map's body through `update`, and an entry that became work through `split`. The definitions those writers read are `waymark`'s and the record skill's (`map`, `task`); a write that changes a map's body after it exists is `update`'s, and an append to a record that exists is `advance-task`'s or a review's.
+Three record kinds, one writer each: `open-map` writes a map, `open-task` writes a task, `grilling` writes a testimony. A writer never decides how many records there are or where they hang; `split` decides that and calls the writer once per record, with the parent. A map opened on its own, with no split above it, is the one call a person makes directly; `fog-explore` sends a landing in a map's body through `update`, and an entry that became work through `split`. The definitions those writers read are `waymark`'s and the record skill's (`map`, `task`); a write that changes a map's body after it exists is `update`'s, and an append to a record that exists is `advance-task`'s or a review's.
 
 Neither writer calls `split`, and `split` calls only writers. That single direction is what keeps a root map and a child map from growing two different opening paths, which is how the first set ended up with a rule written twice.
 
-Every writer and every step of the line points at the record skill for what a record holds: `map`, `task`, `grill`, `adr`, `glossary`. None restates it, and a rule that two of them would otherwise share goes into the record skill's `res/` once.
+Every writer and every step of the line points at the record skill for what a record holds: `map`, `task`, `grilling`, `adr`, `glossary`. None restates it, and a rule that two of them would otherwise share goes into the record skill's `res/` once.
 
 ## What this skill does not do
 

@@ -1,11 +1,11 @@
 ---
-name: grill
-description: "Grill a plan, decision, or idea until it is clear: ask the questions that can be answered now, record the answers in a testimony, and name the terms and decisions the caller still has to write down. Use when a plan is still fuzzy, or when another skill reaches a decision it cannot settle alone."
+name: grilling
+description: "Grill a plan, decision, or idea until it is clear: ask the questions that can be answered now, wait for the answers, and write each round into a testimony. It writes the testimony and nothing else: what the discussion settled is written by `adr` and `glossary`, run by `grill-and-records`. Use when a plan is still fuzzy, or when another skill reaches a decision it cannot settle alone."
 family: method
 invocation: model
 ---
 
-# Grill
+# Grilling
 
 A discussion that ends with a shared understanding and a written record. It asks the questions a person has not answered, waits for the answers, and moves outward as the answers settle. One testimony per run: this action writes it and does not decide how many discussions there are; the caller asked for this one.
 
@@ -37,7 +37,7 @@ Everything this action writes goes into the testimony, as each round happens and
 - **The terms** the discussion fixed and will not change again, and the decisions that a recorded ADR no longer matches.
 - **Work**: a question that becomes work is written as `work: <what>` for the caller, which opens the record.
 
-The caller writes the records these become, and the caller decides whether a term or a decision is worth a `glossary` entry or an ADR: the `mainline` skill lists what a step leaves behind, and the testimony keeps what was said and what it named.
+This action writes the testimony and nothing else. The records these become are not its work: a term goes to `glossary` and a decision to `adr`, and `grill-and-records` runs those. A caller reaches `grill-and-records`, which runs this discussion first; the `what-is-the-mainline` skill says where that sits.
 
 ## The output contract
 
@@ -48,3 +48,4 @@ The testimony exists, and `grill/res/testimony.md` says what it holds.
 ## What this skill does not do
 
 - Decide; the person does.
+- Write a glossary entry or an ADR; `grill-and-records` runs the actions that do.

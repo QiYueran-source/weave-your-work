@@ -16,7 +16,7 @@ Before saying what a skill does, read its `SKILL.md`. The summaries here are for
 The route a project travels from a settled map to a closed one, in order.
 
 1. **`open-map`** when a target is settled and has no map: it writes the map with its fog and exclusions. A project's first map is opened by the flow that configures the project.
-2. **`fog-explore`** while the map carries entries the next layer cannot be written without. A decision inside one goes through **`grill`**.
+2. **`fog-explore`** while the map carries entries the next layer cannot be written without. A decision inside one goes through **`grill-and-records`**, which runs the discussion and writes what it settled.
 3. **`split`** to turn a settled layer into child maps or tasks. It does not write them: it calls `open-map` once per child map, or `open-task` once per task.
 4. **`advance-task`** to take one task, or a batch, to a written `Result`.
 5. **`task-review`** to judge a finished task against its acceptance signal.
@@ -41,16 +41,16 @@ Each opens on a state, not on a position in the route.
 
 Reached from the action that writes them, and named here so they can be found.
 
-- **`mainline`**: the order the seven actions run in, the auxiliary ones, and where a term or an ADR is written. Read it to see what runs next.
+- **`what-is-the-mainline`**: the order the seven actions run in and the auxiliary ones beside them. Read it to see what runs next.
 
 - **`waymark`**: what every record shares: the fields, the relations, the categories, and the change dispositions.
 - **`map`** and **`task`**: the record definitions, for the map and the task bodies and their reviews.
 - **`open-map`** and **`open-task`**: the actions that write one record of each kind. A root map, a child map, and a task written outside a split all go through them.
-- **`grill`**: the discussion that settles decisions, and the testimony it writes; the terms and decisions it settles are written by whoever called it.
+- **`grill-and-records`**: the action that settles decisions, running `grilling` for the discussion and `adr` and `glossary` for what it settled. **`grilling`** is the discussion alone, which writes the testimony and nothing else.
 - **`adr`**: a decision a future reader cannot reconstruct.
 - **`glossary`**: one name for one thing.
 
-The `mainline` skill says at which step of the route a term or a gated decision is written, and which action writes it there.
+The `what-is-the-mainline` skill describes the order, and `grill-and-records` is what writes a term or a gated decision a discussion settled.
 
 ## Standalone
 

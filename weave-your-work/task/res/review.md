@@ -31,7 +31,7 @@ Every finding names its source: the signal line, the boundary, or the rule.
 
 The rows are read top to bottom, so the first one that fits decides. A `wrong direction` on either axis means the task asked for the wrong thing and no repair reaches it; the other axis being `passed` does not save it. A ticket that still carries `waiting_on` is waiting, not passed: its review takes `needs discussion` on both axes.
 
-A failed task leaves nothing behind to inherit. If the work still matters, it is a new decision: the person settles it in `grill`, and a new task is written from what that settles. Nothing opens a replacement for a task that closed `failed`.
+A failed task leaves nothing behind to inherit. If the work still matters, it is a new decision: the person settles it in `grill-and-records`, and a new task is written from what that settles. Nothing opens a replacement for a task that closed `failed`.
 
 ## The section
 

@@ -125,9 +125,9 @@ for (const match of routerText.matchAll(/\*\*`([a-z][a-z-]*)`\*\*/g)) {
 
 // 5. The mainline names its actions, and each of them exists. It is a skill so
 //    that an install carries it: a file at the set root reaches nobody.
-const mainline = join(setDir, 'mainline', 'SKILL.md')
+const mainline = join(setDir, 'what-is-the-mainline', 'SKILL.md')
 const mainlineText = read(mainline)
-if (!mainlineText) add(mainline, 'the mainline skill is missing')
+if (!mainlineText) add(mainline, 'the what-is-the-mainline skill is missing')
 else {
   // The line is the steps that carry a project from a settled map to a closed
   // one; every skill it runs belongs in its table, and none of them is also
@@ -144,7 +144,7 @@ else {
   const auxiliary = mainlineText.split(/^## The auxiliary actions\s*$/m)[1] ?? ''
   for (const action of mainlineActions) {
     if (!skillSet.has(action)) add(mainline, `mainline action ${action} has no skill`)
-    if (!mainlineText.includes(action)) add(mainline, `the mainline skill does not name ${action}`)
+    if (!mainlineText.includes(action)) add(mainline, `what-is-the-mainline does not name ${action}`)
     if (auxiliary.split(/\r?\n/).some((line) => line.startsWith(`| \`${action}\` |`)))
       add(mainline, `mainline action ${action} is also listed as auxiliary`)
   }
@@ -183,7 +183,7 @@ for (const skill of skills) visit(skill)
 //    per run. What a writer decides is set by the action, not by a phrase: a
 //    check on wording passes a file that means the opposite in different words
 //    and fails one that says it plainly.
-const writers = ['open-map', 'open-task', 'grill']
+const writers = ['open-map', 'open-task', 'grilling']
 for (const writer of writers) {
   if (!skillSet.has(writer)) {
     add(setDir, `record writer ${writer} has no skill`)

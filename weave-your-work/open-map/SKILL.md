@@ -7,7 +7,7 @@ invocation: model
 
 # Open map
 
-A map is a target written down: what the team wants, why, how someone else confirms it, and what is still unclear underneath it. This action writes one record per run; it does not decide how many maps a layer has or which type the layer is. The target it writes came in with the call, from the parent map's decision or from a grill.
+A map is a target written down: what the team wants, why, how someone else confirms it, and what is still unclear underneath it. This action writes one record per run; it does not decide how many maps a layer has or which type the layer is. The target it writes came in with the call, from the parent map's decision or from a `grill-and-records` run.
 
 ## When it runs
 
@@ -19,7 +19,7 @@ One map per run. A root map and a child map are the same record, and the only di
 
 ## Steps
 
-1. **Take the target.** It comes from the parent map's `Decisions so far` when a split sends it, or from a `grill` when a person settles it. State it as an outcome and record where it came from; a target nobody agreed to is not this action's to invent.
+1. **Take the target.** It comes from the parent map's `Decisions so far` when a split sends it, or from a `grill-and-records` run when a person settles it. State it as an outcome and record where it came from; a target nobody agreed to is not this action's to invent.
 2. **Walk the target once**, by `map/res/body.md`'s walk: each part becomes a child, a fog entry, an exclusion, or a decision. What cannot be stated precisely yet becomes a fog entry; a part that needs its own record is left for `split` and is not written here.
 3. **Write the body** as `map/res/body.md` requires: `Target` with its `Why:` line, `Acceptance direction` with its `Review point:`, `Decisions so far`, `Not yet specified`, `Out of scope` when something was ruled out. No `Review`: a review writes that after the children close.
 4. **Create the record.** `waymark create --category map --title "<the outcome, not the method>" --owner <name> --parent <map> --body-file <body> --dry-run`, then again without the flag. A root map passes no `--parent`.
