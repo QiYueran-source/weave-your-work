@@ -1,6 +1,15 @@
-# weave-your-work v2: the mainline and the auxiliary actions
+---
+name: mainline
+description: "The order the line runs in: the seven actions from a settled map to a closed one, what each hands to, the auxiliary actions that change a record without adding a step, where a term or an ADR is written, and who writes which record kind. Read it to see what runs next and where a step stops; it defines the order and runs nothing."
+family: track
+invocation: model
+---
 
-Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Every one of them but `map-review` is model-invoked, so the line runs from its first step to its last without a person restarting it; the map's close is the one decision left to a person. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line. This file is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end.
+# Mainline
+
+Seven actions carry a project from a settled map to a closed one, `open-map` and `open-task` among them, because an action that only decides still needs the write it calls. Every one of them but `map-review` is model-invoked, so the line runs from its first step to its last without a person restarting it; the map's close is the one decision left to a person. Everything else is auxiliary: it can change what the line reads, but it never adds a step to the line.
+
+This skill is the one place the order, the hand-offs, and the checkpoints between them are written; an action file says what one action does and stops at that action's own end. Read it before starting a step you cannot place.
 
 ## The mainline
 
@@ -26,9 +35,9 @@ split, fog-explore ─▶ grill    (the step that met the question cannot settle
 | `task-review` | judges one task against its acceptance signal, one verdict per axis | the owner, or `advance-task` for a named gap |
 | `map-review` | judges one map against its acceptance direction, one verdict per axis | the owner |
 
-A person may run `whole-review` before this last step; see the note below the table.
+A person may run `whole-review` before this last step.
 
-Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides a layer and writes no record; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes each child it decided, which is why both stand on the line. What `split` writes itself is the field only it can judge, `split_as`, and the status the first cut starts; `docs/adr/0004-the-writer-is-the-action-that-decided.md` says why.
+Each of them is one job and stops where it ends. `open-map` writes and decides nothing; `split` decides a layer and writes no record; `fog-explore` clears an entry and writes no body; `advance-task` executes and judges nothing; `task-review` and `map-review` judge one record each and execute nothing. An action that meets a record it may not write calls the action that writes it: `split` decides a layer and `open-map` or `open-task` writes each child it decided, which is why both stand on the line. What `split` writes itself is the field only it can judge, `split_as`, and the status the first cut starts.
 
 `grill` is not a step of the line. A step that cannot settle a question calls it, waits for the testimony, and carries on; the arrow into it is a return path, and the table row that says which step sends work to it is the action's own `Hands off`.
 
@@ -86,6 +95,6 @@ Neither writer calls `split`, and `split` calls only writers. That single direct
 
 Every writer and every step of the line points at the record skill for what a record holds: `map`, `task`, `grill`, `adr`, `glossary`. None restates it, and a rule that two of them would otherwise share goes into the record skill's `res/` once.
 
-## Resources
+## What this skill does not do
 
-No action defines a record. Every record is defined once, in `waymark/res/`. An action that needs a definition calls `waymark`; it never links into another action's folder, and it never restates what a record contains.
+- Run a step. The actions run; this file only says what order they go in.

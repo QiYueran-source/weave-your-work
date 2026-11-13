@@ -123,10 +123,11 @@ for (const match of routerText.matchAll(/\*\*`([a-z][a-z-]*)`\*\*/g)) {
   if (!skillSet.has(match[1])) add(router, `router names ${match[1]}, which is not a skill`)
 }
 
-// 5. The mainline names its actions, and each of them exists.
-const mainline = join(setDir, 'MAINLINE.md')
+// 5. The mainline names its actions, and each of them exists. It is a skill so
+//    that an install carries it: a file at the set root reaches nobody.
+const mainline = join(setDir, 'mainline', 'SKILL.md')
 const mainlineText = read(mainline)
-if (!mainlineText) add(mainline, 'MAINLINE.md is missing')
+if (!mainlineText) add(mainline, 'the mainline skill is missing')
 else {
   // The line is the steps that carry a project from a settled map to a closed
   // one; every skill it runs belongs in its table, and none of them is also
@@ -143,7 +144,7 @@ else {
   const auxiliary = mainlineText.split(/^## The auxiliary actions\s*$/m)[1] ?? ''
   for (const action of mainlineActions) {
     if (!skillSet.has(action)) add(mainline, `mainline action ${action} has no skill`)
-    if (!mainlineText.includes(action)) add(mainline, `MAINLINE.md does not name ${action}`)
+    if (!mainlineText.includes(action)) add(mainline, `the mainline skill does not name ${action}`)
     if (auxiliary.split(/\r?\n/).some((line) => line.startsWith(`| \`${action}\` |`)))
       add(mainline, `mainline action ${action} is also listed as auxiliary`)
   }

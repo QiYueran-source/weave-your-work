@@ -41,6 +41,8 @@ Each opens on a state, not on a position in the route.
 
 Reached from the action that writes them, and named here so they can be found.
 
+- **`mainline`**: the order the seven actions run in, the auxiliary ones, and where a term or an ADR is written. Read it to see what runs next.
+
 - **`waymark`**: what every record shares: the fields, the relations, the categories, and the change dispositions.
 - **`map`** and **`task`**: the record definitions, for the map and the task bodies and their reviews.
 - **`open-map`** and **`open-task`**: the actions that write one record of each kind. A root map, a child map, and a task written outside a split all go through them.
@@ -48,7 +50,7 @@ Reached from the action that writes them, and named here so they can be found.
 - **`adr`**: a decision a future reader cannot reconstruct.
 - **`glossary`**: one name for one thing.
 
-`MAINLINE.md` says at which step of the route a term or a gated decision is written, and which action writes it there.
+The `mainline` skill says at which step of the route a term or a gated decision is written, and which action writes it there.
 
 ## Standalone
 

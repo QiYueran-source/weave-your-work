@@ -37,7 +37,7 @@ Everything this action writes goes into the testimony, as each round happens and
 - **The terms** the discussion fixed and will not change again, and the decisions that a recorded ADR no longer matches.
 - **Work**: a question that becomes work is written as `work: <what>` for the caller, which opens the record.
 
-The caller writes the records these become, and the caller decides whether a term or a decision is worth a `glossary` entry or an ADR: `MAINLINE.md` lists what a step leaves behind, and the testimony keeps what was said and what it named.
+The caller writes the records these become, and the caller decides whether a term or a decision is worth a `glossary` entry or an ADR: the `mainline` skill lists what a step leaves behind, and the testimony keeps what was said and what it named.
 
 ## The output contract
 
