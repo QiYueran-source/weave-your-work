@@ -11,6 +11,7 @@ A project is configured once. `configure-project.md` walks it, `join-project.md`
 | Rules | `rules/` in this skill | `.agents/rules/` |
 | Setup check and root resolver | `tools/` | run in place |
 | Glossary store and MCP server | `tools/glossary/` | `.work-weave/runtime/glossary/` |
+| ADR store and CLI | `tools/adr/` | `.work-weave/runtime/adr/` |
 | Issue listener and queue tools | `tools/issue/` | `.work-weave/runtime/issue/` |
 
 The project's data stays in the project: `.work-weave/` for the queue, the glossary sources, the runtime copies, and the local settings; `tickets/` for the records. Nothing installs under the skill directory, and `node_modules` is never committed.
@@ -68,9 +69,11 @@ Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/pro
 
 The glossary and issue tools each carry a byte-identical copy of `project-root.cjs`. The setup install has no test that runs that comparison; the copies are kept equal by hand.
 
-## Install the two runtimes
+## Install the three runtimes
 
-The glossary runtime is `install-glossary.md`, the issue runtime is `install-issue.md`. Run either only when the project uses it: a project without a shared vocabulary needs no glossary server, and a project without a remote needs no listener.
+The glossary runtime is `install-glossary.md`, the ADR runtime is `install-adr.md`, and the issue runtime is `install-issue.md`. Run each only when the project uses it: a project without a shared vocabulary needs no glossary server, a project that records no decisions needs no ADR tool, and a project without a remote needs no listener.
+
+The ADR tool has no dependencies and registers no MCP server. Copy its two files into `.work-weave/runtime/adr/` and install the post-merge hook; there is no `npm ci` step.
 
 Both copy their tools into `.work-weave/runtime/<name>/` and run `npm ci --omit=dev` there. Read the exit status: a failed install can leave a partial `node_modules`, so the directory appearing proves nothing.
 

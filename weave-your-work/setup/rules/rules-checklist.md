@@ -19,7 +19,7 @@ node <setup-skill>/tools/check-setup.mjs --starred
 1. At session start, run the starred checks.
 2. When a feature you expect to work does not, run all seventeen.
 3. Report the failing check and its repair. Do not run the repair, edit a config, or install anything. Repairing the setup is the person's decision.
-4. Mark a check not applicable only where it says so. A missing remote covers 8 and 16; a plan without server protection covers 9; a platform without a service covers 16. Never mark a check passed without running it.
+4. Mark a check not applicable only where it says so. A missing remote covers 8 and 17; a plan without server protection covers 9; a platform without a service covers 17. Never mark a check passed without running it.
 
 ## The checks
 
@@ -53,6 +53,7 @@ The starred checks are 1, 2, 3, 4, 6, 7, 10, 12, 13, and 14.
 
 ### Registered tools
 
-15. **The glossary MCP server answers.** It lists four tools: `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. Repair: run the glossary install in setup and start its server from the project runtime.
-16. **The listener runs and the webhook reaches it.** On Linux, the generated unit is active, its `WorkingDirectory` is this project root, and the repository webhook URL matches the `SMEE_URL` in `.work-weave/local/issue-listener.env`. `active` alone does not say which checkout the service serves. A 404 on the hooks read is not a failure by itself: read `permissions.admin` first; `false` means unverified. On macOS and Windows there is no bundled service: the check is not applicable, and the alternative is to run the listener in a terminal while you work; a launch agent or scheduled task is the person's to write. Repair: start the listener for this checkout.
-17. **The queue and the build output are ignored.** `git check-ignore` prints all three paths: `node_modules/`, `GLOSSARY.md`, and `.work-weave/pending/pending-communications.md`. Count the printed paths, not the exit code: `git check-ignore` exits 0 when any one matches. Repair: add the three ignore rules.
+15. **The ADR tool answers.** `.work-weave/runtime/adr/adr.js` and its `project-root.cjs` are present, and `list` exits 0 with the project as its root. A project that records no decisions and installed no ADR tool is not applicable. Repair: run the ADR install in setup.
+16. **The glossary MCP server answers.** It lists four tools: `glossary_lookup`, `glossary_list`, `glossary_write`, and `glossary_merge`. Repair: run the glossary install in setup and start its server from the project runtime.
+17. **The listener runs and the webhook reaches it.** On Linux, the generated unit is active, its `WorkingDirectory` is this project root, and the repository webhook URL matches the `SMEE_URL` in `.work-weave/local/issue-listener.env`. `active` alone does not say which checkout the service serves. A 404 on the hooks read is not a failure by itself: read `permissions.admin` first; `false` means unverified. On macOS and Windows there is no bundled service: the check is not applicable, and the alternative is to run the listener in a terminal while you work; a launch agent or scheduled task is the person's to write. Repair: start the listener for this checkout.
+18. **The queue and the build output are ignored.** `git check-ignore` prints all four paths: `node_modules/`, `GLOSSARY.md`, `ADR.md`, and `.work-weave/pending/pending-communications.md`. Count the printed paths, not the exit code: `git check-ignore` exits 0 when any one matches. Repair: add the missing ignore rules.

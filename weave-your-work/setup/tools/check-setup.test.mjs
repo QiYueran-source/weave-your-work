@@ -37,7 +37,7 @@ function project(t) {
   write(path.join(root, '.agents', 'skills', 'setup', 'rules', 'rules-demo.md'), '# Demo rule\n')
   write(path.join(root, '.agents', 'rules', 'rules-demo.md'), '# Demo rule\n')
   write(path.join(root, 'AGENTS.md'), '# Follow .agents/rules/*.md\n')
-  write(path.join(root, '.gitignore'), 'node_modules/\n/GLOSSARY.md\n.work-weave/pending/\n')
+  write(path.join(root, '.gitignore'), 'node_modules/\n/GLOSSARY.md\n/ADR.md\n.work-weave/pending/\n')
   git(root, 'add', '-A')
   git(root, 'commit', '-q', '-m', 'fixture')
   return root
@@ -92,9 +92,9 @@ test('all checks run on a configured fixture', t => {
   })
   assert.equal(result.status, 1, result.stderr)
   const payload = JSON.parse(result.stdout)
-  assert.equal(payload.checks.length, 17)
+  assert.equal(payload.checks.length, 18)
   const byNumber = new Map(payload.checks.map(check => [check.number, check]))
-  for (const number of [1, 6, 7, 12, 13, 14, 17]) {
+  for (const number of [1, 6, 7, 12, 13, 14, 18]) {
     assert.equal(byNumber.get(number).status, 'ok', `${number}: ${byNumber.get(number).message}`)
   }
   assert.match(byNumber.get(12).message, /missing: none/)
