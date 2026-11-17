@@ -24,4 +24,4 @@ Source: `skills/engineering/domain-modeling/` and its `ADR-FORMAT.md` and `GLOSS
 
 **Answer.** Yes, inline, one at a time, and not batched to the end. A glossary entry is one term with a definition and the words to avoid; an ADR is a title and one paragraph, with three optional sections that appear only when they add something a reader cannot infer. An ADR is offered only when all three gates hold: hard to reverse, surprising without context, and a real trade-off.
 
-**What this repository does.** `glossary/res/entry.md` and `adr/res/format.md` carry the same three gates and the same one-paragraph shape. `grill` writes each term as it resolves. No change was needed; this file records where the shape came from.
+**What this repository does.** `glossary/GLOSSARY-FORMAT.md` and `adr/ADR-FORMAT.md` carry the same three gates and the same one-paragraph shape. `grill` writes each term as it resolves. No change was needed; this file records where the shape came from.
