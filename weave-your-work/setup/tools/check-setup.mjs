@@ -507,17 +507,22 @@ function parseToolNames(text) {
 }
 
 function checkAdr(ctx) {
-  const tool = path.join(ctx.cwd, '.work-weave', 'runtime', 'adr', 'adr.js')
-  if (!isFile(tool)) {
+  const server = path.join(ctx.cwd, '.work-weave', 'runtime', 'adr', 'server.js')
+  if (!isFile(server)) {
     return na('no ADR tool installed; run the ADR install in setup when the project records decisions')
   }
-  if (!isFile(path.join(ctx.cwd, '.work-weave', 'runtime', 'adr', 'project-root.cjs'))) {
-    return fail('the ADR project root resolver is missing from .work-weave/runtime/adr')
-  }
-  const result = run(process.execPath, [tool, '--project', '.', 'list'], { cwd: ctx.cwd, timeout: 15000 })
-  if (result.error) return fail(`the ADR tool did not answer: ${commandFailure(result)}`)
-  if (result.status !== 0) return fail(`the ADR tool exited ${result.status}: ${firstLine(result.stderr)}`)
-  return ok('the ADR tool answers')
+  const result = run(process.execPath, [server, '--project', '.'], {
+    cwd: ctx.cwd,
+    input: '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n',
+    timeout: 15000,
+  })
+  if (result.error) return fail(`the ADR server did not answer: ${commandFailure(result)}`)
+  if (result.status !== 0) return fail(`the ADR server exited ${result.status}: ${firstLine(result.stderr)}`)
+  const names = parseToolNames(result.stdout)
+  const expected = ['adr_list', 'adr_show', 'adr_write', 'adr_merge']
+  const missing = expected.filter(name => !names.includes(name))
+  if (names.length === expected.length && !missing.length) return ok(`4 tools: ${names.join(', ')}`)
+  return fail(`expected 4 ADR tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
 }
 
 function checkGlossary(ctx) {
@@ -619,7 +624,7 @@ const CHECKS = [
   { number: 12, starred: true, name: 'Every installed skill is still there', repair: 'Reinstall the missing skills with npx skills add.', run: checkSkills },
   { number: 13, starred: true, name: "Every setup rule is registered", repair: 'Run the setup install that owns each missing rule.', run: checkSetupRules },
   { number: 14, starred: true, name: 'AGENTS.md points at the rules', repair: 'Write the AGENTS.md prompt at the top of the file.', run: checkAgents },
-  { number: 15, starred: false, name: 'The ADR tool answers', repair: 'Run the ADR install in setup, or skip it when the project records no decisions.', run: checkAdr },
+  { number: 15, starred: false, name: 'The ADR MCP server answers', repair: 'Run the ADR install in setup, or skip it when the project records no decisions.', run: checkAdr },
   { number: 16, starred: false, name: 'The glossary MCP server answers', repair: 'Run the glossary install in setup and start its server from the project runtime.', run: checkGlossary },
   { number: 17, starred: false, name: 'The listener runs and the webhook reaches it', repair: 'Start the listener for this checkout from the issue install in setup.', run: checkListener },
   { number: 18, starred: false, name: 'The queue and the build output are ignored', repair: 'Add the three ignore rules to the root .gitignore.', run: checkIgnore },

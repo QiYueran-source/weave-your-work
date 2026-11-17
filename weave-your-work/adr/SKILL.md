@@ -25,18 +25,25 @@ decision stays in the record that made it.
 
 1. **Judge the gates.** Name which one carried it, in one line. When a gate
    fails, name the gate that failed and stop.
-2. **Write one line to your own source file** with `adr.js write`, the CLI
-   under `.work-weave/runtime/adr/`, in the shape `ADR-FORMAT.md` gives. Write
-   it the moment the decision settles, one decision at a time; do not batch a
-   discussion's decisions into one write at the end.
+2. **Write one line to your own source file**, in the shape `ADR-FORMAT.md`
+   gives. Write it the moment the decision settles, one decision at a time; do
+   not batch a discussion's decisions into one write at the end.
 3. **Link back** to the record that owns the decision, by `waymark` id, in
    `record`.
 4. **Supersede, never edit.** When an ADR replaces an earlier one, name the old
    `id` in `supersedes`. Do not touch the old line: it may belong to someone
    else, and the merge works out the rest.
-5. **Merge when the discussion ends.** Run `merge` so `ADR.md` at the project
-   root reflects every source. A person who pulls runs it too; the post-merge
-   hook does that for them.
+5. **Merge when the discussion ends**, so `ADR.md` at the project root reflects
+   every source. A person who pulls runs it too; the post-merge hook does that
+   for them.
+
+## The tools
+
+The MCP server and the CLI live in the project runtime at
+`.work-weave/runtime/adr/`, installed by `setup`. Use `adr_list`, `adr_show`,
+`adr_write`, and `adr_merge` when they are running; use the CLI when they are
+not. The CLI needs no dependencies, so it answers even when the server's install
+did not finish.
 
 Never write to another operator's source file, and never edit `ADR.md` by hand:
 the next merge overwrites it.
