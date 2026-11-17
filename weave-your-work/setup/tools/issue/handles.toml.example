@@ -1,0 +1,12 @@
+# The project roster.
+#
+# Copy this file to .work-weave/issue/handles.toml in the project root and
+# replace the placeholder below with this project's owners and their GitHub
+# logins.
+[handles]
+owner = "<github-login>"
+
+# The listener writes the pending queue here. The path is relative to the
+# project root.
+[pending]
+path = ".work-weave/pending/pending-communications.md"

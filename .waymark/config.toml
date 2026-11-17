@@ -1,38 +1,14 @@
-version = "1.10"
+version = "1.0"
 storage_root = "tickets"
 
-[categories.map]
-path = "tickets/map"
-name = "Map"
-
-[categories.task]
-path = "tickets/task"
-name = "Task"
+[categories.ticket]
+path = "tickets/ticket"
+name = "Ticket"
 
 [categories.testimony]
 path = "tickets/testimony"
 name = "Testimony"
 
-[fields.needs_human]
-type = "boolean"
-required = false
-
-[fields.outcome]
-type = "string"
-required = false
-
-[fields.reversibility]
-type = "string"
-required = false
-
-[fields.split_as]
-type = "string"
-required = false
-
-[fields.task_kind]
-type = "string"
-required = false
-
-[fields.waiting_on]
-type = "string"
-required = false
+[categories.spec]
+path = "tickets/spec"
+name = "Spec"
