@@ -93,7 +93,8 @@ function safeOperator(root) {
 
 function identifier(root, taken) {
   const stamp = new Date().toISOString();
-  const base = `${safeOperator(root)}-${stamp.replace(/[-:.]/g, "").replace(/Z$/, "")}`;
+  // 2026-11-17T05:52:59.123Z -> 20261117T055259.123
+  const base = `${safeOperator(root)}-${stamp.replace(/-/g, "").replace(/:/g, "").replace(/Z$/, "")}`;
   const used = new Set((taken || entries(root)).map((entry) => entry.id));
   if (!used.has(base)) return base;
   let suffix = 1;

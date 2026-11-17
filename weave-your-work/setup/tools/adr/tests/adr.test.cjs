@@ -87,7 +87,7 @@ test("the id carries the operator and a millisecond timestamp", (t) => {
   run(root, "write", "--title", "T", "--decision", "D.");
 
   const [entry] = lines(root, "frank");
-  assert.match(entry.id, /^frank-\d{8}T\d{9}$/);
+  assert.match(entry.id, /^frank-\d{8}T\d{6}\.\d{3}$/);
   assert.match(entry.created_at, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
 });
 
@@ -181,7 +181,7 @@ test("the view lists accepted newest first, then superseded", (t) => {
   const superseded = text.indexOf("## Superseded");
   assert.ok(accepted >= 0 && superseded > accepted);
   assert.ok(text.indexOf("### Newer") < text.indexOf("### Older"));
-  assert.match(text, /_Superseded by_: frank-\d{8}T\d{9}/);
+  assert.match(text, /_Superseded by_: frank-\d{8}T\d{6}\.\d{3}/);
 });
 
 test("superseding never edits the replaced operator's source", (t) => {
@@ -200,7 +200,7 @@ test("superseding never edits the replaced operator's source", (t) => {
   assert.equal(after, before);
 
   run(root, "merge");
-  assert.match(view(root), /_Superseded by_: bob-\d{8}T\d{9}/);
+  assert.match(view(root), /_Superseded by_: bob-\d{8}T\d{6}\.\d{3}/);
 });
 
 test("a supersede whose target is unknown is refused", (t) => {
