@@ -3,11 +3,12 @@ schema: 1
 id: wm-7de24s214ntw
 title: 'Grilling: write each round into a testimony'
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T07:23:37Z
-updated_at: 2026-11-17T07:23:37Z
+updated_at: 2026-11-17T07:28:17Z
+closed_at: 2026-11-17T07:28:17Z
 parent: wm-14axybwpn8xa
 dependencies:
   - wm-xap1hkbv3pe0

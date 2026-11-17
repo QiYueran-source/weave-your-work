@@ -3,11 +3,12 @@ schema: 1
 id: wm-h45xd06bg4rb
 title: 'Grilling: assertions for the testimony, and its example'
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T07:23:41Z
-updated_at: 2026-11-17T07:23:41Z
+updated_at: 2026-11-17T07:28:17Z
+closed_at: 2026-11-17T07:28:17Z
 parent: wm-14axybwpn8xa
 dependencies:
   - wm-7de24s214ntw

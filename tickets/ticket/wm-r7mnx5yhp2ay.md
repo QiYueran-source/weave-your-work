@@ -3,11 +3,12 @@ schema: 1
 id: wm-r7mnx5yhp2ay
 title: 'Grilling: end on an empty frontier and a written testimony'
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T07:23:41Z
-updated_at: 2026-11-17T07:23:41Z
+updated_at: 2026-11-17T07:28:17Z
+closed_at: 2026-11-17T07:28:17Z
 parent: wm-14axybwpn8xa
 dependencies:
   - wm-7de24s214ntw
