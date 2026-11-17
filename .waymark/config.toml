@@ -1,14 +1,19 @@
-version = "1.0"
+version = "1.1"
 storage_root = "tickets"
 
-[categories.ticket]
-path = "tickets/ticket"
-name = "Ticket"
+[categories.spec]
+path = "tickets/spec"
+name = "Spec"
 
 [categories.testimony]
 path = "tickets/testimony"
 name = "Testimony"
 
-[categories.spec]
-path = "tickets/spec"
-name = "Spec"
+[categories.ticket]
+path = "tickets/ticket"
+name = "Ticket"
+
+[fields.needs_human]
+type = "boolean"
+required = false
+default = false
