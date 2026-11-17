@@ -1,0 +1,26 @@
+---
+schema: 1
+id: wm-t8rkaj12986j
+title: 'Grilling: end on an empty frontier and a written testimony'
+category: ticket
+status: open
+owner: frank
+creator: frank
+created_at: 2026-11-17T07:23:17Z
+updated_at: 2026-11-17T07:23:17Z
+parent: wm-14axybwpn8xa
+dependencies:
+  - wm-xap1hkbv3pe0
+archived_at: 2026-11-17T07:23:44Z
+archive_reason: Duplicate of wm-r7mnx5yhp2ay, created twice by a script that lost track of the first id.
+---
+## What to build
+
+The discussion ends when the frontier is empty and the testimony is written, and the run hands back what it produced: the decisions that settled with the question each came from, the questions still open, and the work the discussion handed off. The skill writes the testimony and nothing else; terms go to the glossary and decisions to ADR, run by the caller.
+
+## Acceptance criteria
+
+- [ ] The end condition is the empty frontier together with a written testimony
+- [ ] Each settled line carries the question it came from and where it lands
+- [ ] Handed-off work is written as `work: <what>` lines for the caller to open
+- [ ] The skill states that it writes nothing but the testimony
