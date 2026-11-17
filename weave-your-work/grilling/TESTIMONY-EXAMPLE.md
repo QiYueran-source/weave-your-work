@@ -71,8 +71,8 @@ desk sits, and who signs the lease.
 
 - **Q3** Lease sign-off
   - Question: who signs the lease?
-  - Recommended: Finance.
-  - Answer: Finance.
+  - Recommended: Finance. (from the current lease, clause 7)
+  - Answer: Finance. 一直是财务签，流程没变过。
   - Parent: none
 
 ### Round 2
@@ -85,10 +85,10 @@ desk sits, and who signs the lease.
 
 ## Settled
 
-- The existing furniture moves; only the desks are replaced (from Q1) → ticket
-- The reception desk sits by the entrance (from Q2) → ticket
-- Finance signs the lease (from Q3) → ticket
-- The layout needs a waiting area that seats three (from Q4) → ticket
+- The existing furniture moves; only the desks are replaced (from Q1)
+- The reception desk sits by the entrance (from Q2)
+- Finance signs the lease (from Q3)
+- The layout needs a waiting area that seats three (from Q4)
 
 ## Open
 
@@ -103,7 +103,8 @@ Whether the waiting area fits the budget Finance already approved.
 
 ## What the testimony does not hold
 
-The rounds above are the discussion. The four `Settled` lines are decisions the
-moves carry, and each one points at the ticket that writes it down. The
-testimony does not restate any ticket's content, and it holds no checklist:
-checking off work is a ticket's job.
+The rounds above are the discussion. The four `Settled` lines are the decisions
+it reached, each naming the question that settled it and nothing more: which
+record writes a decision down is decided after the discussion, by whoever asked
+for it. The testimony does not restate any record's content, and it holds no
+checklist: checking off work is a ticket's job.

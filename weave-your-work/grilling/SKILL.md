@@ -81,8 +81,7 @@ filled in. The short form:
   when there is one.
 - `Rounds` records each round: the question, the recommended answer, what the
   person said, and the question it hangs off.
-- `Settled` holds one line per decision, with the question it came from and
-  where it lands.
+- `Settled` holds one line per decision, with the question it came from.
 - `Open` holds what is still unanswered, or `(none)`.
 - `Handed off` holds the work the discussion produced, as `work: <what>` lines.
 

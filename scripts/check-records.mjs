@@ -244,10 +244,38 @@ function checkTestimony(file, fm) {
   for (const field of [...MAP_FIELDS, ...TASK_FIELDS]) {
     if (fm.custom[field] !== undefined) add(file, `testimony carries the ${field} field`)
   }
+
+  // A question block is `- **Qn**` followed by its indented fields. The ones
+  // under `## Rounds` are the discussion; a block elsewhere is prose.
+  const rounds = parts.Rounds
+  if (rounds !== undefined) {
+    const blocks = rounds.split(/^- \*\*/m).slice(1)
+    if (fm.status === 'closed') {
+      for (const block of blocks) {
+        const id = block.match(/^([^*]+)\*\*/)?.[1]?.trim()
+        if (!/\n\s+- Answer:/.test(`\n${block}`))
+          add(file, `closed testimony holds ${id ?? 'a question'} with no Answer`)
+      }
+    }
+  }
+
+  // A settled line records what was decided and the question that settled it.
+  // Where it lands is the caller's to decide, so a landing named here is a line
+  // the record should not carry. The question is stripped first, because a
+  // question id is not a landing.
+  for (const line of (parts.Settled ?? '').split(/\r?\n/)) {
+    const entry = line.match(/^- (.+)$/)
+    if (!entry) continue
+    if (entry[1].trim() === '(none)') continue
+    if (!/\(from Q[^)]+\)/.test(entry[1]))
+      add(file, `settled line names no question: ${entry[1].trim()}`)
+    if (/→|\b(glossary|adr|ticket|spec)\b/.test(entry[1].replace(/\(from Q[^)]+\)/g, '')))
+      add(file, `settled line names a landing: ${entry[1].trim()}`)
+  }
 }
 
 const items = new Map()
-for (const category of ['map', 'task', 'testimony']) {
+for (const category of ['spec', 'ticket', 'testimony']) {
   const dir = join(ticketsRoot, category)
   let names = []
   try {
