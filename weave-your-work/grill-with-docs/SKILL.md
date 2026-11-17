@@ -6,23 +6,32 @@ disable-model-invocation: true
 
 # Grill with docs
 
-A discussion is worth having for what it settles. `grilling` asks the questions and keeps the answers; the interview is not this skill's. What this skill adds is the order and the writing: the discussion runs to the end, then what it settled is recorded before the run stops.
-
-Questions are `grilling`'s. Three gates are `adr`'s. One name for one thing is `glossary`'s. None of those three writes on its own, and this is the one action that runs them.
+A discussion is worth having for what it settles. `grilling` asks the questions
+and writes the testimony; the interview is not this skill's. What this skill
+adds is the hand: the discussion runs to the end, then what it settled is
+written before the run stops.
 
 ## Steps
 
-1. **Hold the discussion.** Call `grilling` with the subject in one sentence: what is being decided.
+1. **Hold the discussion.** Call `grilling` with the subject in one sentence:
+   what is being decided.
 
-2. **Read what it settled**: the terms it fixed, the decisions it reached, and the work it handed off.
+2. **Read the testimony's `Settled` lines.** Each names a decision and the
+   question that settled it. Nothing on the line says what kind of decision it
+   is; that reading is this step's.
 
-3. **Record each term it fixed.** Call `glossary` once per term. It reads the view before writing and decides whether a term belongs at all; a word the project already names is not written twice.
+3. **Call `glossary` once per term the discussion fixed**, and `adr` once per
+   settled decision. Each decides for itself whether to write: `glossary` judges
+   whether the word belongs, and `adr` asks its three gates and writes nothing
+   for a decision that fails one. A decision that fails a gate was still judged,
+   and that judgement is the whole result for it.
 
-4. **Judge each settled decision against the three gates.** Call `adr` for each one. It asks its own three gates and writes nothing for a decision that fails one; a decision that fails still counted as a judgement, and that is the whole result for it.
+4. **Report what the discussion left open**: the work it handed off, and any
+   question it left unanswered. Opening a record for that work is the caller's,
+   not this action's.
 
-5. **Report what is still open**: the work the discussion handed off, and any question it left unanswered. Opening a record for that work is the caller's, not this action's.
-
-A discussion that settles nothing is a finished run: no ADR, no glossary entry, and the testimony alone says why.
+A discussion that settles nothing is a finished run: the testimony alone says
+why.
 
 ## Hands off
 
