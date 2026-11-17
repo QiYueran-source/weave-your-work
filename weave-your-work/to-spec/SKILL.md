@@ -4,7 +4,7 @@ description: "Turn the current conversation into a spec and publish it to the pr
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation and the project's current state and produces a spec. Do NOT interview the user; just synthesize what you already know.
+This skill takes the current conversation and the project's current state and produces a spec. Do NOT run a second interview; just synthesize what you already know. Step 2 still asks you to settle the delivery with the user.
 
 ## Process
 
@@ -64,7 +64,7 @@ Exception: a concrete shape that says something prose cannot, such as the column
 
 ## Acceptance
 
-What the second step settled, and nothing else:
+What is handed over, and how a reader tells it was handed over:
 
 - The delivery: one sentence naming what is handed over.
 - The judgement: one to three lines saying how a reader tells it was handed over.

@@ -70,9 +70,11 @@ Iterate until the user approves the breakdown.
 
 ### 5. Publish the tickets to the project tracker
 
-Publish the approved tickets. Publish them in dependency order, blockers first.
+Publish the approved tickets. One record per ticket: create the record, then
+record the tickets that block it. The order the records are created in carries
+no meaning.
 
-One record per ticket. Each record's body opens with the identifier of the spec it came from, on a line of its own, then the four parts below. Mark the records whose tasks a person works.
+Each record's body opens with the identifier of the spec it came from, on a line of its own, then the four parts below. Mark the records whose tasks a person works.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
 
@@ -102,7 +104,7 @@ Left empty when the ticket is published. Whoever finishes the ticket fills it in
 
 ## Blocked by
 
-- A reference to each blocking ticket, or "None (can start immediately)". Leave this part out when the edges are recorded on the record instead.
+- A reference to each blocking ticket, or "None (can start immediately)".
 
 </ticket-template>
 

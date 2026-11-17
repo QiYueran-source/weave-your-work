@@ -98,11 +98,6 @@ act on it until the person confirms you have reached a shared understanding.
 
 A discussion that settles nothing is a finished run: the testimony alone says why.
 
-## The project's records
-
-How this project writes a record lives in `.work-weave/config/tracker.md`. Read it
-before writing one.
-
 ## What this skill does not do
 
 - Decide; the person does.
