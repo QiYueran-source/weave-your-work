@@ -78,172 +78,72 @@ function sections(body) {
   return found
 }
 
-const VERDICTS = ['passed', 'needs changes', 'needs discussion', 'wrong direction']
-const MAP_FIELDS = ['split_as']
-const TASK_FIELDS = ['task_kind', 'reversibility', 'needs_human', 'waiting_on']
+// A spec's body answers Matt's seven sections. The first three say what the
+// problem is and for whom; the rest say what was decided, what is handed over,
+// and what was left out.
+const SPEC_SECTIONS = [
+  'Problem Statement',
+  'Solution',
+  'User Stories',
+  'Implementation Decisions',
+  'Acceptance',
+  'Out of Scope',
+]
 
-// A review is a block per review: `Goal: <verdict>` and `Convention: <verdict>`,
-// each with its evidence under it. The latest block that is not struck is the
-// one that counts, and it counts only when both axes name a verdict; a block
-// that merges the axes into one line is the legacy shape and is read as before.
-const AXIS = /^(Goal|Convention):\s*(.+)$/
+// A spec written before `Testing Decisions` was renamed still names the older
+// section. The rename is recorded in `weave-your-work/to-spec/SKILL.md`.
+const SPEC_SECTION_RENAMES = { 'Testing Decisions': 'Acceptance' }
 
-function reviewBlocks(review) {
-  const blocks = []
-  let block = null
-  for (const line of review.split(/\r?\n/)) {
-    if (line.startsWith('~~')) continue
-    const axis = line.match(AXIS)
-    if (axis) {
-      if (!block || (block.Convention && axis[1] === 'Goal')) {
-        block = { Goal: [], Convention: [] }
-        blocks.push(block)
-      }
-      block[axis[1]].push(axis[2].trim())
-    }
-  }
-  return blocks
-}
-
-function verdictOf(value) {
-  return VERDICTS.find((verdict) => value.startsWith(verdict)) ?? null
-}
-
-// The verdict pair of the latest block, or one legacy verdict for both axes.
-function latestVerdicts(review) {
-  const blocks = reviewBlocks(review)
-  const last = blocks.at(-1)
-  if (!last) {
-    const line = review.split(/\r?\n/).find((l) => l.trim() && !l.startsWith('~~'))
-    const verdict = line ? verdictOf(line.trim()) : null
-    return { goal: verdict, convention: verdict, legacy: Boolean(verdict) }
-  }
-  const pick = (values) => values.map(verdictOf).find(Boolean) ?? null
-  return { goal: pick(last.Goal), convention: pick(last.Convention), legacy: false }
-}
-
-// What the pair does to the record: both pass, or the worse verdict decides.
-const VERDICT_RANK = ['passed', 'needs changes', 'needs discussion', 'wrong direction']
-function worseOf(pair) {
-  return VERDICT_RANK.find((verdict) => verdict === pair.goal || verdict === pair.convention) ?? null
-}
-
-// A block written before the axes were split names one verdict for both. It is
-// read as that verdict on each axis and reported once, as a note to migrate,
-// under `ASSERTIONS.md`'s "two axes into one verdict" rule.
-function mergedAxisFinding(file, review) {
-  if (reviewBlocks(review).length === 0 && latestVerdicts(review).legacy)
-    add(file, 'Review block names no Goal and Convention; the two axes are merged')
-  return latestVerdicts(review).legacy
-}
-
-function checkMap(file, fm, body) {
+function checkSpec(file, fm, body) {
   const parts = sections(body)
-  if (!parts.Target) add(file, 'map has no ## Target section')
-  else {
-    const target = parts.Target
-    const lines = target.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
-    const hasWhy = lines.some((line) => /^Why:/.test(line))
-    const sourceLine = lines.filter((line) => /^Source:/.test(line))
-    if (!hasWhy) add(file, 'map Target has no Why line')
-    if (sourceLine.length !== 1) add(file, 'map Target names no source, or names more than one')
+  const present = Object.keys(parts)
+  for (const [oldName, newName] of Object.entries(SPEC_SECTION_RENAMES)) {
+    if (present.includes(oldName) && !present.includes(newName))
+      add(file, `spec names ## ${oldName}, renamed to ## ${newName}`)
   }
-  if (!parts['Acceptance direction']) add(file, 'map has no ## Acceptance direction section')
-  else if (!/Review point:/.test(parts['Acceptance direction']))
-    add(file, 'map Acceptance direction has no Review point line')
-  if (!parts['Not yet specified']) add(file, 'map has no ## Not yet specified section')
-  if (parts.Children || parts['Sub-maps']) add(file, 'map body lists its children')
-
-  const fog = parts['Not yet specified'] ?? ''
-  const lines = fog.split(/\r?\n/)
-  for (let i = 0; i < lines.length; i += 1) {
-    const line = lines[i]
-    if (!line.startsWith('- ')) continue
-    // An entry runs from its `- ` line to the next one; a struck entry is
-    // resolved only when its own block says so.
-    const block = [line]
-    let end = i + 1
-    while (end < lines.length && !lines[end].startsWith('- ') && !lines[end].startsWith('## ')) {
-      block.push(lines[end])
-      end += 1
-    }
-    const text = block.join('\n')
-    if (line.startsWith('- ~~')) {
-      if (!/Resolved on \d{4}-\d{2}-\d{2}/.test(text))
-        add(file, `struck fog entry has no Resolved on date: ${line.slice(0, 60)}`)
-      i = end - 1
-      continue
-    }
-    if (!/^- [A-Z][A-Za-z ]+:/.test(line)) continue
-    if (!/^\s+(Why it matters|If wrong):/m.test(text))
-      add(file, `fog entry has no second line: ${line.slice(0, 60)}`)
-    i = end - 1
-  }
-
-  if (fm.status === 'closed') {
-    if (!parts.Review) add(file, 'closed map has no ## Review section')
-    else {
-      const pair = latestVerdicts(parts.Review)
-      const legacy = mergedAxisFinding(file, parts.Review)
-      if (legacy) {
-        // one finding per legacy block, above; its verdict already passed when it was written
-      } else if (!pair.goal && !pair.convention) add(file, 'map Review carries no verdict')
-      else if (!pair.goal || !pair.convention) add(file, 'map Review block names a verdict on one axis only')
-      else if (pair.goal !== 'passed' || pair.convention !== 'passed')
-        add(file, `closed map closes with Goal "${pair.goal}" and Convention "${pair.convention}"`)
-    }
-  }
-
-  if (fm.custom.outcome === 'failed' && parts.Review) {
-    const pair = latestVerdicts(parts.Review)
-    if (worseOf(pair) !== 'wrong direction') add(file, 'outcome=failed without a "wrong direction" on an axis')
+  for (const name of SPEC_SECTIONS) {
+    if (!parts[name] && !(name === 'Acceptance' && present.includes('Testing Decisions')))
+      add(file, `spec has no ## ${name} section`)
   }
 }
 
-function checkTask(file, fm, body) {
+// A ticket's body opens with the identifier of the spec it came from, then says
+// what to do, what counts as done, what was left behind, and what blocks it.
+// The result is filled in when the ticket is finished, so a closed ticket must
+// have one and an open ticket need not.
+function checkTicket(file, fm, body) {
   const parts = sections(body)
-  if (!parts.Action) add(file, 'task has no ## Action section')
-  if (!parts['Acceptance signal']) add(file, 'task has no ## Acceptance signal section')
+  // The opening line names the spec this ticket came from, which is the only
+  // relation between the two. A line that opens with an identifier is a bare
+  // identifier; `Part of wm-...` is the same statement in a sentence. A ticket
+  // written while the tree still existed names its spec in a `parent` field
+  // instead, which says the same thing and is read as such.
+  const opening = (body.split(/\r?\n/).find((line) => line.trim()) ?? '').trim()
+  const specId = opening.match(/(?:^|\s)(wm-[a-z0-9]+)$/)?.[1] ?? fm.parent
+  if (!specId) add(file, 'ticket does not name the spec it came from')
+  else if (items.get(specId)?.fm.category !== 'spec')
+    add(file, `ticket names ${specId}, which is not a spec`)
 
-  const { task_kind, reversibility, needs_human } = fm.custom
-  if (!['delivery', 'probe'].includes(task_kind ?? '')) add(file, `task_kind is "${task_kind ?? 'missing'}"`)
-  if (!['one_way', 'two_way'].includes(reversibility ?? ''))
-    add(file, `reversibility is "${reversibility ?? 'missing'}"`)
-  if (!['true', 'false'].includes(needs_human ?? '')) add(file, `needs_human is "${needs_human ?? 'missing'}"`)
-
-  if (task_kind === 'delivery' && reversibility === 'one_way' && !parts['Failure recovery'])
-    add(file, 'one_way delivery has no ## Failure recovery section')
-  if (task_kind === 'probe' && !parts['Next step']) add(file, 'probe has no ## Next step section')
-
-  if (fm.status === 'closed' && !parts.Result) add(file, 'closed task has no ## Result section')
-  if (parts.Review) {
-    const pair = latestVerdicts(parts.Review)
-    const legacy = mergedAxisFinding(file, parts.Review)
-    if (!legacy && !pair.goal && !pair.convention) add(file, 'task Review carries no verdict')
-    else if (!legacy && (!pair.goal || !pair.convention))
-      add(file, 'task Review block names a verdict on one axis only')
-    if (!legacy && fm.status === 'closed' && pair.goal && pair.convention && (pair.goal !== 'passed' || pair.convention !== 'passed'))
-      add(file, `closed task closes with Goal "${pair.goal}" and Convention "${pair.convention}"`)
-    if (!mergedAxisFinding(file, parts.Review) && pair.goal === 'passed' && pair.convention === 'passed' && fm.custom.waiting_on)
-      add(file, 'passed task still carries waiting_on')
-  }
-  if (fm.custom.outcome === 'failed' && parts.Review) {
-    const pair = latestVerdicts(parts.Review)
-    if (worseOf(pair) !== 'wrong direction') add(file, 'outcome=failed without a "wrong direction" on an axis')
-  }
+  if (!parts['What to do'] && !parts['What to build'])
+    add(file, 'ticket has no ## What to do section')
+  if (!parts['Acceptance criteria']) add(file, 'ticket has no ## Acceptance criteria section')
+  if (fm.status === 'closed' && !parts['The result'] && !parts.Result)
+    add(file, 'closed ticket has no ## The result section')
 
   const dependencies = Array.isArray(fm.dependencies) ? fm.dependencies : []
-  if (dependencies.length) add(file, 'task carries a dependency edge')
-  if (!fm.parent) add(file, 'task has no parent')
+  for (const dependency of dependencies) {
+    if (items.get(dependency)?.fm.category !== 'ticket')
+      add(file, `blocked by ${dependency}, which is not a ticket`)
+  }
 }
 
 function checkTestimony(file, fm) {
   const body = read(file)
   const parts = sections(parseTicket(body)?.body ?? body)
   if (!parts.Subject) add(file, 'testimony has no ## Subject section')
-  for (const field of [...MAP_FIELDS, ...TASK_FIELDS]) {
-    if (fm.custom[field] !== undefined) add(file, `testimony carries the ${field} field`)
-  }
+  // A testimony records a discussion. The fields a project declares describe
+  // work, and a discussion has none of them to carry.
+  if (fm.custom.needs_human !== undefined) add(file, 'testimony carries the needs_human field')
 
   // A question block is `- **Qn**` followed by its indented fields. The ones
   // under `## Rounds` are the discussion; a block elsewhere is prose.
@@ -295,43 +195,29 @@ for (const category of ['spec', 'ticket', 'testimony']) {
     const { fm, body } = parsed
     items.set(fm.id ?? name.replace(/\.md$/, ''), { file, fm, body })
     if (fm.category !== category) add(file, `category "${fm.category}" sits in tickets/${category}/`)
-    if (category === 'map') checkMap(file, fm, body)
-    if (category === 'task') checkTask(file, fm, body)
+    if (category === 'spec') checkSpec(file, fm, body)
+    if (category === 'ticket') checkTicket(file, fm, body)
     if (category === 'testimony') checkTestimony(file, fm)
   }
 }
 
-// Relations that need the whole project.
+// Relations that need the whole project. A record naming a dependency that does
+// not exist, or depending on itself, cannot be worked in the order it asks for.
 for (const [id, { file, fm }] of items) {
-  const parent = fm.parent
-  if (parent && !items.has(parent)) add(file, `parent ${parent} does not exist`)
   const dependencies = Array.isArray(fm.dependencies) ? fm.dependencies : []
   for (const dependency of dependencies) {
-    if (!items.has(dependency)) add(file, `dependency ${dependency} does not exist`)
-    if (dependency === parent) add(file, 'dependency edge to its own parent')
+    if (dependency === id) add(file, 'a record that blocks itself')
+    else if (!items.has(dependency)) add(file, `dependency ${dependency} does not exist`)
   }
-  if (fm.category === 'task' && parent && items.has(parent)) {
-    if (items.get(parent).fm.category !== 'map') add(file, `parent ${parent} is not a map`)
+  // A spec and its tickets are separate records with no relation between them.
+  // The retired tree recorded the relation as a `parent` on the child, and a
+  // record written then still carries it; what no category has is a parent that
+  // is not a spec.
+  if (fm.parent !== undefined) {
+    const parent = items.get(fm.parent)
+    if (!parent) add(file, `parent ${fm.parent} does not exist`)
+    else if (parent.fm.category !== 'spec') add(file, `parent ${fm.parent} is not a spec`)
   }
-}
-
-// Children of one map share one category, and a map with children carries split_as.
-const byParent = new Map()
-for (const [, { fm }] of items) {
-  if (!fm.parent) continue
-  if (!byParent.has(fm.parent)) byParent.set(fm.parent, [])
-  byParent.get(fm.parent).push(fm)
-}
-for (const [parentId, children] of byParent) {
-  const parent = items.get(parentId)
-  if (!parent) continue
-  const kinds = new Set(children.map((child) => child.category))
-  if (kinds.size > 1) add(parent.file, `children are mixed: ${[...kinds].join(', ')}`)
-  const expected = { submap: 'map', task: 'task' }
-  const declared = parent.fm.custom.split_as
-  if (!declared) add(parent.file, 'map has children but no split_as')
-  else if (expected[declared] !== [...kinds][0])
-    add(parent.file, `split_as is "${declared}" but children are ${[...kinds][0]}`)
 }
 
 // Glossary sources: one JSONL line per term, each with a term and a definition.
