@@ -1,0 +1,5 @@
+interface:
+  display_name: "Hand Back"
+  short_description: "Record a person's finished work and move to the next ticket"
+policy:
+  allow_implicit_invocation: false

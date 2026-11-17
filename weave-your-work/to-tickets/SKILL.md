@@ -47,7 +47,7 @@ Record the arranger on the record, in the field the project keeps for it. A task
 
 Every task ends with **a result**: what was left behind, in a form a later reader can point at. Write one or two lines.
 
-The result is written when the task is finished, not when it is cut. For an agent's task the change is often readable already; for a task done by hand the result is the only trace there is: the number, the name, the decision, or the reference that lets someone check it.
+The result is written when the task is finished, not when it is cut. For an agent's task the change is often readable already; for a task done by hand the result is the only trace there is: the number, the name, the decision, or the reference that lets someone check it. A task a person does records its result with `hand-back`, which asks for it and closes the ticket.
 
 </the-result>
 
