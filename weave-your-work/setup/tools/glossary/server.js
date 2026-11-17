@@ -4,7 +4,7 @@
 const { McpServer } = require("@modelcontextprotocol/sdk/server/mcp.js");
 const { StdioServerTransport } = require("@modelcontextprotocol/sdk/server/stdio.js");
 const { z } = require("zod");
-const glossary = require("./glossary.js");
+const glossary = require("./glossary-core.js");
 
 const argv = process.argv.slice(2);
 const projectFlag = argv.indexOf("--project");
@@ -37,23 +37,6 @@ function text(value) {
     ],
   };
 }
-
-server.registerTool(
-  "glossary_lookup",
-  {
-    description: "Look up one term in the project glossary.",
-    inputSchema: {
-      term: z.string().describe("The term, or the part before a parenthetical note."),
-    },
-  },
-  async ({ term }) => {
-    const found = glossary.find(root, term);
-    if (!found) {
-      return { content: [{ type: "text", text: `not found: ${term}` }], isError: true };
-    }
-    return text(found);
-  }
-);
 
 server.registerTool(
   "glossary_list",

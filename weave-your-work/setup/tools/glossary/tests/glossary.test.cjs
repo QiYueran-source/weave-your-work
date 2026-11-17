@@ -6,7 +6,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { test } = require("node:test");
-const glossary = require("../glossary.js");
+const glossary = require("../glossary-core.js");
 
 const toolsDir = path.join(__dirname, "..");
 const cli = path.join(toolsDir, "glossary.js");
@@ -241,6 +241,24 @@ test("writes the generated view only at the project root", (t) => {
   assert.ok(!fs.existsSync(path.join(root, "glossary")));
 });
 
+test("terms in a group render with the most recently settled first", (t) => {
+  const root = project(t, { operator: "alice", glossary: true });
+  const older = record("older");
+  older.group = "cluster";
+  older.updated_at = "2026-01-01T00:00:00Z";
+  const newer = record("newer");
+  newer.group = "cluster";
+  newer.updated_at = "2026-06-01T00:00:00Z";
+  const newest = record("newest");
+  newest.group = "cluster";
+  newest.updated_at = "2026-12-01T00:00:00Z";
+  writeSource(root, "alice", [older, newest, newer]);
+
+  const text = fs.readFileSync(glossary.merge(root), "utf8");
+  const order = [...text.matchAll(/^\*\*(.+?)\*\*:/gm)].map((match) => match[1]);
+  assert.deepEqual(order, ["newest", "newer", "older"]);
+});
+
 test("a term without a group merges into the default group", (t) => {
   const root = project(t, { operator: "alice", glossary: true });
   const item = record("alpha");
@@ -279,7 +297,7 @@ test("runs from a type=module project runtime", (t) => {
 
   const runtime = path.join(root, ".work-weave", "runtime", "glossary");
   fs.mkdirSync(runtime, { recursive: true });
-  for (const file of ["glossary.js", "project-root.cjs", "package.json"]) {
+  for (const file of ["glossary.js", "glossary-core.js", "project-root.cjs", "package.json"]) {
     fs.copyFileSync(path.join(toolsDir, file), path.join(runtime, file));
   }
 
