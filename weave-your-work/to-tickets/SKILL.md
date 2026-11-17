@@ -39,7 +39,7 @@ Give each ticket its **blocking edges**: the other tickets that must complete be
 
 Every task is worked by one arranger: a person or an agent, never both. A mixed task stops at the half the agent cannot do, so a task needing a person is its own task, however small. Reading a label takes a minute and is still a ticket.
 
-Record the arranger on the record with the `needs_human` field. It is false by default; a task for a person sets it true. Leave it alone for a task an agent can do alone.
+Record the arranger on the record, in the field the project keeps for it. A task an agent can do alone leaves it at its default.
 
 </one-arranger>
 
@@ -72,11 +72,16 @@ Iterate until the user approves the breakdown.
 
 Publish the approved tickets. Publish them in dependency order, blockers first.
 
-One record per ticket. Each record's body opens with the identifier of the spec it came from, on a line of its own, then the four parts below. Set `needs_human` on the records whose tasks a person works.
+One record per ticket. Each record's body opens with the identifier of the spec it came from, on a line of its own, then the four parts below. Mark the records whose tasks a person works.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
 
 A ticket too large to cut means the spec is too large. Say so, and stop, rather than forcing a cut.
+
+## The project's records
+
+How this project writes a record lives in `.work-weave/config/tracker.md`. Read it
+before writing one.
 
 <ticket-template>
 

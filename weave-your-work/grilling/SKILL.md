@@ -68,11 +68,10 @@ The _decisions_ are the person's: put each to them and wait.
 
 ## The testimony
 
-Create a testimony with `waymark create --category testimony` once the subject
-can be named in one sentence, which is after the first round is planned and
-before the first answer is recorded. Write its body as each round happens, never
-batched to the end: a discussion interrupted after one round leaves that round
-behind.
+Create a testimony once the subject can be named in one sentence, which is after
+the first round is planned and before the first answer is recorded. Write its
+body as each round happens, never batched to the end: a discussion interrupted
+after one round leaves that round behind.
 
 `TESTIMONY-FORMAT.md` gives the shape, and `TESTIMONY-EXAMPLE.md` shows it
 filled in. The short form:
@@ -98,6 +97,11 @@ every branch of the design tree visited, nothing left silently assumed. Do not
 act on it until the person confirms you have reached a shared understanding.
 
 A discussion that settles nothing is a finished run: the testimony alone says why.
+
+## The project's records
+
+How this project writes a record lives in `.work-weave/config/tracker.md`. Read it
+before writing one.
 
 ## What this skill does not do
 

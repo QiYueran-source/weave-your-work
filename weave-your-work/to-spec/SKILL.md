@@ -20,6 +20,11 @@ The spec's owner is the person writing it. When the writer is doing this for som
 
 An operator writes the specs and tickets they own. Taking on a colleague's is a transfer of ownership, which leaves a record, rather than an edit made under the other name. Nothing enforces this — the tracker warns and writes anyway. The rule is the whole mechanism.
 
+## The project's records
+
+How this project writes a record lives in `.work-weave/config/tracker.md`. Read it
+before writing one.
+
 <spec-template>
 
 ## Problem Statement
