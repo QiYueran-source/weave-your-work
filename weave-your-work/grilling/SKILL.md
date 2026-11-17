@@ -88,9 +88,8 @@ filled in. The short form:
 The design tree is not written a second time. Each question's `Parent` line
 carries the structure, and the tree is recovered from those lines.
 
-This skill writes the testimony and nothing else. A term goes to `glossary` and
-a decision to `adr`, run by whoever asked for the discussion; the testimony
-names where each one must land and writes neither.
+This skill writes the testimony and nothing else. What the discussion settled
+belongs to whoever asked for it; this skill draws no conclusion from it.
 
 ## When it ends
 
@@ -98,10 +97,9 @@ The discussion is done when the frontier is empty and the testimony is written:
 every branch of the design tree visited, nothing left silently assumed. Do not
 act on it until the person confirms you have reached a shared understanding.
 
-A discussion that settles nothing is a finished run: no ADR, no entry, and the
-testimony alone says why.
+A discussion that settles nothing is a finished run: the testimony alone says why.
 
 ## What this skill does not do
 
 - Decide; the person does.
-- Write a glossary entry or an ADR; the caller runs the actions that do.
+- Carry what it settled into any other record; the caller does that.
