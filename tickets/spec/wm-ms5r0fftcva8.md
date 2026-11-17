@@ -7,7 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-17T06:06:58Z
-updated_at: 2026-11-17T06:06:58Z
+updated_at: 2026-11-17T06:41:03Z
 ---
 ## Problem Statement
 
@@ -133,9 +133,18 @@ de-duplication by title, the superseded computation, and the view layout.
 code repository and speaks about decisions in the work this set is used for. It
 keeps the three gates, names the seven shapes, and says how the write happens.
 
-**No MCP server.** The glossary has one because lookups happen constantly during
-a discussion. An ADR is written once and read through `ADR.md`, so a CLI and the
-merge are enough.
+**An MCP server, with the CLI kept beside it.** This decision was taken during
+implementation, after the first draft said no server. The draft's reason was
+that an ADR is written once and read through `ADR.md`; what it missed is how
+often an agent asks whether a decision is already recorded while a discussion
+runs. That question is a lookup, and the glossary already answers its own
+lookups through a server.
+
+The tool splits into three files so the server never becomes the only way in:
+`adr-core.js` holds every function and needs no dependencies, `adr.js` is the
+command line and needs none either, and `server.js` is the MCP server and needs
+`@modelcontextprotocol/sdk` and `zod`. A failed runtime install leaves the CLI
+working.
 
 ## Testing Decisions
 
@@ -159,12 +168,16 @@ Tests to write:
 - Two entries describing the same decision under two identifiers both survive the
   merge.
 
+The server is checked the way the glossary server is: the setup check asks it
+for its tool list and expects `adr_list`, `adr_show`, `adr_write`, and
+`adr_merge`. The server holds no logic of its own, so the behaviour above is
+tested through the core and the CLI.
+
 ## Out of Scope
 
 - Resolving a decision recorded twice under two identifiers. The merge keeps both.
 - Searching existing ADRs before writing a new one. Not required, per Matt.
 - A lock or sequence server for identifiers.
-- An MCP server for ADRs.
 - Migrating existing `docs/adr/` files into the new format.
 - Changing the glossary, the mainline skills, or any other skill in this set.
 - The `map` and `task` categories, retired with the old waymark project.
