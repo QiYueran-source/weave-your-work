@@ -1,22 +1,24 @@
 ---
 name: to-spec
-description: "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed."
+description: "Turn the current conversation into a spec and publish it to the project tracker: no interview, just synthesis of what you've already discussed."
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
-
-The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+This skill takes the current conversation and the project's current state and produces a spec. Do NOT interview the user; just synthesize what you already know.
 
 ## Process
 
-1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the spec, and respect any ADRs in the area you're touching.
+1. Read the project's current state, if you haven't already. That means the specs and tickets that are open, `GLOSSARY.md`, `ADR.md`, and any document the change touches. Write the spec in the vocabulary those records use, and respect the decisions they have already settled. The read answers three things: what the project calls things, what it has decided, and whether a spec for this change already exists.
 
-2. Sketch out the seams at which you're going to test the feature. Existing seams should be preferred to new ones. Use the highest seam possible. If new seams are needed, propose them at the highest point you can. The fewer seams across the codebase, the better - the ideal number is one.
+2. Settle two things with the user: what is being handed over, and how a reader will know it was handed over. Judge the delivery at the finished thing, not at a step toward it: the paper handed in, not the chapter written. Keep the judgement to one line where possible.
 
-Check with the user that these seams match their expectations.
+3. Write the spec using the template below, then publish it to the project tracker.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+## Who it belongs to
+
+The spec's owner is the person writing it. When the writer is doing this for someone else, they name that person as the owner instead: the spec then says who answers for it, and the tracker still records who wrote it.
+
+An operator writes the specs and tickets they own. Taking on a colleague's is a transfer of ownership, which leaves a record, rather than an edit made under the other name. Nothing enforces this — the tracker warns and writes anyway. The rule is the whole mechanism.
 
 <spec-template>
 
@@ -42,27 +44,27 @@ This list of user stories should be extremely extensive and cover all aspects of
 
 ## Implementation Decisions
 
-A list of implementation decisions that were made. This can include:
+What is being made and what was settled in order to make it, in one list. A ticket cut from this spec needs both.
 
-- The modules that will be built/modified
-- The interfaces of those modules that will be modified
-- Technical clarifications from the developer
-- Architectural decisions
-- Schema changes
-- API contracts
-- Specific interactions
+- What is being made, and what changes around it
+- Who is affected, and how their work changes
+- Facts clarified from records, correspondence, or agreements
+- Practices settled, with the alternatives rejected and why
+- Changes to what a record holds, such as a new field or a new category
+- Agreements made with an outside party
 
-Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
+Do NOT include specific locations or code. A location changes, and the reader may not be able to reach it at all. Say what is to be obtained, not where it sits. Skill text is the opposite case: a skill that does not say where its files live makes the agent guess.
 
-Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits.
+Exception: a concrete shape that says something prose cannot, such as the columns of a table or the values a state takes. Inline only the part that carries the decision, and note briefly where it came from.
 
-## Testing Decisions
+## Acceptance
 
-A list of testing decisions that were made. Include:
+What the second step settled, and nothing else:
 
-- A description of what makes a good test (only test external behavior, not implementation details)
-- Which modules will be tested
-- Prior art for the tests (i.e. similar types of tests in the codebase)
+- The delivery: one sentence naming what is handed over.
+- The judgement: one to three lines saying how a reader tells it was handed over.
+
+Judge at the finished thing, not at a step toward it. A reader seeing "the chapter is written" has not been told the paper is handed in.
 
 ## Out of Scope
 
