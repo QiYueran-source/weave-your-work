@@ -3,11 +3,12 @@ schema: 1
 id: wm-hmmwpwfmm3pd
 title: Write an ADR to your own source file
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T06:13:01Z
-updated_at: 2026-11-17T06:13:01Z
+updated_at: 2026-11-17T06:19:10Z
+closed_at: 2026-11-17T06:19:10Z
 ---
 ## Parent
 

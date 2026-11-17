@@ -3,11 +3,12 @@ schema: 1
 id: wm-35mq3ayqbgxj
 title: Merge every source into one ADR.md
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T06:13:05Z
-updated_at: 2026-11-17T06:13:05Z
+updated_at: 2026-11-17T06:19:10Z
+closed_at: 2026-11-17T06:19:10Z
 dependencies:
   - wm-hmmwpwfmm3pd
 ---

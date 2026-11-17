@@ -3,11 +3,12 @@ schema: 1
 id: wm-rycaq9m3mkzx
 title: Supersede an older ADR without editing it
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T06:13:10Z
-updated_at: 2026-11-17T06:13:10Z
+updated_at: 2026-11-17T06:19:10Z
+closed_at: 2026-11-17T06:19:10Z
 dependencies:
   - wm-35mq3ayqbgxj
   - wm-hmmwpwfmm3pd

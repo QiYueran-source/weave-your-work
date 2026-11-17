@@ -3,11 +3,12 @@ schema: 1
 id: wm-rjybt5np5sn2
 title: Install the ADR tool into a project
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T06:13:15Z
-updated_at: 2026-11-17T06:13:15Z
+updated_at: 2026-11-17T06:19:10Z
+closed_at: 2026-11-17T06:19:10Z
 dependencies:
   - wm-35mq3ayqbgxj
   - wm-hmmwpwfmm3pd
