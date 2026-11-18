@@ -159,7 +159,8 @@ When no reachable ticket is left that the run can work, report:
 - the tickets left to people, and what each needs;
 - every contradiction found in a batch, each with both sides;
 - every finding `review` raised inside the run's tickets, with the ticket it is
-  on.
+  on;
+- whether the spec was closed, and if it was not, what is still in the way.
 
 A ticket too large to work means the spec is too large. Say so rather than
 working part of one.
