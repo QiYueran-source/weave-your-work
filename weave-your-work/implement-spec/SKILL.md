@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: "Work a whole spec in one run: work each batch of its frontier at once by calling implement for every ticket, let a merger settle what the batch's results say together, and close the batch's tickets once it has."
+description: "Work a whole spec in one run: work each batch of its frontier at once by calling implement for every ticket, read the batch's results together, and close the batch once it has."
 disable-model-invocation: true
 ---
 
@@ -56,38 +56,33 @@ how a ticket is worked, and a second copy of that would drift from it.
 One ticket is one call. A subagent that works a ticket ends when that call
 returns: it does not work the ticket next to it and does not start the run.
 
-**A ticket worked in a batch is not closed by the call.** `implement` writes the
-result and stops there; the batch closes the tickets, once the merger has read
-them. A ticket closed before the batch is read is a ticket whose result nobody
-has looked at yet.
+**A ticket worked in a batch is not closed by the call.** The batch closes its
+tickets once their results have been read together, and reading them together is
+what this run does next.
 
-## The merger
+## Reading the batch, and closing it
 
-When every subagent in the batch has returned, hand their results to a merger.
+When every subagent in the batch has returned, read the batch's results
+together. This is the run's counterpart of Matt's merger, and it answers:
 
-The merger is not a git merge. Nothing is being combined into one file, and
-there is no conflict for a tool to report. The merger reads the batch's results
-together and says what they amount to:
-
-- do they contradict each other;
+- do the results contradict each other;
 - was the same thing done twice;
-- do they hold together as one body of work, or do they need someone to choose.
+- do they hold together as one body of work, or does something need a person to
+  choose.
 
-A small difference, such as two ways of saying one thing, is settled in the
-merger's own line with its reason. A contradiction is stated with both sides and
-left for someone to choose, rather than being settled on the reader's behalf.
+It reports to this run, not to a person, because the run is what carries the
+result forward.
 
-The merger reports to this run, not to a person: the run is what carries the
-result forward to the next batch and into the final report.
+A small difference is settled in one line with its reason. A contradiction is
+stated with both sides and left for someone to choose: the reading does not
+settle it on their behalf.
 
-## Closing a batch
+Then close the tickets worked in that batch. A ticket whose result the reading
+contradicted is still closed: it was worked, and the contradiction is a finding
+about the set, not a failure of that ticket.
 
-After the merger has reported, close the tickets worked in that batch. A ticket
-whose result the merger contradicted is still closed: it was worked, and the
-contradiction is a finding about the set, not a failure of that ticket.
-
-Then work out the frontier again. A ticket becomes reachable when its blockers
-are closed, so closing the batch is what moves the frontier on.
+Closing the batch is what moves the frontier on: a ticket becomes reachable when
+its blockers are closed.
 
 ## When the run stops
 
@@ -111,12 +106,25 @@ When no reachable ticket is left that the run can work, report:
 
 - the batches worked, and the tickets in each;
 - the tickets left to people, and what each needs;
-- every contradiction the merger found, each with both sides;
+- every contradiction found in a batch, each with both sides;
 - every finding `review` raised inside the run's tickets, with the ticket it is
   on.
 
 A ticket too large to work means the spec is too large. Say so rather than
 working part of one.
+
+## Closing the spec
+
+Close the spec when all its work is finished and its acceptance is met: every
+ticket it was cut into is closed, and nothing `review` raised against them is
+still open.
+
+Do not close it on any other ground. Tickets left to people mean the work is
+not finished yet, however few of them there are, and a contradiction means the
+set is not settled yet. Leave the spec open and say what is still in the way.
+
+The acceptance is what decides, not the number of tickets closed: a spec whose
+tickets all closed with unmet acceptance has not finished.
 
 ## The project's records
 
@@ -127,6 +135,6 @@ it before writing one.
 
 - Cut, merge, or re-cut tickets. That is `to-tickets`.
 - Work a ticket whose blocker is open.
-- Rework a result someone else wrote, or settle a contradiction the merger
-  found.
+- Rework a result someone else wrote, or settle a contradiction the batch
+  reading found.
 - Keep going once the frontier is nothing but people's tickets.
