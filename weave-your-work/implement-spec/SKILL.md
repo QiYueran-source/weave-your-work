@@ -29,7 +29,9 @@ the tickets with no unfinished blocker.
 The frontier is a batch, not a queue. Tickets that share no edge may be worked
 at the same time, and working them that way is the point of the run.
 
-Do not work a ticket whose blocker is still open because it looks small or easy.
+Do not work a ticket whose blocker is still unfinished because it looks small or
+easy. Unfinished, not open: a batch closes its tickets together, and the one you
+are holding was open while it was being worked.
 
 ## A batch
 
@@ -167,7 +169,7 @@ it before writing one.
 ## What this skill does not do
 
 - Cut, merge, or re-cut tickets. That is `to-tickets`.
-- Work a ticket whose blocker is open.
+- Work a ticket whose blocker is unfinished.
 - Rework a result someone else wrote, or settle a contradiction the batch
   reading found.
 - Keep going once the frontier is nothing but people's tickets.
