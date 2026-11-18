@@ -3,11 +3,12 @@ schema: 1
 id: wm-n5wyafybvx25
 title: 'Implement-spec: work a spec''s frontier in batches, and close each one after the merger reads it'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-18T07:49:48Z
-updated_at: 2026-11-18T08:24:44Z
+updated_at: 2026-11-18T09:07:03Z
+closed_at: 2026-11-18T09:07:03Z
 ---
 ## Problem Statement
 
