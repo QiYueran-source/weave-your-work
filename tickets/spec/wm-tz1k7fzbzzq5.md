@@ -3,11 +3,12 @@ schema: 1
 id: wm-tz1k7fzbzzq5
 title: Skills point at the project config instead of carrying waymark commands
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T12:53:05Z
-updated_at: 2026-11-17T12:53:05Z
+updated_at: 2026-11-18T07:53:17Z
+closed_at: 2026-11-18T07:53:17Z
 ---
 ## Problem Statement
 

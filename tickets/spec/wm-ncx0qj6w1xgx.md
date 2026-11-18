@@ -3,11 +3,12 @@ schema: 1
 id: wm-ncx0qj6w1xgx
 title: 'to-spec: office-ready template, no tree, one operator per record'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T08:07:18Z
-updated_at: 2026-11-17T08:07:18Z
+updated_at: 2026-11-18T07:53:17Z
+closed_at: 2026-11-18T07:53:17Z
 ---
 ## Problem Statement
 

@@ -3,11 +3,12 @@ schema: 1
 id: wm-qmar7z6vvbyn
 title: 'Implement: survey what the project can do, stop at a person''s task, and hand the result back'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T13:52:00Z
-updated_at: 2026-11-17T13:52:00Z
+updated_at: 2026-11-18T07:53:17Z
+closed_at: 2026-11-18T07:53:17Z
 ---
 ## Problem Statement
 

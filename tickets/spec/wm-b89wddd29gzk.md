@@ -3,11 +3,12 @@ schema: 1
 id: wm-b89wddd29gzk
 title: 'to-tickets: whole tasks, one arranger per ticket, a result to point at'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T09:50:42Z
-updated_at: 2026-11-17T09:50:42Z
+updated_at: 2026-11-18T07:53:17Z
+closed_at: 2026-11-18T07:53:17Z
 ---
 ## Problem Statement
 
