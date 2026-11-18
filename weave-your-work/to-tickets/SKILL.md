@@ -74,9 +74,13 @@ Publish the approved tickets. One record per ticket: create the record, then
 record the tickets that block it. The order the records are created in carries
 no meaning.
 
-Each record's body opens with the identifier of the spec it came from, on a line of its own, then the four parts below. Mark the records whose tasks a person works.
+Each record's body opens with the identifier of the spec it came from, on a line
+of its own, then the four parts below. Mark the records whose tasks a person
+works.
 
-Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
+The tickets are worked from the **frontier**: the tickets whose blockers are all
+done. A pure chain has one such ticket at a time. A person works them one at a
+time with `implement`, or a whole spec in one run with `implement-spec`.
 
 A ticket too large to cut means the spec is too large. Say so, and stop, rather than forcing a cut.
 

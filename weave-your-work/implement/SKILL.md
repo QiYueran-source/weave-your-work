@@ -10,6 +10,9 @@ Do the work a ticket describes.
 
 ## The ticket
 
+This skill works one ticket. To work a whole spec in one run, a person starts
+`implement-spec`, which follows this skill for each of its tickets.
+
 If the user passes a reference, read the ticket and state its title before
 starting. If the reference is ambiguous, ask. If no ticket is named, take the one
 the person means and say which it is.
