@@ -109,6 +109,13 @@ Worktrees and integration branches exist to keep several writers out of one file
 tree, and there is no file tree here to protect. What concurrency does need is
 someone to read the batch together, and that is the merger.
 
+**A subagent writes only its own ticket's record.** Nothing isolates a batch:
+there is no worktree between two subagents, and a tracker that takes the last
+write wins says nothing about the other writer. So the brief carries the limit,
+in three lines: write only the record of your own ticket; close nothing; say
+which record and why when you stop early. The batch's reading is where two
+accounts of one thing get reconciled, and a second writer is not that.
+
 **A ticket is worked by calling `implement`.** Not by restating its rules: the
 run calls `implement` for the ticket and lets it do what it does. This is the
 counterpart of Matt's implementer subagents each calling `tdd`.

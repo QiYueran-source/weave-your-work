@@ -47,6 +47,25 @@ tickets being worked at once while each keeps its own record: a call to a
 service, a search, a report. Nothing in that needs a branch or a copy of the
 repository.
 
+## What a subagent may write
+
+That also means nothing isolates the batch. There is no worktree to keep two
+subagents out of the same record, and a tracker that takes the last write
+wins does not tell either of them that the other one wrote.
+
+So give every subagent its limit in its brief:
+
+- **Write only the record of your own ticket.** Create it if it is missing,
+  write your result into it, and leave every other record alone, the spec
+  included. Do not edit a record to make it agree with yours.
+- **Close nothing.** The ticket stays open until the batch is read.
+- **Report what you could not do.** A subagent that stops early says which
+  record and why, so the run can leave that ticket out of the batch it closes.
+
+Nothing is gained by having two subagents write one record: the run reads the
+batch's results once they are all back, and that reading is where two accounts
+of one thing get reconciled, not a second writer.
+
 ## Each ticket
 
 Work every ticket by calling the Skill tool with `implement`. Not by following
