@@ -80,7 +80,8 @@ works.
 
 The tickets are worked from the **frontier**: the tickets whose blockers are all
 done. A pure chain has one such ticket at a time. A person works them one at a
-time with `implement`, or a whole spec in one run with `implement-spec`.
+time with `implement`, or a whole spec in one run with `implement-spec`, which
+works the same frontier in the same way.
 
 A ticket too large to cut means the spec is too large. Say so, and stop, rather than forcing a cut.
 

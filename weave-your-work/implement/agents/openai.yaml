@@ -1,5 +1,3 @@
 interface:
   display_name: "Implement"
   short_description: "Do a ticket's work with the tools the project gives you"
-policy:
-  allow_implicit_invocation: false
