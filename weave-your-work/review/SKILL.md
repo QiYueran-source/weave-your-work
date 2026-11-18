@@ -9,6 +9,9 @@ disable-model-invocation: true
 Read a spec's finished tickets and report what the reading finds. Change
 nothing while reading.
 
+`implement` calls this once a ticket's result is written, before it closes the
+ticket. A person can also run it over a spec whose tickets are all done.
+
 A document edited in place leaves no record of the edit, and a system going
 live changes a state, not a file, so there is nothing to take a fixed point
 from. What is left is the pair a ticket already states: its acceptance when it

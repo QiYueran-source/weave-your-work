@@ -44,7 +44,21 @@ Do not go on to later tickets. They may depend on the one you stopped at.
 Do the work the ticket asks for.
 
 Then write the result into the ticket: what was left behind, in the shape the
-ticket's result section asks for. Then close the ticket.
+ticket's result section asks for.
+
+## Reading it before it closes
+
+Once the result is written, call the Skill tool with `review`, over the ticket
+and the spec it came from: the ticket's first line names that spec.
+
+Report what review finds. A finding on this ticket is reported with the result,
+to whoever is waiting for it, and it is not repaired inside this run: the run's
+job is the ticket, and a run that repairs itself hides what review found.
+
+A ticket whose spec is missing is still closed. Say that review was skipped and
+why, rather than holding the ticket open for a spec that is not there.
+
+Then close the ticket.
 
 ## The project's records
 
