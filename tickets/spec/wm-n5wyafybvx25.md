@@ -111,10 +111,15 @@ someone to read the batch together, and that is the merger.
 
 **A subagent writes only its own ticket's record.** Nothing isolates a batch:
 there is no worktree between two subagents, and a tracker that takes the last
-write wins says nothing about the other writer. So the brief carries the limit,
-in three lines: write only the record of your own ticket; close nothing; say
-which record and why when you stop early. The batch's reading is where two
-accounts of one thing get reconciled, and a second writer is not that.
+write wins says nothing about the other writer. So the brief carries a map of
+the work before anything else: read the spec's tickets and the tickets around
+them and say which is yours; leave every other record alone, the spec and other
+operators' records included; do not work another ticket even to unblock your
+own. It also carries a rule for what appears while it works: decide whether it
+came from another task and say so, then leave it either way, without editing,
+closing, reverting, or building on it. Close nothing, and say which record and
+what stopped you when you stop early. The batch's reading is where two accounts
+of one thing get reconciled, and a second writer is not that.
 
 **A ticket is worked by calling `implement`.** Not by restating its rules: the
 run calls `implement` for the ticket and lets it do what it does. This is the

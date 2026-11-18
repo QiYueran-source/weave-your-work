@@ -50,17 +50,31 @@ repository.
 ## What a subagent may write
 
 That also means nothing isolates the batch. There is no worktree to keep two
-subagents out of the same record, and a tracker that takes the last write
-wins does not tell either of them that the other one wrote.
+subagents out of the same record, and a tracker that takes the last write wins
+does not tell either of them that the other one wrote.
 
-So give every subagent its limit in its brief:
+So give every subagent its limit in its brief. It opens with a map of the work
+before anything else:
 
-- **Write only the record of your own ticket.** Create it if it is missing,
-  write your result into it, and leave every other record alone, the spec
-  included. Do not edit a record to make it agree with yours.
-- **Close nothing.** The ticket stays open until the batch is read.
-- **Report what you could not do.** A subagent that stops early says which
-  record and why, so the run can leave that ticket out of the batch it closes.
+1. **Read the tickets first, and say who owns what.** Read the spec's tickets
+   and the tickets around them, including the ones in other categories, and
+   state which ticket is yours and which belong to somebody else. Your ticket
+   is the only one you are responsible for. Do not work another ticket, even
+   one nobody has picked up, and do not do the part of somebody else's work
+   that would unblock yours.
+2. **Leave other people's work alone.** Do not edit or close any record that is
+   not your ticket. That includes the spec, other tickets, and the records
+   other operators keep.
+3. **Anything new that is not yours, do not touch.** If the working area holds
+   something that appeared while you worked and is not your doing, work out
+   whether it came from another task, and say what you worked out. Then leave
+   it: do not edit it, close it, delete it, or revert it, and do not build on it
+   as if it were yours. Whether or not you are sure where it came from, the
+   answer is the same.
+4. **Close nothing.** Your ticket stays open until the batch has been read.
+5. **Report what you could not do.** A subagent that stops early says which
+   record it was and what stopped it, so the run can leave that ticket out of
+   the batch it closes.
 
 Nothing is gained by having two subagents write one record: the run reads the
 batch's results once they are all back, and that reading is where two accounts
