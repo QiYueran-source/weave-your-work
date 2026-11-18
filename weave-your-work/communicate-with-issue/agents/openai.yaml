@@ -1,0 +1,5 @@
+interface:
+  display_name: "Communicate with Issue"
+  short_description: "Carry one message between owners as a GitHub issue"
+policy:
+  allow_implicit_invocation: false

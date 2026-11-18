@@ -215,7 +215,8 @@ function append(queue, entries) {
 const CATEGORIES = new Set(['request', 'result', 'comment'])
 
 // Returns the protocol fields, or the list of fields that do not match the
-// communicate issue format in communicate-issue.md.
+// communicate issue format in `communicate-with-issue`'s
+// `COMMUNICATE-ISSUE-FORMAT.md`.
 function communicationFields(front) {
   if (!front || typeof front !== 'object' || Array.isArray(front)) return ['frontmatter']
   if (front.kind !== 'communicate') return null
