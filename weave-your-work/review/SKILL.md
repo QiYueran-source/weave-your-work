@@ -1,7 +1,6 @@
 ---
 name: review
-description: "Read a spec's finished tickets on two axes: whether each result meets its own acceptance, and whether the work addresses the problem the spec names."
-disable-model-invocation: true
+description: "Read a spec's finished tickets on two axes: whether each result meets its own acceptance, and whether the work addresses the problem the spec names. Use when a ticket's result is written, or when a person asks what a spec's finished work amounts to."
 ---
 
 # Review
@@ -10,7 +9,8 @@ Read a spec's finished tickets and report what the reading finds. Change
 nothing while reading.
 
 `implement` calls this once a ticket's result is written, before it closes the
-ticket. A person can also run it over a spec whose tickets are all done.
+ticket, and `implement-spec` reaches it through `implement`. A person can also
+run it over a spec whose tickets are all done.
 
 A document edited in place leaves no record of the edit, and a system going
 live changes a state, not a file, so there is nothing to take a fixed point
