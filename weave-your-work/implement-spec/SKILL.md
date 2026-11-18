@@ -73,10 +73,9 @@ before anything else:
    it: do not edit it, close it, delete it, or revert it, and do not build on it
    as if it were yours. Whether or not you are sure where it came from, the
    answer is the same.
-4. **Close nothing.** Your ticket stays open until the batch has been read.
-5. **Report what you could not do.** A subagent that stops early says which
-   record it was and what stopped it, so the run can leave that ticket out of
-   the batch it closes.
+4. **Close nothing, and say what you could not do.** Your ticket stays open
+   until the batch has been read, and a subagent that stops early says which
+   record it was and what stopped it.
 
 Nothing is gained by having two subagents write one record: the run reads the
 batch's results once they are all back, and that reading is where two accounts
@@ -112,12 +111,28 @@ A small difference is settled in one line with its reason. A contradiction is
 stated with both sides and left for someone to choose: the reading does not
 settle it on their behalf.
 
-Then close the tickets worked in that batch. A ticket whose result the reading
-contradicted is still closed: it was worked, and the contradiction is a finding
-about the set, not a failure of that ticket.
+Then close the batch. The run has the same four rules the subagent was given,
+one level up:
+
+- **Close only the tickets the batch worked.** A ticket that was left out of the
+  batch, because its work is a person's, is not closed here; it stays on the
+  frontier for the next batch.
+- **Close only a ticket that finished and wrote its result.** A ticket whose
+  subagent stopped early is left open, and it stays on the frontier, so the next
+  batch picks it up again. Say in the report that it was tried and did not
+  finish, and say what stopped it.
+- **Close a ticket the reading contradicted.** It was worked, and the
+  contradiction is a finding about the set, not a failure of that ticket.
+- **Change nothing else.** No other record is edited or closed on the strength
+  of the reading: the reading's job is to report, and a contradiction belongs to
+  the person who will choose between its two sides.
 
 Closing the batch is what moves the frontier on: a ticket becomes reachable when
 its blockers are closed.
+
+A ticket that was tried in two batches and did not finish either time is not
+tried a third. Report it with what stopped it on each attempt and leave it out
+of the frontier, so the run stops failing at it and finishes what it can.
 
 ## When the run stops
 

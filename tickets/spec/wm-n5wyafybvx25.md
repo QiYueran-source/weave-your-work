@@ -142,6 +142,14 @@ without adding a reader.
 blockers are closed, so the run closes a batch and then works out the next
 frontier. This is also where a blocked ticket learns it is unblocked.
 
+**The run is bound by the same rules it gives a subagent.** Close only the
+tickets the batch worked, and only ones that finished and wrote their result. A
+ticket whose subagent stopped early stays on the frontier and is picked up by
+the next batch. A ticket the reading contradicted is closed like any other, and
+nothing else is edited or closed on the strength of the reading. A ticket tried
+in two batches that did not finish either time is not tried a third: it is
+reported with what stopped it each time, and left out of the frontier.
+
 **A person's ticket in a batch is set aside.** It is not worked and not passed
 over: it stays on the frontier. The run stops when the next frontier holds
 nothing but such tickets.
