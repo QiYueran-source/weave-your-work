@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: "Work a whole spec in one run: work its tickets in the order their blocking edges allow by calling implement for each, read each finished result against the ones before it, and stop at the first ticket that is a person's."
+description: "Work a whole spec in one run: work each batch of its frontier at once by calling implement for every ticket, let a merger settle what the batch's results say together, and close the batch's tickets once it has."
 disable-model-invocation: true
 ---
 
@@ -9,8 +9,7 @@ disable-model-invocation: true
 Work a whole spec in one run, instead of one ticket at a time.
 
 `implement` does one ticket and stops. A person who has five tickets to get
-through starts it five times. This starts once, and keeps going for as long as
-the tickets keep coming.
+through starts it five times. This starts once, and works them in batches.
 
 ## The spec and its tickets
 
@@ -27,9 +26,26 @@ The spec's tickets are not a list of steps. Read the tickets that came from the
 spec, and the tickets that block them. What you are looking for is the frontier:
 the tickets with no unfinished blocker.
 
-Work the frontier in dependency order. Do not work a ticket whose blocker is
-still open because it looks small or easy. Tickets that share no edge may be
-worked in any order.
+The frontier is a batch, not a queue. Tickets that share no edge may be worked
+at the same time, and working them that way is the point of the run.
+
+Do not work a ticket whose blocker is still open because it looks small or easy.
+
+## A batch
+
+For each batch, take every ticket on the frontier whose work an agent can do. A
+ticket that is a person's is set aside, not worked and not passed over: it stays
+on the frontier for the next batch.
+
+Where the project provides subagents, work the batch in them: one ticket per
+subagent, each starting with a fresh context window, all running at once. Where
+it does not, work them in this window one after another. Judge that against what
+the project actually has.
+
+Concurrency here is not several hands on one working tree. It is several
+tickets being worked at once while each keeps its own record: a call to a
+service, a search, a report. Nothing in that needs a branch or a copy of the
+repository.
 
 ## Each ticket
 
@@ -37,60 +53,67 @@ Work every ticket by calling the Skill tool with `implement`. Not by following
 its rules from memory, and not by restating them here: `implement` is what knows
 how a ticket is worked, and a second copy of that would drift from it.
 
-One ticket is one call, and it returns before the next one starts. Close it
-before starting the next: a ticket worked but not closed still blocks everything
-behind it, and the run stops on its own work.
+One ticket is one call. A subagent that works a ticket ends when that call
+returns: it does not work the ticket next to it and does not start the run.
 
-## Run the tickets in subagents
+**A ticket worked in a batch is not closed by the call.** `implement` writes the
+result and stops there; the batch closes the tickets, once the merger has read
+them. A ticket closed before the batch is read is a ticket whose result nobody
+has looked at yet.
 
-Where the project provides subagents, work each ticket in one. Where it does
-not, work them in this window. Judge that against what the project actually has.
+## The merger
 
-Each subagent starts with a fresh context window, and its task is one ticket: it
-works that ticket by the same call, and it neither works the ticket next to it
-nor starts the run.
+When every subagent in the batch has returned, hand their results to a merger.
 
-## Read the finished results together
+The merger is not a git merge. Nothing is being combined into one file, and
+there is no conflict for a tool to report. The merger reads the batch's results
+together and says what they amount to:
 
-After each ticket is finished, read its result beside the results already
-finished. Two questions:
+- do they contradict each other;
+- was the same thing done twice;
+- do they hold together as one body of work, or do they need someone to choose.
 
-- Do the results contradict each other?
-- Was the same thing done twice?
+A small difference, such as two ways of saying one thing, is settled in the
+merger's own line with its reason. A contradiction is stated with both sides and
+left for someone to choose, rather than being settled on the reader's behalf.
 
-This is the counterpart of the merger: two results can each be right and wrong
-together, and nothing in the record will say so.
+The merger reports to this run, not to a person: the run is what carries the
+result forward to the next batch and into the final report.
 
-Report, and do not act. A small difference, such as two ways of saying one
-thing, is settled in one line with its reason. A contradiction is stated with
-both sides and left for someone to choose. Write nothing: no record, no ticket,
-no result.
+## Closing a batch
 
-A contradiction does not stop the run. The tickets after it may be unaffected,
-and it carries to the final report. Stopping would trade a possible second
-problem for a certain lost batch.
+After the merger has reported, close the tickets worked in that batch. A ticket
+whose result the merger contradicted is still closed: it was worked, and the
+contradiction is a finding about the set, not a failure of that ticket.
 
-## Stop at a person's ticket
+Then work out the frontier again. A ticket becomes reachable when its blockers
+are closed, so closing the batch is what moves the frontier on.
 
-A ticket that is a person's stops the run, because `implement` stops at one. Say
-which ticket it is, what it asks for, and that `hand-back` records the result
-once the work is done. Then stop.
+## When the run stops
 
-Do not go around it. The tickets behind it may depend on it, and the ones beside
-it are the person's to start when they can. A run that quietly skipped a
-person's ticket and finished the rest has left the person with a spec that looks
-done and is not.
+The run goes on for as long as a batch leaves reachable work an agent can do.
 
-Once the result is recorded and the ticket closed, a person starts the run
-again. It picks up from the frontier as it stands.
+It stops when the next frontier holds nothing but tickets that are a person's.
+Say which tickets those are, what each asks for, and that `hand-back` records
+the result once the work is done. Then stop.
+
+Do not go around them, and do not stop early because one of them is on the way.
+The tickets behind a person's ticket may depend on it; the ones beside it can be
+worked before it.
+
+Once the results are recorded and the tickets closed, a person starts the run
+again. It picks up from the frontier as it stands, whether the last run stopped
+at a person's ticket or was cut off partway through a batch.
 
 ## What the run reports
 
-When nothing on the frontier is left that the run can work, report:
+When no reachable ticket is left that the run can work, report:
 
-- the frontier worked, in the order it was worked;
-- the tickets left to people;
-- every contradiction found, each with both sides.
+- the batches worked, and the tickets in each;
+- the tickets left to people, and what each needs;
+- every contradiction the merger found, each with both sides;
+- every finding `review` raised inside the run's tickets, with the ticket it is
+  on.
 
 A ticket too large to work means the spec is too large. Say so rather than
 working part of one.
@@ -103,6 +126,7 @@ it before writing one.
 ## What this skill does not do
 
 - Cut, merge, or re-cut tickets. That is `to-tickets`.
-- Work in parallel. One ticket at a time, in the current working tree.
-- Repair anything the reading finds, or rework a result someone else wrote.
-- Keep going past a person's ticket, however small the rest looks.
+- Work a ticket whose blocker is open.
+- Rework a result someone else wrote, or settle a contradiction the merger
+  found.
+- Keep going once the frontier is nothing but people's tickets.

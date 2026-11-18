@@ -51,14 +51,19 @@ ticket's result section asks for.
 Once the result is written, call the Skill tool with `review`, over the ticket
 and the spec it came from: the ticket's first line names that spec.
 
-Report what review finds. A finding on this ticket is reported with the result,
-to whoever is waiting for it, and it is not repaired inside this run: the run's
-job is the ticket, and a run that repairs itself hides what review found.
+Report what review finds, and do not repair it inside this run: the run's job is
+the ticket, and a run that repairs itself hides what review found. Where the
+finding goes depends on who waited for the result. Standing alone, it goes to
+the person who asked for the ticket. Called by `implement-spec`, it goes back to
+that run, which carries it into the final report.
 
-A ticket whose spec is missing is still closed. Say that review was skipped and
-why, rather than holding the ticket open for a spec that is not there.
+A ticket whose spec is missing is not held open for it. Say that review was
+skipped and why.
 
-Then close the ticket.
+**Then close the ticket, unless the run closes it.** Standing alone, closing is
+the last thing done here. Called for a ticket in an `implement-spec` batch, this
+skill stops once the result and the findings are handed back: the batch closes
+its tickets together, after its results have been read as one set.
 
 ## The project's records
 

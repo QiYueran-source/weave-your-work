@@ -1,13 +1,13 @@
 ---
 schema: 1
 id: wm-n5wyafybvx25
-title: 'Implement-spec: work a spec''s frontier, and read the results together'
+title: 'Implement-spec: work a spec''s frontier in batches, and close each one after the merger reads it'
 category: spec
 status: open
 owner: frank
 creator: frank
 created_at: 2026-11-18T07:49:48Z
-updated_at: 2026-11-18T08:08:36Z
+updated_at: 2026-11-18T08:24:44Z
 ---
 ## Problem Statement
 
@@ -20,176 +20,179 @@ integration branch, and merges each result in with a merger subagent. Most of it
 is about branches and worktrees. A `git merge` conflict is discovered by the tool
 and settled by a person or an agent; the branch is what makes parallel work safe.
 
-Office work has no branches to merge and no worktree to isolate a run. But the
-problem the merger exists for is real and has no tool to catch it: two tickets
-worked separately can leave results that contradict each other, and nothing in a
-file will say so. In a codebase, two agents editing different files merge
-cleanly even when their changes together are wrong. Here they edit the same
-records, and the same silence applies.
+Office work has no branches to merge and no worktree to isolate a run, so none of
+that machinery survives. But the two problems it exists for are real here. Nobody
+works a spec's tickets in order without being asked each time, and nobody reads
+the tenth ticket's result against the first nine: two results can each be right
+and wrong together, and nothing in a file will say so.
 
-So there are two gaps. Nobody works a spec's tickets in order without being
-asked each time, and nobody reads the tenth ticket's result against the first
-nine.
+Concurrency is still worth having, and it is a different thing here. Nothing is
+being written into one working tree by several hands at once; a batch of tickets
+is several calls to services, several searches, several reports, each keeping its
+own record. That needs no branch. It does need something to read the batch's
+results together before anyone treats them as done.
 
 ## Solution
 
-A skill a person runs on a spec's tickets: it works them in the order their
-blocking edges allow, works each one by calling `implement`, reads each finished
-result against the ones already finished, and reports what it sees.
+A skill a person runs on a spec: it works each batch of the frontier at once by
+calling `implement` for every ticket in it, lets a merger read the batch's results
+together, closes the batch, and goes on to the next one.
 
-It works the frontier: every ticket whose blockers are done. A ticket that is a
-person's stops the run at that ticket, because `implement` stops at one, and the
-person is told rather than skipped over.
+The frontier is a batch, not a queue. Tickets with no edge between them are worked
+at the same time.
 
-After each ticket is finished, its result is read beside the results already
-finished. Two things are reported: whether the results contradict each other, and
-whether the same thing was done twice. Its judgement is stated in the report, in
-one line for a small difference such as two ways of saying one thing, and in full
-for a contradiction that needs someone to choose. Nothing is written: the reading
-takes no records, edits no ticket, and changes no result.
+A ticket worked in a batch is not closed by its call. `implement` writes the
+result and returns; the batch closes its tickets after the merger has read them.
+A ticket closed before its batch is read is a ticket whose result nobody has
+looked at.
 
-When every reachable ticket is finished, the run reports the frontier it worked,
-the tickets it left to people, and the contradictions it found.
+The merger is not a git merge. There is no conflict for a tool to report. It reads
+the batch's results together, settles small differences in its own line, states
+contradictions with both sides, and reports to the run. The run closes the batch,
+which is what moves the frontier on.
+
+The run stops when the next frontier holds nothing an agent can do: only tickets
+that are a person's. A person's ticket on the way does not stop a batch, and does
+not get skipped over; it waits for the next batch, and the run stops when it is
+all that is left.
 
 ## User Stories
 
-1. As a person holding a spec, I want its tickets worked in the order their
-   blocking edges allow, so that I do not have to name each one.
-2. As a person holding a spec, I want the run to stop at a ticket that is a
-   person's, so that work does not depend on a ticket nobody has done yet.
-3. As a person holding a spec, I want to be told which tickets are waiting on me,
-   so that I can do them and start the run again.
-4. As an agent working a ticket in a run, I want the same rules as a single-ticket
-   run, so that one way of working covers both.
-5. As a person who asks for a run on a spec that has no tickets, I want to be told
-   to cut them first, so that I do not get a run that invents its own tickets.
-6. As a person reading the run's report, I want each finished result read against
-   the ones already finished, so that a contradiction is found while it is still
-   cheap.
-7. As a person reading the run's report, I want a contradiction stated with both
+1. As a person holding a spec, I want its frontier worked a batch at a time, so
+   that a spec of ten tickets is not ten waits.
+2. As a person holding a spec, I want the batch's results read together before
+   its tickets are closed, so that a contradiction is found while it is cheap.
+3. As a person reading the run's report, I want a contradiction stated with both
    sides, so that I can choose rather than investigate.
-8. As a person reading the run's report, I want a small difference settled with
+4. As a person reading the run's report, I want a small difference settled with
    one line and a reason, so that I am not asked to decide things that need no
    decision.
-9. As a person reading the run's report, I want the same thing done twice
-   reported, so that I can take one of the two.
-10. As a person reading the run's report, I want the frontier that was worked
-    named, so that I know what the run covered.
-11. As a person reading the run's report, I want the tickets left to people named,
-    so that I know what remains before the spec is done.
-12. As a person whose record the run touched, I want nothing written by the
-    reading, so that a report never leaves me a diff to reconcile.
-13. As a person running a spec a second time, I want it to pick up where the last
-    run stopped, so that finishing a person's ticket is enough to continue.
-14. As a person with a spec whose tickets do not fit one run, I want the run to
-    say so rather than stopping silently, so that I know the spec is too large.
-15. As a person reading the set, I want the batch skill to work a ticket by
+5. As a person holding a spec, I want the run to stop when only my tickets are
+   left, so that I am told what waits on me rather than being skipped.
+6. As a person holding a spec, I want one of my tickets on the way not to stop the
+   run, so that the tickets beside it still get worked.
+7. As a person reading the run's report, I want the batches and their tickets
+   named, so that I know what the run covered.
+8. As a person reading the run's report, I want the findings review raised inside
+   the run's tickets, so that a reading nobody saw does not get lost.
+9. As an agent working a ticket in a batch, I want the same rules as a
+   single-ticket run, so that one way of working covers both.
+10. As a person running a spec a second time, I want it to pick up from the
+    frontier as it stands, so that finishing a ticket and starting again is the
+    whole resumption.
+11. As a person whose run was cut off partway through a batch, I want the tickets
+    already worked to keep their results, so that the work is not thrown away.
+12. As a person who asks for a run on a spec that has no tickets, I want to be
+    told to cut them first, so that I do not get a run that invents its own.
+13. As a person reading the set, I want the batch skill to work a ticket by
     calling the single-ticket skill, rather than holding a second copy of its
     rules, so that the two cannot drift apart.
-16. As a person who chose to run without subagents, I want that to be allowed, so
-    that the run does not require a tool the project may not have.
 
 ## Implementation Decisions
 
 **The unit is one spec.** The skill takes a spec and works the tickets cut from it.
 It does not work across specs.
 
-**The tickets already exist.** `to-tickets` is what cuts them, and it is a separate
-skill a person runs first. When the run is given a spec with no tickets under it,
-it says so and names `to-tickets`; it does not cut the tickets itself. This is
-Matt's division and it is kept: a run that cuts its own tickets makes the tickets
-it can work rather than the tickets the work needs.
+**The tickets already exist.** `to-tickets` cuts them and is a separate skill a
+person runs first. Given a spec with no tickets, the run says so and names
+`to-tickets`; it does not cut them itself. This is Matt's division, kept: a run
+that cuts its own tickets makes tickets it can work rather than tickets the work
+needs.
 
-**It works the frontier, in dependency order.** A ticket is reachable when its
-blocking edges are all finished. Tickets with no edge between them may be worked
-in any order.
+**The frontier is a batch.** Every ticket with no unfinished blocker is worked at
+the same time. Where the project provides subagents, one ticket per subagent, each
+in a fresh context window; where it does not, the same window, one after another.
+
+**Concurrency needs no branch.** The batch is several tickets being worked at once
+while each keeps its own record: calls to services, searches, reports. Worktrees
+and integration branches exist to keep several writers out of one file tree, and
+there is no file tree here to protect. What concurrency does need is someone to
+read the batch together, and that is the merger.
 
 **A ticket is worked by calling `implement`.** Not by restating its rules: the run
-calls `implement` for the ticket and lets it do what it does. A copy would drift,
-and the two must always agree. This is the counterpart of Matt's implementer
-subagents each calling `tdd`.
+calls `implement` for the ticket and lets it do what it does. This is the
+counterpart of Matt's implementer subagents each calling `tdd`.
 
-**A person's ticket stops the run.** `implement` stops at such a ticket, so the run
-stops too. The report names the tickets left to people.
+**A batched ticket is not closed by its call.** `implement` writes the result and
+returns. The batch closes its tickets once the merger has read them. Closing
+before the read would make the frontier advance on tickets nobody had looked at.
 
-**After each ticket, the finished results are read together.** The read answers two
-questions: do the results contradict each other, and was the same thing done
-twice. This step is the counterpart of the merger, which exists upstream because
-two changes can be each correct and wrong together.
+**The merger reads; it does not merge.** There is no conflict for a tool to
+report, so the merger states what the batch amounts to: contradictions with both
+sides, small differences settled in one line, repetition named. It reports to the
+run, not to a person. Contradictions are left for someone to choose.
 
-**The read reports and does not act.** A small difference, such as two ways of
-saying one thing, is settled in one line with its reason. A contradiction is
-stated with both sides and left for someone to choose. Nothing is written: no
-record, no ticket, no result.
+**Closing the batch moves the frontier.** A ticket becomes reachable when its
+blockers are closed, so the run closes a batch and then works out the next
+frontier. This is also where a blocked ticket learns it is unblocked.
 
-**A contradiction does not stop the run.** The tickets after it may be unaffected,
-and the contradiction is carried to the final report. Stopping would trade a
-possible second problem for a certain lost batch.
+**A person's ticket in a batch is set aside.** It is not worked and not passed
+over: it stays on the frontier. The run stops when the next frontier holds
+nothing but such tickets.
 
-**The skill is called by a person only.** It is the whole-spec path, and starting
-one is a decision a person makes. Nothing else in the set calls it.
+**The skill is called by a person only.** Starting a run is a decision a person
+makes. Nothing else in the set calls it.
 
-**`implement` may be called by a model.** The run has to reach it, and a harness
-that hides a skill from other skills would make the run impossible. A ticket is
-still one run of `implement`, so nothing about a single-ticket run changes.
+**`implement` may be called by a model.** The run has to reach it. A ticket is
+still one run of `implement`, so nothing about a single-ticket run changes except
+who closes it.
 
-**Subagents are optional.** Where the project provides them, a ticket may be worked
-in one. Where it does not, the run works tickets in the same window. The decision
-is the agent's, judged against what the project has.
+**The final report carries four things.** The batches and their tickets, the
+tickets left to people, every contradiction with both sides, and every finding
+`review` raised inside the run's tickets.
 
-**The final report carries three things.** The frontier worked, the tickets left
-to people, and every contradiction found, each with both sides.
+**A second run continues.** It starts from the frontier as it stands, whether the
+last run stopped at people or was cut off partway through a batch. Results already
+written are not rewritten.
 
-**A second run continues.** It starts from the frontier as it stands, so finishing
-a person's ticket and starting the run again is the whole resumption.
-
-**A ticket too large to work is a finding about the spec.** When the tickets do not
-fit one run, the report says so rather than working part of one.
+**A ticket too large to work is a finding about the spec.** The run says so rather
+than working part of one.
 
 ## Acceptance
 
-The delivery is a new batch skill, and a reader can tell it was delivered when a
-spec's tickets can be worked in dependency order through the frontier, each
-result read beside the ones before it, with a report that names what was worked,
-what waits on people, and where the results disagree.
+The delivery is a batch skill, and a reader can tell it was delivered when a
+spec's frontier can be worked a batch at a time, each batch read by a merger
+before its tickets close, with a report naming the batches, the people's tickets,
+the contradictions, and the review findings.
 
 Its parts: the unit is one spec; a spec with no tickets is refused with
-`to-tickets` named; the order is the frontier by blocking edges; a ticket is
-worked by calling `implement` and its rules are not copied; a person's ticket
-stops the run; the read after each ticket looks for contradiction and repetition;
-the read writes nothing; a contradiction does not stop the run; and the final
-report carries the three lists.
+`to-tickets` named; the frontier is a batch worked at once; a ticket is worked by
+calling `implement` and the call does not close it; the merger reads the batch and
+reports to the run; the batch closes its tickets and that moves the frontier; the
+run stops only when the frontier is nothing but people's tickets; and the report
+carries the four lists.
 
 The reading is the check, plus one run over a spec whose frontier is a single
-chain: the report names the chain, and names any person's ticket it stopped at.
+chain: the run takes one batch of one ticket at a time, names each batch, and
+stops at the person's ticket.
 
 ## Out of Scope
 
+- Branches, worktrees, and integration. There is no file tree to protect.
 - Cutting tickets. That is `to-tickets`, and the run refuses without it.
-- Reproducing the merger. It settles a git conflict; this skill's read has no
-  conflict to settle, only a contradiction to report.
-- Branches, worktrees, and integration. Office work has none.
-- The `tdd` call, which `implement` no longer makes either.
-- Calling review. Review is its own skill and takes a spec, not a run.
+- Settling a contradiction the merger finds.
 - Working tickets across several specs.
-- Repairing a contradiction the read finds.
+- Reworking a result someone else wrote.
 
 ## Further Notes
 
-Matt's `implement-spec` is nine steps, and four of them are about git: create the
-branch, merge each result in, keep the batches green, clean the worktrees. What
-survives is the shape: read the graph, work the frontier, and keep what the
+Matt's `implement-spec` is nine steps, and four are about git: create the branch,
+merge each result in, keep the batches green, clean the worktrees. What survives
+is the shape: read the graph, work the frontier at once, and keep what the
 finished work says consistent with what was already finished.
 
-The merger there is a subagent because implementing is parallel and conflicts must
-be settled as they arrive. Here the run is serial, a ticket at a time, so the read
-is a step rather than a second arranger.
+His merger settles conflicts as they arrive; the run here reads a batch once it
+has all come back, because nothing is landing in one place and there is no
+conflict to report. Both exist for the same reason: two results can each be right
+and wrong together.
 
-Matt's `implement-spec` takes tickets and only tickets; `to-tickets` is a separate
-skill with its own entry, and nothing in the run cuts a ticket. That is kept as it
-is. Upstream each implementer calls `tdd`; here each ticket is a call to
-`implement`, which is where the run's rules live.
+The order changed once already. The first version was serial and stopped at the
+first ticket that was a person's, which is what makes sense when one ticket is
+worked at a time. Batches make that rule wrong: one person's ticket would hold
+back every ticket beside it. The run now sets those aside and stops when they are
+all that is left.
 
-The rule that the run must not copy `implement`'s rules is the same rule that
-keeps `to-tickets`'s four parts in one place: two copies of a rule drift, and the
-one read less often is the one that is wrong.
+Matt's `implement-spec` takes tickets and only tickets; `to-tickets` keeps its own
+entry, and nothing in the run cuts a ticket. That is kept as it is. Upstream each
+implementer calls `tdd`; here each ticket is a call to `implement`, which is where
+the rules live.
