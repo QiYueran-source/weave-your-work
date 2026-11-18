@@ -3,11 +3,12 @@ schema: 1
 id: wm-kkpdm0hek877
 title: 'Review: two axes over a spec''s finished tickets, and nothing changed by the reading'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-18T07:44:20Z
-updated_at: 2026-11-18T07:44:20Z
+updated_at: 2026-11-18T08:14:21Z
+closed_at: 2026-11-18T08:14:21Z
 ---
 ## Problem Statement
 
