@@ -148,7 +148,8 @@ worked before it.
 
 Once the results are recorded and the tickets closed, a person starts the run
 again. It picks up from the frontier as it stands, whether the last run stopped
-at a person's ticket or was cut off partway through a batch.
+at a person's ticket or was cut off partway through a batch. A result already
+written is not written again.
 
 ## What the run reports
 
