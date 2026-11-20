@@ -152,11 +152,18 @@ The file is bounded. `[events] path` in the roster sets where it is written, rel
 
    ```sh
    gh issue create --repo <owner>/<repo> --title "<ticket>: verify the listener" \
+     --assignee <this machine's login> \
      --body $'---\nkind: communicate\ncategory: request\n---\n\nConfirm the listener queues this issue, then close it. Troubleshooting: [<ticket>].'
    node .work-weave/personal/issue/check-pending.mjs
    ```
 
-   The queue gains one line within a few seconds. The front matter carries `kind` and `category` and nothing else: the sender is the account that opened the issue, and the recipient is its assignee, so assign it to this machine's owner when you open it. Close the issue afterwards as the account that opened it; that close marks the line closed, it stays in the file, and the checker stops reporting it. The ticket, not the queue, is the record.
+   The queue gains one line within a few seconds. The front matter carries `kind`
+   and `category` and nothing else. The sender is the account that opened the
+   issue and the recipient is its assignee, which is why the command assigns it:
+   an issue nobody is assigned to is not queued. Close the issue afterwards as
+   the account that opened it; that close marks the line closed, it stays in the
+   file, and the checker stops reporting it. The ticket, not the queue, is the
+   record.
 4. **The queue is ignored.** `git check-ignore -v .work-weave/personal/communication/pending.jsonl` prints a matching line. No output means the queue is tracked state.
 5. **An opened pull request writes one line.** Push a branch with one commit and open a pull request against the default branch:
 
