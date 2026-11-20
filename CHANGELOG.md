@@ -1,5 +1,21 @@
 # weave-your-work
 
+## 2.0.0
+
+### Major Changes
+
+- The set is rebuilt on [Matt Pocock's skills](https://github.com/mattpocock/skills) and is smaller: twelve skills, where 1.0.1 shipped twenty-three. A discussion writes a testimony and the records it settles, a spec is cut into whole tickets, each ticket is worked by one arranger, and `review` reads the finished tickets on two axes. The records keep their shape; the skills that write them are mostly different ones.
+
+  **The mainline.** `to-spec` writes the spec, `to-tickets` cuts it, `implement` or `implement-spec` does the work, and `review` reads the results. `grilling` and `grill-with-docs` run the discussion that produces the spec. A goal enters the set as a spec.
+
+  **Removed.** `ask-me`, `what-is-the-mainline`, `open-map`, `split`, `open-task`, `advance-task`, `task-review`, `map-review`, `fog-explore`, `update`, `resplit`, `whole-review`, `wait-what`, `stop-and-wait`, `salvage-and-restart`, `grill-and-records`, `feedback-me-please`, `use-weave-your-work-examples`, and the record references `waymark`, `map`, and `task`. Their jobs either moved into a skill that does them now, or are out of this release: a skill that opens a map from a goal, and a router, are the next version's work.
+
+  **Replaced.** `issue` is `communicate-with-issue`, which sends a message as a GitHub issue and answers it in the same thread; the listener queues every open issue its owner is party to, sent or received. The per-record review passes are one `review` over a spec's finished tickets. `grill` is `grilling` for the interview and `grill-with-docs` for what it settles.
+
+  **New.** `hand-back` records what a person finished on their own ticket, and is the one skill a person runs to close it.
+
+- The install command lives in `INSTALL.md`, and both READMEs describe the twelve skills in the set. Installing this version over 1.0.1 takes the new set in place of the old one: the skills listed as removed stop being available.
+
 ## 1.0.1
 
 ### Patch Changes
