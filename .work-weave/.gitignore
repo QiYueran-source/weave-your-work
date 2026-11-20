@@ -1,4 +1,3 @@
-# Checkout-local state; the shared roster and glossary sources are tracked.
-pending/
-runtime/
-local/
+# Personal state for this checkout and this machine. Everything under
+# `shared/` is committed; `personal/` is rebuilt by an install.
+personal/

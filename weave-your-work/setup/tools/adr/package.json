@@ -1,0 +1,17 @@
+{
+  "name": "weave-adr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ADR store, CLI, and MCP server for work-weave.",
+  "bin": {
+    "adr": "adr.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}

@@ -10,10 +10,11 @@ A project is configured once. `configure-project.md` walks it, `join-project.md`
 |---|---|---|
 | Rules | `rules/` in this skill | `.agents/rules/` |
 | Setup check and root resolver | `tools/` | run in place |
-| Glossary store and MCP server | `tools/glossary/` | `.work-weave/runtime/glossary/` |
-| Issue listener and queue tools | `tools/issue/` | `.work-weave/runtime/issue/` |
+| Glossary store and MCP server | `tools/glossary/` | `.work-weave/personal/glossary/` |
+| ADR store and CLI | `tools/adr/` | `.work-weave/personal/adr/` |
+| Issue listener and queue tools | `tools/issue/` | `.work-weave/personal/issue/` |
 
-The project's data stays in the project: `.work-weave/` for the queue, the glossary sources, the runtime copies, and the local settings; `tickets/` for the records. Nothing installs under the skill directory, and `node_modules` is never committed.
+The project's data stays in the project: `.work-weave/` for the queue, the glossary sources, the runtime copies, and the checkout settings; `tickets/` for the records. Inside it, `shared/` is committed and `personal/` is ignored. Nothing installs under the skill directory, and `node_modules` is never committed.
 
 ## Rules
 
@@ -66,19 +67,25 @@ Run in place; nothing to copy for these two.
 
 Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`.
 
+## Move a checkout to the new layout
+
+A checkout written before the layout split keeps its files under `config/`, `issue/`, `glossary/`, `adr/`, `runtime/`, `local/`, and `pending/`. `node <setup>/tools/migrate-layout.cjs [<project-root>]` moves them into `.work-weave/shared/` and `.work-weave/personal/` and rewrites `.work-weave/.gitignore` to name `personal/` and nothing else. It prints every path it moved. It checks all destinations first and stops with both paths named if one already exists, moving nothing; run it on a checkout already in the new shape and it prints that there is nothing to do. Running it twice is safe.
+
 The glossary and issue tools each carry a byte-identical copy of `project-root.cjs`. The setup install has no test that runs that comparison; the copies are kept equal by hand.
 
-## Install the two runtimes
+## Install the three runtimes
 
-The glossary runtime is `install-glossary.md`, the issue runtime is `install-issue.md`. Run either only when the project uses it: a project without a shared vocabulary needs no glossary server, and a project without a remote needs no listener.
+The glossary runtime is `install-glossary.md`, the ADR runtime is `install-adr.md`, and the issue runtime is `install-issue.md`. Run each only when the project uses it: a project without a shared vocabulary needs no glossary server, a project that records no decisions needs no ADR tool, and a project without a remote needs no listener.
 
-Both copy their tools into `.work-weave/runtime/<name>/` and run `npm ci --omit=dev` there. Read the exit status: a failed install can leave a partial `node_modules`, so the directory appearing proves nothing.
+The ADR tool has no dependencies and registers no MCP server. Copy its two files into `.work-weave/personal/adr/` and install the post-merge hook; there is no `npm ci` step.
+
+Both copy their tools into `.work-weave/personal/<name>/` and run `npm ci --omit=dev` there. Read the exit status: a failed install can leave a partial `node_modules`, so the directory appearing proves nothing.
 
 ## Verify
 
 1. Every rule named above is in `.agents/rules/` and matches its source byte for byte; check 13 of `rules-checklist.md` is that verification.
 2. `node <setup>/tools/check-setup.mjs --all` reports `ok` or `not applicable` for every check, with no `fail` and no `unverified`.
-3. A tool the project uses answers: `node .work-weave/runtime/glossary/glossary.js --project <root> list`, or the listener's own status command.
+3. A tool the project uses answers: `node .work-weave/personal/glossary/glossary.js --project <root> list`, or the listener's own status command.
 
 ## What this does not do
 

@@ -1,51 +1,104 @@
 ---
 name: grilling
-description: "Grill a plan, decision, or idea until it is clear: ask the questions that can be answered now, wait for the answers, and write each round into a testimony. It writes the testimony and nothing else: what the discussion settled is written by `adr` and `glossary`, run by `grill-and-records`. Use when a plan is still fuzzy, or when another skill reaches a decision it cannot settle alone."
+description: "Grill a person about a plan, decision, or idea until it is clear: ask the questions that can be answered now, wait for the answers, and write each round into a testimony as it happens. Use when a plan is still fuzzy, or when a step reaches a decision it cannot settle alone."
 family: method
 invocation: model
 ---
 
 # Grilling
 
-A discussion that ends with a shared understanding and a written record. It asks the questions a person has not answered, waits for the answers, and moves outward as the answers settle. One testimony per run: this action writes it and does not decide how many discussions there are; the caller asked for this one.
-
-Use it when a plan, decision, or idea is still fuzzy, or when `fog-explore`, `split`, `map-review`, or `task-review` reaches a decision it cannot settle alone.
-
-## Before the first question
-
-Name the subject in one sentence: what is being decided. Create the testimony with `waymark create --category testimony`, link it to the record the discussion serves, and keep its body to `res/testimony.md`.
-
-Ask in the project's vocabulary: use the words `GLOSSARY.md` defines, and stay inside decisions `docs/adr/` already records. When the discussion needs a word the glossary does not have, or would overturn a recorded decision, say so in that round's testimony and leave the write to whoever asked for the discussion; this action adds no glossary entry and no ADR.
+Interview the person until you reach a shared understanding. Map this as a
+**design tree**: every decision branches into the decisions that hang off it.
 
 ## The rounds
 
-Think of the discussion as a tree of questions, where a child is a narrower part of its parent. Work it in rounds.
+Work the tree in **rounds**. The **frontier** is every decision whose
+prerequisites are already settled: the questions you can ask _now_ without
+guessing at answers you haven't heard yet. Ask the whole frontier in one round:
+number each question and give your recommended answer. Then wait for the
+person's answers before the next round.
 
-- **The frontier** is every question whose prerequisites are already settled: what can be asked now without guessing at answers not yet heard.
-- **Ask the whole frontier in one round.** Number each question and give your recommended answer, worded so that "yes" accepts it.
-- **Then wait** for the answers before the next round. A question whose answer depends on another question open in this round belongs to a later round.
-- **Facts are your job, not the person's.** Look it up in the repository, the documents, or online; ask a person only for what only a person knows. A running lookup is an unsettled prerequisite, so only the questions downstream of it wait.
+Format a round like so:
 
-Done when the frontier is empty: every branch visited, nothing left silently assumed, and the person confirms the shared understanding.
+```
+❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
 
-## What the discussion writes
+➡️ <your recommended answer>
 
-Everything this action writes goes into the testimony, as each round happens and not batched to the end:
+---
 
-- **The rounds**: the questions, the recommended answers, and what the person said.
-- **The settled decisions**, with the alternative that lost, for the caller to write into the map or task the discussion serves.
-- **The terms** the discussion fixed and will not change again, and the decisions that a recorded ADR no longer matches.
-- **Work**: a question that becomes work is written as `work: <what>` for the caller, which opens the record.
+❓ **Q2** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
 
-This action writes the testimony and nothing else. The records these become are not its work: a term goes to `glossary` and a decision to `adr`, and `grill-and-records` runs those. A caller reaches `grill-and-records`, which runs this discussion first; the `what-is-the-mainline` skill says where that sits.
+➡️ <your recommended answer>
+```
 
-## The output contract
+Word each question so "yes" accepts your recommended answer.
 
-At the end, name the decisions and facts that are clear, the terms the testimony fixed, the work handed off, and anything that will need an ADR. A caller that asked a specific question gets the answer first.
+Each round the person answers reshapes the tree: settled decisions push the
+frontier outward and unblock questions that depended on them. Recompute the
+frontier and ask the next round. A question whose answer depends on another
+question still open in this round belongs to a _later_ round, not this one.
 
-The testimony exists, and `grill/res/testimony.md` says what it holds.
+## Finding facts
+
+Finding _facts_ is your job, never the person's. Look in this order, and stop at
+the first source that answers:
+
+1. **The project itself**: its records, its documents, the glossary, the ADRs.
+   Search these first.
+2. **Outside the project, where a tool reaches it**: an email, whether a piece
+   of equipment was bought, whether an outsourced task finished. Use the MCP
+   servers and web tools this project gives you.
+3. **Neither**: put the question to the person, and only there.
+
+Which sources a tool can reach depends on this project, not on this skill. Judge
+it against what you actually have; when no tool reaches a source, say so and ask
+the person rather than guessing.
+
+Dispatch the lookup to a sub-agent with a fresh context window. A running lookup
+is an unsettled prerequisite, so only the questions downstream of it wait; ask
+the rest of the frontier now.
+
+Every fact you carry into the discussion names the source it came from. A source
+that answers only partly, or two sources that disagree, is not an answer: say
+what each says and put the disagreement to the person with the round's
+questions. Never take one side because it is the easier to use.
+
+The _decisions_ are the person's: put each to them and wait.
+
+## The testimony
+
+Create a testimony once the subject can be named in one sentence, which is after
+the first round is planned and before the first answer is recorded. Write its
+body as each round happens, never batched to the end: a discussion interrupted
+after one round leaves that round behind.
+
+`TESTIMONY-FORMAT.md` gives the shape, and `TESTIMONY-EXAMPLE.md` shows it
+filled in. The short form:
+
+- `Subject` names what is being decided, and the record the discussion serves
+  when there is one.
+- `Rounds` records each round: the question, the recommended answer, what the
+  person said, and the question it hangs off.
+- `Settled` holds one line per decision, with the question it came from.
+- `Open` holds what is still unanswered, or `(none)`.
+- `Handed off` holds the work the discussion produced, as `work: <what>` lines.
+
+The design tree is not written a second time. Each question's `Parent` line
+carries the structure, and the tree is recovered from those lines.
+
+This skill writes the testimony and nothing else. What the discussion settled
+belongs to whoever asked for it; this skill draws no conclusion from it.
+
+## When it ends
+
+The discussion is done when the frontier is empty and the testimony is written:
+every branch of the design tree visited, nothing left silently assumed. Do not
+act on it until the person confirms you have reached a shared understanding.
+
+A discussion that settles nothing is a finished run: the testimony alone says why.
 
 ## What this skill does not do
 
 - Decide; the person does.
-- Write a glossary entry or an ADR; `grill-and-records` runs the actions that do.
+- Carry what it settled into any other record; the caller does that.

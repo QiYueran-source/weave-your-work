@@ -1,32 +1,57 @@
 ---
 name: adr
-description: "Record a decision as an ADR when it is hard to reverse, surprising without context, and the result of a real trade-off: write the next numbered file, link it to its record, and supersede an older one without deleting it. Use when a discussion settles a decision that passes the three gates."
+description: "Record a decision as an ADR when it is hard to reverse, surprising without context, and the result of a real trade-off: judge the three gates, write one line to your own source file, and supersede an older one instead of editing it. Use when a discussion settles a decision that passes all three gates."
 family: method
 invocation: model
 ---
 
 # ADR
 
-An ADR records a decision a future reader cannot reconstruct from the records around it: what was decided, and why. It earns its place only when the decision will still surprise someone later.
+An ADR records a decision a future reader cannot reconstruct from the records
+around it: what was decided, and why. It earns its place only when the decision
+will still surprise someone later.
 
-The three gates and the file format are `res/format.md`. This skill applies them.
+The three gates, the shapes that pass them, and the record format are
+`ADR-FORMAT.md`. This skill applies them.
 
 ## When it runs
 
-A decision is settled — by a discussion, by a split, or by `update` changing one — and whoever holds it decides whether it earned a file. Ask the three gates in order: hard to reverse, surprising without context, a real trade-off. If any fails, write nothing: the decision stays in the map's `Decisions so far`.
+A decision is settled, in a discussion or anywhere else, and whoever holds it
+decides whether it earned an ADR. Ask the three gates in order: hard to reverse,
+surprising without context, a real trade-off. If any fails, write nothing: the
+decision stays in the record that made it.
 
 ## Steps
 
-1. **Judge the gates.** Say which one carried it, in one line, when you write.
-2. **Number it.** Read the highest number in `docs/adr/` and add one. Create the directory only with the first ADR.
-3. **Write the file**: a title and one paragraph — what was decided and why, with whatever context the reason needs. The three optional sections only when they add something a reader cannot infer.
-4. **Link back** to the record that owns the decision, by id, and to the testimony when there is one.
-5. **Supersede, never edit.** A new ADR names the old one; the old one gets `## Status` with `Superseded by ADR-NNNN.`; the old file keeps its number.
+1. **Judge the gates.** Name which one carried it, in one line. When a gate
+   fails, name the gate that failed and stop.
+2. **Write one line to your own source file**, in the shape `ADR-FORMAT.md`
+   gives. Write it the moment the decision settles, one decision at a time; do
+   not batch a discussion's decisions into one write at the end.
+3. **Link back** to the record that owns the decision, by `waymark` id, in
+   `record`.
+4. **Supersede, never edit.** When an ADR replaces an earlier one, name the old
+   `id` in `supersedes`. Do not touch the old line: it may belong to someone
+   else, and the merge works out the rest.
+5. **Merge when the discussion ends**, so `ADR.md` at the project root reflects
+   every source. A person who pulls runs it too; the post-merge hook does that
+   for them.
 
-One new file sits under `docs/adr/`, and `adr/res/format.md` says what it holds.
+## The tools
+
+The MCP server and the CLI live in the project runtime at
+`.work-weave/personal/adr/`, installed by `setup`. Use `adr_list`, `adr_show`,
+`adr_write`, and `adr_merge` when they are running; use the CLI when they are
+not. The CLI needs no dependencies, so it answers even when the server's install
+did not finish.
+
+Never write to another operator's source file, and never edit `ADR.md` by hand:
+the next merge overwrites it.
 
 ## What this skill does not do
 
 - Make or recommend the decision. The owner decides; this skill writes it down.
-- Write the map, the task, or the testimony.
+- Decide what a decision belongs to. The record that owns it says that.
+- Settle two entries that describe the same decision under two ids. The merge
+  keeps both; a person settles them.
 - Record a decision that fails a gate.

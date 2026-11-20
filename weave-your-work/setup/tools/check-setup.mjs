@@ -7,10 +7,17 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const REQUIRED_SKILLS = ['setup', 'waymark', 'map', 'task', 'glossary', 'issue']
-const CATEGORIES = ['map', 'task', 'testimony']
-const FIELDS = ['needs_human', 'outcome', 'reversibility', 'split_as', 'task_kind', 'waiting_on']
+const CATEGORIES = ['spec', 'testimony', 'ticket']
+const FIELDS = []
 const NODE_FLOOR = '22.20.0'
 const WAYMARK_FLOOR = '0.1.2'
+const PERSONAL = ['.work-weave', 'personal']
+const SETTINGS = '.work-weave/personal/issue-listener.env'
+const GLOSSARY_RUNTIME = '.work-weave/personal/glossary'
+// The events one repository webhook has to send: `issues` fills the queue, and
+// the other two write the event file. A hook on the channel that lacks one of
+// them is repaired, never replaced by a second hook.
+const SUBSCRIBED_EVENTS = ['issues', 'pull_request', 'push']
 
 const OK = 'ok'
 const FAIL = 'fail'
@@ -375,34 +382,6 @@ function checkTracker(ctx) {
   return ok(`healthy, 0 errors; storage_root tickets; ${CATEGORIES.length} categories, ${FIELDS.length} fields`)
 }
 
-function checkOperator(ctx) {
-  const configResult = run('waymark', ['config', 'show', '--json', '--project', ctx.cwd], { cwd: ctx.cwd })
-  if (configResult.status !== 0 || configResult.error) {
-    return fail(`waymark config show failed: ${commandFailure(configResult)}`)
-  }
-  let config
-  try {
-    config = JSON.parse(configResult.stdout)
-  } catch {
-    return fail(`waymark config show did not return JSON: ${firstLine(configResult.stdout) || firstLine(configResult.stderr)}`)
-  }
-  const operator = config.data?.effective?.operator
-  if (!operator || operator === 'None') return fail('the operator is unset')
-  const handlePath = path.join(ctx.cwd, '.work-weave', 'issue', 'handles.toml')
-  if (!isFile(handlePath)) return ok(`operator ${operator}; handles absent, nothing to match`)
-  let text
-  try {
-    text = fs.readFileSync(handlePath, 'utf8')
-  } catch {
-    return fail(`cannot read ${display(ctx.cwd, handlePath)}`)
-  }
-  const keys = parseHandles(text)
-  if (!keys.length) return fail(`operator ${operator}; the [handles] table is empty`)
-  const match = keys.find(key => key.toLowerCase() === String(operator).toLowerCase())
-  if (match) return ok(`operator ${operator}; handles ${match}`)
-  return fail(`operator ${operator} is not in [handles]: ${keys.join(', ')}`)
-}
-
 function checkSkills(ctx) {
   const roots = findSkillRoots(ctx.cwd)
   if (!roots.length) return fail('no skills directory holding <name>/SKILL.md')
@@ -506,9 +485,28 @@ function parseToolNames(text) {
   return []
 }
 
+function checkAdr(ctx) {
+  const server = path.join(ctx.cwd, '.work-weave', 'personal', 'adr', 'server.js')
+  if (!isFile(server)) {
+    return na('no ADR tool installed; run the ADR install in setup when the project records decisions')
+  }
+  const result = run(process.execPath, [server, '--project', '.'], {
+    cwd: ctx.cwd,
+    input: '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n',
+    timeout: 15000,
+  })
+  if (result.error) return fail(`the ADR server did not answer: ${commandFailure(result)}`)
+  if (result.status !== 0) return fail(`the ADR server exited ${result.status}: ${firstLine(result.stderr)}`)
+  const names = parseToolNames(result.stdout)
+  const expected = ['adr_list', 'adr_show', 'adr_write', 'adr_merge']
+  const missing = expected.filter(name => !names.includes(name))
+  if (names.length === expected.length && !missing.length) return ok(`4 tools: ${names.join(', ')}`)
+  return fail(`expected 4 ADR tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
+}
+
 function checkGlossary(ctx) {
-  const server = path.join(ctx.cwd, '.work-weave', 'runtime', 'glossary', 'server.js')
-  if (!isFile(server)) return fail('the glossary server is missing from .work-weave/runtime/glossary')
+  const server = path.join(ctx.cwd, '.work-weave', 'personal', 'glossary', 'server.js')
+  if (!isFile(server)) return fail(`the glossary server is missing from ${GLOSSARY_RUNTIME}`)
   const result = run(process.execPath, [server, '--project', '.'], {
     cwd: ctx.cwd,
     input: '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n',
@@ -517,10 +515,67 @@ function checkGlossary(ctx) {
   if (result.error) return fail(`the glossary server did not answer: ${commandFailure(result)}`)
   if (result.status !== 0) return fail(`the glossary server exited ${result.status}: ${firstLine(result.stderr)}`)
   const names = parseToolNames(result.stdout)
-  const expected = ['glossary_lookup', 'glossary_list', 'glossary_write', 'glossary_merge']
+  const expected = ['glossary_list', 'glossary_write', 'glossary_merge']
   const missing = expected.filter(name => !names.includes(name))
-  if (names.length === expected.length && !missing.length) return ok(`4 tools: ${names.join(', ')}`)
-  return fail(`expected 4 glossary tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
+  if (names.length === expected.length && !missing.length) return ok(`3 tools: ${names.join(', ')}`)
+  return fail(`expected 3 glossary tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
+}
+
+// Reads the hooks out of what `--jq -c` prints: one compact object per line,
+// and nothing at all for a repository with no hooks. Each object is reduced to
+// its id, its URL, and its events; an object with no events list, or with
+// events that are not a list of names, is reported as unreadable (`events` is
+// null) rather than guessed at.
+export function scanHooks(text) {
+  const hooks = []
+  const lines = String(text ?? '').split(/\r?\n/).map(line => line.trim()).filter(Boolean)
+  for (const line of lines) {
+    let record
+    try {
+      record = JSON.parse(line)
+    } catch {
+      return { hooks: [], unreadable: line }
+    }
+    if (!record || typeof record !== 'object' || Array.isArray(record)) {
+      return { hooks: [], unreadable: line }
+    }
+    const events = Array.isArray(record.events) && record.events.every(event => typeof event === 'string')
+      ? record.events.map(event => event.trim())
+      : null
+    hooks.push({
+      id: record.id === undefined || record.id === null ? '' : String(record.id).trim(),
+      url: typeof record.url === 'string' ? record.url.trim() : '',
+      events,
+    })
+  }
+  return { hooks, unreadable: '' }
+}
+
+function readHooks(cwd, repo) {
+  const result = run('gh', ['api', `repos/${repo}/hooks`, '--jq', '-c', '.[] | {id, url: .config.url, events}'], { cwd })
+  if (result.status !== 0) return { failed: true, ...result }
+  const { hooks, unreadable } = scanHooks(result.stdout)
+  if (unreadable || hooks.some(hook => hook.events === null)) {
+    const shown = unreadable || firstLine(result.stdout)
+    return { failed: true, status: 0, stdout: '', stderr: `unexpected hooks output: ${shown}`, error: undefined }
+  }
+  return { failed: false, hooks }
+}
+
+// Compares two webhook URLs ignoring a trailing slash on either.
+function sameChannel(hookUrl, channel) {
+  const strip = url => String(url).trim().replace(/\/+$/, '')
+  return Boolean(strip(hookUrl)) && strip(hookUrl) === strip(channel)
+}
+
+// The repair for the hook on the channel: one `PATCH` naming every event it
+// needs, whether it is missing one or two. Creating a second hook is the wrong
+// repair, and the sentence says so.
+function repairSubscriptions(missing) {
+  const lacking = missing.map(event => `\`${event}\``).join(', ')
+  return `Add ${lacking} to the existing hook with ` +
+    "gh api repos/<owner>/<repo>/hooks/<id> -X PATCH -F 'events[]=issues' -F 'events[]=pull_request' -F 'events[]=push'; " +
+    'do not create a second hook.'
 }
 
 function checkListener(ctx) {
@@ -528,14 +583,14 @@ function checkListener(ctx) {
     return na(`no bundled service on ${process.platform}; run the listener in a terminal while you work`)
   }
   if (!ctx.hasRemote) return na('no origin remote; check 16 is not applicable')
-  const local = path.join(ctx.cwd, '.work-weave', 'local')
+  const personal = path.join(ctx.cwd, ...PERSONAL)
   let units = []
   try {
-    units = fs.readdirSync(local).filter(name => /^work-weave-issue-.*\.service$/.test(name)).sort()
+    units = fs.readdirSync(personal).filter(name => /^work-weave-issue-.*\.service$/.test(name)).sort()
   } catch {
     units = []
   }
-  if (!units.length) return fail('no generated unit under .work-weave/local')
+  if (!units.length) return fail('no generated unit under .work-weave/personal')
   const unit = units[0]
   const active = run('systemctl', ['--user', 'is-active', unit], { cwd: ctx.cwd })
   const state = active.stdout.trim()
@@ -550,31 +605,39 @@ function checkListener(ctx) {
   }
   const repo = ghRepo(ctx.cwd)
   if (!repo) return unverified('cannot resolve the GitHub repository from the remote')
-  const hooks = run('gh', ['api', `repos/${repo}/hooks`, '--jq', '.[].config.url'], { cwd: ctx.cwd })
-  if (hooks.status !== 0) {
+  const hooks = readHooks(ctx.cwd, repo)
+  if (hooks.failed) {
     const admin = run('gh', ['api', `repos/${repo}`, '--jq', '.permissions.admin'], { cwd: ctx.cwd })
     if (admin.status === 0 && admin.stdout.trim() === 'false') {
       return unverified('the account cannot see webhooks')
     }
     return fail(`cannot read webhooks: ${firstLine(hooks.stderr || hooks.stdout)}`)
   }
-  const envFile = path.join(local, 'issue-listener.env')
+  const envFile = path.join(ctx.cwd, ...PERSONAL, 'issue-listener.env')
   let envText
   try {
     envText = fs.readFileSync(envFile, 'utf8')
   } catch {
-    return fail('the listener settings are missing from .work-weave/local/issue-listener.env')
+    return fail(`the listener settings are missing from ${SETTINGS}`)
   }
   const match = envText.match(/^\s*(?:export\s+)?SMEE_URL\s*=\s*"?([^"\r\n]+)"?\s*$/m)
-  if (!match) return fail('SMEE_URL is missing from .work-weave/local/issue-listener.env')
+  if (!match) return fail(`SMEE_URL is missing from ${SETTINGS}`)
   const channel = match[1].trim()
-  const urls = hooks.stdout.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
-  if (!urls.includes(channel)) return fail('the webhook does not point at the configured channel')
-  return ok(`unit ${unit} is active in this checkout; the webhook points at the configured channel`)
+  const channelHooks = hooks.hooks.filter(hook => sameChannel(hook.url, channel))
+  if (!channelHooks.length) return fail('the webhook does not point at the configured channel')
+  const missing = SUBSCRIBED_EVENTS.filter(event => !channelHooks.some(hook => hook.events.includes(event)))
+  if (missing.length) {
+    return {
+      status: FAIL,
+      message: `the webhook on the configured channel is missing ${missing.join(', ')}`,
+      repair: repairSubscriptions(missing),
+    }
+  }
+  return ok(`unit ${unit} is active in this checkout; the webhook on the configured channel sends ${SUBSCRIBED_EVENTS.join(', ')}`)
 }
 
 function checkIgnore(ctx) {
-  const paths = ['node_modules/', 'GLOSSARY.md', '.work-weave/pending/pending-communications.md']
+  const paths = ['node_modules/', 'GLOSSARY.md', 'ADR.md', '.work-weave/personal/']
   const result = run('git', ['check-ignore', ...paths], { cwd: ctx.cwd })
   if (result.error) return fail(`git is unavailable: ${commandFailure(result)}`)
   const ignored = new Set(
@@ -587,7 +650,7 @@ function checkIgnore(ctx) {
     .map(item => item.replace(/\/+$/, ''))
     .filter(item => !ignored.has(item))
   if (missing.length) return fail(`not ignored: ${missing.join(', ')}`)
-  return ok('all 3 paths are ignored')
+  return ok(`all ${paths.length} paths are ignored`)
 }
 
 const CHECKS = [
@@ -601,13 +664,13 @@ const CHECKS = [
   { number: 8, starred: false, name: 'The repository knows its remote', repair: 'Add the project remote as origin.', run: checkRemote },
   { number: 9, starred: false, name: 'The default branch is protected', repair: 'Protect the default branch in GitHub, or use rules-git.md when the plan cannot.', run: checkProtection },
   { number: 10, starred: true, name: 'The tracker validates and is configured', repair: 'Run the tracker steps in start-a-project.md, then waymark validate.', run: checkTracker },
-  { number: 11, starred: false, name: 'The operator is set and on the roster', repair: 'Set the operator, or add the owner to [handles] through a pull request.', run: checkOperator },
   { number: 12, starred: true, name: 'Every installed skill is still there', repair: 'Reinstall the missing skills with npx skills add.', run: checkSkills },
   { number: 13, starred: true, name: "Every setup rule is registered", repair: 'Run the setup install that owns each missing rule.', run: checkSetupRules },
   { number: 14, starred: true, name: 'AGENTS.md points at the rules', repair: 'Write the AGENTS.md prompt at the top of the file.', run: checkAgents },
-  { number: 15, starred: false, name: 'The glossary MCP server answers', repair: 'Run the glossary install in setup and start its server from the project runtime.', run: checkGlossary },
-  { number: 16, starred: false, name: 'The listener runs and the webhook reaches it', repair: 'Start the listener for this checkout from the issue install in setup.', run: checkListener },
-  { number: 17, starred: false, name: 'The queue and the build output are ignored', repair: 'Add the three ignore rules to the root .gitignore.', run: checkIgnore },
+  { number: 15, starred: false, name: 'The ADR MCP server answers', repair: 'Run the ADR install in setup, or skip it when the project records no decisions.', run: checkAdr },
+  { number: 16, starred: false, name: 'The glossary MCP server answers', repair: `Run the glossary install in setup and start its server from ${GLOSSARY_RUNTIME}.`, run: checkGlossary },
+  { number: 17, starred: false, name: 'The listener runs and the webhook reaches it', repair: 'Start the listener for this checkout from the issue install in setup, and add any missing webhook events with the PATCH the message prints.', run: checkListener },
+  { number: 18, starred: false, name: 'The queue and the build output are ignored', repair: 'Add node_modules/, /GLOSSARY.md, /ADR.md, and .work-weave/personal/ to the root .gitignore.', run: checkIgnore },
 ]
 
 export function runChecks(options = {}) {

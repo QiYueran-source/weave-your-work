@@ -27,7 +27,7 @@ git config --local user.name "<name>"
 git config --local user.email "<email>"
 ```
 
-Check 7. Then confirm the pair: the operator is `<name>` and the GitHub account is `<gh api user --jq .login>`. From the roster, read `.work-weave/issue/handles.toml`: an operator missing from `[handles]` cannot send. The listener matches `git config user.name` against the roster, so a mismatch works until the listener starts.
+Check 7. Then confirm the pair: the operator is `<name>` and the GitHub account is `<gh api user --jq .login>`. From the roster, read `.work-weave/shared/handles.toml`: an operator missing from `[handles]` cannot send. The listener matches `git config user.name` against the roster, so a mismatch works until the listener starts.
 
 ## 3. Install what the clone cannot carry
 
@@ -35,7 +35,7 @@ Follow `install.md`:
 
 - the eight rules — absent, write; identical, skip; different, ask (check 13);
 - the tools run in place, nothing to install;
-- the runtimes the project uses: `install-glossary.md` and `install-issue.md`, each copying into `.work-weave/runtime/` and running `npm ci --omit=dev` there.
+- the runtimes the project uses: `install-glossary.md` and `install-issue.md`, each copying into `.work-weave/personal/` and running `npm ci --omit=dev` there.
 
 Read each install's exit status and stop on a non-zero one: a failed install can leave a partial `node_modules`, so the directory appearing proves nothing. A cache directory the user cannot write is the usual cause; `npm ci --cache <a directory you own>` gets past it.
 
@@ -48,7 +48,7 @@ The MCP server registration is a harness config edit, and the listener needs a G
 `GLOSSARY.md` is generated and gitignored. After a pull, rebuild it:
 
 ```sh
-node .work-weave/runtime/glossary/glossary.js --project <root> merge
+node .work-weave/personal/glossary/glossary.js --project <root> merge
 ```
 
 The post-merge hook does this automatically when the person enabled it; say what to run when they did not.

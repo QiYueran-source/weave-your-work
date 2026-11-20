@@ -1,0 +1,3 @@
+interface:
+  display_name: "Review"
+  short_description: "Read a spec's finished tickets on two axes, and change nothing"

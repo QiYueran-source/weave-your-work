@@ -56,7 +56,7 @@ Every v1 skill and where its capability lives now. "Same" means the skill exists
 | `update` | `update` | impact scan, two tests, three dispositions, reopening ancestors, foreign owner; moving a subtree and "a change that needs new work" folded in |
 | `grill` | `grill` | rounds and frontier kept; the testimony is `grill/res/testimony.md`; `how-to-grill.md` folded into the steps |
 | `adr` | `adr` | same; format and gates in `adr/res/format.md` |
-| `glossary` | `glossary` | same; the entry shape is `glossary/res/entry.md`, the CLI usage is in its install guide |
+| `glossary` | `glossary` | same; the entry shape is `glossary/GLOSSARY-FORMAT.md`, the CLI usage is in its install guide |
 | `issue` | `issue` | five actions and the queue kept; the format is `issue/res/format.md`, the listener setup is in `setup/install-issue.md` |
 | `handoff` | `handoff` | the five sections are `handoff/res/body.md` |
 | `wait-what` | `wait-what` | same table, same columns |

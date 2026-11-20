@@ -22,7 +22,7 @@ npx skills add qiyueran-source/weave-your-work -g
 
 让智能体为你的项目运行 `setup` 技能。它会引导你安装和配置 Git、waymark、Node.js 和 GitHub CLI，初始化项目或加入已有项目，并安装所需的规则和工具。GitHub 登录等步骤需要由你完成。
 
-完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。整套技能分成两层：记录格式只在各记录技能的 `res/` 下定义一次，动作的顺序由 `what-is-the-mainline` 技能描述。每条规则都是断言，并写明由哪项检查判定；索引在 [ASSERTIONS.md](weave-your-work/ASSERTIONS.md)。
+完成设置后，可以让智能体使用 `ask-me`，找到当前工作的起点。整套技能分成两层：记录格式只在各记录技能的 `res/` 下定义一次，动作的顺序由 `what-is-the-mainline` 技能描述。每条规则都是断言，并写明由哪项检查判定。
 
 ## 技能集里有什么
 

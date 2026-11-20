@@ -6,7 +6,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { test } = require("node:test");
-const glossary = require("../glossary.js");
+const glossary = require("../glossary-core.js");
 
 const toolsDir = path.join(__dirname, "..");
 const cli = path.join(toolsDir, "glossary.js");
@@ -37,7 +37,7 @@ function project(t, { operator = "tester", glossary: withGlossary = false } = {}
   fs.mkdirSync(path.join(root, ".waymark"));
   fs.writeFileSync(path.join(root, ".waymark", "config.toml"), "");
   fs.writeFileSync(path.join(root, ".waymark", "user.toml"), `operator = "${operator}"\n`);
-  if (withGlossary) fs.mkdirSync(path.join(root, ".work-weave", "glossary"));
+  if (withGlossary) fs.mkdirSync(path.join(root, ".work-weave", "shared", "glossary"), { recursive: true });
   return root;
 }
 
@@ -53,11 +53,11 @@ function record(name, definition = `${name} definition.`) {
 }
 
 function sourcePath(root, operator) {
-  return path.join(root, ".work-weave", "glossary", `${operator}.jsonl`);
+  return path.join(root, ".work-weave", "shared", "glossary", `${operator}.jsonl`);
 }
 
 function writeSource(root, operator, records) {
-  fs.mkdirSync(path.join(root, ".work-weave", "glossary"), { recursive: true });
+  fs.mkdirSync(path.join(root, ".work-weave", "shared", "glossary"), { recursive: true });
   fs.writeFileSync(
     sourcePath(root, operator),
     records.map((item) => JSON.stringify(item)).join("\n") + "\n",
@@ -178,7 +178,7 @@ test("a missing glossary directory fails and never creates or overwrites the vie
   const root = project(t, { operator: "alice" });
   assert.throws(() => glossary.merged(root), /glossary/i);
   assert.throws(() => glossary.writeTerm(root, "alpha", "A term."), /glossary/i);
-  assert.ok(!fs.existsSync(path.join(root, ".work-weave", "glossary")));
+  assert.ok(!fs.existsSync(path.join(root, ".work-weave", "shared", "glossary")));
 
   for (const command of ["list", "merge"]) {
     const result = runCli(root, "--project", root, command);
@@ -188,7 +188,7 @@ test("a missing glossary directory fails and never creates or overwrites the vie
   const write = runCli(root, "--project", root, "write", "--term", "alpha", "--definition", "A term.");
   assert.notEqual(write.status, 0);
   assert.match(write.stderr, /glossary/i);
-  assert.ok(!fs.existsSync(path.join(root, ".work-weave", "glossary")));
+  assert.ok(!fs.existsSync(path.join(root, ".work-weave", "shared", "glossary")));
   assert.ok(!fs.existsSync(path.join(root, "GLOSSARY.md")));
 
   const view = path.join(root, "GLOSSARY.md");
@@ -197,18 +197,19 @@ test("a missing glossary directory fails and never creates or overwrites the vie
   assert.notEqual(again.status, 0);
   assert.equal(fs.readFileSync(view, "utf8"), "handwritten view\n");
 
-  fs.writeFileSync(path.join(root, ".work-weave", "glossary"), "not a directory\n", "utf8");
+  fs.mkdirSync(path.join(root, ".work-weave", "shared"), { recursive: true });
+  fs.writeFileSync(path.join(root, ".work-weave", "shared", "glossary"), "not a directory\n", "utf8");
   const invalid = runCli(root, "--project", root, "list");
   assert.notEqual(invalid.status, 0);
   assert.match(invalid.stderr, /glossary/i);
   assert.equal(fs.readFileSync(view, "utf8"), "handwritten view\n");
 });
 
-test("reads the header from .work-weave/glossary and ignores the old root glossary", (t) => {
+test("reads the header from .work-weave/shared/glossary and ignores the old root glossary", (t) => {
   const root = project(t, { operator: "alice", glossary: true });
   writeSource(root, "alice", [record("alpha", "A term from the project sources.")]);
   fs.writeFileSync(
-    path.join(root, ".work-weave", "glossary", "_header.md"),
+    path.join(root, ".work-weave", "shared", "glossary", "_header.md"),
     "# Project header\n\nGenerated from the project's own sources.\n",
     "utf8"
   );
@@ -236,9 +237,27 @@ test("writes the generated view only at the project root", (t) => {
   const view = glossary.merge(root);
   assert.equal(view, path.join(root, "GLOSSARY.md"));
   assert.ok(fs.statSync(view).isFile());
-  assert.ok(!fs.existsSync(path.join(root, ".work-weave", "glossary", "GLOSSARY.md")));
+  assert.ok(!fs.existsSync(path.join(root, ".work-weave", "shared", "glossary", "GLOSSARY.md")));
   assert.ok(!fs.existsSync(path.join(root, ".work-weave", "GLOSSARY.md")));
   assert.ok(!fs.existsSync(path.join(root, "glossary")));
+});
+
+test("terms in a group render with the most recently settled first", (t) => {
+  const root = project(t, { operator: "alice", glossary: true });
+  const older = record("older");
+  older.group = "cluster";
+  older.updated_at = "2026-01-01T00:00:00Z";
+  const newer = record("newer");
+  newer.group = "cluster";
+  newer.updated_at = "2026-06-01T00:00:00Z";
+  const newest = record("newest");
+  newest.group = "cluster";
+  newest.updated_at = "2026-12-01T00:00:00Z";
+  writeSource(root, "alice", [older, newest, newer]);
+
+  const text = fs.readFileSync(glossary.merge(root), "utf8");
+  const order = [...text.matchAll(/^\*\*(.+?)\*\*:/gm)].map((match) => match[1]);
+  assert.deepEqual(order, ["newest", "newer", "older"]);
 });
 
 test("a term without a group merges into the default group", (t) => {
@@ -277,9 +296,9 @@ test("runs from a type=module project runtime", (t) => {
   writeSource(root, "alice", [record("alpha")]);
   fs.writeFileSync(path.join(root, "package.json"), '{"type":"module"}\n', "utf8");
 
-  const runtime = path.join(root, ".work-weave", "runtime", "glossary");
+  const runtime = path.join(root, ".work-weave", "personal", "glossary");
   fs.mkdirSync(runtime, { recursive: true });
-  for (const file of ["glossary.js", "project-root.cjs", "package.json"]) {
+  for (const file of ["glossary.js", "glossary-core.js", "project-root.cjs", "package.json"]) {
     fs.copyFileSync(path.join(toolsDir, file), path.join(runtime, file));
   }
 

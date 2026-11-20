@@ -5,13 +5,13 @@ There is no bundled background service for Windows. Run the listener in the fore
 From the project root in PowerShell:
 
 ```powershell
-node .work-weave\runtime\issue\listener.mjs
+node .work-weave\personal\issue\listener.mjs
 ```
 
-The listener reads `.work-weave\local\issue-listener.env`, so it does not need `REPOSITORY`, `SMEE_URL`, or `PORT` in the shell. If the settings file is absent, run `configure.mjs` first:
+The listener reads `.work-weave\personal\issue-listener.env`, so it does not need `REPOSITORY`, `SMEE_URL`, or `PORT` in the shell. If the settings file is absent, run `configure.mjs` first:
 
 ```powershell
-node .work-weave\runtime\issue\configure.mjs --project (Get-Location) --repository "<owner>/<repo>" --smee-url "<channel>"
+node .work-weave\personal\issue\configure.mjs --project (Get-Location) --repository "<owner>/<repo>" --smee-url "<channel>"
 ```
 
 The startup scan and live webhook path work the same as on Linux. A second listener on the same queue exits with `Another listener holds the queue lock`; close the first one before starting another.

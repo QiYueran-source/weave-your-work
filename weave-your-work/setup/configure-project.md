@@ -63,9 +63,11 @@ Never pass `--force` to `waymark init`: it rewrites the file from scratch and dr
 
 ```sh
 printf '%s\n' 'node_modules/' '/GLOSSARY.md' >> .gitignore   # each line, only when absent
-mkdir -p .work-weave
-printf '%s\n' 'pending/' 'runtime/' 'local/' >> .work-weave/.gitignore   # same guard
+mkdir -p .work-weave/shared .work-weave/personal
+printf '%s\n' 'personal/' >> .work-weave/.gitignore   # same guard
 ```
+
+A checkout written before the split keeps its files under `config/`, `issue/`, `glossary/`, `adr/`, `runtime/`, `local/`, and `pending/`; `install.md` says how to move it.
 
 Do not touch `.waymark/.gitignore`; waymark writes it.
 

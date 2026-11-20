@@ -1,12 +1,15 @@
 # The project roster.
 #
-# Copy this file to .work-weave/issue/handles.toml in the project root and
+# Copy this file to .work-weave/shared/handles.toml in the project root and
 # replace the placeholder below with this project's owners and their GitHub
-# logins.
+# logins. The file is committed; everything under .work-weave/personal/ is not.
 [handles]
 owner = "<github-login>"
 
-# The listener writes the pending queue here. The path is relative to the
-# project root.
-[pending]
-path = ".work-weave/pending/pending-communications.md"
+# [pending].path names the queue file the listener writes: the open
+# communicate threads, one JSON object per line. It is local state, not a
+# record, and it lives under .work-weave/personal/. A relative path is read
+# from the project root. The key is optional; leave the table out to use the
+# listener's default, .work-weave/personal/communication/pending.jsonl.
+# [pending]
+# path = ".work-weave/personal/communication/pending.jsonl"

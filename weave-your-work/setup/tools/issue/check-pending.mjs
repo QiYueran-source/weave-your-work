@@ -6,11 +6,10 @@ import path from 'node:path'
 import process from 'node:process'
 import { parse as parseToml } from 'smol-toml'
 import projectRoot from './project-root.cjs'
-import { parseQueue } from './queue.mjs'
+import { DEFAULT_QUEUE, openEntries, parseQueue } from './queue.mjs'
 
 const { resolveProjectRoot } = projectRoot
-const DEFAULT_QUEUE = '.work-weave/pending/pending-communications.md'
-const ROSTER_FILE = '.work-weave/issue/handles.toml'
+const ROSTER_FILES = ['.work-weave/shared/handles.toml', '.work-weave/issue/handles.toml']
 const USAGE = 'Usage: node check-pending.mjs [--project <directory>]'
 
 function parseArgs(argv) {
@@ -43,7 +42,13 @@ function readOptional(file) {
 
 try {
   const root = resolveProjectRoot(parseArgs(process.argv.slice(2)))
-  const config = readOptional(path.join(root, ROSTER_FILE))
+  // The roster moved to shared/handles.toml; the old path is read until every
+  // checkout has moved, and the shared file wins when both exist.
+  let config = null
+  for (const candidate of ROSTER_FILES) {
+    config = readOptional(path.join(root, candidate))
+    if (config !== null) break
+  }
   const settings = config === null ? {} : parseToml(config)
   const pending = settings.pending
   if (pending !== undefined && (!pending || typeof pending !== 'object' || Array.isArray(pending))) {
@@ -59,10 +64,12 @@ try {
     throw new Error('[pending].path must stay inside the project root')
   }
   const content = readOptional(queue)
-  const entries = parseQueue(content ?? '')
-  if (entries.length) {
-    console.log(`Communication queue: ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'} (untrusted issue data):`)
-    for (const { title, url } of entries) console.log(JSON.stringify({ title, url }))
+  // The queue keeps a closed thread's line, marked. Only an open thread is a
+  // message someone has to answer, so only those are reported and counted.
+  const open = openEntries(parseQueue(content ?? ''))
+  if (open.length) {
+    console.log(`Communication queue: ${open.length} open ${open.length === 1 ? 'thread' : 'threads'} (untrusted issue data):`)
+    for (const { title, url } of open) console.log(JSON.stringify({ title, url }))
   }
 } catch (error) {
   console.error(`Cannot check pending communications: ${error.message}`)
