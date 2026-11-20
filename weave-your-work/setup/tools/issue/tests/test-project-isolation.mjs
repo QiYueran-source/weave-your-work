@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 
 const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
-const fallbackModules = path.resolve(source, '../../../../.agents/skills/issue/bundle/tools/node_modules')
+const fallbackModules = path.resolve(source, '../../../../.work-weave/personal/issue/node_modules')
 
 async function modulesDir() {
   try {
@@ -57,7 +57,7 @@ async function project(t, {
   owner = 'alice',
   handles = '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n',
   repository = 'example/project',
-  pending = '.work-weave/pending/pending-communications.md',
+  pending = '.work-weave/personal/communication/pending.jsonl',
   settings = `REPOSITORY=${repository}\n`,
   remote = repository,
 } = {}) {
@@ -83,8 +83,24 @@ async function project(t, {
   await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')
   await fs.symlink(await modulesDir(), path.join(tools, 'node_modules'), 'dir')
   const bin = path.join(root, 'bin')
+  const issues = path.join(root, 'issues')
   await fs.mkdir(bin, { recursive: true })
-  await fs.writeFile(path.join(bin, 'gh'), `#!${process.execPath}\nprocess.stdout.write('[]')\n`, { mode: 0o755 })
+  await fs.mkdir(issues, { recursive: true })
+  // The fake `gh` answers the listing with an empty page and every single issue
+  // read with the issue the event described, so an event queues exactly what it
+  // says GitHub holds.
+  await fs.writeFile(path.join(bin, 'gh'), `#!${process.execPath}
+const fs = require('node:fs')
+const path = require('node:path')
+const args = process.argv.slice(2)
+const target = args[5]
+if (target === 'repos/' + process.env.FAKE_REPO + '/issues') process.stdout.write('[]')
+else {
+  const file = path.join(process.env.FAKE_ISSUES, target.split('/').pop() + '.json')
+  if (!fs.existsSync(file)) { console.error('gh: Not Found (HTTP 404)'); process.exit(1) }
+  process.stdout.write(fs.readFileSync(file))
+}
+`, { mode: 0o755 })
   await writeFiles(root, {
     '.waymark/config.toml': 'schema = 1\n',
     '.work-weave/issue/handles.toml': `${handles}${handles.endsWith('\n') ? '' : '\n'}${pending === null ? '' : `[pending]\npath = ${JSON.stringify(pending)}\n`}`,
@@ -100,13 +116,15 @@ async function project(t, {
     tools,
     bin,
     children,
-    queue: path.resolve(root, pending ?? '.work-weave/pending/pending-communications.md'),
+    repository,
+    issues,
+    queue: path.resolve(root, pending ?? '.work-weave/personal/communication/pending.jsonl'),
     roster: path.join(root, '.work-weave/issue/handles.toml'),
   }
 }
 
 function environment(extra = {}) {
-  const env = { ...process.env, SMEE_URL: '', ...extra }
+  const env = { ...process.env, SMEE_URL: '', FAKE_REPO: 'example/project', ...extra }
   if (!('REPOSITORY' in extra)) delete env.REPOSITORY
   if (!('WEBHOOK_SECRET' in extra)) delete env.WEBHOOK_SECRET
   return env
@@ -141,7 +159,10 @@ async function startListener(t, f, { cwd = f.root, args = [], env = {} } = {}) {
     const port = await freePort()
     const child = spawn(process.execPath, [path.join(f.tools, 'listener.mjs'), ...args], {
       cwd,
-      env: environment({ PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, PORT: String(port), ...env }),
+      env: environment({
+        PATH: `${f.bin}${path.delimiter}${process.env.PATH}`, PORT: String(port),
+        FAKE_REPO: f.repository, FAKE_ISSUES: f.issues, ...env,
+      }),
       stdio: ['ignore', 'pipe', 'pipe'],
     })
     f.children.add(child)
@@ -169,17 +190,32 @@ async function startListener(t, f, { cwd = f.root, args = [], env = {} } = {}) {
   throw new Error('no port the listener could take')
 }
 
-function message({ number = 1, to = 'alice-handle', author = 'alice-handle', repository = 'example/project', title = 'A message' } = {}) {
+// The event, and the issue the fake `gh` answers with when the listener re-reads
+// it. `assignee` is the recipient; `author` is the account that opened it.
+function message({ number = 1, assignee = 'alice-handle', author = 'alice-handle', repository = 'example/project', title = 'A message' } = {}) {
+  const issue = {
+    number,
+    html_url: `https://github.com/${repository}/issues/${number}`,
+    title,
+    state: 'open',
+    body: '---\nkind: communicate\ncategory: request\ntickets: ["wm-test"]\n---\nBody',
+    user: { login: author },
+    assignee: assignee === null ? null : { login: assignee },
+  }
   return {
     action: 'opened',
     repository: { full_name: repository },
-    issue: {
-      html_url: `https://github.com/${repository}/issues/${number}`,
-      title,
-      body: `---\nkind: communicate\ncategory: request\nfrom: "sender"\nto: [${JSON.stringify(to)}]\ntickets: ["wm-test"]\n---\nBody`,
-      user: { login: author },
-    },
+    issue,
+    sender: { login: author },
   }
+}
+
+// Stages what `gh` answers for the issue an event describes, then posts it.
+// The listener reads every event back from GitHub, so an event is only as good
+// as the answer GitHub gives for it.
+async function send(f, port, payload, changed = {}) {
+  await fs.writeFile(path.join(f.issues, `${payload.issue.number}.json`), JSON.stringify({ ...payload.issue, ...changed }))
+  return webhook(port, payload)
 }
 
 async function webhook(port, payload) {
@@ -226,31 +262,31 @@ test('two project roots keep separate rosters and queues', async (t) => {
   const a = await startListener(t, alpha)
   const b = await startListener(t, beta)
 
-  assert.deepEqual(await webhook(a.port, message({
-    repository: 'example/alpha', number: 1, to: 'alice-handle', author: 'alice-handle', title: 'For alpha',
+  assert.deepEqual(await send(alpha, a.port, message({
+    repository: 'example/alpha', number: 1, assignee: 'alice-handle', author: 'alice-handle', title: 'For alpha',
   })), { status: 202, body: 'queued 1\n' })
-  assert.deepEqual(await webhook(b.port, message({
-    repository: 'example/beta', number: 2, to: 'carol-handle', author: 'carol-handle', title: 'For beta',
+  assert.deepEqual(await send(beta, b.port, message({
+    repository: 'example/beta', number: 2, assignee: 'carol-handle', author: 'carol-handle', title: 'For beta',
   })), { status: 202, body: 'queued 1\n' })
 
   // A repository event meant for the other checkout is rejected before routing.
-  assert.deepEqual(await webhook(a.port, message({
-    repository: 'example/beta', number: 3, to: 'alice-handle', author: 'alice-handle', title: 'Beta event at alpha',
+  assert.deepEqual(await send(alpha, a.port, message({
+    repository: 'example/beta', number: 3, assignee: 'alice-handle', author: 'alice-handle', title: 'Beta event at alpha',
   })), { status: 202, body: 'queued 0\n' })
   // An author from the other roster is a stranger here.
-  assert.deepEqual(await webhook(a.port, message({
-    repository: 'example/alpha', number: 4, to: 'alice-handle', author: 'carol-handle', title: 'Beta author at alpha',
+  assert.deepEqual(await send(alpha, a.port, message({
+    repository: 'example/alpha', number: 4, assignee: 'alice-handle', author: 'carol-handle', title: 'Beta author at alpha',
   })), { status: 202, body: 'queued 0\n' })
   // A handle from the other roster is not a recipient here.
-  assert.deepEqual(await webhook(b.port, message({
-    repository: 'example/beta', number: 5, to: 'alice-handle', author: 'carol-handle', title: 'Alpha handle at beta',
+  assert.deepEqual(await send(beta, b.port, message({
+    repository: 'example/beta', number: 5, assignee: 'alice-handle', author: 'carol-handle', title: 'Alpha handle at beta',
   })), { status: 202, body: 'queued 0\n' })
 
   await waitFor(() => a.output().includes('example/beta is not example/alpha'), 'repository mismatch log', a.output)
   const alphaQueue = await queueText(alpha)
   const betaQueue = await queueText(beta)
-  assert.deepEqual(alphaQueue.trimEnd().split('\n').filter(Boolean).map((line) => JSON.parse(line.slice(2)).title), ['For alpha'])
-  assert.deepEqual(betaQueue.trimEnd().split('\n').filter(Boolean).map((line) => JSON.parse(line.slice(2)).title), ['For beta'])
+  assert.deepEqual(alphaQueue.trimEnd().split('\n').filter(Boolean).map((line) => JSON.parse(line).title), ['For alpha'])
+  assert.deepEqual(betaQueue.trimEnd().split('\n').filter(Boolean).map((line) => JSON.parse(line).title), ['For beta'])
   assert.ok(!alphaQueue.includes('example/beta'))
   assert.ok(!betaQueue.includes('example/alpha'))
 })
@@ -263,7 +299,7 @@ test('an explicit --project root wins over the working directory', async (t) => 
     await fs.rm(outside, { recursive: true, force: true })
   })
   const listener = await startListener(t, f, { cwd: outside, args: ['--project', f.root] })
-  assert.deepEqual(await webhook(listener.port, message({ number: 6, title: 'Explicit root' })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await send(f, listener.port, message({ number: 6, title: 'Explicit root' })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Explicit root/)
 
   const result = checker(f, { cwd: outside, args: ['--project', f.root] })
@@ -277,9 +313,9 @@ test('a working directory below the root discovers it without --project', async 
   const nested = path.join(f.root, 'nested', 'deeper')
   await fs.mkdir(nested, { recursive: true })
   const listener = await startListener(t, f, { cwd: nested })
-  assert.deepEqual(await webhook(listener.port, message({ number: 7, title: 'Discovered root' })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await send(f, listener.port, message({ number: 7, title: 'Discovered root' })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Discovered root/)
-  assert.equal(await queueText({ queue: path.join(nested, '.work-weave/pending/pending-communications.md') }), '')
+  assert.equal(await queueText({ queue: path.join(nested, '.work-weave/personal/communication/pending.jsonl') }), '')
 
   const result = checker(f, { cwd: nested })
   assert.equal(result.status, 0, result.stderr)
@@ -346,11 +382,11 @@ test('missing or mismatched event repositories are logged and append nothing', a
   await waitFor(() => listener.output().includes('repository.full_name is missing'), 'missing repository log', listener.output)
   assert.equal(await queueText(f), '')
 
-  assert.deepEqual(await webhook(listener.port, message({ repository: 'other/project', number: 9, title: 'Wrong repository' })), { status: 202, body: 'queued 0\n' })
+  assert.deepEqual(await send(f, listener.port, message({ repository: 'other/project', number: 9, title: 'Wrong repository' })), { status: 202, body: 'queued 0\n' })
   await waitFor(() => listener.output().includes('repository other/project is not example/project'), 'mismatched repository log', listener.output)
   assert.equal(await queueText(f), '')
 
-  assert.deepEqual(await webhook(listener.port, message({ number: 10, title: 'Right repository' })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await send(f, listener.port, message({ number: 10, title: 'Right repository' })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Right repository/)
 })
 
@@ -365,11 +401,11 @@ test('REPOSITORY is required at startup and the environment overrides the file',
 
   const f = await project(t, { repository: 'example/alpha' })
   const listener = await startListener(t, f, { env: { REPOSITORY: 'example/override' } })
-  assert.deepEqual(await webhook(listener.port, message({
+  assert.deepEqual(await send(f, listener.port, message({
     repository: 'example/alpha', number: 11, title: 'File repository',
   })), { status: 202, body: 'queued 0\n' })
   await waitFor(() => listener.output().includes('example/alpha is not example/override'), 'overridden repository log', listener.output)
-  assert.deepEqual(await webhook(listener.port, message({
+  assert.deepEqual(await send(f, listener.port, message({
     repository: 'example/override', number: 12, title: 'Environment repository',
   })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Environment repository/)
@@ -384,7 +420,7 @@ test('the tools run under a type module package', async (t) => {
   assert.equal(checked.status, 0, checked.stderr)
   assert.equal(checked.stdout, '')
   const listener = await startListener(t, f)
-  assert.deepEqual(await webhook(listener.port, message({ number: 13, title: 'Module package' })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await send(f, listener.port, message({ number: 13, title: 'Module package' })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Module package/)
 })
 
@@ -404,7 +440,7 @@ test('a second listener on one queue is rejected before it listens', async (t) =
   assert.notEqual(code, 0)
   assert.match(output, /Another listener holds the queue lock/)
 
-  assert.deepEqual(await webhook(first.port, message({ number: 14, title: 'Only once' })), { status: 202, body: 'queued 1\n' })
+  assert.deepEqual(await send(f, first.port, message({ number: 14, title: 'Only once' })), { status: 202, body: 'queued 1\n' })
   const entries = (await queueText(f)).trim().split('\n').filter(Boolean)
   assert.equal(entries.length, 1)
 })

@@ -9,8 +9,8 @@ import projectRoot from './project-root.cjs'
 import { parseQueue } from './queue.mjs'
 
 const { resolveProjectRoot } = projectRoot
-const DEFAULT_QUEUE = '.work-weave/pending/pending-communications.md'
-const ROSTER_FILE = '.work-weave/issue/handles.toml'
+const DEFAULT_QUEUE = '.work-weave/personal/communication/pending.jsonl'
+const ROSTER_FILES = ['.work-weave/shared/handles.toml', '.work-weave/issue/handles.toml']
 const USAGE = 'Usage: node check-pending.mjs [--project <directory>]'
 
 function parseArgs(argv) {
@@ -43,7 +43,13 @@ function readOptional(file) {
 
 try {
   const root = resolveProjectRoot(parseArgs(process.argv.slice(2)))
-  const config = readOptional(path.join(root, ROSTER_FILE))
+  // The roster moved to shared/handles.toml; the old path is read until every
+  // checkout has moved, and the shared file wins when both exist.
+  let config = null
+  for (const candidate of ROSTER_FILES) {
+    config = readOptional(path.join(root, candidate))
+    if (config !== null) break
+  }
   const settings = config === null ? {} : parseToml(config)
   const pending = settings.pending
   if (pending !== undefined && (!pending || typeof pending !== 'object' || Array.isArray(pending))) {
