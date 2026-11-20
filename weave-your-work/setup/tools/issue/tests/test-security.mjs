@@ -558,6 +558,24 @@ test('the owner keeps the line for an issue they sent to another owner', async (
   assert.equal(JSON.parse((await queueText(f)).trimEnd()).closed_at, null)
 })
 
+test('the owner who sent the issue closes the line', async (t) => {
+  const f = await fixture(t)
+  const { port } = await startListener(t, f)
+  const payload = await confirm(f, issue({ url: `${BASE}/30`, title: 'Closed by its sender', assignee: 'bob-handle' }))
+  assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
+  const lines = (await queueText(f)).trimEnd().split('\n')
+  assert.equal(lines.length, 1)
+  const entry = JSON.parse(lines[0])
+  assert.deepEqual([entry.from, entry.to, entry.owner, entry.title], ['alice', 'bob', 'bob', 'Closed by its sender'])
+  // The sender is the author, so their close is the one the listener acts on.
+  const closedAt = '2026-11-20T04:00:00Z'
+  const closed = { ...payload, action: 'closed', closed_at: closedAt, closed_by: { login: 'alice-handle' } }
+  assert.deepEqual(await request(port, closed), { status: 202, body: 'queued 1\n' })
+  const after = (await queueText(f)).trimEnd().split('\n')
+  assert.equal(after.length, 1)
+  assert.equal(JSON.parse(after[0]).closed_at, closedAt)
+})
+
 test('a message assigned to a handle outside the roster is not queued', async (t) => {
   const f = await fixture(t)
   const { port } = await startListener(t, f)

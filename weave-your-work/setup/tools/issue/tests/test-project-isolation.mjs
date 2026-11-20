@@ -198,7 +198,7 @@ function message({ number = 1, assignee = 'alice-handle', author = 'alice-handle
     html_url: `https://github.com/${repository}/issues/${number}`,
     title,
     state: 'open',
-    body: '---\nkind: communicate\ncategory: request\ntickets: ["wm-test"]\n---\nBody',
+    body: '---\nkind: communicate\ncategory: request\n---\nBody',
     user: { login: author },
     assignee: assignee === null ? null : { login: assignee },
   }
