@@ -1,5 +1,5 @@
 interface:
   display_name: "Communicate with Issue"
-  short_description: "Carry one message between owners as a GitHub issue"
+  short_description: "Send one owner a message as a GitHub issue, or answer one in its thread."
 policy:
   allow_implicit_invocation: false
