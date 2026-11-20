@@ -3,11 +3,12 @@ schema: 1
 id: wm-2jfrxgr3d6st
 title: The skill is SKILL.md and the format file, with the queue writing both directions
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T08:56:23Z
-updated_at: 2026-11-20T08:56:42Z
+updated_at: 2026-11-20T09:10:25Z
+closed_at: 2026-11-20T09:10:25Z
 parent: wm-212r50h4z0bm
 ---
 Part of wm-212r50h4z0bm
@@ -109,19 +110,19 @@ numbered steps, `## Why`.
 
 ## Acceptance criteria
 
-- [ ] The skill folder holds exactly `SKILL.md`, `COMMUNICATE-ISSUE-FORMAT.md`,
+- [x] The skill folder holds exactly `SKILL.md`, `COMMUNICATE-ISSUE-FORMAT.md`,
       and `agents/openai.yaml`; `SEND.md` and `RECEIVE.md` are gone.
-- [ ] `SKILL.md` holds the send steps, the answer steps, the failure branches,
+- [x] `SKILL.md` holds the send steps, the answer steps, the failure branches,
       and the queue section; it names no other file of the skill except the
       format file.
-- [ ] The format file has no `tickets`, no "main record", and no landing
+- [x] The format file has no `tickets`, no "main record", and no landing
       promise.
-- [ ] The format file's title rule has no id prefix.
-- [ ] The assertions match the listener: a non-message is skipped, not rejected
+- [x] The format file's title rule has no id prefix.
+- [x] The assertions match the listener: a non-message is skipped, not rejected
       on install.
-- [ ] Both copies of the rule file are byte-identical, and neither tells a
+- [x] Both copies of the rule file are byte-identical, and neither tells a
       session to wait for a person before acting on a queued entry.
-- [ ] Both YAML blocks parse with the `yaml` package, and no line exceeds 80
+- [x] Both YAML blocks parse with the `yaml` package, and no line exceeds 80
       columns except the front-matter title line.
 
 ## Notes
@@ -131,3 +132,25 @@ Write in the set's own voice, per the `talk-like-a-human` skill. Do not add a
 
 The listener is not in this ticket; it stops requiring `tickets` under
 wm-knzbwv3fkfcs. Until that lands, a message without `tickets` does not queue.
+
+## The result
+
+`weave-your-work/communicate-with-issue/` holds `SKILL.md`,
+`COMMUNICATE-ISSUE-FORMAT.md`, and `agents/openai.yaml`; `SEND.md` and
+`RECEIVE.md` are deleted. `SKILL.md` carries Send, Answer, Failures, What the
+queue holds, and What this skill does not do, with the `gh` commands inline.
+The format file keeps `kind` and `category`, has no `tickets`, no "main record",
+and no landing promise, and its title is `<the point>`.
+
+`setup/rules/rules-pending-communications.md` is rewritten and copied to
+`.agents/rules/`, byte-identical: it opens the session with the open threads,
+reads each with `gh issue view --comments`, replies with `gh issue comment
+--body-file`, closes what this machine's owner opened, and replies-and-mentions
+for what someone else opened. Step 5 says who marks a line closed in each case.
+The install guide's verification issue now carries `kind` and `category` only
+and is assigned, which it must be to be queued.
+
+Verified by reading back: the folder holds the three files, both YAML blocks
+parse with the `yaml` package, `cmp` on the two rule copies is identical, and no
+line exceeds 80 columns except the one-line `description`, as every other skill
+in the set writes it.
