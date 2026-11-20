@@ -67,6 +67,10 @@ Run in place; nothing to copy for these two.
 
 Node callers can import `resolveProjectRoot({ cwd?, project? })` from `tools/project-root.cjs`.
 
+## Move a checkout to the new layout
+
+A checkout written before the layout split keeps its files under `config/`, `issue/`, `glossary/`, `adr/`, `runtime/`, `local/`, and `pending/`. `node <setup>/tools/migrate-layout.cjs [<project-root>]` moves them into `.work-weave/shared/` and `.work-weave/personal/` and rewrites `.work-weave/.gitignore` to name `personal/` and nothing else. It prints every path it moved. It checks all destinations first and stops with both paths named if one already exists, moving nothing; run it on a checkout already in the new shape and it prints that there is nothing to do. Running it twice is safe.
+
 The glossary and issue tools each carry a byte-identical copy of `project-root.cjs`. The setup install has no test that runs that comparison; the copies are kept equal by hand.
 
 ## Install the three runtimes
