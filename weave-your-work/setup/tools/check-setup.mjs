@@ -11,7 +11,6 @@ const CATEGORIES = ['spec', 'testimony', 'ticket']
 const FIELDS = []
 const NODE_FLOOR = '22.20.0'
 const WAYMARK_FLOOR = '0.1.2'
-const ROSTER = '.work-weave/shared/handles.toml'
 const PERSONAL = ['.work-weave', 'personal']
 const SETTINGS = '.work-weave/personal/issue-listener.env'
 const GLOSSARY_RUNTIME = '.work-weave/personal/glossary'
@@ -383,34 +382,6 @@ function checkTracker(ctx) {
   return ok(`healthy, 0 errors; storage_root tickets; ${CATEGORIES.length} categories, ${FIELDS.length} fields`)
 }
 
-function checkOperator(ctx) {
-  const configResult = run('waymark', ['config', 'show', '--json', '--project', ctx.cwd], { cwd: ctx.cwd })
-  if (configResult.status !== 0 || configResult.error) {
-    return fail(`waymark config show failed: ${commandFailure(configResult)}`)
-  }
-  let config
-  try {
-    config = JSON.parse(configResult.stdout)
-  } catch {
-    return fail(`waymark config show did not return JSON: ${firstLine(configResult.stdout) || firstLine(configResult.stderr)}`)
-  }
-  const operator = config.data?.effective?.operator
-  if (!operator || operator === 'None') return fail('the operator is unset')
-  const handlePath = path.join(ctx.cwd, '.work-weave', 'shared', 'handles.toml')
-  if (!isFile(handlePath)) return ok(`operator ${operator}; ${ROSTER} absent, nothing to match`)
-  let text
-  try {
-    text = fs.readFileSync(handlePath, 'utf8')
-  } catch {
-    return fail(`cannot read ${display(ctx.cwd, handlePath)}`)
-  }
-  const keys = parseHandles(text)
-  if (!keys.length) return fail(`operator ${operator}; the [handles] table in ${ROSTER} is empty`)
-  const match = keys.find(key => key.toLowerCase() === String(operator).toLowerCase())
-  if (match) return ok(`operator ${operator}; handles ${match}`)
-  return fail(`operator ${operator} is not in [handles] in ${ROSTER}: ${keys.join(', ')}`)
-}
-
 function checkSkills(ctx) {
   const roots = findSkillRoots(ctx.cwd)
   if (!roots.length) return fail('no skills directory holding <name>/SKILL.md')
@@ -693,7 +664,6 @@ const CHECKS = [
   { number: 8, starred: false, name: 'The repository knows its remote', repair: 'Add the project remote as origin.', run: checkRemote },
   { number: 9, starred: false, name: 'The default branch is protected', repair: 'Protect the default branch in GitHub, or use rules-git.md when the plan cannot.', run: checkProtection },
   { number: 10, starred: true, name: 'The tracker validates and is configured', repair: 'Run the tracker steps in start-a-project.md, then waymark validate.', run: checkTracker },
-  { number: 11, starred: false, name: 'The operator is set and on the roster', repair: `Set the operator, or add the owner to [handles] in ${ROSTER} through a pull request.`, run: checkOperator },
   { number: 12, starred: true, name: 'Every installed skill is still there', repair: 'Reinstall the missing skills with npx skills add.', run: checkSkills },
   { number: 13, starred: true, name: "Every setup rule is registered", repair: 'Run the setup install that owns each missing rule.', run: checkSetupRules },
   { number: 14, starred: true, name: 'AGENTS.md points at the rules', repair: 'Write the AGENTS.md prompt at the top of the file.', run: checkAgents },

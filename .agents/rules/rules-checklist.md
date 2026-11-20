@@ -43,7 +43,6 @@ The starred checks are 1, 2, 3, 4, 6, 7, 10, 12, 13, and 14.
 ### Tracker
 
 10. **The tracker validates and is configured.** * `waymark validate --json` reports `healthy: true` and `counts.errors: 0`. `waymark config show --json` reports `storage_root: tickets`, the categories `map`, `task`, and `testimony`, and the six fields `needs_human`, `outcome`, `reversibility`, `split_as`, `task_kind`, and `waiting_on`. Read the JSON; `waymark validate` exits 0 whether or not it found anything. Repair: run the tracker steps in `start-a-project.md`.
-11. **The operator is set and on the roster.** `waymark config show --json` gives an operator, and `.work-weave/shared/handles.toml` either is absent or has a `[handles]` key that matches it case-insensitively. An unset operator or an empty table fails. Repair: set the operator, or add the owner to `[handles]` in `.work-weave/shared/handles.toml` through a pull request.
 
 ### Skills and rules
 

@@ -95,27 +95,13 @@ test('all checks run on a configured fixture', t => {
   })
   assert.equal(result.status, 1, result.stderr)
   const payload = JSON.parse(result.stdout)
-  assert.equal(payload.checks.length, 18)
+  assert.equal(payload.checks.length, 17)
+  assert.ok(!payload.checks.some(check => /operator.*roster|roster.*operator/i.test(check.name)))
   const byNumber = new Map(payload.checks.map(check => [check.number, check]))
   for (const number of [1, 6, 7, 12, 13, 14, 18]) {
     assert.equal(byNumber.get(number).status, 'ok', `${number}: ${byNumber.get(number).message}`)
   }
   assert.match(byNumber.get(12).message, /missing: none/)
-})
-
-test('names the roster path when the operator is not in [handles]', t => {
-  const root = project(t)
-  write(path.join(root, '.work-weave', 'shared', 'handles.toml'), '[handles]\nsomeone = "x"\n')
-  const home = fixture(t)
-  const result = spawnSync(process.execPath, [cli, '--all', '--json'], {
-    cwd: root,
-    encoding: 'utf8',
-    env: { ...process.env, HOME: home, USERPROFILE: home },
-  })
-  const payload = JSON.parse(result.stdout)
-  const check = payload.checks.find(item => item.number === 11)
-  assert.equal(check.status, 'fail')
-  assert.match(check.message, /\.work-weave\/shared\/handles\.toml/)
 })
 
 test('reads the glossary server from its personal path', t => {
@@ -218,7 +204,7 @@ function runCheck17(t, hooks, extra = {}) {
     },
   })
   const payload = JSON.parse(result.stdout)
-  assert.equal(payload.checks.length, 18)
+  assert.equal(payload.checks.length, 17)
   return payload.checks.find(item => item.number === 17)
 }
 
