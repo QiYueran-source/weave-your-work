@@ -196,11 +196,11 @@ async function finish(listener, outcome = 'complete') {
   await waitFor(() => listener.output().includes(`Catch-up ${outcome}:`), `catch-up ${outcome}`, listener.output)
 }
 
-const messageBody = '{ kind: communicate, category: request, tickets: [wm-test] }'
+const messageBody = '{ kind: communicate, category: request }'
 
 // One issue record as GitHub returns it to the listing and to a single read.
 function issue(number, {
-  title = `Issue ${number}`, body, category = 'request', tickets = ['wm-test'],
+  title = `Issue ${number}`, body, category = 'request',
   author = 'alice-handle', assignee = 'alice-handle', state = 'open', ...extra
 } = {}) {
   return {
@@ -208,7 +208,7 @@ function issue(number, {
     html_url: `https://github.com/example/project/issues/${number}`,
     title,
     state,
-    body: body ?? `---\n${messageBody.replace('request', category).replace('[wm-test]', JSON.stringify(tickets))}\n---\nBody`,
+    body: body ?? `---\n${messageBody.replace('request', category)}\n---\nBody`,
     user: { login: author },
     assignee: assignee === null ? null : { login: assignee },
     ...extra,
@@ -258,6 +258,23 @@ function event(action, record, extra = {}) {
   }
 }
 
+test('the scan queues a sent issue the queue lacks and marks one it no longer lists', async (t) => {
+  const f = await fixture(t)
+  const gone = { url: 'https://github.com/example/project/issues/21', from: 'alice', to: 'bob', owner: 'bob', title: 'Already closed', received: '2026-01-01T00:00:00Z', closed_at: null }
+  await fs.mkdir(path.dirname(f.queue), { recursive: true })
+  await fs.writeFile(f.queue, `${JSON.stringify(gone)}\n`)
+  await stage(f, 1, [issue(21, { title: 'Already closed', author: 'alice-handle', assignee: 'bob-handle', state: 'closed' }), issue(22, { title: 'Sent and open', author: 'alice-handle', assignee: 'bob-handle' })])
+  const listener = await start(f)
+  await finish(listener)
+  const found = await entries(f)
+  assert.deepEqual(found.map(({ url, from, to, title }) => [url, from, to, title]), [
+    ['https://github.com/example/project/issues/21', 'alice', 'bob', 'Already closed'],
+    ['https://github.com/example/project/issues/22', 'alice', 'bob', 'Sent and open'],
+  ])
+  assert.match(found[0].closed_at, /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/)
+  assert.equal(found[1].closed_at, null)
+})
+
 test('catch-up reconciles the queue with the open issues it lists', async (t) => {
   const f = await fixture(t)
   const keep = { url: 'https://github.com/example/project/issues/1', from: 'bob', to: 'alice', owner: 'alice', title: 'Still open', received: '2026-01-01T00:00:00Z', closed_at: null }
@@ -267,13 +284,13 @@ test('catch-up reconciles the queue with the open issues it lists', async (t) =>
   await fs.writeFile(f.queue, [keep, stale, elsewhere].map((entry) => `${JSON.stringify(entry)}\n`).join(''))
   const first = [
     issue(1, { title: 'Still open' }),
-    issue(2, { assignee: 'bob-handle' }),
-    issue(3, { body: '---\nkind: task\ntickets: [wm-test]\n---\n' }),
+    issue(2, { author: 'bob-handle', assignee: 'bob-handle' }),
+    issue(3, { body: '---\nkind: task\n---\n' }),
     issue(4, { pull_request: { url: 'https://api.github.com/repos/example/project/pulls/4' } }),
-    issue(5, { body: '---\nkind: communicate\ncategory: request\ntickets: [broken\n---\n' }),
     issue(6, { title: '' }),
-    issue(8, { body: '---\nkind: communicate\ncategory: request\ntickets: []\n---\n' }),
-    issue(9, { body: '---\nkind: communicate\ntickets: [wm-test]\n---\n' }),
+    issue(8, { body: '---\nkind: communicate\n---\n' }),
+    issue(9, { body: '---\nkind: communicate\ncategory: notice\n---\n' }),
+    issue(10, { body: '---\nkind: communicate\ncategory: request\nbroken [\n---\n' }),
     issue(12, { assignee: 'unmapped' }),
     issue(13, { assignee: null }),
     issue(14, { author: 'stranger' }),
@@ -283,11 +300,11 @@ test('catch-up reconciles the queue with the open issues it lists', async (t) =>
   ]
   assert.equal(first.length, 100)
   await stage(f, 1, first)
-  await stage(f, 2, [issue(16, { title: 'Second page' }), issue(2, { assignee: 'bob-handle' })])
+  await stage(f, 2, [issue(16, { title: 'Second page' }), issue(2, { author: 'bob-handle', assignee: 'bob-handle' })])
   const listener = await start(f)
   await finish(listener)
   const found = await entries(f)
-  // Issue 2 is assigned to bob and this machine belongs to alice, so neither
+  // Issue 2 has bob at both ends and this machine belongs to alice, so neither
   // its page-1 nor its page-2 copy is queued. Issue 1 is still open, so its line
   // stays; issue 7 is no longer listed, so its line is marked closed and kept;
   // the other checkout's thread was never listed here, so it is left alone.
@@ -417,6 +434,24 @@ test('an assigned event queues a message opened without an assignee', async (t) 
   assert.deepEqual([found[0].from, found[0].to, found[0].title], ['alice', 'alice', 'Waiting for an owner'])
 })
 
+test('an issue whose two parties are other members is not queued', async (t) => {
+  const f = await fixture(t)
+  const listener = await start(f)
+  const toBob = issue(17, { title: 'Bob handles this', author: 'bob-handle', assignee: 'bob-handle' })
+  await single(f, 17, toBob)
+  assert.deepEqual(await webhook(listener.port, event('opened', toBob)), { status: 202, body: 'queued 0\n' })
+  await waitFor(() => listener.output().includes('Skipped issue #17: bob to bob does not involve alice'), 'not involved log', listener.output)
+  assert.equal(await queue(f), '')
+
+  // An issue alice sent to bob is queued here: the sender is party to it too.
+  const fromAlice = issue(18, { title: 'Bob, please', author: 'alice-handle', assignee: 'bob-handle' })
+  await single(f, 18, fromAlice)
+  assert.deepEqual(await webhook(listener.port, event('opened', fromAlice)), { status: 202, body: 'queued 1\n' })
+  const [entry] = await entries(f)
+  assert.deepEqual([entry.from, entry.to, entry.owner, entry.title], ['alice', 'bob', 'bob', 'Bob, please'])
+  assert.equal(entry.closed_at, null)
+})
+
 test('a mention in the body names no recipient', async (t) => {
   const f = await fixture(t)
   const listener = await start(f)
@@ -425,7 +460,7 @@ test('a mention in the body names no recipient', async (t) => {
   const legacy = issue(6, {
     title: 'Old shape',
     assignee: null,
-    body: '---\nkind: communicate\ncategory: request\nfrom: "sender"\nto: ["alice-handle"]\ntickets: ["wm-test"]\n---\nHey @alice-handle',
+    body: '---\nkind: communicate\ncategory: request\nfrom: "sender"\nto: ["alice-handle"]\n---\nHey @alice-handle',
   })
   await single(f, 6, legacy)
   assert.deepEqual(await webhook(listener.port, event('opened', legacy)), { status: 202, body: 'queued 0\n' })
@@ -434,7 +469,7 @@ test('a mention in the body names no recipient', async (t) => {
   const legacyAssigned = issue(6, {
     title: 'Old shape',
     assignee: 'alice-handle',
-    body: '---\nkind: communicate\ncategory: request\nfrom: "sender"\nto: ["bob-handle"]\ntickets: ["wm-test"]\n---\nHey @bob-handle',
+    body: '---\nkind: communicate\ncategory: request\nfrom: "sender"\nto: ["bob-handle"]\n---\nHey @bob-handle',
   })
   await single(f, 6, legacyAssigned)
   assert.deepEqual(await webhook(listener.port, event('opened', legacyAssigned)), { status: 202, body: 'queued 1\n' })

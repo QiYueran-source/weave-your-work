@@ -2,39 +2,109 @@
 
 [简体中文](README.zh-CN.md)
 
-Weave Your Work is a set of AI agent skills for organizing and carrying out work with a team. Inspired by [Matt Pocock's software engineering skills](https://github.com/mattpocock/skills), it adapts ideas from that work to projects in any domain, not only software development.
+Weave Your Work is a set of AI agent skills for carrying work through with a
+team: settle what is being decided, write it down as a spec, cut the spec into
+tickets, do the work, and read the results. It is adapted from [Matt Pocock's
+software engineering skills](https://github.com/mattpocock/skills), whose set is
+written for code; this one is for office work of any kind, so its reviewers read
+records rather than diffs and its tickets may be a person's to do.
 
-The project explores AI-native ways of working: describe a goal in natural language, and work with an agent that uses waymark to record targets and tasks, Git to track changes, and the GitHub CLI to communicate. People retain decisions and acceptance; the records stay in the project.
+The records live in the repository. Waymark keeps the specs and tickets, Git
+keeps the changes, and the GitHub CLI carries messages between owners. People
+hold the decisions and the acceptance; the agent does the work and writes down
+what it found.
 
-For team collaboration, each waymark item has one owner who advances and accepts it. Teammates exchange requests and results through GitHub issues; the issue listener routes messages to the intended recipient. Ownership is a working convention, not an access-control boundary.
+For team work, each record has one owner, who advances it and decides whether it
+passes. Teammates send requests and results as GitHub issues, and an issue
+listener queues what arrived for the next session. Ownership is a working
+convention, not an access-control boundary.
 
 ## Install
 
-Install Node.js 22.20 or newer and npm, then run this once for your machine:
+Run this once per machine, then ask your agent to run `setup` in your project:
 
 ```sh
 npx skills add qiyueran-source/weave-your-work -g
 ```
 
-Select the skills and agent environments you want to install when prompted. Select the whole set to follow the steps below; at minimum include `setup`, `ask-me`, and the record references `waymark`, `map`, and `task`. The command installs from the repository's default branch; it does not require an npm package release. Drop `-g` to install into the current project instead.
+[INSTALL.md](INSTALL.md) is the one place that holds the command, what it needs,
+and how to check a project afterwards.
 
-## Get started
+## The mainline
 
-Ask your agent to run the `setup` skill for your project. Setup guides you through installing and configuring Git, waymark, Node.js and the GitHub CLI, then initializes or joins the project and installs the required rules and tools. Some steps, such as signing in to GitHub, require you to act.
+The line this set promises runs in four steps. Each step is one skill, and the
+next one reads what the last wrote.
 
-Once setup is complete, ask the agent to use `ask-me` to find the right starting point for your work. The set is built two ways: records are defined once under each record skill's `res/`, and actions follow the order `what-is-the-mainline` describes. Every rule is an assertion with the check that decides it; [ASSERTIONS.md](weave-your-work/ASSERTIONS.md) indexes them.
+| Step | Skill | What it does |
+|---|---|---|
+| 1. Write the spec | `to-spec` | Turns the conversation into a spec and publishes it: the problem, the solution, what is handed over, and how a reader tells it was |
+| 2. Cut the tickets | `to-tickets` | Cuts the spec into whole tasks, each worked by one arranger and each naming the tickets that block it |
+| 3. Do the work | `implement`, or `implement-spec` for a whole spec | `implement` does one ticket and stops at a ticket that is a person's; `implement-spec` works each batch of the frontier at once and closes the batch |
+| 4. Read the results | `review` | Judges each ticket's result against its acceptance, and the work against the problem the spec names, on two axes |
+
+A discussion that produces the spec happens before step 1, and `grilling` and
+`grill-with-docs` run it. What enters the line is the spec; a goal that is not
+yet settled is settled in conversation before there is one.
+
+A ticket that is a person's to do comes back through `hand-back`: the person
+reports what they finished, its result is written, and the ticket closes.
 
 ## What is in the set
 
-Seven actions carry a project from a settled map to a closed one, in order, and `what-is-the-mainline` describes that order: `open-map` writes a map, `split` turns a settled layer into child maps or tasks, `open-map` and `open-task` write what it decided, `advance-task` takes a task to a written result, `task-review` judges it, and `map-review` judges the map. Fog that blocks a layer goes to `fog-explore` first. All but `map-review` are model-invoked, so the line runs without a person restarting it; closing a map stays a person's decision.
+Twelve skills. `setup` configures a project. The mainline is the four skills in
+the table above. The rest support them:
 
-The rest act on a record without adding a step: `update` changes a record others already rely on, `grill-and-records` runs a discussion (`grilling`) and writes what it settled, `adr` and `glossary` record what a step settled, `issue` and `handoff` carry work to another owner or another session, `resplit` recuts a task layer that should have been child maps, and `whole-review` reads a map's children as a set when a person asks for it. Three more read and change nothing: `wait-what` shows where the work stands, `stop-and-wait` reports where the project contradicts itself, and `salvage-and-restart` restarts a tree that no longer describes its work off that report. `feedback-me-please` reports a skill bug upstream, `use-weave-your-work-examples` walks two worked examples, and `setup` configures a project in the first place.
+| Skill | What it does |
+|---|---|
+| `grilling` | Interviews the person round by round until a plan is clear, and writes each round into a testimony as it happens |
+| `grill-with-docs` | Runs `grilling`, then records the terms it fixed with `glossary` and the decisions that pass the three gates with `adr` |
+| `glossary` | Keeps one vocabulary for the project; each operator writes their own source and the view is generated from all of them |
+| `adr` | Records a decision that is hard to reverse, surprising without context, and the result of a real trade-off |
+| `hand-back` | Records what a person finished on their own ticket, closes it, and names the next ticket |
+| `communicate-with-issue` | Sends one owner a message as a GitHub issue, and answers one in its thread |
 
-## What a review does now
+## How a review works
 
-A task or a map is judged on two axes, and each gives its own verdict: **goal** asks whether the acceptance signal or direction was met, **convention** asks whether the work followed the rules. Both have to pass for the record to close, and the record keeps both verdicts as they stand. `whole-review` is the one pass nobody calls by itself: a person runs it when a map's children are worth reading as a set, so two contradictory children are reported instead of both passing alone, and `map-review` judges the map whether that paragraph is there or not.
+A ticket's result is read on two axes and each gets its own verdict: whether it
+meets its own acceptance, and whether the work addresses the problem the spec
+names. `review` changes nothing: it reports findings, and each finding names the
+ticket, who worked it, and whose it is to fix.
 
-A record's decisions, review, and exclusions are never rewritten in place: a new fact adds an entry beside the old one, and an entry that no longer holds is struck with `Superseded on <date>` and replaced under it.
+A result that cannot be checked is a finding, not a pass. A ticket closed with
+no result at all is a finding of its own.
+
+## Where the set departs from Matt's
+
+The skills whose names match his are taken from his files and edited, and
+`weave-your-work/UPSTREAM.md` records the commit they were taken from. What is
+different, and why:
+
+- **Records, not diffs.** His `code-review` reads a diff against a fixed point.
+  This set's `review` reads a spec's tickets, because an edit made in place
+  leaves nothing to fix a point against.
+- **Tickets may be a person's.** His flow assumes an agent does the work alone.
+  Here a ticket has one arranger, a person or an agent, and `hand-back` is how a
+  person's ticket returns.
+- **The tracker is in the repository.** His set lets you choose an issue tracker
+  and writes tickets to it. This set keeps specs and tickets as records under
+  `tickets/`, written through waymark, so a clone carries them.
+- **Messages are issues.** `communicate-with-issue` replaces his `handoff`
+  between people with a GitHub issue, so a request and its answer stay in one
+  thread.
+
+## Working in this repository
+
+This repository is the source of the set, not a project that uses it.
+
+```sh
+npm test                      # the tool runtimes' tests
+node scripts/check-references.mjs .
+node scripts/check-records.mjs . --baseline scripts/check-records-baseline.json
+```
+
+The checks also run in CI on every pull request
+(`.github/workflows/verify.yml`), which installs the set the way a stranger
+would and checks what the install produced.
 
 ## License
 
