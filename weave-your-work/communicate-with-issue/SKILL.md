@@ -6,23 +6,108 @@ disable-model-invocation: true
 
 # Communicate with issue
 
-A message is one GitHub issue from one owner to another. It says a thing in the front matter, a title that carries a record, and a body that opens with the ask.
+A message is one GitHub issue from one owner to another, and a reply is a
+comment on that issue.
 
-What a message is — its front matter, its title, its body, and how the thread ends — is `COMMUNICATE-ISSUE-FORMAT.md`. Read it before writing or answering one.
+A message holds a front matter that marks it as a message, a title that states
+its point, and a body that opens with the ask. That shape is
+`COMMUNICATE-ISSUE-FORMAT.md`; read it before writing or answering one.
 
-## Where to go
+## Send
 
-- **Send a message.** Read `SEND.md`. Sending is one act: pick the recipient, write the issue, assign it, open it, confirm it exists.
-- **Receive a message.** Read `RECEIVE.md`. Receiving is a list of behaviours, not a sequence: reply, land, or leave it.
+1. **Pick the recipient.** The recipient is an owner in the roster,
+   `.work-weave/shared/handles.toml`, the one table that turns an owner into a
+   GitHub login and a login into an owner; do not keep a second one. Read the
+   owner's login from `[handles]`. When no recipient is named, ask which owner
+   the message is for.
 
-A person does one or the other in a run. Read the file for the half you are doing.
+2. **Write the title and the body.** The title is the point, in the person's
+   words. The body opens with the ask, in one or two sentences, and then says
+   what it is about. Do not put a sender name or a recipient name in the body:
+   the author and the assignee say who is who.
 
-## The records a message names
+3. **Open the issue.**
 
-A message names a spec or a ticket. The first id in `tickets` is the main record: the title carries it, and the answer lands there. The words map and task are not records in this set and do not belong in a message.
+   ```sh
+   gh issue create \
+     --title "<the point>" \
+     --assignee <recipient login> \
+     --body-file <the issue text>
+   ```
+
+   Use `--body-file` with a file holding the front matter and the body
+   together, not an inline `--body`: the text carries newlines and quotes, and
+   the front matter must sit at the top of the body where the listener reads
+   it.
+
+4. **Confirm it exists.**
+
+   ```sh
+   gh issue view <number> \
+     --json number,title,assignees,author,state
+   ```
+
+   Check four things: the state is `OPEN`, the author is the account you are
+   signed in as, the assignee is the recipient login, and the title is the
+   point. If the assignee is missing, add it with `gh issue edit <number>
+   --add-assignee <recipient login>` and check again.
+
+The act is done when the issue is open and assigned. The recipient has the
+notification already; nothing else has to be sent.
+
+## Answer
+
+1. **Read the thread.**
+
+   ```sh
+   gh issue view <number> --comments
+   ```
+
+   Read the whole thread, not only the opening body: the ask may have moved
+   in the comments.
+
+2. **Reply in the thread.**
+
+   ```sh
+   gh issue comment <number> --body-file <the reply text>
+   ```
+
+   The reply is an answer, not a restatement of the question. If you are
+   declining or asking something back, say that in one sentence first.
+
+3. **Do not close the issue.** Closing is the sender's. When someone else
+   opened the issue and the ask is settled, reply and mention the sender so
+   they close it:
+   `@<their login> settled; close this when you agree`.
+
+## Failures
+
+- **The recipient is not in the roster.** Stop and say so. Do not guess a
+  login, and do not fall back to a name typed into the body.
+- **The recipient has no login in the roster,** or the login resolves to no
+  GitHub account. Say which owner and which login failed, and ask which login
+  is right.
+- **The recipient cannot be assigned** because they have no access to the
+  repository. Do not open a message they cannot receive. Say that, and let the
+  person decide: add their access, or send to another owner.
+- **The issue is created without the front matter.** Edit the body before doing
+  anything else: a message without `kind: communicate` is not a message.
+- **The issue was closed by someone who is not its author.** It is answered and
+  not closed again. Reply in the thread when more needs saying; otherwise leave
+  the closed issue as it is.
+
+## What the queue holds
+
+The queue has one line per open issue the owner is party to, sent or received.
+A line is added when the issue is opened and carries only what was true then:
+the issue's URL, its author, its assignee, its title, and when it arrived.
+Comments and later changes are not in it, so read the thread with `gh` before
+acting. A line stays until the issue closes.
 
 ## What this skill does not do
 
-- Read the local queue. The listener writes it where it is installed, and the session-start rule reports what is open in it. This skill neither writes nor reads it.
-- Run or watch the listener. It is a service installed once per checkout; it is described where it is installed, not here.
-- Close a thread on the recipient's side. Only the sender closes.
+- Read the queue. The session-start rule reads it and opens the session with
+  the open threads.
+- Run or watch the listener. It is a service installed once per checkout, and
+  it is described where it is installed.
+- Close an issue someone else opened. Only its author closes it.
