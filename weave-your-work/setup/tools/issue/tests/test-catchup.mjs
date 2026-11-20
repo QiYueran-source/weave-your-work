@@ -39,10 +39,11 @@ function git(root, ...args) {
   assert.equal(result.status, 0, `git ${args.join(' ')}: ${result.stderr}`)
 }
 
-// The fake `gh` answers the two reads the listener makes: the open-issue listing,
-// one page at a time from `pages/<n>.json`, and a single issue from
-// `issues/<n>.json`. A missing file is what GitHub answers for an issue that is
-// not there. `fail-<name>` makes the read print an error and exit 1, the way `gh`
+// The fake `gh` answers the three reads the listener makes: the open-issue
+// listing, one page at a time from `pages/<n>.json`, a single issue from
+// `issues/<n>.json`, and the collaborator listing from `collaborators.json`. A
+// missing file is what GitHub answers for an issue that is not there. A
+// `fail-<name>` file makes the read print an error and exit 1, the way `gh`
 // reports a failed request.
 const fakeGh = `#!${process.execPath}
 const fs = require('node:fs')
@@ -78,6 +79,8 @@ if (target === 'repos/example/project/issues') {
   } else run()
 } else if (single && args.length === 6) {
   answer(path.join(process.env.FAKE_ISSUES, single[1] + '.json'), path.join(process.env.FAKE_ISSUES, 'fail-' + single[1]))
+} else if (target === 'repos/example/project/collaborators' && args.length === 6) {
+  answer(path.join(process.env.FAKE_ROOT, 'collaborators.json'), path.join(process.env.FAKE_ROOT, 'fail-collaborators'))
 } else {
   console.error('Unexpected gh arguments: ' + JSON.stringify(args)); process.exit(2)
 }
@@ -111,7 +114,7 @@ async function fixture(t, { remote = true } = {}) {
     fs.mkdir(pages),
     fs.mkdir(issues),
   ])
-  for (const name of ['listener.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'events.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   const localModules = path.join(source, 'node_modules')
@@ -121,6 +124,12 @@ async function fixture(t, { remote = true } = {}) {
   await fs.writeFile(path.join(root, '.work-weave/local/issue-listener.env'), 'REPOSITORY=example/project\n')
   await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')
   await fs.writeFile(path.join(bin, 'gh'), fakeGh, { mode: 0o755 })
+  // The repository's collaborators, as the listener reads them for a pull
+  // request. alice can merge; bob can only read.
+  await fs.writeFile(path.join(root, 'collaborators.json'), JSON.stringify([
+    { login: 'alice-handle', role_name: 'admin', permissions: { admin: true, maintain: true, push: true, triage: true, pull: true } },
+    { login: 'bob-handle', role_name: 'read', permissions: { admin: false, maintain: false, push: false, triage: false, pull: true } },
+  ]))
   git(root, 'init', '--quiet')
   git(root, 'config', 'user.name', 'alice')
   if (remote) git(root, 'remote', 'add', 'origin', 'https://github.com/example/project.git')

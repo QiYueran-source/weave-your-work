@@ -42,7 +42,7 @@ async function externalTools(t) {
     assert.equal(path.dirname(dir), os.tmpdir())
     await fs.rm(dir, { recursive: true, force: true })
   })
-  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'events.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(dir, name))
   }
   await fs.writeFile(path.join(dir, 'package.json'), '{ "type": "module" }\n')
@@ -77,7 +77,7 @@ async function project(t, {
   })
   const tools = path.join(root, '.work-weave/runtime/issue')
   await fs.mkdir(tools, { recursive: true })
-  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'events.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')

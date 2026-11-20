@@ -76,7 +76,7 @@ async function fixture(t, { owner = 'alice' } = {}) {
     fs.mkdir(pages),
     fs.mkdir(issues),
   ])
-  for (const name of ['listener.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
+  for (const name of ['listener.mjs', 'events.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
   }
   // Use installed dependencies without copying credentials or configuration.

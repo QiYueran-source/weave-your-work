@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Receive a smee webhook stream and queue communicate issues.
+// Receive a smee webhook stream, queue communicate issues, and record pull
+// request and default-branch events.
 //
 // Run from the project root, or pass the project explicitly:
 //   node <skill>/setup/tools/issue/listener.mjs [--project <directory>]
@@ -15,6 +16,11 @@
 // author mapped through the roster, the recipient is the issue's assignee
 // mapped through the same table, and every event is re-read from GitHub before
 // it touches the queue.
+//
+// The listener writes two files and warns nobody. The pending queue holds open
+// threads; the event file holds pull requests opened and default-branch moves,
+// as history. What reads the event file, when, and how it shows it to a person
+// is another tool's problem.
 
 import { execFile } from 'node:child_process'
 import http from 'node:http'
@@ -28,11 +34,18 @@ import { parse as parseYaml } from 'yaml'
 import SmeeClient from 'smee-client'
 import projectRoot from './project-root.cjs'
 import { acquireQueueLock } from './lock.mjs'
+import { appendEvent, checkLimit, DEFAULT_LIMIT } from './events.mjs'
 import { parseQueue, readQueue, writeQueue } from './queue.mjs'
 
 const { resolveProjectRoot } = projectRoot
 const run = promisify(execFile)
 const DEFAULT_PENDING = '.work-weave/personal/communication/pending.jsonl'
+const DEFAULT_EVENTS = '.work-weave/personal/communication/events.jsonl'
+// The default branch a push must name to be the event a merge writes.
+const DEFAULT_BRANCH = 'main'
+// The permissions that let an account merge into the default branch. Push is
+// write, and admin implies it; GitHub reports either as push on the listing.
+const MERGE_PERMISSIONS = new Set(['push', 'admin'])
 // The roster moved to shared/handles.toml; the old path is read until every
 // checkout has moved, and the shared file wins when both exist.
 const ROSTER_FILES = ['.work-weave/shared/handles.toml', '.work-weave/issue/handles.toml']
@@ -115,7 +128,7 @@ function rosterFile(root) {
 function loadConfig(root) {
   const file = rosterFile(root)
   if (!file) {
-    return { handles: {}, pending: DEFAULT_PENDING }
+    return { handles: {}, pending: DEFAULT_PENDING, events: { path: DEFAULT_EVENTS, limit: DEFAULT_LIMIT } }
   }
   const data = parseToml(fs.readFileSync(file, 'utf8'))
   const handles = data.handles || {}
@@ -134,16 +147,31 @@ function loadConfig(root) {
   if (typeof configured !== 'string' || !configured.trim()) {
     throw new Error('handles.toml: [pending].path must be a non-empty string')
   }
-  return { handles, pending: configured }
+  let eventsPath = DEFAULT_EVENTS
+  let limit = DEFAULT_LIMIT
+  if (data.events !== undefined) {
+    if (!data.events || typeof data.events !== 'object' || Array.isArray(data.events)) {
+      throw new Error('handles.toml: [events] must be a table')
+    }
+    if (data.events.path !== undefined) eventsPath = data.events.path
+    if (data.events.limit !== undefined) limit = data.events.limit
+  }
+  if (typeof eventsPath !== 'string' || !eventsPath.trim()) {
+    throw new Error('handles.toml: [events].path must be a non-empty string')
+  }
+  checkLimit(limit)
+  return { handles, pending: configured, events: { path: eventsPath, limit } }
 }
 
-function queuePath(root, configured) {
-  const queue = path.resolve(root, configured)
-  const relative = path.relative(root, queue)
+// A configured path is read from the project root, and a path that leaves it
+// is refused: the listener writes inside the checkout and nowhere else.
+function projectPath(root, configured, key) {
+  const file = path.resolve(root, configured)
+  const relative = path.relative(root, file)
   if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
-    throw new Error(`[pending].path must stay inside the project root: ${configured}`)
+    throw new Error(`${key} must stay inside the project root: ${configured}`)
   }
-  return queue
+  return file
 }
 
 // Owners that differ only by case make one git identity two people, so the
@@ -310,6 +338,105 @@ async function readIssue(number) {
   }
 }
 
+// Normalises one `pull_request` webhook body for the two actions this listener
+// records, or returns null for anything else. An opening is recorded as it
+// opens; a close is recorded only when the pull request was merged, because a
+// pull request closed unmerged moves the default branch nowhere. The payload's
+// claims are kept only to be checked against GitHub.
+function readPullRequestEvent(payload, event) {
+  if (event && event !== 'pull_request') return null
+  if (!payload || (payload.action !== 'opened' && payload.action !== 'closed')) return null
+  const opened = payload.action === 'opened'
+  if (!opened && !(payload.pull_request && payload.pull_request.merged === true)) return null
+  const pull = payload.pull_request || {}
+  const number = typeof pull.number === 'number' ? pull.number : NaN
+  return {
+    action: payload.action,
+    number,
+    label: Number.isInteger(number) && number > 0 ? `pull request #${number}` : 'pull request',
+    title: typeof pull.title === 'string' ? pull.title : '',
+    author: pull.user && typeof pull.user.login === 'string' ? pull.user.login : '',
+    sender: payload.sender && typeof payload.sender.login === 'string' ? payload.sender.login : '',
+    mergeCommit: typeof pull.merge_commit_sha === 'string' ? pull.merge_commit_sha : '',
+    at: typeof pull.merged_at === 'string' && pull.merged_at ? pull.merged_at : new Date().toISOString(),
+  }
+}
+
+// Normalises one `push` webhook body. `after` is the commit the branch now
+// points at. A push has no number and no pull request to confirm.
+function readPushEvent(payload, event) {
+  if (event && event !== 'push') return null
+  if (!payload || typeof payload !== 'object') return null
+  return {
+    ref: typeof payload.ref === 'string' ? payload.ref : '',
+    commit: typeof payload.after === 'string' ? payload.after : '',
+    author: payload.sender && typeof payload.sender.login === 'string' ? payload.sender.login : '',
+  }
+}
+
+// Reads one pull request back from GitHub. This is the confirmation: a payload
+// that names a pull request GitHub does not have is dropped.
+async function readPullRequest(number) {
+  const result = await run('gh', [
+    'api', '--hostname', 'github.com', '--method', 'GET', `repos/${repository}/pulls/${number}`,
+  ], { cwd: root, timeout: 30000, maxBuffer: 32 * 1024 * 1024 })
+  const record = JSON.parse(result.stdout)
+  if (!record || typeof record !== 'object' || Array.isArray(record)) {
+    throw new Error('GitHub returned an invalid pull request')
+  }
+  return {
+    url: typeof record.html_url === 'string' ? record.html_url : '',
+    title: typeof record.title === 'string' ? record.title : '',
+    state: record.state,
+    merged: record.merged === true || typeof record.merged_at === 'string',
+    mergeCommit: typeof record.merge_commit_sha === 'string' ? record.merge_commit_sha : '',
+    author: record.user && typeof record.user.login === 'string' ? record.user.login : '',
+    number: Number.isInteger(record.number) ? record.number : NaN,
+    label: `pull request #${record.number}`,
+  }
+}
+
+// Lists the repository's collaborators once. Each record is reduced to its login
+// and the permissions that matter here; a record naming no login is skipped, and
+// an answer that is not a list is a failed listing.
+async function listCollaborators() {
+  const result = await run('gh', [
+    'api', '--hostname', 'github.com', '--method', 'GET', `repos/${repository}/collaborators`,
+  ], { cwd: root, timeout: 30000, maxBuffer: 32 * 1024 * 1024 })
+  const records = JSON.parse(result.stdout)
+  if (!Array.isArray(records)) throw new Error('GitHub returned an invalid collaborator listing')
+  const collaborators = []
+  for (const record of records) {
+    if (!record || typeof record !== 'object') continue
+    const login = record.login ?? (record.user && record.user.login)
+    if (typeof login !== 'string' || !login) continue
+    const given = record.permissions && typeof record.permissions === 'object' ? record.permissions : {}
+    const admin = given.admin === true || record.role_name === 'admin'
+    const push = given.push === true || record.role_name === 'write' || admin
+    const permissions = new Set()
+    if (admin) permissions.add('admin')
+    if (admin || push) permissions.add('push')
+    collaborators.push({ login, permissions })
+  }
+  return collaborators
+}
+
+// The roster logins that hold write or admin, compared without regard to case
+// because GitHub logins are. The roster is what filters the listing: an account
+// outside it is not recorded, however much it may merge.
+function mergeRights(collaborators) {
+  const logins = Object.values(config.handles).filter((login) => typeof login === 'string')
+  const held = [...collaborators].sort((a, b) => a.login.toLowerCase().localeCompare(b.login.toLowerCase()) || a.login.localeCompare(b.login))
+  const rights = []
+  for (const login of logins) {
+    const collaborator = held.find((record) => record.login.toLowerCase() === login.toLowerCase())
+    if (!collaborator) continue
+    if (![...collaborator.permissions].some((permission) => MERGE_PERMISSIONS.has(permission))) continue
+    if (!rights.includes(login)) rights.push(login)
+  }
+  return rights
+}
+
 // Yields the repository's open issues one page at a time, so a later page
 // failing does not discard what the earlier pages already queued.
 async function* listOpenIssues() {
@@ -422,6 +549,113 @@ async function handleEvent(event) {
   return queueIssue(issue)
 }
 
+function writtenTime(date) {
+  return date.toISOString().replace(/\.\d{3}Z$/, 'Z')
+}
+
+// True when the webhook came from this repository regardless of case: GitHub
+// owners and repository names are case-insensitive.
+function sameRepository(fullName) {
+  return typeof fullName === 'string' && fullName.trim().toLowerCase() === repository.toLowerCase()
+}
+
+// Number of event lines written: one, or none when the event is dropped. Each
+// drop writes one line to stderr and nothing to the event file.
+function recordEvent(event, label) {
+  try {
+    appendEvent(events, event, config.events.limit)
+    return 1
+  } catch (error) {
+    console.error(`Skipped ${label}: cannot write the event file: ${error.message}`)
+    return 0
+  }
+}
+
+// Records a pull request opening. Reviewing and merging are a person's work, so
+// the line also names who holds merge rights now, read from GitHub as the event
+// arrives; a listing that fails drops the event rather than recording a line
+// without them.
+async function handlePullRequest(event) {
+  const { label } = event
+  if (!Number.isInteger(event.number) || event.number < 1) {
+    console.error(`Skipped ${label}: the event names no pull request number`)
+    return 0
+  }
+  let pull
+  try {
+    pull = await readPullRequest(event.number)
+  } catch (error) {
+    console.error(`Skipped ${label}: GitHub would not confirm it: ${error.message}`)
+    return 0
+  }
+  if (event.action === 'opened') {
+    if (pull.state !== 'open') {
+      console.error(`Skipped ${label}: ${label} is ${pull.state || 'not open'}`)
+      return 0
+    }
+    if (!pull.author || !event.author || pull.author.toLowerCase() !== event.author.toLowerCase()) {
+      console.error(`Skipped ${label}: GitHub says ${label} was opened by ${pull.author || '(none)'}, not by ${event.author || '(none)'}`)
+      return 0
+    }
+    let collaborators
+    try {
+      collaborators = await listCollaborators()
+    } catch (error) {
+      console.error(`Skipped ${label}: cannot read the collaborators: ${error.message}`)
+      return 0
+    }
+    const title = pull.title.trim() ? pull.title : event.title
+    if (!title.trim() || !pull.url.trim()) {
+      console.error(`Skipped ${label}: invalid title or url`)
+      return 0
+    }
+    return recordEvent({
+      kind: 'pull-request-opened',
+      number: event.number,
+      title,
+      url: pull.url,
+      author: pull.author,
+      at: writtenTime(new Date()),
+      merge_rights: mergeRights(collaborators),
+    }, label)
+  }
+  // A merge moves the default branch, so it is recorded the way a push to the
+  // branch is: with the commit the branch now points at.
+  if (pull.number !== event.number) {
+    console.error(`Skipped ${label}: GitHub answered with pull request #${pull.number}`)
+    return 0
+  }
+  if (!pull.merged) {
+    console.error(`Skipped ${label}: GitHub says ${label} is not merged`)
+    return 0
+  }
+  let commit = pull.mergeCommit
+  if (!/^[0-9a-f]{7,40}$/i.test(commit) && /^[0-9a-f]{7,40}$/i.test(event.mergeCommit)) commit = event.mergeCommit
+  if (!/^[0-9a-f]{7,40}$/i.test(commit)) {
+    console.error(`Skipped ${label}: GitHub names no merge commit`)
+    return 0
+  }
+  const at = Number.isNaN(Date.parse(event.at)) ? writtenTime(new Date()) : writtenTime(new Date(event.at))
+  return recordEvent({ kind: 'default-branch-moved', commit, author: event.sender || event.author, at }, label)
+}
+
+// Records a push to the default branch. A push to any other branch changes
+// nothing everyone has to catch up with, so it writes no line and logs nothing.
+function handlePush(event) {
+  if (event.ref !== `refs/heads/${DEFAULT_BRANCH}`) return 0
+  const label = `push to ${DEFAULT_BRANCH}`
+  if (!/^[0-9a-f]{40}$/i.test(event.commit)) {
+    console.error(`Skipped ${label}: the event names no commit (${event.commit || 'none'})`)
+    return 0
+  }
+  return recordEvent({
+    kind: 'default-branch-moved',
+    commit: event.commit,
+    author: event.author,
+    at: writtenTime(new Date()),
+  }, label)
+}
+
 // The startup scan reconciles the queue with GitHub: a thread open on GitHub and
 // absent from the queue is added, a queued thread GitHub no longer lists as open
 // is marked closed, and a scan that fails changes nothing.
@@ -520,10 +754,34 @@ const server = http.createServer((req, res) => {
       res.end('queued 0\n')
       return
     }
-    if (fullName !== repository) {
+    if (!sameRepository(fullName)) {
       console.error(`Skipped webhook event: repository ${fullName} is not ${repository}`)
       res.writeHead(202)
       res.end('queued 0\n')
+      return
+    }
+    // A pull request or a push is recorded in the event file, not queued. The
+    // answer names how many event lines it wrote.
+    const reply = (outcome) => {
+      res.writeHead(202)
+      res.end(outcome ? `recorded ${outcome}\n` : 'ignored')
+    }
+    const pullRequest = readPullRequestEvent(payload, event)
+    if (pullRequest) {
+      handlePullRequest(pullRequest).then(reply, (error) => {
+        console.error(`Cannot record ${pullRequest.label}: ${error.message}`)
+        res.writeHead(500)
+        res.end('cannot record event\n')
+      })
+      return
+    }
+    const push = readPushEvent(payload, event)
+    if (push) {
+      reply(handlePush(push))
+      return
+    }
+    if (event === 'pull_request' || event === 'push') {
+      reply(0)
       return
     }
     const issue = readIssueEvent(payload, event)
@@ -554,6 +812,7 @@ let config
 let machineOwner
 let queue
 let queueLock
+let events
 try {
   const options = parseArgs(process.argv.slice(2))
   root = resolveProjectRoot(options)
@@ -561,7 +820,8 @@ try {
   repository = requireRepository(settings)
   config = loadConfig(root)
   machineOwner = await resolveMachineOwner(root)
-  queue = queuePath(root, config.pending)
+  queue = projectPath(root, config.pending, '[pending].path')
+  events = projectPath(root, config.events.path, '[events].path')
   queueLock = acquireQueueLock(queue, { root })
 } catch (error) {
   console.error(error.message)
@@ -595,6 +855,7 @@ process.on('exit', () => queueLock.release())
 server.listen(port, '127.0.0.1', async () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
   console.log(`queueing messages assigned to ${machineOwner}`)
+  console.log(`recording pull request and ${DEFAULT_BRANCH} events in ${path.relative(root, events)}`)
   if (!secret) console.warn('Webhook signatures are not verified; queued messages are untrusted')
   if (smeeUrl) {
     const smee = new SmeeClient({
