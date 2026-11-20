@@ -176,13 +176,13 @@ function number(url) {
   return match ? match[1] : '42'
 }
 
-function record({ url = `${BASE}/42`, title = 'A title', category = 'request', tickets = ['wm-test'], author = 'alice-handle', assignee = 'alice-handle', state = 'open', body } = {}) {
+function record({ url = `${BASE}/42`, title = 'A title', category = 'request', author = 'alice-handle', assignee = 'alice-handle', state = 'open', body } = {}) {
   return {
     number: Number(number(url)),
     html_url: url,
     title,
     state,
-    body: body ?? `---\nkind: communicate\ncategory: ${category}\ntickets: ${JSON.stringify(tickets)}\n---\nBody`,
+    body: body ?? `---\nkind: communicate\ncategory: ${category}\n---\nBody`,
     user: { login: author },
     assignee: assignee === null ? null : { login: assignee },
   }
@@ -190,8 +190,8 @@ function record({ url = `${BASE}/42`, title = 'A title', category = 'request', t
 
 // An `issues` webhook. `gh` answers for the issue named in it with `confirmed`,
 // which defaults to the same record, so a test changes one side at a time.
-function issue({ url = `${BASE}/42`, from, to, title, category, tickets, author, assignee, state, body } = {}) {
-  const item = record({ url, title, category, tickets, author, assignee, state, body })
+function issue({ url = `${BASE}/42`, from, to, title, category, author, assignee, state, body } = {}) {
+  const item = record({ url, title, category, author, assignee, state, body })
   return {
     action: 'opened',
     repository: { full_name: 'example/project' },
@@ -336,7 +336,7 @@ test('malicious remote values stay on one line and redelivery is deduplicated', 
   const payload = await confirm(f, issue({
     url: `${BASE}/5`,
     title,
-    body: '---\nkind: communicate\ncategory: request\nfrom: "evil\\n- forged | from=x"\nto: ["bob-handle"]\ntickets: ["wm-test"]\n---\nBody',
+    body: '---\nkind: communicate\ncategory: request\nfrom: "evil\\n- forged | from=x"\nto: ["bob-handle"]\n---\nBody',
   }))
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
   const content = await queueText(f)
@@ -402,9 +402,8 @@ test('messages outside the protocol are not queued', async (t) => {
   const { port } = await startListener(t, f)
   const cases = [
     ['ordinary issue', issue({ url: `${BASE}/1`, title: 'Bug', body: 'A bug report' })],
-    ['missing category', issue({ url: `${BASE}/2`, title: 'No category', body: '---\nkind: communicate\ntickets: [wm-1]\n---\n' })],
+    ['missing category', issue({ url: `${BASE}/2`, title: 'No category', body: '---\nkind: communicate\n---\n' })],
     ['unknown category', issue({ url: `${BASE}/3`, category: 'notice' })],
-    ['no tickets', issue({ url: `${BASE}/6`, tickets: [] })],
     ['no title', issue({ url: `${BASE}/8`, title: ' ' })],
     ['no assignee', issue({ url: `${BASE}/9`, assignee: null })],
     ['assigned outside the roster', issue({ url: `${BASE}/10`, assignee: 'nobody-handle' })],
@@ -435,7 +434,7 @@ test('a message that still carries from and to in its front matter is queued', a
   const { port } = await startListener(t, f)
   const payload = await confirm(f, issue({
     url: `${BASE}/12`,
-    body: '---\nkind: communicate\ncategory: result\nfrom: "bob"\nto: ["bob-handle"]\ntickets: ["wm-test"]\n---\nBody',
+    body: '---\nkind: communicate\ncategory: result\nfrom: "bob"\nto: ["bob-handle"]\n---\nBody',
   }))
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
   // The sender is the account that opened the issue and the recipient is the
@@ -478,6 +477,9 @@ test('an issue opened by a login outside the handles file is not queued', async 
   const { port } = await startListener(t, f)
   const payload = await confirm(f, issue({ author: 'stranger' }))
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 0\n' })
+  // The stranger on the other end is not the owner's business either.
+  const assignedToStranger = await confirm(f, issue({ url: `${BASE}/29`, author: 'alice-handle', assignee: 'stranger' }))
+  assert.deepEqual(await request(port, assignedToStranger), { status: 202, body: 'queued 0\n' })
   assert.equal(await queueText(f), '')
 })
 
@@ -532,12 +534,28 @@ test('a message opened without an assignee queues when it is assigned', async (t
   assert.equal((await queueText(f)).trimEnd().split('\n').length, 1)
 })
 
-test('a message addressed to another owner by its assignee is not queued', async (t) => {
+test('a message whose two parties are other members is not queued', async (t) => {
   const f = await fixture(t)
   const { port } = await startListener(t, f)
-  const payload = await confirm(f, issue({ url: `${BASE}/17`, assignee: 'bob-handle' }))
+  // bob opened it and bob holds it; alice is at neither end.
+  const payload = await confirm(f, issue({ url: `${BASE}/17`, author: 'bob-handle', assignee: 'bob-handle' }))
   assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 0\n' })
   assert.equal(await queueText(f), '')
+})
+
+test('the owner keeps the line for an issue they sent to another owner', async (t) => {
+  const f = await fixture(t)
+  const { port } = await startListener(t, f)
+  const payload = await confirm(f, issue({ url: `${BASE}/28`, title: 'For bob', assignee: 'bob-handle' }))
+  assert.deepEqual(await request(port, payload), { status: 202, body: 'queued 1\n' })
+  const lines = (await queueText(f)).trimEnd().split('\n')
+  assert.equal(lines.length, 1)
+  const entry = JSON.parse(lines[0])
+  assert.deepEqual([entry.from, entry.to, entry.owner, entry.title], ['alice', 'bob', 'bob', 'For bob'])
+  // The recipient cannot close it, so the line stays open for the sender.
+  const closed = { ...payload, action: 'closed', closed_at: '2026-11-20T04:00:00Z', closed_by: { login: 'bob-handle' } }
+  assert.deepEqual(await request(port, closed), { status: 202, body: 'queued 0\n' })
+  assert.equal(JSON.parse((await queueText(f)).trimEnd()).closed_at, null)
 })
 
 test('a message assigned to a handle outside the roster is not queued', async (t) => {
