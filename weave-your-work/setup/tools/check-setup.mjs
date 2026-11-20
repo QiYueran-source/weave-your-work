@@ -15,6 +15,10 @@ const ROSTER = '.work-weave/shared/handles.toml'
 const PERSONAL = ['.work-weave', 'personal']
 const SETTINGS = '.work-weave/personal/issue-listener.env'
 const GLOSSARY_RUNTIME = '.work-weave/personal/glossary'
+// The events one repository webhook has to send: `issues` fills the queue, and
+// the other two write the event file. A hook on the channel that lacks one of
+// them is repaired, never replaced by a second hook.
+const SUBSCRIBED_EVENTS = ['issues', 'pull_request', 'push']
 
 const OK = 'ok'
 const FAIL = 'fail'
@@ -546,6 +550,63 @@ function checkGlossary(ctx) {
   return fail(`expected 3 glossary tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
 }
 
+// Reads the hooks out of what `--jq -c` prints: one compact object per line,
+// and nothing at all for a repository with no hooks. Each object is reduced to
+// its id, its URL, and its events; an object with no events list, or with
+// events that are not a list of names, is reported as unreadable (`events` is
+// null) rather than guessed at.
+export function scanHooks(text) {
+  const hooks = []
+  const lines = String(text ?? '').split(/\r?\n/).map(line => line.trim()).filter(Boolean)
+  for (const line of lines) {
+    let record
+    try {
+      record = JSON.parse(line)
+    } catch {
+      return { hooks: [], unreadable: line }
+    }
+    if (!record || typeof record !== 'object' || Array.isArray(record)) {
+      return { hooks: [], unreadable: line }
+    }
+    const events = Array.isArray(record.events) && record.events.every(event => typeof event === 'string')
+      ? record.events.map(event => event.trim())
+      : null
+    hooks.push({
+      id: record.id === undefined || record.id === null ? '' : String(record.id).trim(),
+      url: typeof record.url === 'string' ? record.url.trim() : '',
+      events,
+    })
+  }
+  return { hooks, unreadable: '' }
+}
+
+function readHooks(cwd, repo) {
+  const result = run('gh', ['api', `repos/${repo}/hooks`, '--jq', '-c', '.[] | {id, url: .config.url, events}'], { cwd })
+  if (result.status !== 0) return { failed: true, ...result }
+  const { hooks, unreadable } = scanHooks(result.stdout)
+  if (unreadable || hooks.some(hook => hook.events === null)) {
+    const shown = unreadable || firstLine(result.stdout)
+    return { failed: true, status: 0, stdout: '', stderr: `unexpected hooks output: ${shown}`, error: undefined }
+  }
+  return { failed: false, hooks }
+}
+
+// Compares two webhook URLs ignoring a trailing slash on either.
+function sameChannel(hookUrl, channel) {
+  const strip = url => String(url).trim().replace(/\/+$/, '')
+  return Boolean(strip(hookUrl)) && strip(hookUrl) === strip(channel)
+}
+
+// The repair for the hook on the channel: one `PATCH` naming every event it
+// needs, whether it is missing one or two. Creating a second hook is the wrong
+// repair, and the sentence says so.
+function repairSubscriptions(missing) {
+  const lacking = missing.map(event => `\`${event}\``).join(', ')
+  return `Add ${lacking} to the existing hook with ` +
+    "gh api repos/<owner>/<repo>/hooks/<id> -X PATCH -F 'events[]=issues' -F 'events[]=pull_request' -F 'events[]=push'; " +
+    'do not create a second hook.'
+}
+
 function checkListener(ctx) {
   if (process.platform !== 'linux') {
     return na(`no bundled service on ${process.platform}; run the listener in a terminal while you work`)
@@ -573,8 +634,8 @@ function checkListener(ctx) {
   }
   const repo = ghRepo(ctx.cwd)
   if (!repo) return unverified('cannot resolve the GitHub repository from the remote')
-  const hooks = run('gh', ['api', `repos/${repo}/hooks`, '--jq', '.[].config.url'], { cwd: ctx.cwd })
-  if (hooks.status !== 0) {
+  const hooks = readHooks(ctx.cwd, repo)
+  if (hooks.failed) {
     const admin = run('gh', ['api', `repos/${repo}`, '--jq', '.permissions.admin'], { cwd: ctx.cwd })
     if (admin.status === 0 && admin.stdout.trim() === 'false') {
       return unverified('the account cannot see webhooks')
@@ -591,9 +652,17 @@ function checkListener(ctx) {
   const match = envText.match(/^\s*(?:export\s+)?SMEE_URL\s*=\s*"?([^"\r\n]+)"?\s*$/m)
   if (!match) return fail(`SMEE_URL is missing from ${SETTINGS}`)
   const channel = match[1].trim()
-  const urls = hooks.stdout.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
-  if (!urls.includes(channel)) return fail('the webhook does not point at the configured channel')
-  return ok(`unit ${unit} is active in this checkout; the webhook points at the configured channel`)
+  const channelHooks = hooks.hooks.filter(hook => sameChannel(hook.url, channel))
+  if (!channelHooks.length) return fail('the webhook does not point at the configured channel')
+  const missing = SUBSCRIBED_EVENTS.filter(event => !channelHooks.some(hook => hook.events.includes(event)))
+  if (missing.length) {
+    return {
+      status: FAIL,
+      message: `the webhook on the configured channel is missing ${missing.join(', ')}`,
+      repair: repairSubscriptions(missing),
+    }
+  }
+  return ok(`unit ${unit} is active in this checkout; the webhook on the configured channel sends ${SUBSCRIBED_EVENTS.join(', ')}`)
 }
 
 function checkIgnore(ctx) {
@@ -630,7 +699,7 @@ const CHECKS = [
   { number: 14, starred: true, name: 'AGENTS.md points at the rules', repair: 'Write the AGENTS.md prompt at the top of the file.', run: checkAgents },
   { number: 15, starred: false, name: 'The ADR MCP server answers', repair: 'Run the ADR install in setup, or skip it when the project records no decisions.', run: checkAdr },
   { number: 16, starred: false, name: 'The glossary MCP server answers', repair: `Run the glossary install in setup and start its server from ${GLOSSARY_RUNTIME}.`, run: checkGlossary },
-  { number: 17, starred: false, name: 'The listener runs and the webhook reaches it', repair: 'Start the listener for this checkout from the issue install in setup.', run: checkListener },
+  { number: 17, starred: false, name: 'The listener runs and the webhook reaches it', repair: 'Start the listener for this checkout from the issue install in setup, and add any missing webhook events with the PATCH the message prints.', run: checkListener },
   { number: 18, starred: false, name: 'The queue and the build output are ignored', repair: 'Add node_modules/, /GLOSSARY.md, /ADR.md, and .work-weave/personal/ to the root .gitignore.', run: checkIgnore },
 ]
 

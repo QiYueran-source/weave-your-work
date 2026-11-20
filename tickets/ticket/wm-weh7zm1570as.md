@@ -3,11 +3,12 @@ schema: 1
 id: wm-weh7zm1570as
 title: The queue is one JSONL file of open threads, and the checker reads it
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T02:38:36Z
-updated_at: 2026-11-20T02:38:36Z
+updated_at: 2026-11-20T03:58:10Z
+closed_at: 2026-11-20T03:58:10Z
 parent: wm-exfr2xxdkeje
 dependencies:
   - wm-p7bdkvhvhydt

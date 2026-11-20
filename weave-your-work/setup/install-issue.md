@@ -19,7 +19,7 @@ Unix, from the project root:
 
 ```sh
 mkdir -p .work-weave/personal/issue
-for name in listener.mjs check-pending.mjs queue.mjs lock.mjs project-root.cjs configure.mjs origin.mjs package.json package-lock.json; do
+for name in listener.mjs events.mjs check-pending.mjs queue.mjs lock.mjs project-root.cjs configure.mjs origin.mjs package.json package-lock.json; do
   cp "<setup>/tools/issue/$name" ".work-weave/personal/issue/$name"
 done
 (cd .work-weave/personal/issue && npm ci --omit=dev)
@@ -29,7 +29,7 @@ Windows PowerShell, from the project root:
 
 ```powershell
 New-Item -ItemType Directory .work-weave\personal\issue -Force | Out-Null
-foreach ($name in 'listener.mjs','check-pending.mjs','queue.mjs','lock.mjs','project-root.cjs','configure.mjs','origin.mjs','package.json','package-lock.json') {
+foreach ($name in 'listener.mjs','events.mjs','check-pending.mjs','queue.mjs','lock.mjs','project-root.cjs','configure.mjs','origin.mjs','package.json','package-lock.json') {
   Copy-Item "<setup>\tools\issue\$name" ".work-weave\personal\issue\$name" -Force
 }
 Push-Location .work-weave\personal\issue
@@ -69,23 +69,34 @@ The checker reads the queue without changing it. With open threads it prints how
 
 Read the repository state before creating anything. On a repository that already has a listener, the channel, webhook, and roster can all be read back with `gh`. Ask only where reading has no answer, and bring the candidates you found.
 
-1. **Channel and webhook.** One channel per repository, shared by every checkout. Read the existing issue hook first:
+1. **Channel and webhook.** One channel per repository, shared by every checkout. Read the existing hook first:
 
    ```sh
    gh api repos/<owner>/<repo>/hooks \
-     --jq '.[] | select(.events | index("issues")) | {id, url: .config.url}'
+     --jq -c '.[] | {id, url: .config.url, events, active}'
    ```
 
-   A `https://smee.io/<id>` in `url` is the channel to reuse. No output means there is no issue hook; create a channel with `curl -sS -o /dev/null -w '%{redirect_url}\n' https://smee.io/new`, then create the webhook:
+   Each line is one hook. A `https://smee.io/<id>` in `url` is the channel to reuse; `events` says what it sends. The listener needs three: `issues` fills the queue, and `pull_request` and `push` write the event file described under [The event file](#the-event-file). A hook on the channel that lacks either of the last two is incomplete: the queue still fills, and the event file stays empty.
+
+   No line naming the channel means there is no hook to reuse. Create a channel with `curl -sS -o /dev/null -w '%{redirect_url}\n' https://smee.io/new`, then create the webhook:
 
    ```sh
    gh api repos/<owner>/<repo>/hooks -X POST \
      -f "config[url]=<channel>" -f 'config[content_type]=json' \
-     -F 'config[insecure_ssl]=0' -F active=true -f 'events[]=issues' \
-     --jq '{id, url: .config.url}'
+     -F 'config[insecure_ssl]=0' -F active=true \
+     -f 'events[]=issues' -f 'events[]=pull_request' -f 'events[]=push' \
+     --jq '{id, url: .config.url, events}'
    ```
 
-   An existing hook that is inactive or listens to more events is repaired with `PATCH`, not duplicated. Leave the webhook secret empty for Smee. A 403 or 404 on the read is not proof that no hook exists: check the account's permission and ask the responsible person before creating or changing anything. Keep the channel URL out of Git, tickets, and logs.
+   When a hook on the channel exists but is missing `pull_request` or `push`, repair it with an edit. Send every event the hook needs, not only the missing one: `events[]` fields replace the whole list, so sending `pull_request` alone would drop `issues`.
+
+   ```sh
+   gh api repos/<owner>/<repo>/hooks/<id> -X PATCH \
+     -f 'events[]=issues' -f 'events[]=pull_request' -f 'events[]=push' \
+     --jq '{id, url: .config.url, events, active}'
+   ```
+
+   An inactive hook on the channel is repaired the same way, adding `-F active=true`. Never create a second hook: two hooks on one channel deliver every event twice, and the queue and the event file then gain duplicate lines. Leave the webhook secret empty for Smee. A 403 or 404 on the read is not proof that no hook exists: check the account's permission and ask the responsible person before creating or changing anything. Keep the channel URL out of Git, tickets, and logs.
 
 2. **Service.** Route by platform:
 
@@ -103,9 +114,13 @@ Read the repository state before creating anything. On a repository that already
 
    [pending]
    path = ".work-weave/personal/communication/pending.jsonl"
+
+   [events]
+   path = ".work-weave/personal/communication/events.jsonl"
+   limit = 100
    ```
 
-   The queue path is relative to the project root. `[pending].path` is optional: leave it out and the listener uses its default, the same path the example above names. Create `.work-weave/.gitignore` if it is absent and make sure it ignores `personal/` and nothing else: the roster is under `shared/` and stays tracked.
+   The queue path is relative to the project root. `[pending].path` is optional: leave it out and the listener uses its default, the same path the example above names. Create `.work-weave/.gitignore` if it is absent and make sure it ignores `personal/` and nothing else: the roster is under `shared/` and stays tracked. `[events]` is described under [The event file](#the-event-file).
 
    The listener matches this machine's owner from `git config user.name` in the checkout, without regard to case. A machine belonging to another owner sets the name locally:
 
@@ -117,9 +132,21 @@ Read the repository state before creating anything. On a repository that already
 
 4. **Startup scan.** After connecting to Smee, the listener lists open issues from the checkout's `origin` with `gh`, queues the ones that match the communicate format, whose author is in the roster, and whose `to` resolves to this machine's owner. It deduplicates by URL and recipient. Closed issues are excluded. A failed scan is logged; live events keep arriving. The listener only queues reminders; nothing acts on an issue until the person asks.
 
+## The event file
+
+The listener writes a second file, `.work-weave/personal/communication/events.jsonl`, for three things: a pull request opening, a pull request merging, and a push to the default branch. Each is one JSON object on one line. It is history, not a queue: a line says what happened, when, and to what, and does not later become false.
+
+- A pull request opening writes `{"kind": "pull-request-opened", "number", "title", "url", "author", "at", "merge_rights": [...]}`. Reviewing and merging are a person's work, so the line names who could do it: `merge_rights` holds the roster logins that GitHub says have write or admin on the repository. The listener reads that with one collaborators call and the roster filters it; an account outside the roster is not recorded, and a collaborators read that fails writes no line and logs why. Merge rights are read once per opening, so the file from a machine without merge rights looks the same as from one with them.
+- A merge and a push to the default branch write the same kind, `{"kind": "default-branch-moved", "commit", "author", "at"}`, naming the commit the branch now points at. A push to any other branch writes nothing.
+- An event GitHub cannot confirm is dropped and logged, and so is a line that cannot be written. A dropped event is a log line and nothing in the file.
+
+**The listener warns nobody.** It starts no process, messages no session, and knows nothing about the harness on the machine. Reading this file and showing it to a person is a separate tool's work: that tool decides who sees which line, when, and how; replacing it changes nothing here. Nothing in the file records who has read it, so a reader that wants "what changed since I last looked" keeps that elsewhere.
+
+The file is bounded. `[events] path` in the roster sets where it is written, relative to the project root and inside it, and `[events] limit` sets how many lines it keeps, 100 when unset. The trim happens in the same write as the append, so the file never holds more than the limit and the newest lines are the ones kept. A limit that is not a whole number of at least 1 is refused at startup, as is an empty path or one that leaves the project root. The listener's startup log names the file it writes. `events.jsonl` sits beside the queue and is covered by the same `.work-weave/.gitignore` line that ignores `personal/`.
+
 ## Verify
 
-1. **The webhook and settings name the same channel.** The `gh api ... /hooks` read prints the `https://smee.io/<id>` stored in `.work-weave/personal/issue-listener.env`. A different id means the listener watches the wrong channel.
+1. **The webhook and settings name the same channel.** The `gh api ... /hooks` read prints the `https://smee.io/<id>` stored in `.work-weave/personal/issue-listener.env`, and the same hook lists `issues`, `pull_request`, and `push` in `events`. A different id means the listener watches the wrong channel; a missing `pull_request` or `push` means `events.jsonl` stays empty; a missing `issues` means the queue does.
 2. **The service is active for this checkout.** The platform guide's status command shows the generated unit active, and its log shows `listening on`, the Smee connection, and `Catch-up complete`. The journal redacts the channel URL.
 3. **A live issue arrives.** File one addressed to this machine's owner, then check the queue:
 
@@ -131,8 +158,18 @@ Read the repository state before creating anything. On a repository that already
 
    The queue gains one line within a few seconds. Close the issue afterwards; the sender's close marks the line closed, it stays in the file, and the checker stops reporting it. The ticket, not the queue, is the record.
 4. **The queue is ignored.** `git check-ignore -v .work-weave/personal/communication/pending.jsonl` prints a matching line. No output means the queue is tracked state.
-5. **A second listener is rejected.** While the service runs, start the listener in the foreground from the same runtime. It exits with `Another listener holds the queue lock` and does not append.
-6. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete` and the new line.
-7. **A new session surfaces the queue.** The rule prints the count and titles. Whether the harness delivers the checker's output is outside this setup.
+5. **An opened pull request writes one line.** Push a branch with one commit and open a pull request against the default branch:
 
-If the queue stays empty, check the webhook's recent deliveries, the listener's log, the expected repository in the settings file, and the frontmatter's `kind: communicate`. GitHub reporting success at Smee does not prove the local listener received the event.
+   ```sh
+   git switch main && git pull --ff-only && git switch -c verify-listener
+   git commit --allow-empty -m "verify the listener" && git push -u origin verify-listener
+   gh pr create --repo <owner>/<repo> --title "verify the listener" --body "Verification pull request." --base main
+   tail -n 1 .work-weave/personal/communication/events.jsonl
+   ```
+
+   The last line within a few seconds is one object with `"kind":"pull-request-opened"` and its `merge_rights` naming the roster logins that hold write or admin. A merge or a push to `main` writes `"kind":"default-branch-moved"` instead: the listener treats `main` as the default branch, and a repository whose default branch has another name gets no line from a merge or push. One line, not two: a second line for the same pull request means the repository has two hooks on the channel. Close the pull request afterwards and delete the branch; the line stays as the record.
+6. **A second listener is rejected.** While the service runs, start the listener in the foreground from the same runtime. It exits with `Another listener holds the queue lock` and does not append.
+7. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete` and the new line.
+8. **A new session surfaces the queue.** The rule prints the count and titles. Whether the harness delivers the checker's output is outside this setup.
+
+If the queue stays empty, check the webhook's recent deliveries (the hook's `events` must include `issues`), the listener's log, the expected repository in the settings file, and the frontmatter's `kind: communicate`. If the event file stays empty after a pull request opens, check that the hook sends `pull_request` and `push`, that the listener's log names the event file it writes, and that `gh` on the listener's machine can read the repository's collaborators. GitHub reporting success at Smee does not prove the local listener received the event.
