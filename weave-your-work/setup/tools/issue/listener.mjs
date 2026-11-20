@@ -7,7 +7,7 @@
 //
 // The project is the nearest directory above the working directory that holds
 // a .work-weave marker, unless --project names it. Checkout settings come from
-// <root>/.work-weave/local/issue-listener.env; the process environment
+// <root>/.work-weave/personal/issue-listener.env; the process environment
 // overrides them. Without SMEE_URL the HTTP endpoint runs alone. WEBHOOK_SECRET
 // optionally enables signature verification for transports that preserve
 // request bytes.
@@ -49,7 +49,7 @@ const MERGE_PERMISSIONS = new Set(['push', 'admin'])
 // The roster moved to shared/handles.toml; the old path is read until every
 // checkout has moved, and the shared file wins when both exist.
 const ROSTER_FILES = ['.work-weave/shared/handles.toml', '.work-weave/issue/handles.toml']
-const SETTINGS_FILE = '.work-weave/local/issue-listener.env'
+const SETTINGS_FILE = '.work-weave/personal/issue-listener.env'
 const USAGE = 'Usage: node listener.mjs [--project <directory>]'
 // The actions this listener acts on. Anything else is another event on the
 // same issue, and leaves the queue alone.

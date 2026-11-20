@@ -11,6 +11,10 @@ const CATEGORIES = ['spec', 'testimony', 'ticket']
 const FIELDS = []
 const NODE_FLOOR = '22.20.0'
 const WAYMARK_FLOOR = '0.1.2'
+const ROSTER = '.work-weave/shared/handles.toml'
+const PERSONAL = ['.work-weave', 'personal']
+const SETTINGS = '.work-weave/personal/issue-listener.env'
+const GLOSSARY_RUNTIME = '.work-weave/personal/glossary'
 
 const OK = 'ok'
 const FAIL = 'fail'
@@ -388,8 +392,8 @@ function checkOperator(ctx) {
   }
   const operator = config.data?.effective?.operator
   if (!operator || operator === 'None') return fail('the operator is unset')
-  const handlePath = path.join(ctx.cwd, '.work-weave', 'issue', 'handles.toml')
-  if (!isFile(handlePath)) return ok(`operator ${operator}; handles absent, nothing to match`)
+  const handlePath = path.join(ctx.cwd, '.work-weave', 'shared', 'handles.toml')
+  if (!isFile(handlePath)) return ok(`operator ${operator}; ${ROSTER} absent, nothing to match`)
   let text
   try {
     text = fs.readFileSync(handlePath, 'utf8')
@@ -397,10 +401,10 @@ function checkOperator(ctx) {
     return fail(`cannot read ${display(ctx.cwd, handlePath)}`)
   }
   const keys = parseHandles(text)
-  if (!keys.length) return fail(`operator ${operator}; the [handles] table is empty`)
+  if (!keys.length) return fail(`operator ${operator}; the [handles] table in ${ROSTER} is empty`)
   const match = keys.find(key => key.toLowerCase() === String(operator).toLowerCase())
   if (match) return ok(`operator ${operator}; handles ${match}`)
-  return fail(`operator ${operator} is not in [handles]: ${keys.join(', ')}`)
+  return fail(`operator ${operator} is not in [handles] in ${ROSTER}: ${keys.join(', ')}`)
 }
 
 function checkSkills(ctx) {
@@ -507,7 +511,7 @@ function parseToolNames(text) {
 }
 
 function checkAdr(ctx) {
-  const server = path.join(ctx.cwd, '.work-weave', 'runtime', 'adr', 'server.js')
+  const server = path.join(ctx.cwd, '.work-weave', 'personal', 'adr', 'server.js')
   if (!isFile(server)) {
     return na('no ADR tool installed; run the ADR install in setup when the project records decisions')
   }
@@ -526,8 +530,8 @@ function checkAdr(ctx) {
 }
 
 function checkGlossary(ctx) {
-  const server = path.join(ctx.cwd, '.work-weave', 'runtime', 'glossary', 'server.js')
-  if (!isFile(server)) return fail('the glossary server is missing from .work-weave/runtime/glossary')
+  const server = path.join(ctx.cwd, '.work-weave', 'personal', 'glossary', 'server.js')
+  if (!isFile(server)) return fail(`the glossary server is missing from ${GLOSSARY_RUNTIME}`)
   const result = run(process.execPath, [server, '--project', '.'], {
     cwd: ctx.cwd,
     input: '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}\n',
@@ -536,10 +540,10 @@ function checkGlossary(ctx) {
   if (result.error) return fail(`the glossary server did not answer: ${commandFailure(result)}`)
   if (result.status !== 0) return fail(`the glossary server exited ${result.status}: ${firstLine(result.stderr)}`)
   const names = parseToolNames(result.stdout)
-  const expected = ['glossary_lookup', 'glossary_list', 'glossary_write', 'glossary_merge']
+  const expected = ['glossary_list', 'glossary_write', 'glossary_merge']
   const missing = expected.filter(name => !names.includes(name))
-  if (names.length === expected.length && !missing.length) return ok(`4 tools: ${names.join(', ')}`)
-  return fail(`expected 4 glossary tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
+  if (names.length === expected.length && !missing.length) return ok(`3 tools: ${names.join(', ')}`)
+  return fail(`expected 3 glossary tools; got ${names.length}${missing.length ? `, missing ${missing.join(', ')}` : ''}`)
 }
 
 function checkListener(ctx) {
@@ -547,14 +551,14 @@ function checkListener(ctx) {
     return na(`no bundled service on ${process.platform}; run the listener in a terminal while you work`)
   }
   if (!ctx.hasRemote) return na('no origin remote; check 16 is not applicable')
-  const local = path.join(ctx.cwd, '.work-weave', 'local')
+  const personal = path.join(ctx.cwd, ...PERSONAL)
   let units = []
   try {
-    units = fs.readdirSync(local).filter(name => /^work-weave-issue-.*\.service$/.test(name)).sort()
+    units = fs.readdirSync(personal).filter(name => /^work-weave-issue-.*\.service$/.test(name)).sort()
   } catch {
     units = []
   }
-  if (!units.length) return fail('no generated unit under .work-weave/local')
+  if (!units.length) return fail('no generated unit under .work-weave/personal')
   const unit = units[0]
   const active = run('systemctl', ['--user', 'is-active', unit], { cwd: ctx.cwd })
   const state = active.stdout.trim()
@@ -577,15 +581,15 @@ function checkListener(ctx) {
     }
     return fail(`cannot read webhooks: ${firstLine(hooks.stderr || hooks.stdout)}`)
   }
-  const envFile = path.join(local, 'issue-listener.env')
+  const envFile = path.join(ctx.cwd, ...PERSONAL, 'issue-listener.env')
   let envText
   try {
     envText = fs.readFileSync(envFile, 'utf8')
   } catch {
-    return fail('the listener settings are missing from .work-weave/local/issue-listener.env')
+    return fail(`the listener settings are missing from ${SETTINGS}`)
   }
   const match = envText.match(/^\s*(?:export\s+)?SMEE_URL\s*=\s*"?([^"\r\n]+)"?\s*$/m)
-  if (!match) return fail('SMEE_URL is missing from .work-weave/local/issue-listener.env')
+  if (!match) return fail(`SMEE_URL is missing from ${SETTINGS}`)
   const channel = match[1].trim()
   const urls = hooks.stdout.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
   if (!urls.includes(channel)) return fail('the webhook does not point at the configured channel')
@@ -593,7 +597,7 @@ function checkListener(ctx) {
 }
 
 function checkIgnore(ctx) {
-  const paths = ['node_modules/', 'GLOSSARY.md', 'ADR.md', '.work-weave/pending/pending-communications.md']
+  const paths = ['node_modules/', 'GLOSSARY.md', 'ADR.md', '.work-weave/personal/']
   const result = run('git', ['check-ignore', ...paths], { cwd: ctx.cwd })
   if (result.error) return fail(`git is unavailable: ${commandFailure(result)}`)
   const ignored = new Set(
@@ -620,14 +624,14 @@ const CHECKS = [
   { number: 8, starred: false, name: 'The repository knows its remote', repair: 'Add the project remote as origin.', run: checkRemote },
   { number: 9, starred: false, name: 'The default branch is protected', repair: 'Protect the default branch in GitHub, or use rules-git.md when the plan cannot.', run: checkProtection },
   { number: 10, starred: true, name: 'The tracker validates and is configured', repair: 'Run the tracker steps in start-a-project.md, then waymark validate.', run: checkTracker },
-  { number: 11, starred: false, name: 'The operator is set and on the roster', repair: 'Set the operator, or add the owner to [handles] through a pull request.', run: checkOperator },
+  { number: 11, starred: false, name: 'The operator is set and on the roster', repair: `Set the operator, or add the owner to [handles] in ${ROSTER} through a pull request.`, run: checkOperator },
   { number: 12, starred: true, name: 'Every installed skill is still there', repair: 'Reinstall the missing skills with npx skills add.', run: checkSkills },
   { number: 13, starred: true, name: "Every setup rule is registered", repair: 'Run the setup install that owns each missing rule.', run: checkSetupRules },
   { number: 14, starred: true, name: 'AGENTS.md points at the rules', repair: 'Write the AGENTS.md prompt at the top of the file.', run: checkAgents },
   { number: 15, starred: false, name: 'The ADR MCP server answers', repair: 'Run the ADR install in setup, or skip it when the project records no decisions.', run: checkAdr },
-  { number: 16, starred: false, name: 'The glossary MCP server answers', repair: 'Run the glossary install in setup and start its server from the project runtime.', run: checkGlossary },
+  { number: 16, starred: false, name: 'The glossary MCP server answers', repair: `Run the glossary install in setup and start its server from ${GLOSSARY_RUNTIME}.`, run: checkGlossary },
   { number: 17, starred: false, name: 'The listener runs and the webhook reaches it', repair: 'Start the listener for this checkout from the issue install in setup.', run: checkListener },
-  { number: 18, starred: false, name: 'The queue and the build output are ignored', repair: 'Add the three ignore rules to the root .gitignore.', run: checkIgnore },
+  { number: 18, starred: false, name: 'The queue and the build output are ignored', repair: 'Add node_modules/, /GLOSSARY.md, /ADR.md, and .work-weave/personal/ to the root .gitignore.', run: checkIgnore },
 ]
 
 export function runChecks(options = {}) {

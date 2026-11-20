@@ -38,7 +38,7 @@ function operator(root) {
 }
 
 function glossaryDir(root) {
-  const dir = path.join(root, ".work-weave", "glossary");
+  const dir = path.join(root, ".work-weave", "shared", "glossary");
   let stat;
   try {
     stat = fs.statSync(dir);
@@ -138,7 +138,7 @@ function merge(root) {
   const headerPath = path.join(glossaryDir(root), "_header.md");
   const header = fs.existsSync(headerPath)
     ? fs.readFileSync(headerPath, "utf8").trimEnd()
-    : "# Glossary\n\nThis file is generated from `.work-weave/glossary/*.jsonl`. Do not edit it by hand.";
+    : "# Glossary\n\nThis file is generated from `.work-weave/shared/glossary/*.jsonl`. Do not edit it by hand.";
 
   const groups = new Map();
   for (const term of terms) {

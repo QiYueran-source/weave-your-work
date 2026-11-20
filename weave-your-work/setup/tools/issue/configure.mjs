@@ -127,6 +127,16 @@ function writeIfChanged(file, content) {
   return true
 }
 
+function removeIfPresent(file) {
+  try {
+    fs.unlinkSync(file)
+    return true
+  } catch (error) {
+    if (error.code === 'ENOENT') return false
+    throw error
+  }
+}
+
 async function main(argv) {
   const args = parseArgs(argv)
   const root = resolveProjectRoot(args.project === undefined ? {} : { project: args.project })
@@ -137,13 +147,13 @@ async function main(argv) {
     throw new Error('repository must be owner/repo')
   }
 
-  const local = path.join(root, '.work-weave', 'local')
-  const runtime = path.join(root, '.work-weave', 'runtime', 'issue')
+  const personal = path.join(root, '.work-weave', 'personal')
+  const runtime = path.join(personal, 'issue')
   const listener = path.join(runtime, 'listener.mjs')
   if (!fs.existsSync(listener)) {
     throw new Error(`Listener is not installed at ${listener}; install the project runtime first`)
   }
-  const envFile = path.join(local, 'issue-listener.env')
+  const envFile = path.join(personal, 'issue-listener.env')
   const previous = readSettings(envFile)
 
   let port
@@ -172,11 +182,16 @@ async function main(argv) {
     listener,
     description: `work-weave issue listener for ${root}`,
   })
-  const unitPath = path.join(local, service)
+  const unitPath = path.join(personal, service)
 
-  fs.mkdirSync(local, { recursive: true })
+  fs.mkdirSync(personal, { recursive: true })
   const envChanged = writeIfChanged(envFile, env)
   const unitChanged = writeIfChanged(unitPath, unit)
+  // The unit a checkout wrote before the move names the old settings file and
+  // sits in the directory the move emptied. The new one is written first, so
+  // the old one stays until it is replaced; then the checkout has one unit.
+  const oldUnit = path.join(root, '.work-weave', 'local', service)
+  const oldUnitRemoved = removeIfPresent(oldUnit)
 
   console.log(JSON.stringify({
     root,
@@ -186,8 +201,16 @@ async function main(argv) {
     envChanged,
     unit: unitPath,
     unitChanged,
+    oldUnit: oldUnitRemoved ? oldUnit : null,
   }, null, 2))
-  console.log(`Review the repository and port above, then link the unit with: systemctl --user link ${unitPath}`)
+  if (oldUnitRemoved) {
+    console.log(`Removed the old unit ${oldUnit}; link the new one and remove any link that still points at the old path:`)
+    console.log(`  systemctl --user unlink ${service}`)
+    console.log(`  systemctl --user link ${unitPath}`)
+    console.log('  systemctl --user daemon-reload')
+  } else {
+    console.log(`Review the repository and port above, then link the unit with: systemctl --user link ${unitPath}`)
+  }
 }
 
 main(process.argv.slice(2)).catch((error) => {

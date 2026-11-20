@@ -95,15 +95,15 @@ async function fixture(t, { extraHandles = '', roster = '', collaborators = DEFA
     assert.ok(path.basename(root).startsWith('issue-events-'))
     await fs.rm(root, { recursive: true, force: true })
   })
-  const tools = path.join(root, '.work-weave/runtime/issue')
+  const tools = path.join(root, '.work-weave/personal/issue')
   const bin = path.join(root, 'bin')
   const pages = path.join(root, 'pages')
   const issues = path.join(root, 'issues')
   const pulls = path.join(root, 'pulls')
   await Promise.all([
     fs.mkdir(tools, { recursive: true }),
-    fs.mkdir(path.join(root, '.work-weave/issue'), { recursive: true }),
-    fs.mkdir(path.join(root, '.work-weave/local'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/shared'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/personal'), { recursive: true }),
     fs.mkdir(path.join(root, '.waymark'), { recursive: true }),
     fs.mkdir(bin),
     fs.mkdir(pages),
@@ -121,9 +121,9 @@ async function fixture(t, { extraHandles = '', roster = '', collaborators = DEFA
   // The startup scan lists no open issues unless a test stages some.
   await fs.writeFile(path.join(pages, '1.json'), '[]\n')
   if (collaborators !== null) await fs.writeFile(path.join(root, 'collaborators.json'), JSON.stringify(collaborators))
-  await fs.writeFile(path.join(root, '.work-weave/issue/handles.toml'),
+  await fs.writeFile(path.join(root, '.work-weave/shared/handles.toml'),
     `[handles]\nalice = "alice-handle"\nbob = "bob-handle"\ncarol = "carol-handle"\n${extraHandles}[pending]\npath = ".work-weave/personal/communication/pending.jsonl"\n${roster}`)
-  await fs.writeFile(path.join(root, '.work-weave/local/issue-listener.env'), 'REPOSITORY=example/project\n')
+  await fs.writeFile(path.join(root, '.work-weave/personal/issue-listener.env'), 'REPOSITORY=example/project\n')
   git(root, 'init', '--quiet')
   git(root, 'config', 'user.name', 'alice')
   git(root, 'remote', 'add', 'origin', 'https://github.com/example/project.git')

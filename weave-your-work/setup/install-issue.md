@@ -1,13 +1,13 @@
 # Issue listener install
 
-The listener receives communicate issues and queues them for the next session. Run it once per checkout: the tools and dependencies live in the checkout's `.work-weave/runtime/`, and each checkout gets its own listener, queue, port, and service. A clone repeats the machine-local parts; the channel and webhook belong to the repository and are reused.
+The listener receives communicate issues and queues them for the next session. Run it once per checkout: the tools and dependencies live in the checkout's `.work-weave/personal/`, and each checkout gets its own listener, queue, port, and service. A clone repeats the machine-local parts; the channel and webhook belong to the repository and are reused.
 
 ## What this installs
 
-- The project runtime in `.work-weave/runtime/issue/`: the listener, checker, queue and lock modules, the project-root resolver, the checkout configurator, and their dependencies.
-- Checkout settings in `.work-weave/local/issue-listener.env`: the expected repository, the optional Smee URL, and the listener port.
-- A generated unit `work-weave-issue-<hash8>.service` in `.work-weave/local/`, where `hash8` is the first eight hex characters of the SHA-256 of the physical project root. The setup links it into the user service manager.
-- The shared roster at `.work-weave/issue/handles.toml`, copied from `tools/issue/handles.toml.example` when absent. The roster is committed; the queue, runtime, and local settings are ignored.
+- The project runtime in `.work-weave/personal/issue/`: the listener, checker, queue and lock modules, the project-root resolver, the checkout configurator, and their dependencies.
+- Checkout settings in `.work-weave/personal/issue-listener.env`: the expected repository, the optional Smee URL, and the listener port.
+- A generated unit `work-weave-issue-<hash8>.service` in `.work-weave/personal/`, where `hash8` is the first eight hex characters of the SHA-256 of the physical project root. The setup links it into the user service manager. A unit written under the old path is removed by the configurator after the new one is written, and the link is made again.
+- The shared roster at `.work-weave/shared/handles.toml`, copied from `tools/issue/handles.toml.example` when absent. The roster is committed; everything under `.work-weave/personal/` is ignored.
 - The session rule from `rules/rules-pending-communications.md` into `.agents/rules/`.
 - A startup scan for open communicate issues missed while the listener was off.
 
@@ -18,21 +18,21 @@ The tools need Node 20.18 or newer, or Node 22; the locked `smee-client` and `un
 Unix, from the project root:
 
 ```sh
-mkdir -p .work-weave/runtime/issue
+mkdir -p .work-weave/personal/issue
 for name in listener.mjs check-pending.mjs queue.mjs lock.mjs project-root.cjs configure.mjs origin.mjs package.json package-lock.json; do
-  cp "<setup>/tools/issue/$name" ".work-weave/runtime/issue/$name"
+  cp "<setup>/tools/issue/$name" ".work-weave/personal/issue/$name"
 done
-(cd .work-weave/runtime/issue && npm ci --omit=dev)
+(cd .work-weave/personal/issue && npm ci --omit=dev)
 ```
 
 Windows PowerShell, from the project root:
 
 ```powershell
-New-Item -ItemType Directory .work-weave\runtime\issue -Force | Out-Null
+New-Item -ItemType Directory .work-weave\personal\issue -Force | Out-Null
 foreach ($name in 'listener.mjs','check-pending.mjs','queue.mjs','lock.mjs','project-root.cjs','configure.mjs','origin.mjs','package.json','package-lock.json') {
-  Copy-Item "<setup>\tools\issue\$name" ".work-weave\runtime\issue\$name" -Force
+  Copy-Item "<setup>\tools\issue\$name" ".work-weave\personal\issue\$name" -Force
 }
-Push-Location .work-weave\runtime\issue
+Push-Location .work-weave\personal\issue
 npm ci --omit=dev
 Pop-Location
 ```
@@ -40,14 +40,14 @@ Pop-Location
 Generate the checkout's settings and unit:
 
 ```sh
-node .work-weave/runtime/issue/configure.mjs --project "<project-root>" --repository "<owner>/<repo>" --smee-url "<channel>"
+node .work-weave/personal/issue/configure.mjs --project "<project-root>" --repository "<owner>/<repo>" --smee-url "<channel>"
 ```
 
-`--repository` may be omitted to read the single GitHub `origin`. `--smee-url` may be omitted for an HTTP-only run; it is stored in the ignored settings file, never in Git, tickets, or logs. The configurator chooses a free local port when none is stored, reuses the stored port on a later run, and refuses to write when the port is occupied. It prints the settings and unit paths.
+`--repository` may be omitted to read the single GitHub `origin`. `--smee-url` may be omitted for an HTTP-only run; it is stored in the ignored settings file, never in Git, tickets, or logs. The configurator chooses a free local port when none is stored, reuses the stored port on a later run, and refuses to write when the port is occupied. It prints the settings and unit paths, and when the old unit still exists it names the one it removed and the commands that relink the service.
 
-The listener resolves the project from `.work-weave/` (or `--project`), requires `REPOSITORY`, reads the roster from `.work-weave/issue/handles.toml`, and writes the queue at `[pending].path` resolved from the project root, defaulting to `.work-weave/pending/pending-communications.md`. It rejects a webhook event whose `repository.full_name` is missing or differs from `REPOSITORY`. This is repository isolation, not authentication; the author is still checked against the roster.
+The listener resolves the project from `.work-weave/` (or `--project`), requires `REPOSITORY`, reads the roster from `.work-weave/shared/handles.toml`, and writes the queue at `[pending].path` resolved from the project root, defaulting to `.work-weave/personal/communication/pending.jsonl`. It rejects a webhook event whose `repository.full_name` is missing or differs from `REPOSITORY`. This is repository isolation, not authentication; the author is still checked against the roster.
 
-One process owns one queue. The listener creates `.work-weave/pending/.lock` atomically and refuses to start when another live listener on this host holds it. A dead pid, or an unverifiable lock older than 24 hours, is logged and taken over. `WEBHOOK_SECRET` is optional and only useful with a transport that preserves the signed bytes; Smee re-serializes JSON, so leave it unset for the default setup.
+One process owns one queue. The listener creates `.work-weave/personal/communication/.lock` atomically and refuses to start when another live listener on this host holds it. A dead pid, or an unverifiable lock older than 24 hours, is logged and taken over. `WEBHOOK_SECRET` is optional and only useful with a transport that preserves the signed bytes; Smee re-serializes JSON, so leave it unset for the default setup.
 
 ## Rules
 
@@ -60,7 +60,7 @@ Copy `rules/rules-pending-communications.md` into `.agents/rules/`:
 For an optional session-start hook, check the harness's documentation first. If it can run a command at session start and pass stdout to the agent, run the checker from the project root:
 
 ```sh
-node .work-weave/runtime/issue/check-pending.mjs
+node .work-weave/personal/issue/check-pending.mjs
 ```
 
 The checker reads the queue without changing it. With entries it prints their count, titles, and URLs as untrusted issue data; a missing or empty queue prints nothing; configuration and read errors go to stderr with a nonzero exit. If the harness does not deliver that output, skip the hook and use the rule at session start.
@@ -95,17 +95,17 @@ Read the repository state before creating anything. On a repository that already
 
    The generated unit already records the checkout's working directory, the settings file, and the project runtime. Do not copy a unit from another checkout: its hash, paths, and port belong to that checkout.
 
-3. **Roster and queue.** Use `.work-weave/issue/handles.toml`, tracked in Git. When the setup flow already confirmed the operator/login pair, read the file back and verify it; do not ask the pair again. When this install runs on its own, or the file is absent, copy `tools/issue/handles.toml.example`, fill it in, and state the operator and login back, asking the person to confirm they are the same person. The project's owners are the Waymark owners in `tickets/`; read the signed-in account with `gh api user --jq .login`. An owner name and a GitHub login are different names; confirm they are the same person. A login missing from the file cannot send; a login that should not send belongs nowhere in it.
+3. **Roster and queue.** Use `.work-weave/shared/handles.toml`, tracked in Git. When the setup flow already confirmed the operator/login pair, read the file back and verify it; do not ask the pair again. When this install runs on its own, or the file is absent, copy `tools/issue/handles.toml.example`, fill it in, and state the operator and login back, asking the person to confirm they are the same person. The project's owners are the Waymark owners in `tickets/`; read the signed-in account with `gh api user --jq .login`. An owner name and a GitHub login are different names; confirm they are the same person. A login missing from the file cannot send; a login that should not send belongs nowhere in it.
 
    ```toml
    [handles]
    frank = "QiYueran-source"
 
    [pending]
-   path = ".work-weave/pending/pending-communications.md"
+   path = ".work-weave/personal/communication/pending.jsonl"
    ```
 
-   The queue path is relative to the project root. Create `.work-weave/.gitignore` if it is absent and make sure it ignores `pending/`, `runtime/`, and `local/`. The roster is under `issue/` and stays tracked.
+   The queue path is relative to the project root. Create `.work-weave/.gitignore` if it is absent and make sure it ignores `personal/` and nothing else: the roster is under `shared/` and stays tracked.
 
    The listener matches this machine's owner from `git config user.name` in the checkout, without regard to case. A machine belonging to another owner sets the name locally:
 
@@ -119,18 +119,18 @@ Read the repository state before creating anything. On a repository that already
 
 ## Verify
 
-1. **The webhook and settings name the same channel.** The `gh api ... /hooks` read prints the `https://smee.io/<id>` stored in `.work-weave/local/issue-listener.env`. A different id means the listener watches the wrong channel.
+1. **The webhook and settings name the same channel.** The `gh api ... /hooks` read prints the `https://smee.io/<id>` stored in `.work-weave/personal/issue-listener.env`. A different id means the listener watches the wrong channel.
 2. **The service is active for this checkout.** The platform guide's status command shows the generated unit active, and its log shows `listening on`, the Smee connection, and `Catch-up complete`. The journal redacts the channel URL.
 3. **A live issue arrives.** File one addressed to this machine's owner, then check the queue:
 
    ```sh
    gh issue create --repo <owner>/<repo> --title "<ticket>: verify the listener" \
      --body $'---\nkind: communicate\ncategory: request\nfrom: <owner>\nto: [<login>]\ntickets: [<ticket>]\n---\n\nVerification issue.'
-   node .work-weave/runtime/issue/check-pending.mjs
+   node .work-weave/personal/issue/check-pending.mjs
    ```
 
    The queue gains one line within a few seconds. Close the issue afterwards; the queue line remains as the record.
-4. **The queue is ignored.** `git check-ignore -v .work-weave/pending/pending-communications.md` prints a matching line. No output means the queue is tracked state.
+4. **The queue is ignored.** `git check-ignore -v .work-weave/personal/communication/pending.jsonl` prints a matching line. No output means the queue is tracked state.
 5. **A second listener is rejected.** While the service runs, start the listener in the foreground from the same runtime. It exits with `Another listener holds the queue lock` and does not append.
 6. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete` and the new line.
 7. **A new session surfaces the queue.** The rule prints the count and titles. Whether the harness delivers the checker's output is outside this setup.

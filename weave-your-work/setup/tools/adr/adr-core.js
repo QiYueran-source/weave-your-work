@@ -34,7 +34,7 @@ function operator(root) {
 }
 
 function adrDir(root) {
-  return path.join(root, ".work-weave", "adr");
+  return path.join(root, ".work-weave", "shared", "adr");
 }
 
 function sourceFiles(root) {
@@ -169,7 +169,7 @@ function merge(root) {
   const headerPath = path.join(adrDir(root), "_header.md");
   const header = fs.existsSync(headerPath)
     ? fs.readFileSync(headerPath, "utf8").trimEnd()
-    : "# ADR\n\nThis file is generated from `.work-weave/adr/*.jsonl`. Do not edit it by hand.";
+    : "# ADR\n\nThis file is generated from `.work-weave/shared/adr/*.jsonl`. Do not edit it by hand.";
 
   const { open, replaced } = view(root, all);
   const lines = [header, ""];

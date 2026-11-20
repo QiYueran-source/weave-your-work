@@ -5,8 +5,9 @@ the view after a pull.
 
 ## What this installs
 
-- `.work-weave/adr/` holds the sources, one `<operator>.jsonl` per person.
-- `.work-weave/runtime/adr/` holds the tool copy. Nothing installs under the
+- `.work-weave/shared/adr/` holds the sources, one `<operator>.jsonl` per person.
+  The sources are committed.
+- `.work-weave/personal/adr/` holds the tool copy. Nothing installs under the
   skill directory.
 - `.git/hooks/post-merge` rebuilds `ADR.md` after a pull when you install it.
 - The root `.gitignore` keeps the generated `/ADR.md` out of the repository.
@@ -21,14 +22,14 @@ on the `npm ci` step. A failed install leaves the CLI working.
 Unix:
 
 ```sh
-mkdir -p .work-weave/adr .work-weave/runtime/adr
+mkdir -p .work-weave/shared/adr .work-weave/personal/adr
 grep -qxF '/ADR.md' .gitignore 2>/dev/null || printf '%s\n' '/ADR.md' >> .gitignore
 ```
 
 Windows PowerShell:
 
 ```powershell
-New-Item -ItemType Directory .work-weave\adr, .work-weave\runtime\adr -Force | Out-Null
+New-Item -ItemType Directory .work-weave\shared\adr, .work-weave\personal\adr -Force | Out-Null
 if (-not (Select-String -Path .gitignore -Pattern ([regex]::Escape('/ADR.md')) -Quiet -ErrorAction SilentlyContinue)) {
   Add-Content .gitignore '/ADR.md'
 }
@@ -46,15 +47,15 @@ cp <setup>/tools/adr/adr-core.js \
    <setup>/tools/adr/server.js \
    <setup>/tools/adr/project-root.cjs \
    <setup>/tools/adr/package.json \
-   .work-weave/runtime/adr/
-(cd .work-weave/runtime/adr && npm ci --omit=dev)
+   .work-weave/personal/adr/
+(cd .work-weave/personal/adr && npm ci --omit=dev)
 ```
 
 Windows PowerShell:
 
 ```powershell
-Copy-Item <setup>\tools\adr\adr-core.js, <setup>\tools\adr\adr.js, <setup>\tools\adr\server.js, <setup>\tools\adr\project-root.cjs, <setup>\tools\adr\package.json .work-weave\runtime\adr\
-Push-Location .work-weave\runtime\adr
+Copy-Item <setup>\tools\adr\adr-core.js, <setup>\tools\adr\adr.js, <setup>\tools\adr\server.js, <setup>\tools\adr\project-root.cjs, <setup>\tools\adr\package.json .work-weave\personal\adr\
+Push-Location .work-weave\personal\adr
 npm ci --omit=dev
 Pop-Location
 ```
@@ -74,7 +75,7 @@ In the harness's MCP config:
   "mcpServers": {
     "adr": {
       "command": "node",
-      "args": ["<root>/.work-weave/runtime/adr/server.js", "--project", "<root>"]
+      "args": ["<root>/.work-weave/personal/adr/server.js", "--project", "<root>"]
     }
   }
 }
@@ -89,16 +90,16 @@ harness keeps MCP servers, beside the glossary entry.
 Recommended, not required: without it, run `merge` by hand after a pull.
 
 The template carries `@ADR_RUNTIME@`, which the setup replaces with the absolute
-path to `.work-weave/runtime/adr`. The hook leaves a project with no
-`.work-weave/adr/` directory alone, so a clone without ADR sources pulls cleanly.
+path to `.work-weave/personal/adr`. The hook leaves a project with no
+`.work-weave/shared/adr/` directory alone, so a clone without ADR sources pulls cleanly.
 
 Unix, from the project root:
 
 ```sh
 hook=$(git rev-parse --git-path hooks/post-merge)
 if [ ! -e "$hook" ]; then
-  runtime=$(cd .work-weave/runtime/adr && pwd)
-  sed "s#@ADR_RUNTIME@#$runtime#g" .work-weave/runtime/adr/post-merge.sh > "$hook"
+  runtime=$(cd .work-weave/personal/adr && pwd)
+  sed "s#@ADR_RUNTIME@#$runtime#g" .work-weave/personal/adr/post-merge.sh > "$hook"
   chmod +x "$hook"
 fi
 ```
@@ -108,8 +109,8 @@ Windows, from the project root in PowerShell:
 ```powershell
 $hook = git rev-parse --git-path hooks/post-merge
 if (-not (Test-Path $hook)) {
-  $runtime = (Resolve-Path .work-weave\runtime\adr).Path
-  (Get-Content ".work-weave\runtime\adr\post-merge.sh") -replace '@ADR_RUNTIME@', $runtime | Set-Content $hook
+  $runtime = (Resolve-Path .work-weave\personal\adr).Path
+  (Get-Content ".work-weave\personal\adr\post-merge.sh") -replace '@ADR_RUNTIME@', $runtime | Set-Content $hook
 }
 ```
 
@@ -123,10 +124,10 @@ The MCP server exposes `adr_list`, `adr_show`, `adr_write`, and `adr_merge`. The
 CLI does the same from a terminal and needs no dependencies:
 
 ```sh
-node .work-weave/runtime/adr/adr.js --project <root> list
-node .work-weave/runtime/adr/adr.js --project <root> show <id>
-node .work-weave/runtime/adr/adr.js --project <root> merge
-node .work-weave/runtime/adr/adr.js --project <root> write --title T --decision D
+node .work-weave/personal/adr/adr.js --project <root> list
+node .work-weave/personal/adr/adr.js --project <root> show <id>
+node .work-weave/personal/adr/adr.js --project <root> merge
+node .work-weave/personal/adr/adr.js --project <root> write --title T --decision D
 ```
 
 `write` also takes `--status`, `--supersedes <id>`, and `--record <waymark id>`.
@@ -136,10 +137,10 @@ source directory is missing, not that the server is broken.
 
 ## Verify
 
-- `node .work-weave/runtime/adr/adr.js --project <root> write --title "Test" --decision "A test."`
+- `node .work-weave/personal/adr/adr.js --project <root> write --title "Test" --decision "A test."`
   then `list` prints the entry and the file holds one line.
 - `merge` writes `ADR.md` at the project root.
 - The harness lists `adr_list`, `adr_show`, `adr_write`, and `adr_merge`.
-- `git status` shows `.work-weave/adr/` as tracked and `ADR.md` as ignored.
-- A project with no `.work-weave/adr/` directory answers the install message
+- `git status` shows `.work-weave/shared/adr/` as tracked and `ADR.md` as ignored.
+- A project with no `.work-weave/shared/adr/` directory answers the install message
   rather than crashing when `merge` runs from the hook.

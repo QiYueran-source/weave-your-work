@@ -4,7 +4,7 @@ One term, in one operator's own source file; the readable view is generated.
 
 ## The entry
 
-One JSONL line in `.work-weave/glossary/<operator>.jsonl`:
+One JSONL line in `.work-weave/shared/glossary/<operator>.jsonl`:
 
 ```json
 {"term":"map","definition":"A target node that answers what is wanted.","avoid":["goal","project"],"group":"target tree","created_at":"2026-11-08T10:00:00Z","updated_at":"2026-11-08T10:00:00Z"}
@@ -38,7 +38,7 @@ Two operators who define the same term differently leave the later line in the v
 
 ## The header
 
-The view opens with `.work-weave/glossary/_header.md` when present, otherwise a fixed line naming the file as generated.
+The view opens with `.work-weave/shared/glossary/_header.md` when present, otherwise a fixed line naming the file as generated.
 
 Changing the header is the glossary maintainer's write. It is the one shared single file in an otherwise per-operator design, so a change to it is made when nobody else is merging, followed immediately by a merge.
 

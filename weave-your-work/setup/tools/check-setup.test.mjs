@@ -37,7 +37,10 @@ function project(t) {
   write(path.join(root, '.agents', 'skills', 'setup', 'rules', 'rules-demo.md'), '# Demo rule\n')
   write(path.join(root, '.agents', 'rules', 'rules-demo.md'), '# Demo rule\n')
   write(path.join(root, 'AGENTS.md'), '# Follow .agents/rules/*.md\n')
-  write(path.join(root, '.gitignore'), 'node_modules/\n/GLOSSARY.md\n/ADR.md\n.work-weave/pending/\n')
+  write(path.join(root, '.gitignore'), 'node_modules/\n/GLOSSARY.md\n/ADR.md\n.work-weave/personal/\n')
+  write(path.join(root, '.work-weave', '.gitignore'), 'personal/\n')
+  write(path.join(root, '.waymark', 'config.toml'), 'version = "1.1"\nstorage_root = "tickets"\n')
+  write(path.join(root, '.work-weave', 'shared', 'handles.toml'), '[handles]\nfrank = "someone"\n')
   git(root, 'add', '-A')
   git(root, 'commit', '-q', '-m', 'fixture')
   return root
@@ -98,6 +101,36 @@ test('all checks run on a configured fixture', t => {
     assert.equal(byNumber.get(number).status, 'ok', `${number}: ${byNumber.get(number).message}`)
   }
   assert.match(byNumber.get(12).message, /missing: none/)
+})
+
+test('names the roster path when the operator is not in [handles]', t => {
+  const root = project(t)
+  write(path.join(root, '.work-weave', 'shared', 'handles.toml'), '[handles]\nsomeone = "x"\n')
+  const home = fixture(t)
+  const result = spawnSync(process.execPath, [cli, '--all', '--json'], {
+    cwd: root,
+    encoding: 'utf8',
+    env: { ...process.env, HOME: home, USERPROFILE: home },
+  })
+  const payload = JSON.parse(result.stdout)
+  const check = payload.checks.find(item => item.number === 11)
+  assert.equal(check.status, 'fail')
+  assert.match(check.message, /\.work-weave\/shared\/handles\.toml/)
+})
+
+test('reads the glossary server from its personal path', t => {
+  const root = project(t)
+  write(path.join(root, '.work-weave', 'personal', 'glossary', 'server.js'), '')
+  const home = fixture(t)
+  const result = spawnSync(process.execPath, [cli, '--all', '--json'], {
+    cwd: root,
+    encoding: 'utf8',
+    env: { ...process.env, HOME: home, USERPROFILE: home },
+  })
+  const payload = JSON.parse(result.stdout)
+  const check = payload.checks.find(item => item.number === 16)
+  assert.notEqual(check.status, 'not-applicable')
+  assert.doesNotMatch(check.message, /missing from/, check.message)
 })
 
 test('reports a setup rule that differs from its copy', t => {

@@ -6,7 +6,7 @@ The message's shape is `COMMUNICATE-ISSUE-FORMAT.md`. This file is the run that 
 
 ## 1. Pick the recipient
 
-The recipient is an owner in the roster, `.work-weave/issue/handles.toml`. It is the one table that turns an owner into a GitHub login and a login into an owner; do not keep a second one.
+The recipient is an owner in the roster, `.work-weave/shared/handles.toml`. It is the one table that turns an owner into a GitHub login and a login into an owner; do not keep a second one.
 
 Read the owner's login from `[handles]`. If the person has not named a recipient, ask which owner it is for.
 

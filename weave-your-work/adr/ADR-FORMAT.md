@@ -49,7 +49,7 @@ ADRs are written per operator and merged into one view. Each operator writes
 only their own source file; the readable view is generated from all of them, so
 no two people edit the same file.
 
-One JSONL line in `.work-weave/adr/<operator>.jsonl`:
+One JSONL line in `.work-weave/shared/adr/<operator>.jsonl`:
 
 ```json
 {"id":"frank-20261117T055259.123","title":"Usage-based pricing for the API","decision":"The API is priced per request rather than per seat because most customers call it from their own product, where seats do not map to usage.","status":"accepted","supersedes":null,"record":"wm-j2mbwych54bj","created_at":"2026-11-17T05:52:59.123Z"}

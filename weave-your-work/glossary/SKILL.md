@@ -61,7 +61,7 @@ Never write to another operator's file, and never edit `GLOSSARY.md` by hand: th
 
 ## The tools
 
-The MCP server and the CLI live in the project runtime at `.work-weave/runtime/glossary/`, installed by `setup`. Use `glossary_list`, `glossary_write`, and `glossary_merge` when they are running; use the CLI when they are not. The view is where the vocabulary is read; no command answers a single word.
+The MCP server and the CLI live in the project runtime at `.work-weave/personal/glossary/`, installed by `setup`. Use `glossary_list`, `glossary_write`, and `glossary_merge` when they are running; use the CLI when they are not. The view is where the vocabulary is read; no command answers a single word.
 
 One line is in the operator's own source file, in the shape `glossary/GLOSSARY-FORMAT.md` defines.
 

@@ -21,7 +21,7 @@ Nothing else goes in the front matter. There is no `from` and no `to`.
 
 ## Who is speaking
 
-- **The sender is the GitHub account that opened the issue.** The roster, the table of owner names to GitHub logins at `.work-weave/issue/handles.toml`, turns that login into an owner.
+- **The sender is the GitHub account that opened the issue.** The roster, the table of owner names to GitHub logins at `.work-weave/shared/handles.toml`, turns that login into an owner.
 - **The recipient is the assignee.** The roster turns the assignee's login into an owner.
 
 A name typed into the body claims nothing. A mention in the body carries no meaning of its own, and one address per message is enough.

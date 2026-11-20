@@ -101,14 +101,14 @@ async function fixture(t, { remote = true } = {}) {
     assert.ok(path.basename(root).startsWith('issue-catchup-'))
     await fs.rm(root, { recursive: true, force: true })
   })
-  const tools = path.join(root, '.work-weave/runtime/issue')
+  const tools = path.join(root, '.work-weave/personal/issue')
   const bin = path.join(root, 'bin')
   const pages = path.join(root, 'pages')
   const issues = path.join(root, 'issues')
   await Promise.all([
     fs.mkdir(tools, { recursive: true }),
-    fs.mkdir(path.join(root, '.work-weave/issue'), { recursive: true }),
-    fs.mkdir(path.join(root, '.work-weave/local'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/shared'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/personal'), { recursive: true }),
     fs.mkdir(path.join(root, '.waymark'), { recursive: true }),
     fs.mkdir(bin),
     fs.mkdir(pages),
@@ -120,8 +120,8 @@ async function fixture(t, { remote = true } = {}) {
   const localModules = path.join(source, 'node_modules')
   await fs.symlink(await exists(localModules) ? localModules : fallbackModules, path.join(tools, 'node_modules'), 'dir')
   await fs.writeFile(path.join(root, '.waymark/config.toml'), 'schema = 1\n')
-  await fs.writeFile(path.join(root, '.work-weave/issue/handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = ".work-weave/personal/communication/pending.jsonl"\n')
-  await fs.writeFile(path.join(root, '.work-weave/local/issue-listener.env'), 'REPOSITORY=example/project\n')
+  await fs.writeFile(path.join(root, '.work-weave/shared/handles.toml'), '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = ".work-weave/personal/communication/pending.jsonl"\n')
+  await fs.writeFile(path.join(root, '.work-weave/personal/issue-listener.env'), 'REPOSITORY=example/project\n')
   await fs.writeFile(path.join(tools, 'package.json'), '{ "type": "module" }\n')
   await fs.writeFile(path.join(bin, 'gh'), fakeGh, { mode: 0o755 })
   // The repository's collaborators, as the listener reads them for a pull

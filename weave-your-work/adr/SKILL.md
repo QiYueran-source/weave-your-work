@@ -40,7 +40,7 @@ decision stays in the record that made it.
 ## The tools
 
 The MCP server and the CLI live in the project runtime at
-`.work-weave/runtime/adr/`, installed by `setup`. Use `adr_list`, `adr_show`,
+`.work-weave/personal/adr/`, installed by `setup`. Use `adr_list`, `adr_show`,
 `adr_write`, and `adr_merge` when they are running; use the CLI when they are
 not. The CLI needs no dependencies, so it answers even when the server's install
 did not finish.

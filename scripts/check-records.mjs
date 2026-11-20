@@ -264,7 +264,7 @@ try {
 }
 
 // The pending queue: one JSON object per line.
-const queueFile = join(root, '.work-weave', 'pending', 'pending-communications.md')
+const queueFile = join(root, '.work-weave', 'personal', 'communication', 'pending.jsonl')
 const queue = read(queueFile)
 if (queue) {
   for (const [index, line] of queue.split(/\r?\n/).entries()) {

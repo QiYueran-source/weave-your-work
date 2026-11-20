@@ -3,10 +3,10 @@
 The setup generates one systemd user unit per checkout:
 
 ```text
-.work-weave/local/work-weave-issue-<hash8>.service
+.work-weave/personal/work-weave-issue-<hash8>.service
 ```
 
-The unit records the checkout's working directory, `.work-weave/local/issue-listener.env`, and the project runtime's `listener.mjs`. Do not copy a unit from another checkout; its paths and port belong to that checkout.
+The unit records the checkout's working directory, `.work-weave/personal/issue-listener.env`, and the project runtime's `listener.mjs`. Do not copy a unit from another checkout; its paths and port belong to that checkout.
 
 ## Install
 
@@ -43,7 +43,7 @@ The log shows `listening on`, the Smee connection, and `Catch-up complete`. The 
 If `configure.mjs` reports the stored port occupied, stop the process using it or choose another port:
 
 ```sh
-node .work-weave/runtime/issue/configure.mjs --project "$(pwd)" --port <new-port>
+node .work-weave/personal/issue/configure.mjs --project "$(pwd)" --port <new-port>
 ```
 
 Then restart the service. The setup never changes a stored port silently.
@@ -56,4 +56,4 @@ systemctl --user unlink work-weave-issue-<hash8>.service
 systemctl --user daemon-reload
 ```
 
-Unlinking removes the user-manager link; the generated file stays under `.work-weave/local/`. Removing a checkout does not remove another checkout's unit. Re-running setup for the same root rewrites the same unit name.
+Unlinking removes the user-manager link; the generated file stays under `.work-weave/personal/`. Removing a checkout does not remove another checkout's unit. Re-running setup for the same root rewrites the same unit name.

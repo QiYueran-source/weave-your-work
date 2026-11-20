@@ -55,7 +55,7 @@ function runFails(cwd, ...args) {
 }
 
 function lines(root, name) {
-  const file = path.join(root, ".work-weave", "adr", `${name}.jsonl`);
+  const file = path.join(root, ".work-weave", "shared", "adr", `${name}.jsonl`);
   return fs
     .readFileSync(file, "utf8")
     .split("\n")
@@ -78,7 +78,7 @@ test("a write lands in the operator's own source file and nowhere else", (t) => 
   assert.equal(entry.supersedes, null);
   assert.equal(entry.record, null);
 
-  const sources = fs.readdirSync(path.join(root, ".work-weave", "adr"));
+  const sources = fs.readdirSync(path.join(root, ".work-weave", "shared", "adr"));
   assert.deepEqual(sources, ["frank.jsonl"]);
 });
 
@@ -125,7 +125,7 @@ test("list and show read every source", (t) => {
   const root = project(t, "frank");
   run(root, "write", "--title", "Mine", "--decision", "One.");
   fs.writeFileSync(
-    path.join(root, ".work-weave", "adr", "bob.jsonl"),
+    path.join(root, ".work-weave", "shared", "adr", "bob.jsonl"),
     `${JSON.stringify({
       id: "bob-20260101T000000000",
       title: "Theirs",
@@ -187,7 +187,7 @@ test("the view lists accepted newest first, then superseded", (t) => {
 test("superseding never edits the replaced operator's source", (t) => {
   const root = project(t, "frank");
   run(root, "write", "--title", "Original", "--decision", "One.");
-  const before = fs.readFileSync(path.join(root, ".work-weave", "adr", "frank.jsonl"), "utf8");
+  const before = fs.readFileSync(path.join(root, ".work-weave", "shared", "adr", "frank.jsonl"), "utf8");
 
   fs.writeFileSync(
     path.join(root, ".waymark", "user.toml"),
@@ -196,7 +196,7 @@ test("superseding never edits the replaced operator's source", (t) => {
   const [original] = lines(root, "frank");
   run(root, "write", "--title", "Replacement", "--decision", "Two.", "--supersedes", original.id);
 
-  const after = fs.readFileSync(path.join(root, ".work-weave", "adr", "frank.jsonl"), "utf8");
+  const after = fs.readFileSync(path.join(root, ".work-weave", "shared", "adr", "frank.jsonl"), "utf8");
   assert.equal(after, before);
 
   run(root, "merge");
@@ -215,7 +215,7 @@ test("two entries describing the same decision both survive a merge", (t) => {
   const root = project(t, "frank");
   run(root, "write", "--title", "Pick supplier A", "--decision", "A is cheaper.");
   fs.writeFileSync(
-    path.join(root, ".work-weave", "adr", "bob.jsonl"),
+    path.join(root, ".work-weave", "shared", "adr", "bob.jsonl"),
     `${JSON.stringify({
       id: "bob-20260101T000000000",
       title: "Choose supplier A",

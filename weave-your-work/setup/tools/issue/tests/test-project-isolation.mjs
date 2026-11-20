@@ -75,7 +75,7 @@ async function project(t, {
     assert.ok(path.basename(root).startsWith('issue-project-'))
     await fs.rm(root, { recursive: true, force: true })
   })
-  const tools = path.join(root, '.work-weave/runtime/issue')
+  const tools = path.join(root, '.work-weave/personal/issue')
   await fs.mkdir(tools, { recursive: true })
   for (const name of ['listener.mjs', 'events.mjs', 'check-pending.mjs', 'queue.mjs', 'lock.mjs', 'project-root.cjs']) {
     await fs.copyFile(path.join(source, name), path.join(tools, name))
@@ -103,10 +103,10 @@ else {
 `, { mode: 0o755 })
   await writeFiles(root, {
     '.waymark/config.toml': 'schema = 1\n',
-    '.work-weave/issue/handles.toml': `${handles}${handles.endsWith('\n') ? '' : '\n'}${pending === null ? '' : `[pending]\npath = ${JSON.stringify(pending)}\n`}`,
+    '.work-weave/shared/handles.toml': `${handles}${handles.endsWith('\n') ? '' : '\n'}${pending === null ? '' : `[pending]\npath = ${JSON.stringify(pending)}\n`}`,
   })
   if (settings !== undefined && settings !== null) {
-    await writeFiles(root, { '.work-weave/local/issue-listener.env': settings })
+    await writeFiles(root, { '.work-weave/personal/issue-listener.env': settings })
   }
   await git(root, 'init', '--quiet')
   await git(root, 'config', 'user.name', owner)
@@ -119,7 +119,7 @@ else {
     repository,
     issues,
     queue: path.resolve(root, pending ?? '.work-weave/personal/communication/pending.jsonl'),
-    roster: path.join(root, '.work-weave/issue/handles.toml'),
+    roster: path.join(root, '.work-weave/shared/handles.toml'),
   }
 }
 

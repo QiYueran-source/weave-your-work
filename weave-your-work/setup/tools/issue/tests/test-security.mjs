@@ -63,14 +63,14 @@ async function fixture(t, { owner = 'alice' } = {}) {
     assert.ok(path.basename(root).startsWith('issue-security-'))
     await fs.rm(root, { recursive: true, force: true })
   })
-  const tools = path.join(root, '.work-weave/runtime/issue')
+  const tools = path.join(root, '.work-weave/personal/issue')
   const bin = path.join(root, 'bin')
   const pages = path.join(root, 'pages')
   const issues = path.join(root, 'issues')
   await Promise.all([
     fs.mkdir(tools, { recursive: true }),
-    fs.mkdir(path.join(root, '.work-weave/issue'), { recursive: true }),
-    fs.mkdir(path.join(root, '.work-weave/local'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/shared'), { recursive: true }),
+    fs.mkdir(path.join(root, '.work-weave/personal'), { recursive: true }),
     fs.mkdir(path.join(root, '.waymark'), { recursive: true }),
     fs.mkdir(bin),
     fs.mkdir(pages),
@@ -85,9 +85,9 @@ async function fixture(t, { owner = 'alice' } = {}) {
   await fs.writeFile(path.join(root, '.waymark/config.toml'), 'schema = 1\n')
   await fs.writeFile(path.join(bin, 'gh'), fakeGh, { mode: 0o755 })
   await fs.writeFile(path.join(pages, '1.json'), '[]\n')
-  const roster = path.join(root, '.work-weave/issue/handles.toml')
+  const roster = path.join(root, '.work-weave/shared/handles.toml')
   await fs.writeFile(roster, '[handles]\nalice = "alice-handle"\nbob = "bob-handle"\n[pending]\npath = ".work-weave/personal/communication/pending.jsonl"\n')
-  await fs.writeFile(path.join(root, '.work-weave/local/issue-listener.env'), 'REPOSITORY=example/project\n')
+  await fs.writeFile(path.join(root, '.work-weave/personal/issue-listener.env'), 'REPOSITORY=example/project\n')
   const init = spawnSync('git', ['init', '--quiet'], { cwd: root, encoding: 'utf8' })
   assert.equal(init.status, 0, init.stderr)
   const remote = spawnSync('git', ['remote', 'add', 'origin', 'https://github.com/example/project.git'], { cwd: root, encoding: 'utf8' })
