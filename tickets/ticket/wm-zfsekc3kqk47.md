@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T13:57:14Z
-updated_at: 2026-11-17T13:58:02Z
+updated_at: 2026-11-20T07:40:00Z
 closed_at: 2026-11-17T13:58:02Z
 ---
 Part of wm-qmar7z6vvbyn
@@ -29,16 +29,32 @@ tickets.
 
 ## Acceptance criteria
 
-- [ ] The skill has five instructions, in this order: know the ticket, survey the
+- [x] The skill has five instructions, in this order: know the ticket, survey the
       tools, judge what is reachable, do the work, record and close.
-- [ ] The survey names skills, MCP servers, interfaces, and a command line as
+- [x] The survey names skills, MCP servers, interfaces, and a command line as
       what to look at.
-- [ ] The skill says a tool the person named is used ahead of the agent's own
+- [x] The skill says a tool the person named is used ahead of the agent's own
       preference.
-- [ ] The skill says what is out of reach is stated before starting, and again if
+- [x] The skill says what is out of reach is stated before starting, and again if
       it turns up midway.
-- [ ] The skill says a person's ticket stops the agent, that it names the ticket
+- [x] The skill says a person's ticket stops the agent, that it names the ticket
       and what it asks for, and that it mentions `hand-back`.
-- [ ] The skill says the agent does not go on to later tickets after stopping.
-- [ ] The skill contains no `tdd`, no `seam`, no `typecheck`, and no
+- [x] The skill says the agent does not go on to later tickets after stopping.
+- [x] The skill contains no `tdd`, no `seam`, no `typecheck`, and no
       `code-review`.
+
+## The result
+
+`weave-your-work/implement/SKILL.md` was rewritten from Matt's nine lines into
+five instructions in order: the ticket, what you have to work with, what is out of
+reach, a ticket that is a person's, and doing it and closing it. The survey names
+skills, MCP servers, interfaces, and a command line, and says a tool the person
+named wins over the agent's own preference. Out-of-reach work is said before
+starting and again if it turns up midway. A person's ticket stops the agent: the
+skill names the ticket, what it asks for, and that `hand-back` records the
+result, and says not to go on to later tickets.
+
+Verified by reading back the file committed in `6a09dc4`: the five headings
+appear in that order, the survey sentence names the four tool kinds, and a `grep`
+for `tdd`, `seam`, `typecheck`, and `code-review` across `implement`, `hand-back`,
+and `to-tickets` finds nothing.

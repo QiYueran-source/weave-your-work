@@ -7,7 +7,7 @@ status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T13:57:14Z
-updated_at: 2026-11-17T13:58:27Z
+updated_at: 2026-11-20T07:40:00Z
 closed_at: 2026-11-17T13:58:27Z
 dependencies:
   - wm-zfsekc3kqk47
@@ -31,18 +31,42 @@ One ticket per run. The skill is for a person to run, and says so.
 
 ## Acceptance criteria
 
-- [ ] The skill is new, and its front matter marks it as run by a person rather
+- [x] The skill is new, and its front matter marks it as run by a person rather
       than reached for by a model.
-- [ ] Its description says a person runs it after doing the work.
-- [ ] The steps are: find the ticket, read its acceptance, ask what the ticket
+- [x] Its description says a person runs it after doing the work.
+- [x] The steps are: find the ticket, read its acceptance, ask what the ticket
       needs to know, write the result, close the ticket, name the next one.
-- [ ] Finding the ticket judges by meaning, with a worked example contrasting a
+- [x] Finding the ticket judges by meaning, with a worked example contrasting a
       person's words with the ticket's words.
-- [ ] One match is stated back for confirmation, several are listed for the person
+- [x] One match is stated back for confirmation, several are listed for the person
       to choose, and no match is said plainly.
-- [ ] The questions are derived from the ticket's acceptance, and when the
+- [x] The questions are derived from the ticket's acceptance, and when the
       acceptance is too vague the skill asks what the ticket was meant to achieve.
-- [ ] At least one round of questions is required.
-- [ ] The result is written where the ticket asks for it.
-- [ ] The skill takes one ticket per run and says so when a person describes two.
-- [ ] The skill says nothing enforces the person-runs-it rule beyond the wording.
+- [x] At least one round of questions is required.
+- [x] The result is written where the ticket asks for it.
+- [x] The skill takes one ticket per run and says so when a person describes two.
+- [x] The skill says nothing enforces the person-runs-it rule beyond the wording.
+
+## The result
+
+`weave-your-work/hand-back/SKILL.md` is a new skill. Its front matter carries
+`name`, `description`, and `disable-model-invocation: true`, so a model does not
+reach for it on its own; the description says a person runs it after doing the
+work. The steps are numbered 1 to 5: find the ticket, read what the ticket wants,
+ask what the ticket needs to know, write the result, close it and say what is
+next.
+
+Finding the ticket judges by meaning, with a worked example: someone says "I asked
+the supplier" and the ticket says "confirm the quote". One match is said back for
+confirmation, several are listed for the person to pick, and no match is said
+plainly. The questions come from the ticket's acceptance, at least one round is
+required, and two pieces of work in one description are told to be taken one at a
+time. A closing section says nothing enforces the person-runs-it rule beyond the
+wording.
+
+Verified by reading back the file committed in `6a09dc4`: the three front matter
+keys and the five numbered headings exist, and the worked example is present.
+
+## Blocked by
+
+- wm-zfsekc3kqk47

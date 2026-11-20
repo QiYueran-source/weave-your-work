@@ -129,12 +129,6 @@ function checkTicket(file, fm, body) {
   if (!parts['Acceptance criteria']) add(file, 'ticket has no ## Acceptance criteria section')
   if (fm.status === 'closed' && !parts['The result'] && !parts.Result)
     add(file, 'closed ticket has no ## The result section')
-
-  const dependencies = Array.isArray(fm.dependencies) ? fm.dependencies : []
-  for (const dependency of dependencies) {
-    if (items.get(dependency)?.fm.category !== 'ticket')
-      add(file, `blocked by ${dependency}, which is not a ticket`)
-  }
 }
 
 function checkTestimony(file, fm) {
@@ -203,11 +197,15 @@ for (const category of ['spec', 'ticket', 'testimony']) {
 
 // Relations that need the whole project. A record naming a dependency that does
 // not exist, or depending on itself, cannot be worked in the order it asks for.
+// Only a ticket can block a ticket: a spec is worked through the tickets cut from
+// it, not waited on.
 for (const [id, { file, fm }] of items) {
   const dependencies = Array.isArray(fm.dependencies) ? fm.dependencies : []
   for (const dependency of dependencies) {
     if (dependency === id) add(file, 'a record that blocks itself')
     else if (!items.has(dependency)) add(file, `dependency ${dependency} does not exist`)
+    else if (fm.category === 'ticket' && items.get(dependency).fm.category !== 'ticket')
+      add(file, `blocked by ${dependency}, which is not a ticket`)
   }
   // A spec and its tickets are separate records with no relation between them.
   // The retired tree recorded the relation as a `parent` on the child, and a
