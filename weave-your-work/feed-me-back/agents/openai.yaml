@@ -1,0 +1,5 @@
+interface:
+  display_name: "Feed Me Back"
+  short_description: "Report a skill problem or a good word to the set's repository"
+policy:
+  allow_implicit_invocation: false
