@@ -3,11 +3,11 @@ schema: 1
 id: wm-cf08pxghnady
 title: 'Events: the listener records pull requests and default-branch moves, and warns nobody'
 category: spec
-status: open
+status: in_progress
 owner: frank
 creator: frank
 created_at: 2026-11-20T02:32:44Z
-updated_at: 2026-11-20T02:37:11Z
+updated_at: 2026-11-20T03:54:07Z
 ---
 ---
 schema: 1
