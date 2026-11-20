@@ -3,11 +3,12 @@ schema: 1
 id: wm-pxg2hm3b1bwv
 title: 'Layout: .work-weave splits into shared, which is committed, and personal, which is not'
 category: spec
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T02:37:04Z
-updated_at: 2026-11-20T03:54:07Z
+updated_at: 2026-11-20T04:10:35Z
+closed_at: 2026-11-20T04:10:35Z
 ---
 ## Problem Statement
 

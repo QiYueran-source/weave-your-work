@@ -3,11 +3,12 @@ schema: 1
 id: wm-exfr2xxdkeje
 title: 'Communicate: the account is the sender, the assignee is the recipient, and the queue holds open threads'
 category: spec
-status: in_progress
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T02:18:56Z
-updated_at: 2026-11-20T03:54:07Z
+updated_at: 2026-11-20T04:10:35Z
+closed_at: 2026-11-20T04:10:35Z
 ---
 ---
 schema: 1
