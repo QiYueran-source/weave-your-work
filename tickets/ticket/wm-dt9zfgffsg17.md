@@ -53,7 +53,7 @@ The routes it covers:
 - [x] `node scripts/check-references.mjs .` reports no new finding.
 - [x] The test copy the install wrote is deleted afterwards.
 
-## What happened
+## The result
 
 `weave-your-work/ask-me/SKILL.md` and its `agents/openai.yaml` are written. The
 skill carries the mainline, the branches opened on a state, the tests that
