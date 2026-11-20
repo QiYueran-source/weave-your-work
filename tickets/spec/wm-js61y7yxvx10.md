@@ -102,3 +102,32 @@ The release changes what a person installs, so the tag is the moment a stale
 install becomes visible. Nothing in the repository checks an installed copy
 against the source; that is the missing guardrail the v2.1 spec takes from
 Matt's `retro`.
+
+## User Stories
+
+1. As a person who installed 1.0.1, I want a release that says what changed, so
+   that I can tell the set is not the one I installed in November.
+2. As a person opening the repository for the first time, I want a README that
+   names the skills the default branch has, so that the first command I run
+   points at a skill that exists.
+3. As a person cutting a branch off `main`, I want the communicate work already
+   merged, so that my branch and the release differ by the release, not by an
+   unfinished feature.
+4. As a reviewer of the release, I want the version bump in its own pull
+   request, so that I review what ships and what it is called separately.
+5. As the person who writes `INSTALL.md` or corrects it later, I want one place
+   that holds the install command, so that the two READMEs cannot drift from it.
+6. As a person reading the changelog a year later, I want it to say which
+   skills were removed and why, so that I can find the skill that replaced the
+   one I remember.
+7. As a person comparing this set with Matt's, I want the comparison to say what
+   it is (office work, adapted skills), so that I do not read it as a claim of
+   parity with a software engineering set.
+8. As a person who lands on `docs/v2-conformance.md`, I want it to say which
+   branch it describes, so that I do not read its numbers as the current tree.
+9. As a person cutting a 2.1 spec, I want the parts this release leaves out
+   listed, so that I start from what was decided rather than from a fresh
+   discussion.
+10. As an operator of this repository, I want the ticket's acceptance to name
+    what a merge is blocked on, so that a review does not wait on a version
+    agreement that has not happened.

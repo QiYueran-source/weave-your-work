@@ -7,9 +7,7 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-20T11:15:56Z
-updated_at: 2026-11-20T11:16:05Z
-dependencies:
-  - wm-js61y7yxvx10
+updated_at: 2026-11-20T11:16:52Z
 ---
 wm-js61y7yxvx10
 
