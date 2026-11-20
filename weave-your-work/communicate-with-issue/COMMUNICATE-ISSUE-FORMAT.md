@@ -1,8 +1,3 @@
----
-kind: communicate-issue-format
-category: format
----
-
 # Communicate issue
 
 A GitHub issue that carries one message from one owner to another, and the
