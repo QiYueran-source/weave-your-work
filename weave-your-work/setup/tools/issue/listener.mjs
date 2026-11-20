@@ -279,10 +279,8 @@ function communicationFields(front) {
   if (front.kind !== 'communicate') return null
   const errors = []
   if (!CATEGORIES.has(front.category)) errors.push('category')
-  if (!Array.isArray(front.tickets) || front.tickets.length === 0 ||
-      front.tickets.some((id) => typeof id !== 'string' || !id.trim())) errors.push('tickets')
   if (errors.length) return errors
-  return { category: front.category, tickets: front.tickets }
+  return { category: front.category }
 }
 
 // ---- GitHub ---------------------------------------------------------------
@@ -473,7 +471,8 @@ async function* listOpenIssues() {
 // Decides whether an issue is a message for this machine and, when it is,
 // appends one queue entry. The sender comes from the author and the recipient
 // from the assignee, both through the roster; the body's front matter says only
-// what kind of message it is and which records it is about.
+// what kind of message it is. Both ends are queued: the owner sees an issue they
+// were assigned and one they sent.
 function queueIssue(issue, { label = issue.label || 'issue' } = {}) {
   const front = parseFrontmatter(issue.body)
   const fields = communicationFields(front)
@@ -500,8 +499,10 @@ function queueIssue(issue, { label = issue.label || 'issue' } = {}) {
     console.error(`Skipped ${label}: assignee ${issue.assignee} is not a known login`)
     return 0
   }
-  if (to !== machineOwner) {
-    console.error(`Skipped ${label}: assigned to ${to}, not to ${machineOwner}`)
+  // An issue is the owner's business when they opened it or were assigned it.
+  const involved = from === machineOwner || to === machineOwner
+  if (!involved) {
+    console.error(`Skipped ${label}: ${from} to ${to} does not involve ${machineOwner}`)
     return 0
   }
   const received = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')
@@ -853,7 +854,7 @@ process.on('exit', () => queueLock.release())
 
 server.listen(port, '127.0.0.1', async () => {
   console.log(`listening on http://127.0.0.1:${port}/webhook`)
-  console.log(`queueing messages assigned to ${machineOwner}`)
+  console.log(`queueing issues involving ${machineOwner}`)
   console.log(`recording pull request and ${DEFAULT_BRANCH} events in ${path.relative(root, events)}`)
   if (!secret) console.warn('Webhook signatures are not verified; queued messages are untrusted')
   if (smeeUrl) {
