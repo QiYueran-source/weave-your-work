@@ -2,6 +2,10 @@
 [handles]
 frank = "QiYueran-source"
 
-# Resolve the local, gitignored queue path from the project root.
+# [pending].path names the queue file the listener writes: the open communicate
+# threads, one JSON object per line. It is local state, not a record, and it
+# lives under .work-weave/personal/. A relative path is read from the project
+# root. The key is optional; without it the listener uses its default,
+# .work-weave/personal/communication/pending.jsonl.
 [pending]
-path = ".work-weave/personal/communication/pending-communications.md"
+path = ".work-weave/personal/communication/pending.jsonl"

@@ -304,7 +304,7 @@ test('an explicit --project root wins over the working directory', async (t) => 
 
   const result = checker(f, { cwd: outside, args: ['--project', f.root] })
   assert.equal(result.status, 0, result.stderr)
-  assert.match(result.stdout, /Communication queue: 1 entry/)
+  assert.match(result.stdout, /Communication queue: 1 open thread/)
   assert.match(result.stdout, /"title":"Explicit root"/)
 })
 
@@ -319,7 +319,7 @@ test('a working directory below the root discovers it without --project', async 
 
   const result = checker(f, { cwd: nested })
   assert.equal(result.status, 0, result.stderr)
-  assert.match(result.stdout, /Communication queue: 1 entry/)
+  assert.match(result.stdout, /Communication queue: 1 open thread/)
 })
 
 test('a missing .work-weave stops the listener and checker', async (t) => {
@@ -422,6 +422,30 @@ test('the tools run under a type module package', async (t) => {
   const listener = await startListener(t, f)
   assert.deepEqual(await send(f, listener.port, message({ number: 13, title: 'Module package' })), { status: 202, body: 'queued 1\n' })
   assert.match(await queueText(f), /Module package/)
+})
+
+test('the checker reports open threads only, not the lines a closed one keeps', async (t) => {
+  // The roster names no [pending].path, so the checker falls back to the default
+  // the queue module owns, which is the path this fixture writes.
+  const f = await project(t, { pending: null })
+  const open = { url: 'https://github.com/example/project/issues/20', from: 'bob', to: 'alice', owner: 'alice', title: 'Still open', received: '2026-01-01T00:00:00Z', closed_at: null }
+  const closed = { url: 'https://github.com/example/project/issues/21', from: 'bob', to: 'alice', owner: 'alice', title: 'Answered last week', received: '2026-01-01T00:00:00Z', closed_at: '2026-01-02T00:00:00Z' }
+  await fs.mkdir(path.dirname(f.queue), { recursive: true })
+  await fs.writeFile(f.queue, `${[open, closed].map((entry) => JSON.stringify(entry)).join('\n')}\n`)
+
+  const result = checker(f)
+  assert.equal(result.status, 0, result.stderr)
+  // Two lines in the file, one open thread: the count is the open ones, and the
+  // closed thread is not listed.
+  assert.match(result.stdout, /Communication queue: 1 open thread/)
+  const listed = result.stdout.trimEnd().split('\n').slice(1).map((line) => JSON.parse(line))
+  assert.deepEqual(listed, [{ title: 'Still open', url: open.url }])
+
+  // With every thread closed there is nothing to report and nothing printed.
+  await fs.writeFile(f.queue, `${JSON.stringify(closed)}\n`)
+  const none = checker(f)
+  assert.equal(none.status, 0, none.stderr)
+  assert.equal(none.stdout, '')
 })
 
 test('a second listener on one queue is rejected before it listens', async (t) => {

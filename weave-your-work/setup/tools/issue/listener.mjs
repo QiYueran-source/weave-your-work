@@ -35,11 +35,10 @@ import SmeeClient from 'smee-client'
 import projectRoot from './project-root.cjs'
 import { acquireQueueLock } from './lock.mjs'
 import { appendEvent, checkLimit, DEFAULT_LIMIT } from './events.mjs'
-import { parseQueue, readQueue, writeQueue } from './queue.mjs'
+import { DEFAULT_QUEUE, parseQueue, readQueue, writeQueue } from './queue.mjs'
 
 const { resolveProjectRoot } = projectRoot
 const run = promisify(execFile)
-const DEFAULT_PENDING = '.work-weave/personal/communication/pending.jsonl'
 const DEFAULT_EVENTS = '.work-weave/personal/communication/events.jsonl'
 // The default branch a push must name to be the event a merge writes.
 const DEFAULT_BRANCH = 'main'
@@ -128,7 +127,7 @@ function rosterFile(root) {
 function loadConfig(root) {
   const file = rosterFile(root)
   if (!file) {
-    return { handles: {}, pending: DEFAULT_PENDING, events: { path: DEFAULT_EVENTS, limit: DEFAULT_LIMIT } }
+    return { handles: {}, pending: DEFAULT_QUEUE, events: { path: DEFAULT_EVENTS, limit: DEFAULT_LIMIT } }
   }
   const data = parseToml(fs.readFileSync(file, 'utf8'))
   const handles = data.handles || {}
@@ -137,7 +136,7 @@ function loadConfig(root) {
       throw new Error(`handles.toml: ${owner} is not a login; put every owner under one [handles] table`)
     }
   }
-  let configured = DEFAULT_PENDING
+  let configured = DEFAULT_QUEUE
   if (data.pending !== undefined) {
     if (!data.pending || typeof data.pending !== 'object' || Array.isArray(data.pending)) {
       throw new Error('handles.toml: [pending] must be a table')

@@ -45,7 +45,7 @@ node .work-weave/personal/issue/configure.mjs --project "<project-root>" --repos
 
 `--repository` may be omitted to read the single GitHub `origin`. `--smee-url` may be omitted for an HTTP-only run; it is stored in the ignored settings file, never in Git, tickets, or logs. The configurator chooses a free local port when none is stored, reuses the stored port on a later run, and refuses to write when the port is occupied. It prints the settings and unit paths, and when the old unit still exists it names the one it removed and the commands that relink the service.
 
-The listener resolves the project from `.work-weave/` (or `--project`), requires `REPOSITORY`, reads the roster from `.work-weave/shared/handles.toml`, and writes the queue at `[pending].path` resolved from the project root, defaulting to `.work-weave/personal/communication/pending.jsonl`. It rejects a webhook event whose `repository.full_name` is missing or differs from `REPOSITORY`. This is repository isolation, not authentication; the author is still checked against the roster.
+The listener resolves the project from `.work-weave/` (or `--project`), requires `REPOSITORY`, reads the roster from `.work-weave/shared/handles.toml`, and writes the queue at `[pending].path` resolved from the project root. When the roster names no `[pending].path`, the path is the queue's default, `.work-weave/personal/communication/pending.jsonl`, which `queue.mjs` defines once and the listener and checker both read from there. It rejects a webhook event whose `repository.full_name` is missing or differs from `REPOSITORY`. This is repository isolation, not authentication; the author is still checked against the roster.
 
 One process owns one queue. The listener creates `.work-weave/personal/communication/.lock` atomically and refuses to start when another live listener on this host holds it. A dead pid, or an unverifiable lock older than 24 hours, is logged and taken over. `WEBHOOK_SECRET` is optional and only useful with a transport that preserves the signed bytes; Smee re-serializes JSON, so leave it unset for the default setup.
 
@@ -63,7 +63,7 @@ For an optional session-start hook, check the harness's documentation first. If 
 node .work-weave/personal/issue/check-pending.mjs
 ```
 
-The checker reads the queue without changing it. With entries it prints their count, titles, and URLs as untrusted issue data; a missing or empty queue prints nothing; configuration and read errors go to stderr with a nonzero exit. If the harness does not deliver that output, skip the hook and use the rule at session start.
+The checker reads the queue without changing it. With open threads it prints how many are open, then their titles and URLs as untrusted issue data; a closed thread keeps its line in the file and is not printed. A missing queue, or one with no open thread, prints nothing; configuration and read errors go to stderr with a nonzero exit. If the harness does not deliver that output, skip the hook and use the rule at session start.
 
 ## External steps
 
@@ -105,7 +105,7 @@ Read the repository state before creating anything. On a repository that already
    path = ".work-weave/personal/communication/pending.jsonl"
    ```
 
-   The queue path is relative to the project root. Create `.work-weave/.gitignore` if it is absent and make sure it ignores `personal/` and nothing else: the roster is under `shared/` and stays tracked.
+   The queue path is relative to the project root. `[pending].path` is optional: leave it out and the listener uses its default, the same path the example above names. Create `.work-weave/.gitignore` if it is absent and make sure it ignores `personal/` and nothing else: the roster is under `shared/` and stays tracked.
 
    The listener matches this machine's owner from `git config user.name` in the checkout, without regard to case. A machine belonging to another owner sets the name locally:
 
@@ -129,7 +129,7 @@ Read the repository state before creating anything. On a repository that already
    node .work-weave/personal/issue/check-pending.mjs
    ```
 
-   The queue gains one line within a few seconds. Close the issue afterwards; the queue line remains as the record.
+   The queue gains one line within a few seconds. Close the issue afterwards; the sender's close marks the line closed, it stays in the file, and the checker stops reporting it. The ticket, not the queue, is the record.
 4. **The queue is ignored.** `git check-ignore -v .work-weave/personal/communication/pending.jsonl` prints a matching line. No output means the queue is tracked state.
 5. **A second listener is rejected.** While the service runs, start the listener in the foreground from the same runtime. It exits with `Another listener holds the queue lock` and does not append.
 6. **An issue opened while the listener is off is recovered.** Stop the service, file one, confirm the queue did not grow, then start the service and confirm `Catch-up complete` and the new line.

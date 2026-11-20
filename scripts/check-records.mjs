@@ -263,20 +263,6 @@ try {
   // No ADRs yet is normal.
 }
 
-// The pending queue: one JSON object per line.
-const queueFile = join(root, '.work-weave', 'personal', 'communication', 'pending.jsonl')
-const queue = read(queueFile)
-if (queue) {
-  for (const [index, line] of queue.split(/\r?\n/).entries()) {
-    if (!line.trim() || !line.startsWith('- ')) continue
-    try {
-      JSON.parse(line.slice(2))
-    } catch {
-      add(queueFile, `line ${index + 1} is not a JSON object`)
-    }
-  }
-}
-
 // The generated glossary view is never hand-edited; it carries its own header.
 const glossary = join(root, 'GLOSSARY.md')
 try {

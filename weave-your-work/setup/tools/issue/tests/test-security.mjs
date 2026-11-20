@@ -357,7 +357,7 @@ test('malicious remote values stay on one line and redelivery is deduplicated', 
   assert.equal(await queueText(f), content)
   const result = checker(f)
   assert.equal(result.status, 0, result.stderr)
-  assert.match(result.stdout, /Communication queue: 1 entry/)
+  assert.match(result.stdout, /Communication queue: 1 open thread/)
   const displayed = result.stdout.trimEnd().split('\n').slice(1).map((line) => JSON.parse(line))
   assert.deepEqual(displayed, [{ title: entry.title, url: entry.url }])
   assert.equal(await queueText(f), content)
@@ -388,7 +388,7 @@ test('legacy and JSON queue entries are read and rewritten in the current shape'
   assert.equal(third.url, `${BASE}/7`)
   const result = checker(f)
   assert.equal(result.status, 0, result.stderr)
-  assert.match(result.stdout, /Communication queue: 3 entries/)
+  assert.match(result.stdout, /Communication queue: 3 open threads/)
   const displayed = result.stdout.trimEnd().split('\n').slice(1).map((line) => JSON.parse(line))
   assert.deepEqual(displayed, [
     { title: 'Legacy title', url: 'https://example.test/issues/41' },

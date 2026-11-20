@@ -4,6 +4,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
+// Where the queue lives when the roster names no [pending].path. This is the one
+// place the default is written: the listener and the checker read it from here,
+// and the roster files only describe it.
+export const DEFAULT_QUEUE = '.work-weave/personal/communication/pending.jsonl'
+
 // An entry carries when the sender closed its thread: null while it is open, a
 // timestamp once it is closed. An older entry has neither, and reads as null.
 const CLOSED_TIME = /^\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d(?:\.\d+)?)?Z?$/
@@ -74,6 +79,12 @@ export function readQueue(file) {
     return ''
   }
   return content
+}
+
+// The open threads, the ones a person still has to answer. A closed thread keeps
+// its line so the next scan does not queue it again, and is not reported.
+export function openEntries(entries) {
+  return entries.filter((entry) => !entry.closed_at)
 }
 
 // Replaces the queue in one step: a reader sees the old file or the new one,
