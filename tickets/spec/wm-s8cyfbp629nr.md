@@ -132,25 +132,40 @@ check, whether a decision passed the three gates.
 record, or read the project's records. Its answer names the next thing the
 person types.
 
+**`feed-me-back` reports a problem with a skill, and only that.** It reports a
+step that cannot be followed, a command that fails, a rule that contradicts
+another, a path that does not exist, or a skill that did better than expected.
+A problem in a project's own records is that project's to fix, and this skill
+leaves it alone.
+
 **`feed-me-back` sends to one repository:
 `QiYueran-source/weave-your-work`.** It is the set's public home, and both a
-bug and a good word go there. A report from this project's own records is not
-this skill's job.
+bug and a good word go there.
+
+**Every `gh` call in `feed-me-back` names `--repo
+QiYueran-source/weave-your-work`.** `communicate-with-issue` takes the
+repository from the directory it runs in; `feed-me-back` runs inside whatever
+project the person is working in, so it names the repository on every create,
+search, list, and view. (confirmed by the person, 2026-11-20)
 
 **Nothing is sent without an explicit yes for the exact text.** The skill shows
 the draft, the label, and the command, and one yes buys one issue at that title
 and label. A corrected draft asks again.
 
-**The duplicate check comes before the draft.** A matching open issue gets a
-comment through `communicate-with-issue`'s thread answer rather than a second
-issue.
+**`feed-me-back` takes a good word as a welcome report.** A skill that worked
+better than expected tells the author which path to keep. The skill asks once
+whether the report is a bug or a good word; a bug runs the full path, a good
+word skips the label choice and uses `enhancement` only when the person asks for
+a label at all.
+
 
 **The star is a separate question, asked once.** When the repository is not
 starred, the skill offers it; a person who declines is not asked again.
 
 **Both skills go in `weave-your-work/` and nowhere else**, and both are
 described in `README.md`, `README.zh-CN.md`, and `CHANGELOG.md`, with the count
-of skills updated from twelve to fourteen.
+of skills updated from twelve to fourteen. (confirmed by the person,
+2026-11-20)
 
 ## Acceptance
 
