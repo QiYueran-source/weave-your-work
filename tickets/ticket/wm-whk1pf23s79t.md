@@ -3,11 +3,12 @@ schema: 1
 id: wm-whk1pf23s79t
 title: The webhook gains the pull request and push events, and the guide says who reads the file
 category: ticket
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T02:38:50Z
-updated_at: 2026-11-20T04:10:00Z
+updated_at: 2026-11-20T04:06:31Z
+closed_at: 2026-11-20T04:06:31Z
 parent: wm-cf08pxghnady
 dependencies:
   - wm-bapr9rqqag8c
