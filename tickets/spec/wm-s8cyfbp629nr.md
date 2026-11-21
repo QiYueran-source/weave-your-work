@@ -3,11 +3,12 @@ schema: 1
 id: wm-s8cyfbp629nr
 title: Add a router and an upstream feedback path to the set
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T13:40:14Z
-updated_at: 2026-11-20T13:40:14Z
+updated_at: 2026-11-21T06:23:25Z
+closed_at: 2026-11-21T06:23:25Z
 ---
 ## Problem Statement
 

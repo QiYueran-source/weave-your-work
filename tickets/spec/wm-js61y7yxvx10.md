@@ -3,11 +3,12 @@ schema: 1
 id: wm-js61y7yxvx10
 title: 'Release 2.0.0: ship the Matt-shaped set'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-20T11:15:37Z
-updated_at: 2026-11-20T11:15:37Z
+updated_at: 2026-11-21T06:23:25Z
+closed_at: 2026-11-21T06:23:25Z
 ---
 ## Problem Statement
 

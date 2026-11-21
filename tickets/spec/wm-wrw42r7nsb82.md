@@ -3,11 +3,12 @@ schema: 1
 id: wm-wrw42r7nsb82
 title: Fix the drift the Matt alignment left behind
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T13:16:12Z
-updated_at: 2026-11-17T13:16:12Z
+updated_at: 2026-11-21T06:23:25Z
+closed_at: 2026-11-21T06:23:25Z
 ---
 ## Problem Statement
 
