@@ -253,6 +253,20 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 按顺序：工具/记录库 → 仿真 MCP → 链路 → 三轮验收.
   - Parent: Q29
 
+### Round 12
+
+- **Q37** How fast-agent holds memory
+  - Question: The person asked to understand fast-agent-mcp's memory before deciding the chain's shape. Should the chain rely on fast-agent's own conversation history (a per-agent in-memory conversation, with `use_history` on by default and an optional file save), or keep each node's context built by the chain from the records?
+  - Recommended: Keep the node's context built by the chain from the records; fast-agent's history per agent is short-term and in-memory, and its long-term memory would be an MCP memory server that this design's record tools already stand in for.
+  - Answer: 我想先了解 fast-agent-mcp 定义的 agent 的短期长期记忆，工具等机制.
+  - Parent: Q18
+
+- **Q38** How each node gets its tools
+  - Question: fast-agent gives an agent its tools through MCP servers it is configured with, and can filter them per server. Should each node get only the tool subset its job owns, or every node get the same full tool set?
+  - Recommended: Each node gets only its own write tool plus the read tools it needs, and implement additionally gets the machine server alone.
+  - Answer: (no answer yet)
+  - Parent: Q37
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -275,6 +289,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The chain reads every record of this and earlier rounds; it is the writes that are bounded (from Q34)
 - The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own, at most thirty experience entries tagged with the round that produced them, which it may add, change, or delete (from Q22, Q35)
 - The record tools are one tool per operation — write this round's testimony, read testimony, list testimonies, write and read spec, write and read tickets, read the base handbook, read and write the evolving handbook — and each node holds only the write its job allows (from Q34)
+- The chain builds each node's context from the records rather than relying on a node's in-memory conversation to carry state from round to round; fast-agent's per-agent history is short-term only (from Q37)
 - The work is built in order: records and tools, the simulation MCP server, the chain, the three-round run (from Q36)
 - A node reads what this round has written so far and not what the round has not produced yet (from Q23)
 - Validation is programmatic: every node boundary carries a fixed set of fields, the receiving program checks them before its node runs, and a value that does not fit stops the chain at that edge, so no model's judgement guards its own input (from Q25)
