@@ -1,0 +1,28 @@
+[project]
+name = "bread-oven"
+version = "0.1.0"
+description = "One round of a self-evolving bread machine: six fast-agent nodes over typed edges."
+requires-python = ">=3.11"
+dependencies = [
+  "fast-agent-mcp>=0.10,<0.11",
+  "pydantic>=2.0",
+  "fastmcp>=4.0",
+  "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", ".."]
