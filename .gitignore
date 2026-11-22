@@ -9,3 +9,6 @@ node_modules/
 
 __pycache__/
 /ADR.md
+
+# fast-agent writes this where a process starts; it is run state, not source.
+.fast-agent/
