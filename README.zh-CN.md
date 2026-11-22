@@ -1,3 +1,5 @@
+![Weave Your Work：深色背景上的蓝色编织立方体标志](assets/weave-your-work-banner-1280x640.jpg)
+
 # Weave Your Work
 
 [English](README.md)
