@@ -213,6 +213,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 我们只是仿真实验，目前结果都放文件系统吧，我自己打开看，不用面板了.
   - Parent: Q27
 
+### Round 10
+
+- **Q31** The knobs and features
+  - Question: Are the five knobs oven temperature, bake time, proofing time, water amount, and sugar amount, with the ranges 150-250 °C, 20-70 min, 20-120 min, 50-90 % of the flour weight, and 0-15 %, and the five features crispness, moistness, softness, chewiness, and sweetness, each dominated by one of them?
+  - Recommended: Yes; temperature dominates crispness, bake time chewiness, proofing time softness, water amount moistness, and sugar amount sweetness.
+  - Answer: 按这个表：五个特征、五个主导旋钮、初始范围.
+  - Parent: Q26
+
+- **Q32** How much taste varies between bakes
+  - Question: How large should the per-bake taste deviation be: mostly small, mostly large, or nearly none?
+  - Recommended: A deviation drawn per bake on top of the average weights, mostly small and in about three bakes out of ten leaning clearly toward one feature.
+  - Answer: Δ 控制大小，约三成面包有明显偏重.
+  - Parent: Q14
+
+- **Q33** How much the feature perturbation may blur the trend
+  - Question: Should the perturbation stay small, around five percent, with a fixed taste deviation so scores can be compared across rounds, or be larger and accept the noise?
+  - Recommended: Small perturbation, about five percent, and a seeded run so the comparison can be repeated.
+  - Answer: 特征扰动取小（±5% 量级），且固定的口味偏差让均分可比较.
+  - Parent: Q13
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -220,12 +240,12 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The criterion for a failed proof is deferred until after the runs have shown what a three-bake result looks like (from Q6)
 - The proof is a simulation experiment rather than a real machine; the design being tested comes first (from Q10)
 - A bake is scored by a set of named features, each from 0 to 1, combined into one score (from Q7)
-- The simulation exposes four or five knobs, such as temperature, bake time, and proofing time; each knob moves several features along a single-peaked curve that is quadratic or absolute in shape, and the knobs do not interact for now (from Q8)
+- The simulation exposes five knobs — oven temperature (150-250 °C), bake time (20-70 min), proofing time (20-120 min), water amount (50-90 % of the flour weight), and sugar amount (0-15 %) — and each moves several features along a single-peaked curve that is quadratic or absolute in shape; the knobs do not interact for now (from Q8, Q31)
 - The features are weighted by weights drawn from several independent random distributions passed through a softmax, which stands for the variation in people's tastes (from Q9)
 - Tickets stays a node; its job reduced to implement's short to-do list, three to six steps, with the spec holding what the bake should reach and why (from Q11)
-- Five knobs face five features, one dominant knob per feature, with the other knobs moving each feature by a lesser amount (from Q12)
-- Randomness is a small perturbation on each feature's output; there is no hidden environment parameter, no observation noise layer, and no drift between rounds (from Q13)
-- The taste weights are drawn once per bake and read as that bake's user's average taste (from Q14)
+- Five features — crispness, moistness, softness, chewiness, sweetness, each scored from 0 to 1 — face the five knobs: temperature dominates crispness, bake time chewiness, proofing time softness, water amount moistness, and sugar amount sweetness, with the other knobs moving each feature by a lesser amount (from Q7, Q12, Q31)
+- Randomness is a perturbation of about five percent on each feature's output, and a run uses fixed seeds so a comparison can be repeated; there is no hidden environment parameter, no observation noise layer, and no drift between rounds (from Q13, Q33)
+- The taste weights are drawn once per bake and read as that bake's user's average taste; a per-bake deviation sits on top of the average, mostly small, and about three bakes in ten lean clearly toward one feature (from Q14, Q32)
 - The action set is fixed for this proof: the chain adjusts knob values and does not add, remove, or restructure the bake (from Q15)
 - The base knowledge is a baker's handbook: which knobs move which features, the shape of each knob-to-feature relation such as crispness rising then falling as temperature rises, and hard limits such as a bake shorter than three minutes being raw and one longer than five burning; it never holds the simulator's parameters (from Q16)
 - What the chain reads: its two handbooks (the fixed target with its features and knobs, the chain's own constraints), an immutable system prompt stating the goal and the self-evolution limits, and the callable interface; what it writes: spec and tickets for its actions, testimony for its reasoning, and its learned knowledge in the handbook it is allowed to edit (from Q17)
@@ -245,10 +265,6 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 ## Open
 
 - Which signals the single-button machine carries besides start-bake (from Q3)
-- Which knobs the machine exposes and what each moves (from Q4)
-- How many features there are and what each one means (from Q7)
-- How large the perturbation on a feature is, and whether the score the chain sees includes the taste draw's own variation (from Q13)
-- Which of the five features and five knobs exist, and each knob's range (from Q12)
 - What the taste program computes and what its inputs and outputs are (from Q5)
 - What evidence counts as a failed proof (from Q6)
 
