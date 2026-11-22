@@ -153,6 +153,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 当前记录也可见，我说的是所有的记录这些都是可见的，但改受约束.
   - Parent: Q17
 
+### Round 7
+
+- **Q22** Which node may write which record
+  - Question: Should each record be writable only by the node that owns it and frozen once the next node starts, the handbook be readable but not writable, and every record append-only?
+  - Recommended: Each node writes only its own record; the handbook is read-only to the chain.
+  - Answer: 简单起见，1. testimony、spec、tickets 每次只能改自己的，不能增删改之前的，一旦到下一个节点后这份记录就不可变了；2. 人工提供的初始手册不能改，自己有一个进化的手册可以改，可以删之前的内容.
+  - Parent: Q19
+
+- **Q23** What a round's writes are visible to
+  - Question: May a node read what it wrote this round but not what has not been produced yet?
+  - Recommended: Yes: what this round has written so far is readable, what the round has not produced yet is not.
+  - Answer: 能读到自己本轮已写的，但读不到本轮尚未产生的东西.
+  - Parent: Q22
+
+- **Q24** Where a failure is caught
+  - Question: Should failure be judged by a rule checker over the records, or should the tools be narrow enough that an overreach cannot happen?
+  - Recommended: Narrow tools; an overreach cannot happen because no tool allows it.
+  - Answer: 我们工具就创建的严格一点，从工具端避免越权吧.
+  - Parent: Q22
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -171,6 +191,10 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - What the chain reads: its two handbooks (the fixed target with its features and knobs, the chain's own constraints), an immutable system prompt stating the goal and the self-evolution limits, and the callable interface; what it writes: spec and tickets for its actions, testimony for its reasoning, and its learned knowledge in the handbook it is allowed to edit (from Q17)
 - The simulator's parameters and the score's internals are not visible to the chain (from Q17)
 - The interface the chain is told about is the machine's knobs; the chain's tools are read and write for testimony, spec, tickets, and the handbook (from Q19)
+- Each node writes only its own record — testimony, spec, or tickets — with no change to earlier records, and a record freezes once the next node starts (from Q22)
+- The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own that it may rewrite, including deleting what it wrote before (from Q22)
+- A node reads what this round has written so far and not what the round has not produced yet (from Q23)
+- Overreach is prevented by narrow tools rather than judged after the fact (from Q24)
 - The machine is its own MCP server, so the taste program stays behind a tested function and a real machine would replace only that layer (from Q20)
 - Every record is readable, the current round's included; what it may write is constrained (from Q21)
 
@@ -180,8 +204,6 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - Which knobs the machine exposes and what each moves (from Q4)
 - How many features there are and what each one means (from Q7)
 - How large the perturbation on a feature is, and whether the score the chain sees includes the taste draw's own variation (from Q13)
-- Which writes each node may make, and by what a forbidden write is refused (from Q19)
-- Where the learned knowledge sits against the base handbook, and whether the chain may edit the base one (from Q16)
 - Which of the five features and five knobs exist, and each knob's range (from Q12)
 - What the taste program computes and what its inputs and outputs are (from Q5)
 - What evidence counts as a failed proof (from Q6)
