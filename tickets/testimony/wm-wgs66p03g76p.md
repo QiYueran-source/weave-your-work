@@ -133,6 +133,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 这个我要研究一下，这是重点。
   - Parent: Q12
 
+### Round 6
+
+- **Q19** Where the machine's knobs live
+  - Question: Should the machine's capabilities sit behind an interface of get-state, set-knob, and bake, one MCP server for the machine, a single read/write state file, or only writes with a fixed injection?
+  - Recommended: A small set of typed calls: read the machine's state, set a knob, bake.
+  - Answer: 我没说清楚，可调用的接口信息是 炉子 的旋钮信息。其他的工具我们只提供 读 testimony、写 testimony、读 spec、读 tickets、写 spec、写 tickets、读手册、写手册、改手册 的能力.
+  - Parent: Q17
+
+- **Q20** Whether the machine is an MCP server
+  - Question: Should the machine be a separate MCP server that the nodes call as tools, or a plain local function?
+  - Recommended: A separate MCP server, so the taste program stays behind a tested function and replacing it with a real machine changes only that layer.
+  - Answer: 面包机能力在独立 MCP server 里.
+  - Parent: Q19
+
+- **Q21** Whether a round's own records are readable
+  - Question: May the chain read what it writes in the same round?
+  - Recommended: Yes, with writes constrained.
+  - Answer: 当前记录也可见，我说的是所有的记录这些都是可见的，但改受约束.
+  - Parent: Q17
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -149,7 +169,10 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The action set is fixed for this proof: the chain adjusts knob values and does not add, remove, or restructure the bake (from Q15)
 - The base knowledge is a baker's handbook: which knobs move which features, the shape of each knob-to-feature relation such as crispness rising then falling as temperature rises, and hard limits such as a bake shorter than three minutes being raw and one longer than five burning; it never holds the simulator's parameters (from Q16)
 - What the chain reads: its two handbooks (the fixed target with its features and knobs, the chain's own constraints), an immutable system prompt stating the goal and the self-evolution limits, and the callable interface; what it writes: spec and tickets for its actions, testimony for its reasoning, and its learned knowledge in the handbook it is allowed to edit (from Q17)
-- The simulator's parameters, the score's internals, and the records of the current round are not visible to the chain (from Q17)
+- The simulator's parameters and the score's internals are not visible to the chain (from Q17)
+- The interface the chain is told about is the machine's knobs; the chain's tools are read and write for testimony, spec, tickets, and the handbook (from Q19)
+- The machine is its own MCP server, so the taste program stays behind a tested function and a real machine would replace only that layer (from Q20)
+- Every record is readable, the current round's included; what it may write is constrained (from Q21)
 
 ## Open
 
@@ -157,6 +180,9 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - Which knobs the machine exposes and what each moves (from Q4)
 - How many features there are and what each one means (from Q7)
 - How large the perturbation on a feature is, and whether the score the chain sees includes the taste draw's own variation (from Q13)
+- Which writes each node may make, and by what a forbidden write is refused (from Q19)
+- Where the learned knowledge sits against the base handbook, and whether the chain may edit the base one (from Q16)
+- Which of the five features and five knobs exist, and each knob's range (from Q12)
 - What the taste program computes and what its inputs and outputs are (from Q5)
 - What evidence counts as a failed proof (from Q6)
 
