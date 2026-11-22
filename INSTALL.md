@@ -11,7 +11,7 @@ written; `README.md`, `README.zh-CN.md`, and the rules point here.
   project uses issues to talk between owners.
 
 `setup` installs and signs in what is missing for the project it configures.
-`setup`'s `check-project.md` reports what is still missing.
+`setup`'s `tools/utils/check-setup.mjs` reports what is still missing.
 
 ## Install the skills
 
@@ -43,8 +43,8 @@ Setup stops there and says so rather than doing them.
 
 ## Checking an install
 
-`check-project.md` in the setup skill runs the checks and reports each one with
-its repair; it changes nothing. Run it after an install and after a clone,
+`tools/utils/check-setup.mjs` in the setup skill runs the checks and reports each one
+with its repair; it changes nothing. Run it after an install and after a clone,
 before trusting that the project can run the set.
 
 ## Updating
