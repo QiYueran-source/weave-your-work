@@ -79,6 +79,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: This is only a simulation experiment; it does not need to be taken that seriously, and our own design comes first.
   - Parent: Q6
 
+### Round 3
+
+- **Q11** Whether tickets stays
+  - Question: Keep tickets as a node whose job is reduced to implement's short to-do list (three to six steps), drop it and let implement read a spec that already holds the steps, or keep it as a step inside implement?
+  - Recommended: Keep it as a node, owning the short to-do list: the spec says what this bake should reach and why, the tickets say what implement should do, and next round's reading of the records can still tell intent from steps.
+  - Answer: 保留 tickets 节点.
+  - Parent: Q2
+
+- **Q12** Knobs against features
+  - Question: Five features (crispness, moistness, softness, chewiness, sweetness) and four or five knobs (temperature, bake time, proofing time and the rest). Should each feature have one dominant knob, with other knobs moving it by less, or should three or four knobs each move several features with no dominant pairing?
+  - Recommended: Five knobs, one dominant per feature, and other knobs moving each feature by a lesser amount.
+  - Answer: 五个旋钮，一一对应五个特征的主导旋钮.
+  - Parent: Q8
+
+- **Q13** Where randomness enters
+  - Question: Beside the knobs, should the simulation carry a hidden environment parameter, observation noise, and per-bake drawn taste weights, or only a small random perturbation on each feature's output?
+  - Recommended: A small random perturbation on each feature's output, kept simple.
+  - Answer: 那让每一个面包特征输出时带一个小的随机扰动吧，不用太复杂.
+  - Parent: Q12
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -88,14 +108,17 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - A bake is scored by a set of named features, each from 0 to 1, combined into one score (from Q7)
 - The simulation exposes four or five knobs, such as temperature, bake time, and proofing time; each knob moves several features along a single-peaked curve that is quadratic or absolute in shape, and the knobs do not interact for now (from Q8)
 - The features are weighted by weights drawn from several independent random distributions passed through a softmax, which stands for the variation in people's tastes (from Q9)
+- Tickets stays a node; its job reduced to implement's short to-do list, three to six steps, with the spec holding what the bake should reach and why (from Q11)
+- Five knobs face five features, one dominant knob per feature, with the other knobs moving each feature by a lesser amount (from Q12)
+- Randomness is a small perturbation on each feature's output; there is no hidden environment parameter, no observation noise layer, and no drift between rounds (from Q13)
 
 ## Open
 
-- Whether tickets stays a node in the chain, and how the spec keeps implement's input small if it does not (from Q2)
 - Which signals the single-button machine carries besides start-bake (from Q3)
 - Which knobs the machine exposes and what each moves (from Q4)
 - How many features there are and what each one means (from Q7)
 - How many draws the random weights take, and whether a bake is judged by one draw or by an average over draws (from Q9)
+- How large the perturbation on a feature is, and whether the score the chain sees includes the taste draw's own variation (from Q13)
 - What the taste program computes and what its inputs and outputs are (from Q5)
 - What evidence counts as a failed proof (from Q6)
 
