@@ -1,5 +1,30 @@
 # weave-your-work
 
+## 2.1.0
+
+### Minor Changes
+
+- [#37](https://github.com/QiYueran-source/weave-your-work/pull/37) [`27ca7c4`](https://github.com/QiYueran-source/weave-your-work/commit/27ca7c48fe428f387a8d611e1c141c4106f34179) Thanks [@QiYueran-source](https://github.com/QiYueran-source)! - Add `ask-me` and `feed-me-back`.
+
+  `ask-me` names the skill, or the sequence of skills, that fits the situation
+  a person describes, and says where their decisions sit in it. It recommends
+  and stops: it runs nothing, writes no record, and reads each skill before
+  describing it.
+
+  `feed-me-back` reports a skill problem, or a skill that worked better than
+  expected, to the set's repository. It checks the account, looks for a
+  duplicate, drafts the issue, and sends it only after the person approves the
+  exact text. Both skills are invoked by a person, never by the model on its own.
+
+- [#37](https://github.com/QiYueran-source/weave-your-work/pull/37) [`27ca7c4`](https://github.com/QiYueran-source/weave-your-work/commit/27ca7c48fe428f387a8d611e1c141c4106f34179) Thanks [@QiYueran-source](https://github.com/QiYueran-source)! - Add `setup`'s record rule: find the work in the tracker before editing.
+
+  A request that changes a file now starts by finding the record the work belongs
+  to, using whatever the project's own record settings name. When no record owns
+  the work, the rule stops before the file changes and leaves the decision to the
+  person: open the record this work should have started from, or settle that the
+  change needs none. The rule names no tool, so it holds for a project whose
+  tracker is not waymark.
+
 ## 2.0.0
 
 ### Major Changes
