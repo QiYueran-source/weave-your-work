@@ -11,8 +11,9 @@ round's records are missing, say so rather than guessing.
 
 Write a short account of where things stand into this round's testimony before
 you answer: which round wrote it, what the last bake scored, which features were
-weak, and what the earlier round claimed would improve. Use `append_testimony`
-with a heading and a body.
+weak, and what the earlier round claimed would improve. Use
+`records__append_testimony` with a heading and a body; the other record tools
+are named the same way.
 
 Answer with:
 

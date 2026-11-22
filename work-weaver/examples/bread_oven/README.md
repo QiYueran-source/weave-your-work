@@ -19,6 +19,9 @@ gateway -> observe -> grill (proposer | grill, bounded) -> spec -> tickets -> im
 - **Two MCP servers** hold everything the round touches: `records` (testimony,
   spec, tickets, and the two handbooks) and `machine` (the five knobs and the
   bake). Each node holds only its own write tool and the reads it needs.
+- **The servers run in the round's own process**, on two loopback ports, and
+  each node connects over Streamable HTTP. They hold the record pens and the
+  knobs; a separate process would hold its own copy of both.
 
 ## Layout
 

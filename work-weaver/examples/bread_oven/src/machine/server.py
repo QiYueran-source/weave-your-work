@@ -7,6 +7,7 @@ how a loaf was judged.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -30,6 +31,31 @@ class Machine:
     knobs: dict[str, float] = field(default_factory=lambda: dict(DEFAULT_KNOBS))
     last: BakeResult | None = None
     log_path: Path | None = None
+    state_path: Path | None = None
+
+    def save(self) -> None:
+        """Write the knobs and the bake count, so the next round starts where this one ended."""
+
+        if self.state_path is None:
+            return
+        self.state_path.parent.mkdir(parents=True, exist_ok=True)
+        self.state_path.write_text(
+            json.dumps({"knobs": self.knobs, "round_index": self.round_index}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+    @classmethod
+    def load(cls, state_path: Path, *, seed: int, log_path: Path | None = None) -> "Machine":
+        """The machine as the last round left it, or a fresh one at the default knobs."""
+
+        machine = cls(seed=seed, log_path=log_path, state_path=Path(state_path))
+        if machine.state_path and machine.state_path.exists():
+            saved = json.loads(machine.state_path.read_text(encoding="utf-8"))
+            knobs = dict(DEFAULT_KNOBS)
+            knobs.update({name: float(value) for name, value in saved.get("knobs", {}).items()})
+            machine.knobs = knobs
+            machine.round_index = int(saved.get("round_index", 0))
+        return machine
 
     def state(self) -> dict:
         return {
@@ -51,11 +77,13 @@ class Machine:
         if not spec.low <= value <= spec.high:
             raise KnobError(f"{name}={value} is outside {spec.low}..{spec.high} {spec.unit}")
         self.knobs[name] = float(value)
+        self.save()
         return {"knobs": dict(self.knobs)}
 
     def bake(self, round_id: str) -> BakeResult:
         self.round_index += 1
         features, score = run_taste(dict(self.knobs), self.seed, self.round_index)
+        self.save()
         result = BakeResult(round_id=round_id, knobs=dict(self.knobs), features=features, score=score)
         self.last = result
         if self.log_path is not None:

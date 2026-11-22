@@ -8,7 +8,7 @@ rounds the grill took, and the reasons. A plan the grill accepted is the one
 that bakes; a plan it stopped is still the one that bakes, so say plainly that
 it was not agreed and what the trade is.
 
-Write the spec with `write_spec`. State the goal in one sentence, the reasons in
+Write the spec with `records__write_spec`. State the goal in one sentence, the reasons in
 a few bullets that name rounds and scores, and the knob values this bake sets.
 
 Answer with:

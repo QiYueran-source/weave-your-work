@@ -20,6 +20,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--logs", default=None, help="log directory")
     parser.add_argument("--round", type=int, default=1, help="the round the record tools act on")
     parser.add_argument("--seed", type=int, default=7, help="seed for the per-bake taste draws")
+    parser.add_argument("--state", default=None, help="file the machine keeps its knobs and bake count in")
     args = parser.parse_args(argv)
 
     here = Path(__file__).resolve().parents[2]
@@ -41,7 +42,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.which == "records":
         server = build_records(RecordStore(config), RoundCursor(args.round))
     else:
-        machine = Machine(seed=args.seed, log_path=config.log_root / f"round-{args.round:02d}.jsonl")
+        state_path = Path(args.state) if args.state else config.records_root / "machine-state.json"
+        machine = Machine.load(
+            state_path, seed=args.seed, log_path=config.log_root / f"round-{args.round:02d}.jsonl"
+        )
         server = build_machine(machine)
     server.run()
     return 0

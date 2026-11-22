@@ -70,63 +70,38 @@ def tools_for(node: str) -> dict[str, list[str]]:
     return filters
 
 
-class _ToolServer:
-    """A server the run is holding, shaped the way fast_agent lists an MCP server.
+async def bind_tools(agent, state: dict) -> list:
+    """Give this agent the servers it may use, filtered to its own tools.
 
-    The round builds its servers in process; fast-agent reads tools, prompts, and
-    resources through one object with those three async calls, so this adapter is
-    all it takes to give an agent the tools without a second process or a YAML
-    entry.
+    Each server is a child process fast-agent connects to for the turn. The
+    node's `tools=` filter travels with the connection, so a tool this node was
+    not given is not listed, not offered, and not callable: a call the filter
+    missed still fails at the server, which knows only its own tools.
     """
 
-    def __init__(self, name: str, server) -> None:
-        self.name = name
-        self.server = server
-        manager = getattr(server, "_tool_manager", None)
-        self.tools = list((manager._tools if manager else {}).values())
-
-    async def list_tools(self):
-        class _Result:
-            tools = self.tools
-
-        return _Result()
-
-    async def list_prompts(self):
-        class _Result:
-            prompts = []
-
-        return _Result()
-
-    async def list_resources(self):
-        class _Result:
-            resources = []
-
-        return _Result()
-
-
-async def bind_tools(agent, state: dict) -> dict:
-    """Give this agent the servers and tool names this node is allowed to use."""
+    from fast_agent.mcp.mcp_aggregator import MCPAttachOptions
 
     filters = tools_for(agent.name)
-    saved = {
-        "servers": getattr(agent, "_tool_servers", None),
-        "filters": getattr(agent, "_tool_filters", None),
-    }
-    servers = {
-        name: _ToolServer(name, server)
-        for name, server in state["servers"].items()
-        if name in filters
-    }
-    for name, server in servers.items():
-        server.tools = [tool for tool in server.tools if tool.name in filters[name]]
-    agent._tool_servers = servers
-    agent._tool_filters = filters
-    return saved
+    attached: list[str] = []
+    for name, settings in state["servers"].items():
+        if name not in filters:
+            continue
+        agent.config.tools = filters
+        await agent.attach_mcp_server(
+            server_name=name,
+            server_config=settings,
+            options=MCPAttachOptions(),
+        )
+        attached.append(name)
+    return attached
 
 
-async def unbind_tools(agent, saved: dict) -> None:
-    agent._tool_servers = saved["servers"] or {}
-    agent._tool_filters = saved["filters"]
+async def unbind_tools(agent, attached: list) -> None:
+    for name in attached:
+        try:
+            await agent.detach_mcp_server(name)
+        except Exception:  # the turn is over; a dead child is not a node failure
+            pass
 
 
 async def node_turn(fast, node: str, topic: str, model, request_params: RequestParams | None = None) -> str:
@@ -135,16 +110,21 @@ async def node_turn(fast, node: str, topic: str, model, request_params: RequestP
     state = state_for(fast)
     agent = state["app"].get_agent(node)
     state["trace"].append({"node": node, "kind": "topic", "text": topic})
-    saved = await bind_tools(agent, state)
+    saved_tools = dict(agent.config.tools or {})
+    attached = []
     try:
+        attached = await bind_tools(agent, state)
         reply = await agent.generate(
             topic or f"Round {state['round_index']}",
             request_params=request_params or RequestParams(use_history=False, max_iterations=8),
         )
+    except NodeFailure:
+        raise
     except Exception as exc:
         raise NodeFailure(f"{node} failed: {exc}") from exc
     finally:
-        await unbind_tools(agent, saved)
+        await unbind_tools(agent, attached)
+        agent.config.tools = saved_tools
     text = (reply.last_text() or "").strip()
     if not text:
         raise NodeFailure(f"{node} returned nothing; the model call did not answer")

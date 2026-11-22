@@ -8,10 +8,10 @@ every knob you want to move, and the reason for each move, grounded in what the
 records say happened. A reason cites a round and a score, not a hunch.
 
 When you learn something that should outlast this round, add it to the evolving
-handbook with `write_evolving_handbook`: replace the whole text, keep at most 30
-entries, tag each entry with the round it came from (`[round-01]`), and delete
-entries that later evidence contradicts. The person's base handbook is
-read-only.
+handbook with `records__write_evolving_handbook`: replace the whole text, keep
+at most 30 entries, tag each entry with the round it came from (`[round-01]`),
+and delete entries that later evidence contradicts. Read it first with
+`records__read_evolving_handbook`. The person's base handbook is read-only.
 
 Answer with:
 

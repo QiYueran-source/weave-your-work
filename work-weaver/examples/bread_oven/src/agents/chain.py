@@ -35,8 +35,7 @@ from src.runtime import (
     observation_topic,
 )
 from src.machine.records import RecordStore, RoundCursor, close_pen, hold_pen
-from src.machine.server import Machine, build_server as build_machine_server
-from src.machine.records import build_server as build_records_server
+from src.machine.server import Machine
 
 NODES: tuple[str, ...] = ("observe", "proposer", "grill", "spec", "tickets", "implement")
 
@@ -170,32 +169,69 @@ def build_fast_agent(config: RunConfig, templates: dict[str, str] | None = None)
     return define_agents(FastAgent("bread-oven"), templates or read_templates(config))
 
 
+def start_servers(config: RunConfig, round_index: int) -> dict:
+    """Start the round's two MCP servers on loopback ports and return how to reach them.
+
+    Both hold state the round owns — the record pens and the machine's knobs —
+    so they live in the round's process and the agents connect to them over
+    HTTP. A child process would hold its own copy and the pens would disagree.
+    """
+
+    from fast_agent.config import MCPServerSettings
+
+    from src.machine.http import HttpServer, as_fastmcp
+    from src.machine.records import build_server as build_records_server
+    from src.machine.server import build_server as build_machine_server
+
+    store = RecordStore(config)
+    # The machine carries its knobs from the last round: a new process reads the
+    # file the last one wrote, and a fresh run starts from the default knobs.
+    matrix = Machine.load(
+        config.records_root / "machine-state.json",
+        seed=config.taste_seed,
+        log_path=config.log_root / f"round-{round_index:02d}.jsonl",
+    )
+
+    records_http = HttpServer(
+        "records", as_fastmcp("records", build_records_server(store, RoundCursor(round_index)))
+    )
+    machine_http = HttpServer("machine", as_fastmcp("machine", build_machine_server(matrix)))
+    records_http.start()
+    machine_http.start()
+
+    def settings(name: str, url: str) -> MCPServerSettings:
+        return MCPServerSettings(name=name, transport="http", url=url, read_timeout_seconds=60)
+
+    return {
+        "config": config,
+        "round_index": round_index,
+        "store": store,
+        "machine": matrix,
+        "servers": {
+            "records": settings("records", records_http.url),
+            "machine": settings("machine", machine_http.url),
+        },
+        "threads": [records_http, machine_http],
+    }
+
+
 def prepare(config: RunConfig) -> dict:
-    """Open one run: the store, the machine, and both servers bound to a cursor."""
+    """Open one run: the round's number, its servers, and what a scripted bake calls."""
 
     store = RecordStore(config)
     round_index = store.next_round_index()
-    machine = Machine(seed=config.taste_seed, log_path=config.log_root / f"round-{round_index:02d}.jsonl")
-    cursor = RoundCursor(round_index)
-    raw_servers = {
-        "records": build_records_server(store, cursor),
-        "machine": build_machine_server(machine),
-    }
-    return {
-        "config": config,
-        "fast": None,
-        "app": None,
-        "store": store,
-        "machine": machine,
-        "cursor": cursor,
-        "round_index": round_index,
-        "servers": {
-            name: _InlineServer(name, server) for name, server in raw_servers.items()
-        },
-        "machine_calls": _MachineCalls(machine, round_index),
-        "edges": [],
-        "trace": [],
-    }
+    state = start_servers(config, round_index)
+    state.update(
+        {
+            "fast": None,
+            "app": None,
+            "cursor": RoundCursor(round_index),
+            "machine_calls": _MachineCalls(state["machine"], round_index),
+            "edges": [],
+            "trace": [],
+        }
+    )
+    return state
 
 
 def _open(state: dict, node: str) -> None:
@@ -384,24 +420,6 @@ def write_logs(config: RunConfig, state: dict) -> dict:
     path = directory / f"round-{round_index:02d}.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"trace": str(directory / f"round-{round_index:02d}.trace.json"), "log": str(path)}
-
-
-class _InlineServer:
-    """One of the round's MCP servers, reachable in process.
-
-    fast-agent gives an agent its tools from a server it is configured with.
-    Here the server object is already in hand, so the example skips the YAML
-    entry and a second process: `attach_mcp_server` is given the live object.
-    """
-
-    def __init__(self, name: str, server) -> None:
-        self.name = name
-        self.server = server
-        manager = getattr(server, "_tool_manager", None)
-        self.tools = sorted((manager._tools if manager else {}).keys())
-
-    def __repr__(self) -> str:  # pragma: no cover - diagnostics only
-        return f"<inline server {self.name}: {', '.join(self.tools)}>"
 
 
 class _MachineCalls:

@@ -7,7 +7,7 @@ knobs, which knobs and to what value.
 Read the spec you are given and, when the spec is thin, the testimony it came
 from. Do not invent knob values the spec did not set.
 
-Write the tickets with `write_tickets`, one numbered step per line.
+Write the tickets with `records__write_tickets`, one numbered step per line.
 
 Answer with:
 
