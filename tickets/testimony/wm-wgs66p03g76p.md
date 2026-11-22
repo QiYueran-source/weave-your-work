@@ -233,6 +233,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 特征扰动取小（±5% 量级），且固定的口味偏差让均分可比较.
   - Parent: Q13
 
+### Round 11
+
+- **Q34** How the record tools are cut
+  - Question: Should the record tools be listed per record kind (write this round's testimony, read testimony, list testimonies, write and read spec, write and read tickets, read the base handbook, read and write the evolving handbook), with each node given only its own write, or be one tool taking a kind argument?
+  - Recommended: One tool per operation, so a node without the write tool cannot overreach.
+  - Answer: testimony 也可以读之前的吧.
+  - Parent: Q22
+
+- **Q35** How the evolving handbook is shaped
+  - Question: Should the evolving handbook hold at most thirty experience entries that the chain may add, change, and delete, each tagged with the round that produced it, or be free markdown the chain rewrites whole?
+  - Recommended: At most thirty entries, each tagged with its round.
+  - Answer: 30 条以内的经验条目，可增删改，每条带轮次标签.
+  - Parent: Q22
+
+- **Q36** The order the work is built in
+  - Question: Build the tools and the record store first, then the simulation MCP, then the chain, then the three-round run, or write tests first?
+  - Recommended: Records and tools, simulation, chain, then the three-round run.
+  - Answer: 按顺序：工具/记录库 → 仿真 MCP → 链路 → 三轮验收.
+  - Parent: Q29
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -252,7 +272,10 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The simulator's parameters and the score's internals are not visible to the chain (from Q17)
 - The interface the chain is told about is the machine's knobs; the chain's tools are read and write for testimony, spec, tickets, and the handbook (from Q19)
 - Each node writes only its own record — testimony, spec, or tickets — with no change to earlier records, and a record freezes once the next node starts (from Q22)
-- The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own that it may rewrite, including deleting what it wrote before (from Q22)
+- The chain reads every record of this and earlier rounds; it is the writes that are bounded (from Q34)
+- The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own, at most thirty experience entries tagged with the round that produced them, which it may add, change, or delete (from Q22, Q35)
+- The record tools are one tool per operation — write this round's testimony, read testimony, list testimonies, write and read spec, write and read tickets, read the base handbook, read and write the evolving handbook — and each node holds only the write its job allows (from Q34)
+- The work is built in order: records and tools, the simulation MCP server, the chain, the three-round run (from Q36)
 - A node reads what this round has written so far and not what the round has not produced yet (from Q23)
 - Validation is programmatic: every node boundary carries a fixed set of fields, the receiving program checks them before its node runs, and a value that does not fit stops the chain at that edge, so no model's judgement guards its own input (from Q25)
 - The spec carries what this bake should reach and why; the tickets carry three to six steps, each with its knob values (from Q26)
@@ -264,7 +287,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 
 ## Open
 
-- Which signals the single-button machine carries besides start-bake (from Q3)
+- Whether the earlier design's other signals (stop, acknowledge) exist on this machine, now that one press is one round (from Q3)
 - What the taste program computes and what its inputs and outputs are (from Q5)
 - What evidence counts as a failed proof (from Q6)
 
