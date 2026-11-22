@@ -193,6 +193,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 端侧情景，无法人类交互，只提供启动新一炉面包的开关.
   - Parent: Q11
 
+### Round 9
+
+- **Q28** What pydantic means here
+  - Question: pydantic is a Python library for declaring which fields a value has and of what type, so a model's output that lacks a field or carries one it should not fails the check. Is that the intended meaning of the typed boundary?
+  - Recommended: Yes.
+  - Answer: 行，按这个理解.
+  - Parent: Q25
+
+- **Q29** What one press starts
+  - Question: Does one press run one entire round, observe through implement, with the next round needing another press, or do three rounds follow one press?
+  - Recommended: One press is one round.
+  - Answer: 一个开关一炉：每按一次跑一整轮.
+  - Parent: Q27
+
+- **Q30** Whether a person sees anything during a run
+  - Question: Should there be a read-only panel outside the chain, or does the person read the records on disk after the run?
+  - Recommended: No panel; the results are files a person opens afterwards.
+  - Answer: 我们只是仿真实验，目前结果都放文件系统吧，我自己打开看，不用面板了.
+  - Parent: Q27
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -216,7 +236,8 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - A node reads what this round has written so far and not what the round has not produced yet (from Q23)
 - Validation is programmatic: every node boundary carries a fixed set of fields, the receiving program checks them before its node runs, and a value that does not fit stops the chain at that edge, so no model's judgement guards its own input (from Q25)
 - The spec carries what this bake should reach and why; the tickets carry three to six steps, each with its knob values (from Q26)
-- A run is three rounds with no person in it; the only person-facing control is the switch that starts a run (from Q27)
+- One press of the switch is one round, observe through implement; the next round needs the next press, and nothing inside a round asks a person anything (from Q29)
+- The proof's results are files on disk that a person opens afterwards; there is no panel and no view into a running round (from Q30)
 - Overreach is prevented by narrow tools rather than judged after the fact (from Q24)
 - The machine is its own MCP server, so the taste program stays behind a tested function and a real machine would replace only that layer (from Q20)
 - Every record is readable, the current round's included; what it may write is constrained (from Q21)
