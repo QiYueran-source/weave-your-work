@@ -8,7 +8,8 @@ import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const directories = [
-  'weave-your-work/setup/tools',
+  'weave-your-work/setup/tools/utils',
+  'weave-your-work/setup/tools/adr/tests',
   'weave-your-work/setup/tools/glossary/tests',
   'weave-your-work/setup/tools/issue/tests',
 ]

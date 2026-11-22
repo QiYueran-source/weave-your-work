@@ -3,11 +3,12 @@ schema: 1
 id: wm-14axybwpn8xa
 title: 'Grilling: keep Matt''s rounds, add a testimony and a source order'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T07:23:06Z
-updated_at: 2026-11-17T07:23:06Z
+updated_at: 2026-11-21T06:23:25Z
+closed_at: 2026-11-21T06:23:25Z
 ---
 # Grilling
 

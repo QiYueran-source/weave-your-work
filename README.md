@@ -46,22 +46,27 @@ A discussion that produces the spec happens before step 1, and `grilling` and
 `grill-with-docs` run it. What enters the line is the spec; a goal that is not
 yet settled is settled in conversation before there is one.
 
+When you do not know where you are on the line, `ask-me` names the skill, or the
+sequence, that fits the situation you describe.
+
 A ticket that is a person's to do comes back through `hand-back`: the person
 reports what they finished, its result is written, and the ticket closes.
 
 ## What is in the set
 
-Twelve skills. `setup` configures a project. The mainline is the four skills in
-the table above. The rest support them:
+Fourteen skills. `setup` configures a project. The mainline is the four skills
+in the table above. The rest support them:
 
 | Skill | What it does |
 |---|---|
+| `ask-me` | Names the skill or sequence that fits the situation you describe, and stops |
 | `grilling` | Interviews the person round by round until a plan is clear, and writes each round into a testimony as it happens |
 | `grill-with-docs` | Runs `grilling`, then records the terms it fixed with `glossary` and the decisions that pass the three gates with `adr` |
 | `glossary` | Keeps one vocabulary for the project; each operator writes their own source and the view is generated from all of them |
 | `adr` | Records a decision that is hard to reverse, surprising without context, and the result of a real trade-off |
 | `hand-back` | Records what a person finished on their own ticket, closes it, and names the next ticket |
 | `communicate-with-issue` | Sends one owner a message as a GitHub issue, and answers one in its thread |
+| `feed-me-back` | Reports a skill problem, or a good word, to the set's repository, once you approve the text |
 
 ## How a review works
 

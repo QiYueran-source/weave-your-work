@@ -27,6 +27,7 @@ jobs:
 
       - name: Install tool dependencies
         run: |
+          npm ci --prefix weave-your-work/setup/tools/adr
           npm ci --prefix weave-your-work/setup/tools/glossary
           npm ci --prefix weave-your-work/setup/tools/issue
 

@@ -3,11 +3,12 @@ schema: 1
 id: wm-ms5r0fftcva8
 title: 'ADR: office-ready, per-operator sources, millisecond ids'
 category: spec
-status: open
+status: closed
 owner: frank
 creator: frank
 created_at: 2026-11-17T06:06:58Z
-updated_at: 2026-11-17T06:41:03Z
+updated_at: 2026-11-21T06:25:10Z
+closed_at: 2026-11-21T06:25:10Z
 ---
 ## Problem Statement
 

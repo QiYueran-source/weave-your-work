@@ -7,7 +7,7 @@ Run these checks at the start of a session, and run every one of them when a fea
 Run the setup skill's check script from the project root:
 
 ```sh
-node <setup-skill>/tools/check-setup.mjs --starred
+node <setup-skill>/tools/utils/check-setup.mjs --starred
 ```
 
 `--starred` runs the ten checks a session start covers. Use `--all` when something you expect to work does not. The script prints `ok`, `fail`, `not applicable`, or `unverified` for each check, and exits 1 when a check fails; on a failure it prints the repair. It reads state and repairs nothing.

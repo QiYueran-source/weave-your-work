@@ -9,7 +9,8 @@ creator: frank
 created_at: 2026-11-20T11:15:56Z
 updated_at: 2026-11-20T12:40:00Z
 closed_at: 2026-11-20T12:40:00Z
-needs_human: false
+custom_fields:
+  needs_human: false
 ---
 wm-js61y7yxvx10
 

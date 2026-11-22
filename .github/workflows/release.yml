@@ -29,11 +29,28 @@ jobs:
 
       - name: Install tool dependencies
         run: |
+          npm ci --prefix weave-your-work/setup/tools/adr
           npm ci --prefix weave-your-work/setup/tools/glossary
           npm ci --prefix weave-your-work/setup/tools/issue
 
       - name: Run the tool tests
         run: npm test
+
+      - name: Check the set's structure
+        run: node scripts/check-references.mjs .
+
+      - name: Check the records against their assertions
+        run: node scripts/check-records.mjs . --baseline scripts/check-records-baseline.json
+
+      - name: Install the skill set
+        env:
+          HOME: ${{ runner.temp }}/home
+        run: |
+          mkdir -p "$HOME"
+          npx --yes skills@1.7.6 add . -g -y -a codex --json > "$RUNNER_TEMP/skills.json"
+
+      - name: Check what the install produced
+        run: node scripts/check-skills.mjs . "$RUNNER_TEMP/skills.json"
 
       - name: Create version pull request
         uses: changesets/action@v1
