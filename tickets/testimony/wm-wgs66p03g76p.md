@@ -173,6 +173,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 我们工具就创建的严格一点，从工具端避免越权吧.
   - Parent: Q22
 
+### Round 8
+
+- **Q25** Whether each edge carries a typed event
+  - Question: Should every node boundary carry a typed object with fixed fields, which the receiving node's code validates before it runs, instead of free markdown?
+  - Recommended: Yes; each boundary has one model, and a value that does not fit stops the chain at that edge.
+  - Answer: 啥叫 pydantic.
+  - Parent: Q17
+
+- **Q26** What the spec and the tickets each hold
+  - Question: Should the spec say what this bake should reach and why, and the tickets list three to six steps that carry the knob values?
+  - Recommended: Yes; the spec carries goal and reasons, the tickets carry three to six steps with knob values.
+  - Answer: spec = 目标与理由，tickets = 3-6 步带旋钮值.
+  - Parent: Q25
+
+- **Q27** Who confirms a round, and how many
+  - Question: Should a run be three rounds that finish without a person, or stop after each round for a person to read?
+  - Recommended: Three rounds that finish on their own.
+  - Answer: 端侧情景，无法人类交互，只提供启动新一炉面包的开关.
+  - Parent: Q11
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -194,6 +214,9 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - Each node writes only its own record — testimony, spec, or tickets — with no change to earlier records, and a record freezes once the next node starts (from Q22)
 - The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own that it may rewrite, including deleting what it wrote before (from Q22)
 - A node reads what this round has written so far and not what the round has not produced yet (from Q23)
+- Validation is programmatic: every node boundary carries a fixed set of fields, the receiving program checks them before its node runs, and a value that does not fit stops the chain at that edge, so no model's judgement guards its own input (from Q25)
+- The spec carries what this bake should reach and why; the tickets carry three to six steps, each with its knob values (from Q26)
+- A run is three rounds with no person in it; the only person-facing control is the switch that starts a run (from Q27)
 - Overreach is prevented by narrow tools rather than judged after the fact (from Q24)
 - The machine is its own MCP server, so the taste program stays behind a tested function and a real machine would replace only that layer (from Q20)
 - Every record is readable, the current round's included; what it may write is constrained (from Q21)
