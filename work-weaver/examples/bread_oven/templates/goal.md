@@ -8,8 +8,10 @@ to answer.
 
 ## The score
 
-Each bake is scored from 0 to 1 by a taste program hidden from you. It turns
-five features, each from 0 to 1, into one score:
+Each bake is scored from 0.5 to 1 by a taste program hidden from you. It turns
+five features, each from 0 to 1, into one score. The floor is what an untuned
+recipe is worth; a bake that is off at every knob sits there. Each knob moved
+toward where its feature wants it buys score above that floor:
 
 - crispness, moistness, softness, chewiness, sweetness.
 

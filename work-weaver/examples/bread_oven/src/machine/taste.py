@@ -68,6 +68,10 @@ _FLOORS: dict[str, tuple[float, float]] = {
 
 _FEATURE_FLOOR = 0.05
 _OFF_RANGE = 0.15
+
+# What a bake scores when nothing about it is right: the floor a person's scale
+# starts at. An untuned recipe lands a little above it.
+_SCORE_BASE = 0.5
 _PERTURBATION = 0.05
 
 
@@ -140,9 +144,16 @@ def compute_features(knobs: dict[str, float], seed: int, round_index: int) -> di
 
 
 def score(features: dict[str, float], taste: Taste) -> float:
-    """The features under one bake's taste, from 0 to 1."""
+    """The features under one bake's taste, on the scale a person reads.
 
-    return round(sum(features[name] * taste.weights[name] for name in FEATURES), 4)
+    The scale runs from _SCORE_BASE to 1. A loaf where every knob sits at its
+    worst is not worth nothing; it is worth what an untuned recipe is worth,
+    which is the base. Every point above the base has to be earned by moving a
+    knob toward where its feature wants it.
+    """
+
+    raw = sum(features[name] * taste.weights[name] for name in FEATURES)
+    return round(_SCORE_BASE + (1.0 - _SCORE_BASE) * raw, 4)
 
 
 def bake(knobs: dict[str, float], seed: int, round_index: int) -> tuple[dict[str, float], float]:
