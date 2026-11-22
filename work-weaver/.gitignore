@@ -1,0 +1,4 @@
+.venv/
+.fast-agent/
+__pycache__/
+*.pyc
