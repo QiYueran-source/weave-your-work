@@ -85,3 +85,24 @@ class pytest_raises:
 
     def __exit__(self, exc_type, exc, tb):
         return exc_type is not None and issubclass(exc_type, self.exc)
+
+
+def test_the_handbook_gives_starting_values_and_no_optimum(tmp_path):
+    handbook = (Path(__file__).resolve().parents[1] / "templates" / "base.md").read_text(encoding="utf-8")
+    from src.config import DEFAULT_KNOBS
+
+    for name, value in DEFAULT_KNOBS.items():
+        assert name in handbook
+        assert str(int(value)) in handbook
+    # The bake starts at the handbook's values, and the two agree.
+    machine = Machine(seed=7)
+    assert machine.knobs == DEFAULT_KNOBS
+    # Nothing from the taste program's internals may leak into what the chain
+    # reads: no method, no parameter of the curve, no per-bake taste.
+    from src.machine import taste
+
+    for word in ("gaussian", "exp(", "softmax", "peak=", "half_width", "perturbation", "seed"):
+        assert word not in handbook.lower(), word
+    for knob in taste._PEAKS:
+        row = next(line for line in handbook.splitlines() if line.startswith(f"| `{knob}`"))
+        assert str(taste._PEAKS[knob]) not in row, f"{knob}'s optimum leaked into its row"

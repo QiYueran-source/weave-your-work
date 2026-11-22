@@ -82,6 +82,21 @@ After a run, open:
 | `BREAD_SEED` | `7` | the seed for each bake's taste |
 | `BREAD_VERBOSE` | off | show the agents' conversation |
 
+## The handbooks
+
+`templates/base.md` is the person's handbook: the five-starting values, what each
+knob does to its feature, the range of each knob, and the two ends where the
+loaf stops being bread. It never says where a knob's best value is. The records
+server copies it into `handbooks/base.md` on first use, and no tool can write
+there.
+
+`handbooks/evolving.md` is the chain's own handbook. The proposer writes it
+during the grill: at most thirty entries, each tagged with the round that
+produced it, and it may delete entries that later rounds disprove.
+
+The tests check that the base handbook carries the starting values and leaks
+none of the taste program's parameters.
+
 ## The taste program
 
 `src/machine/taste.py` follows the outline the spec records: five features from
