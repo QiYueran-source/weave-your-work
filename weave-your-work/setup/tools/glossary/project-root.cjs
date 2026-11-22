@@ -106,3 +106,22 @@ function resolveProjectRoot(options = {}) {
 }
 
 module.exports = { resolveProjectRoot }
+
+// The command-line form. Run as `node project-root.cjs [--project <directory>]`;
+// it prints the physical project root and exits 1 with the reason when it fails.
+if (require.main === module) {
+  try {
+    const args = process.argv.slice(2)
+    let options = {}
+    if (args.length !== 0) {
+      if (args.length !== 2 || args[0] !== '--project' || !args[1] || args[1].startsWith('--')) {
+        throw new Error('Usage: node project-root.cjs [--project <directory>]')
+      }
+      options = { project: args[1] }
+    }
+    process.stdout.write(`${resolveProjectRoot(options)}\n`)
+  } catch (error) {
+    process.stderr.write(`${error.message}\n`)
+    process.exitCode = 1
+  }
+}
