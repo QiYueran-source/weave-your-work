@@ -8,7 +8,7 @@ const path = require('node:path')
 const { test } = require('node:test')
 const { resolveProjectRoot } = require('./project-root.cjs')
 
-const cli = path.join(__dirname, 'project-root-cli.cjs')
+const cli = path.join(__dirname, 'project-root.cjs')
 const gitEnv = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('GIT_')))
 
 function git(cwd, ...args) {
@@ -214,12 +214,12 @@ test('module and CLI work under a type=module parent', t => {
   const tools = path.join(packageRoot, 'tools')
   fs.mkdirSync(tools, { recursive: true })
   fs.writeFileSync(path.join(packageRoot, 'package.json'), '{"type":"module"}')
-  for (const file of ['project-root.cjs', 'project-root-cli.cjs']) {
+  for (const file of ['project-root.cjs']) {
     fs.copyFileSync(path.join(__dirname, file), path.join(tools, file))
   }
   const root = path.join(dir, 'project')
   project(root)
-  const cliResult = spawnSync(process.execPath, [path.join(tools, 'project-root-cli.cjs'), '--project', root], { encoding: 'utf8' })
+  const cliResult = spawnSync(process.execPath, [path.join(tools, 'project-root.cjs'), '--project', root], { encoding: 'utf8' })
   assert.equal(cliResult.status, 0, cliResult.stderr)
   assert.equal(cliResult.stdout, `${fs.realpathSync(root)}\n`)
   const moduleResult = spawnSync(process.execPath, ['-e',

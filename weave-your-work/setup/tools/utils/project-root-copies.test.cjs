@@ -5,12 +5,15 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { test } = require('node:test')
 
+const tools = path.join(__dirname, '..')
+
 const guides = [path.join(__dirname, 'check-setup.mjs')]
 
 const copies = {
   setup: path.join(__dirname, 'project-root.cjs'),
-  issue: path.join(__dirname, 'issue', 'project-root.cjs'),
-  glossary: path.join(__dirname, 'glossary', 'project-root.cjs'),
+  issue: path.join(tools, 'issue', 'project-root.cjs'),
+  glossary: path.join(tools, 'glossary', 'project-root.cjs'),
+  adr: path.join(tools, 'adr', 'project-root.cjs'),
 }
 
 // Every file under dir the predicate accepts, skipping node_modules.

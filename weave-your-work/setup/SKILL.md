@@ -1,40 +1,76 @@
 ---
 name: setup
-description: "Configure a project so the set can run in it: confirm the project root, install git, waymark, node, and the GitHub CLI and sign them in, initialize the tracker, install the rules and the runtimes, write the AGENTS.md pointer, and open the first map. Use when the project has no .waymark/config.toml, when .agents/rules/ is empty, or when a clone cannot run the set."
-family: setup
-invocation: user
+description: "Install what the set needs in a project: the rules, the setup check, the project-root resolver, and the three optional runtimes (glossary, ADR, issue listener). Use when a project has no .agents/rules/, when a runtime is missing, or when a clone cannot run the set."
+disable-model-invocation: true
 ---
 
 # Setup
 
-Before choosing a flow or changing anything, read `rules/rules-install.md` from this installed skill. Resolve and confirm the project root with the person, and follow that rule throughout.
+Install into a project the parts the set needs, and report what still has to be
+done by a person.
 
-This file routes. The flow documents hold the steps; `install.md` holds what gets installed and how.
+The flow documents are being rewritten. `START-A-PROJECT.md` takes an empty
+directory to a configured project; `JOIN-A-PROJECT.md` takes a clone of one to a
+checkout that runs the set. `INSTALL.md` is the index of what gets installed and
+where the steps for each part live.
 
-## Which flow
+## What this skill holds
 
-| The project | Flow |
-|---|---|
-| Empty, or no tracker yet | `configure-project.md`: take it to a configured project, open its root map, and stop before the commit |
-| A clone of a project that already uses waymark | `join-project.md`: fill in what a clone cannot carry, and leave the shared files alone |
-| Either, when something stops working | `check-project.md`: read the state and report each check with its repair, changing nothing |
+| Part | Where | What it is |
+|---|---|---|
+| Flow | `START-A-PROJECT.md` | An empty directory becomes a configured project |
+| Flow | `JOIN-A-PROJECT.md` | A clone becomes a checkout that runs the set |
+| Install index | `INSTALL.md` | What gets installed, and where each part's steps live |
+| Rules | `rules/` | Six rule files, copied by name into `<project>/.agents/rules/` |
+| Setup check | `tools/utils/check-setup.mjs` | Reads the project's state and reports each check with its repair |
+| Project-root resolver | `tools/utils/project-root.cjs` | Answers which project a command belongs to |
+| Glossary runtime | `tools/glossary/` | A shared vocabulary and its MCP server |
+| ADR runtime | `tools/adr/` | The decision records and their tool |
+| Issue runtime | `tools/issue/` | The listener that queues communicate issues |
 
-When the project matches none of the three, the checks alone say what is missing.
+## The rules
 
-## What setup installs
+Copy each file from `rules/` into `<project>/.agents/rules/`. For each one:
+absent, write it; identical, skip it; different, stop and ask the person. Never
+overwrite a rule the person has changed.
 
-`install.md` covers it: eight rules copied into `.agents/rules/`, two tools run in place, and two runtimes installed only when the project uses them (the glossary store, the issue listener). Every installable part lives under this skill; the other skills carry none.
+```
+work-weave-rules-git.md
+work-weave-rules-checklist.md
+work-weave-rules-install.md
+work-weave-rules-owner.md
+work-weave-rules-pending-communications.md
+work-weave-rules-record.md
+```
 
-## The field reference
+## The runtimes
 
-The six custom fields setup declares, and every other field the set writes, are defined in `waymark`'s `res/fields.md`. Setup declares the names; that file says what they mean. A change to a field's name or type is a change in both places, and the project's `.waymark/config.toml` carries the third copy.
+A project takes only the runtimes it uses. A project with one owner and no shared
+vocabulary needs neither the glossary nor the listener; a project that records no
+decisions needs no ADR tool.
 
-## Done
+Each runtime copies into `.work-weave/personal/<name>/` and runs
+`npm ci --omit=dev` there. Read the exit status: a failed install can leave a
+partial `node_modules`, so the directory appearing proves nothing.
 
-Setup is done when `check-project.md` reports every check as `ok` or `not applicable`.
+## Checking
+
+Run from the project root:
+
+```sh
+node <setup>/tools/utils/check-setup.mjs --starred
+```
+
+`--starred` runs the checks a session start covers; `--all` runs every one. The
+script prints `ok`, `fail`, `not applicable`, or `unverified` for each check,
+exits 1 when one fails, and prints the repair on a failure. It reads state and
+repairs nothing: repairing the setup is the person's decision.
+
+`<setup>` is the installed setup skill directory: `<project>/.agents/skills/setup`
+after a project install, `~/.agents/skills/setup` after a global one.
 
 ## What setup does not do
 
-- Install the skills. They are installed before setup runs.
+- Install the skills. `npx skills add` does that first.
 - Create a remote, or commit. It ends with the list of files it changed.
 - Repair a failing check on its own.
