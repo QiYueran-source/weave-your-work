@@ -52,10 +52,28 @@ BREAD_MODEL=generic.gpt-4.1 ./run_bread_oven.sh          # one round
 BREAD_MODEL=generic.gpt-4.1 ./run_bread_oven.sh --rounds 3   # three rounds, one process each
 ```
 
-Without an endpoint configured, `generic.<name>` points at `http://localhost:11434/v1`
-(fast-agent's Ollama default). Any OpenAI-compatible endpoint works through
-`GENERIC_BASE_URL` and `GENERIC_API_KEY`, as does a native fast-agent provider
-such as `deepseek` or `gpt-5-mini`.
+### Choosing a model
+
+Copy `.env.example` to `work-weaver/.env` and fill it in. fast-agent reads
+`.env` from the directory the round starts in, which is `work-weaver/` when you
+use the launcher; a copy inside `examples/bread_oven/` works when you start
+`main.py` from there. The filled-in `.env` is ignored by Git.
+
+```
+BREAD_MODEL=generic.gpt-4.1
+GENERIC_BASE_URL=https://your-endpoint/v1
+GENERIC_API_KEY=sk-...
+```
+
+- **Any OpenAI-compatible endpoint:** `BREAD_MODEL=generic.<model name>` with
+  `GENERIC_BASE_URL` and `GENERIC_API_KEY`.
+- **A local Ollama or llama.cpp server:** leave `GENERIC_BASE_URL` at
+  `http://localhost:11434/v1` (fast-agent's default for `generic`).
+- **A native fast-agent provider:** `BREAD_MODEL=deepseek`, or
+  `BREAD_MODEL=gpt-5-mini`, and set that provider's key as fast-agent expects.
+
+`--model` on the command line or `BREAD_MODEL` wins over the file; with neither,
+the model is `generic.gpt-4.1`.
 
 The model is any OpenAI-compatible endpoint fast-agent knows
 (`generic.<name>`, with `GENERIC_BASE_URL` and `GENERIC_API_KEY` set), or one of
