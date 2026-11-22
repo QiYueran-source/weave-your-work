@@ -278,7 +278,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - **Q40** Which loop the grill uses
   - Question: Should the grill node be fast-agent's evaluator-optimizer, or a small loop the chain writes around two fast-agents? The evaluator-optimizer keeps its refinement count inside a branch that breaks before the increment (so `max_refinements` never fires), and its `EvaluationResult` schema (a four-level rating) does not match the three verdicts the grill needs.
   - Recommended: A loop the chain writes: a proposer and a grill, a verdict of accept, revise, or stop, a fixed round limit, and the last draft kept when the limit is reached.
-  - Answer: (no answer yet)
+  - Answer: 自己写循环：proposer + grill，三态裁决，固定上限.
   - Parent: Q39
 
 - **Q41** Whether the round ends with a digest node
@@ -290,8 +290,14 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - **Q42** Whether a run keeps anything in the process
   - Question: Session history, trajectory saving, and mid-turn compaction are on or off by default in fast-agent. Should the run turn all three off, keep `use_history` on only for the steps inside one agent's tool loop, and let every round reload its context from the records when the process starts?
   - Recommended: Yes: no session snapshot, no trajectory, no compaction; the process starts with empty agents and reads the records.
-  - Answer: (no answer yet)
+  - Answer: 关掉 session 快照、轨迹、压缩；use_history 只保在单个 agent 的循环内.
   - Parent: Q21
+
+- **Q43** How many grill rounds are allowed
+  - Question: Should the grill's round limit be fixed now, or left to the implementation?
+  - Recommended: Left to the implementation; the loop is capped either way.
+  - Answer: 上限先不定，实现时再调.
+  - Parent: Q40
 
 ## Settled
 
@@ -316,6 +322,9 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own, at most thirty experience entries tagged with the round that produced them, which it may add, change, or delete (from Q22, Q35)
 - The record tools are one tool per operation — write this round's testimony, read testimony, list testimonies, write and read spec, write and read tickets, read the base handbook, read and write the evolving handbook — and each node holds only the write its job allows (from Q34)
 - The chain is a code loop over typed edges; each node is still defined with `@fast.agent`, but the framework's chain, orchestrator, and evaluator-optimizer decorators are not used to route it (from Q39)
+- The grill is a loop the chain writes: a proposer and a grill agent, three verdicts (accept, revise, stop), a fixed round limit, and the last draft kept when the limit is reached (from Q40)
+- The grill's round limit is set at implementation time, and the loop is capped either way (from Q43)
+- Session snapshots, trajectory saving, and mid-turn compaction are off; `use_history` is kept only for the steps inside one agent's tool loop (from Q42)
 - The round has no digest node; the evolving handbook is written by the proposer inside the grill, where the knowledge forms, and not settled once at the end (from Q41)
 - The chain builds each node's context from the records rather than relying on a node's in-memory conversation to carry state from round to round; fast-agent's per-agent history is short-term only (from Q37)
 - The work is built in order: records and tools, the simulation MCP server, the chain, the three-round run (from Q36)
