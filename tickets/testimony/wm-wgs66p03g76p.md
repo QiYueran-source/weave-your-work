@@ -99,6 +99,20 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 那让每一个面包特征输出时带一个小的随机扰动吧，不用太复杂.
   - Parent: Q12
 
+### Round 4
+
+- **Q14** How often the taste weights are drawn
+  - Question: One round is one bake. Should the random taste weights be drawn once per round and held for that round, drawn per bake, or drawn several times per round and averaged?
+  - Recommended: Drawn once per bake, so each round is judged by one user's taste.
+  - Answer: 一炉抽一次，可设定这个口味为这一炉的用户的平均口味.
+  - Parent: Q9
+
+- **Q15** Whether the chain can change the action set
+  - Question: The knobs are fixed at five and do not interact, so what the chain can learn is adjusting their values. Should it also be able to change the set of knobs or the structure of the bake (a second temperature stage, a quick-slow-quick schedule), which is where self-evolution parts from tuning, or is fixed-knob tuning the thing this proof tests?
+  - Recommended: Fixed knobs for this proof; changing the action set is a later design.
+  - Answer: 先不做，先用固定旋钮把「调参」验证清楚.
+  - Parent: Q12
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -111,13 +125,14 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - Tickets stays a node; its job reduced to implement's short to-do list, three to six steps, with the spec holding what the bake should reach and why (from Q11)
 - Five knobs face five features, one dominant knob per feature, with the other knobs moving each feature by a lesser amount (from Q12)
 - Randomness is a small perturbation on each feature's output; there is no hidden environment parameter, no observation noise layer, and no drift between rounds (from Q13)
+- The taste weights are drawn once per bake and read as that bake's user's average taste (from Q14)
+- The action set is fixed for this proof: the chain adjusts knob values and does not add, remove, or restructure the bake (from Q15)
 
 ## Open
 
 - Which signals the single-button machine carries besides start-bake (from Q3)
 - Which knobs the machine exposes and what each moves (from Q4)
 - How many features there are and what each one means (from Q7)
-- How many draws the random weights take, and whether a bake is judged by one draw or by an average over draws (from Q9)
 - How large the perturbation on a feature is, and whether the score the chain sees includes the taste draw's own variation (from Q13)
 - What the taste program computes and what its inputs and outputs are (from Q5)
 - What evidence counts as a failed proof (from Q6)
