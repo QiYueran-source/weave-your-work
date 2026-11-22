@@ -1,4 +1,4 @@
-![Weave Your Work: a woven blue cube mark on a dark background](assets/weave-your-work-banner-1280x400.jpg)
+![Weave Your Work: a woven blue cube mark on a dark background](assets/weave-your-work-banner-1280x640.jpg)
 
 # Weave Your Work
 
