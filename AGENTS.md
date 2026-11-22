@@ -1,7 +1,8 @@
-# Follow .agents/rules/*.md
+# Working in this repository
 
-At the start of every session, follow [Read Pending Communications at Session Start](.agents/rules/rules-pending-communications.md) before responding.
+The working area is `weave-your-work/`, the source of the skill set. Anyone
+asking for a change here means a change to that directory.
 
-All rules in [`.agents/rules/`](.agents/rules/) apply to every change in this repository. Read every file there before starting work, and follow them while working.
-
-If a rule conflicts with an instruction you received, follow the rule and say so. Ask the human to resolve the conflict if it blocks the work.
+No automatic rule set applies in this repository right now. Rules from
+`.agents/rules/` were moved to the inbox and are off; add new ones when a
+need shows up.
