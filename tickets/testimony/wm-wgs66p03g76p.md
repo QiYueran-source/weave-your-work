@@ -267,6 +267,32 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: (no answer yet)
   - Parent: Q37
 
+### Round 13
+
+- **Q39** How the chain is orchestrated, source-level
+  - Question: fast-agent's declarative workflows (chain, evaluator-optimizer, orchestrator) pass free text between agents and keep no typed state; none routes by the event a node produced. Should the chain be a code loop whose nodes are each a `@fast.agent` definition, with pydantic models on the edges, or a fast-agent workflow graph?
+  - Recommended: A code loop over typed edges, with each node still defined by `@fast.agent`.
+  - Answer: 也就是说我们不用 chain 这些，而是自己写 flow，每个节点用它定义好的这样？
+  - Parent: Q18
+
+- **Q40** Which loop the grill uses
+  - Question: Should the grill node be fast-agent's evaluator-optimizer, or a small loop the chain writes around two fast-agents? The evaluator-optimizer keeps its refinement count inside a branch that breaks before the increment (so `max_refinements` never fires), and its `EvaluationResult` schema (a four-level rating) does not match the three verdicts the grill needs.
+  - Recommended: A loop the chain writes: a proposer and a grill, a verdict of accept, revise, or stop, a fixed round limit, and the last draft kept when the limit is reached.
+  - Answer: (no answer yet)
+  - Parent: Q39
+
+- **Q41** Whether the round ends with a digest node
+  - Question: Should the round end with a node that reads everything and settles the learned knowledge, placed after implement, before observe, or before spec? After the person's answer: should the round keep such a node at all, or should the knowledge be written where it is learned?
+  - Recommended: No extra node; the evolving handbook is written by the proposer inside the grill, where the knowledge actually forms.
+  - Answer: 参考 2；那要不按之前分工，grill 那里写，那里讨论的效果应该比直接沉淀好，不要最后一个节点了.
+  - Parent: Q39
+
+- **Q42** Whether a run keeps anything in the process
+  - Question: Session history, trajectory saving, and mid-turn compaction are on or off by default in fast-agent. Should the run turn all three off, keep `use_history` on only for the steps inside one agent's tool loop, and let every round reload its context from the records when the process starts?
+  - Recommended: Yes: no session snapshot, no trajectory, no compaction; the process starts with empty agents and reads the records.
+  - Answer: (no answer yet)
+  - Parent: Q21
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -289,6 +315,8 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The chain reads every record of this and earlier rounds; it is the writes that are bounded (from Q34)
 - The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own, at most thirty experience entries tagged with the round that produced them, which it may add, change, or delete (from Q22, Q35)
 - The record tools are one tool per operation — write this round's testimony, read testimony, list testimonies, write and read spec, write and read tickets, read the base handbook, read and write the evolving handbook — and each node holds only the write its job allows (from Q34)
+- The chain is a code loop over typed edges; each node is still defined with `@fast.agent`, but the framework's chain, orchestrator, and evaluator-optimizer decorators are not used to route it (from Q39)
+- The round has no digest node; the evolving handbook is written by the proposer inside the grill, where the knowledge forms, and not settled once at the end (from Q41)
 - The chain builds each node's context from the records rather than relying on a node's in-memory conversation to carry state from round to round; fast-agent's per-agent history is short-term only (from Q37)
 - The work is built in order: records and tools, the simulation MCP server, the chain, the three-round run (from Q36)
 - A node reads what this round has written so far and not what the round has not produced yet (from Q23)
