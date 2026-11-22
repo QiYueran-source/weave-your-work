@@ -32,7 +32,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - **Q3** What the bread machine's input can carry
   - Question: Does the person press anything besides start-bake? The new description says the only input is a button carrying a fixed signal such as start-bake. The earlier records had bread-type buttons, a stop signal, and an acknowledge signal. Which signals exist on this machine?
   - Recommended: Start bake is the only press; the person has no way to name a bread type, stop a bake, or acknowledge anything, and every round bakes without a person in it.
-  - Answer: This is a simulation experiment; it does not need to be taken that seriously, and our own design comes first.
+  - Answer: This is a simulation experiment; it does not need to be taken that seriously, and our own design comes first. 只有开始按钮一个信号.
   - Parent: Q1
 
 - **Q4** What the machine's controls accept
@@ -44,13 +44,13 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - **Q5** What the taste model is
   - Question: The score is to come from a linear-programming-style program, and the person will supply its design. Should this testimony wait for that design, or record the requirement that the score arrives as one number per bake and leave the program's shape to the spec that follows?
   - Recommended: Record the requirement the score has to satisfy and wait for the person's design before the score's shape is fixed.
-  - Answer: 用一个类似线性规划的程序去做，我等下给你设计细节。
+  - Answer: 用一个类似线性规划的程序去做，我等下给你设计细节。按当前理解先写，细节等你给。
   - Parent: Q1
 
 - **Q6** How a failed proof is recognised
   - Question: The proof is three bakes. Should the standard for failure be settled now, or after the runs, from the kind of result a three-bake proof can actually show?
   - Recommended: Settle it now, from things a reader can see in the records: the third score is not above the first, the three recipes are nearly the same, the closing score is below a baseline recipe, or the chain crashes or acts beyond its controls.
-  - Answer: 先记录，标准后面再说。
+  - Answer: 先记录，标准后面再说。先如实记录，不做判断吧。
   - Parent: Q1
 
 ### Round 2
@@ -264,7 +264,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - **Q38** How each node gets its tools
   - Question: fast-agent gives an agent its tools through MCP servers it is configured with, and can filter them per server. Should each node get only the tool subset its job owns, or every node get the same full tool set?
   - Recommended: Each node gets only its own write tool plus the read tools it needs, and implement additionally gets the machine server alone.
-  - Answer: (no answer yet)
+  - Answer: 按这张表.
   - Parent: Q37
 
 ### Round 13
@@ -303,7 +303,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
 - The score of a bake comes from a linear-programming-style program the person supplies; its details are still to be given (from Q5)
-- The criterion for a failed proof is deferred until after the runs have shown what a three-bake result looks like (from Q6)
+- The proof records what happened and passes no verdict; no criterion for a failed proof is written now (from Q6)
 - The proof is a simulation experiment rather than a real machine; the design being tested comes first (from Q10)
 - A bake is scored by a set of named features, each from 0 to 1, combined into one score (from Q7)
 - The simulation exposes five knobs — oven temperature (150-250 °C), bake time (20-70 min), proofing time (20-120 min), water amount (50-90 % of the flour weight), and sugar amount (0-15 %) — and each moves several features along a single-peaked curve that is quadratic or absolute in shape; the knobs do not interact for now (from Q8, Q31)
@@ -321,6 +321,8 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - The chain reads every record of this and earlier rounds; it is the writes that are bounded (from Q34)
 - The person's initial handbook is read-only to the chain; the chain keeps an evolving handbook of its own, at most thirty experience entries tagged with the round that produced them, which it may add, change, or delete (from Q22, Q35)
 - The record tools are one tool per operation — write this round's testimony, read testimony, list testimonies, write and read spec, write and read tickets, read the base handbook, read and write the evolving handbook — and each node holds only the write its job allows (from Q34)
+- The machine carries exactly one signal, start bake; a round needs no other press and a person never stops or acknowledges one (from Q3)
+- Each node holds only its own write and the reads its job needs: observe writes testimony, the proposer writes testimony and the evolving handbook, the grill agent only reads, spec writes the spec, tickets writes the tickets, and implement holds the machine's tools plus writing testimony (from Q38)
 - The chain is a code loop over typed edges; each node is still defined with `@fast.agent`, but the framework's chain, orchestrator, and evaluator-optimizer decorators are not used to route it (from Q39)
 - The grill is a loop the chain writes: a proposer and a grill agent, three verdicts (accept, revise, stop), a fixed round limit, and the last draft kept when the limit is reached (from Q40)
 - The grill's round limit is set at implementation time, and the loop is capped either way (from Q43)
@@ -339,9 +341,7 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 
 ## Open
 
-- Whether the earlier design's other signals (stop, acknowledge) exist on this machine, now that one press is one round (from Q3)
-- What the taste program computes and what its inputs and outputs are (from Q5)
-- What evidence counts as a failed proof (from Q6)
+- What the taste program computes, exactly; the settled outline is recorded and the person's details are still to come (from Q5)
 
 ## Handed off
 
