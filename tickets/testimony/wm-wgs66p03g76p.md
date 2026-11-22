@@ -7,7 +7,9 @@ status: open
 owner: frank
 creator: frank
 created_at: 2026-11-22T07:12:58Z
-updated_at: 2026-11-22T07:12:58Z
+updated_at: 2026-11-22T08:30:54Z
+soft_links:
+  - wm-ax0pdz4cwxaw
 ---
 ## Subject
 
