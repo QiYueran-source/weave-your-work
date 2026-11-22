@@ -7,6 +7,9 @@ tools are reached through MCP, and the only thing replaced is the model.
 import asyncio
 import json
 import sys
+
+import pytest
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -98,7 +101,8 @@ def test_real_nodes_run_the_round_with_scripted_models(tmp_path):
     from fast_agent import FastAgent
 
     config = make_config(tmp_path)
-    fast = define_agents(FastAgent("bread-oven"), read_templates(config))
+    config = replace(config, model="generic.scripted")
+    fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
     machine_calls = {}
     state_holder = {}
 
@@ -129,17 +133,68 @@ def test_real_nodes_run_the_round_with_scripted_models(tmp_path):
     assert (directory / "trace.json").exists()
 
 
+def test_a_silent_implement_still_carries_the_bake_from_its_result_file(tmp_path):
+    """The model may end without restating the result; the file is the contract."""
+
+    from src.agents.chain import define_agents, read_templates
+    from fast_agent import FastAgent
+
+    config = replace(make_config(tmp_path), model="generic.scripted")
+    fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
+    machine = {}
+
+    class SilentImplement(ScriptedModel):
+        async def generate(self, messages, request_params=None, tools=None):
+            self._synthetic_turn_count += 1
+            if machine and "bake" in machine:
+                machine["bake"]()
+            return Prompt.assistant("Done — the bake finished, see the result file.")
+
+    def factory(node: str):
+        if node == "implement":
+            return SilentImplement(node, [], machine)
+        return ScriptedModel(node, SCRIPTS[node], {})
+
+    from src.agents import chain as chain_module
+    original = chain_module.prepare
+
+    def prepare(config_):
+        state = original(config_)
+        state["machine"].result_dir = config_.records_root / "results"
+        machine["bake"] = lambda: state["machine"].bake("round-01").model_dump()
+        return state
+
+    chain_module.prepare = prepare
+    try:
+        outcome = asyncio.run(run_round(fast, config, model_factory=factory))
+    finally:
+        chain_module.prepare = original
+
+    assert "failed" not in outcome
+    assert outcome["score"] == pytest.approx(
+        json.loads((config.records_root / "results" / "round-01.json").read_text())["score"]
+    )
+
+
 def test_a_scripted_reply_that_does_not_fit_stops_the_round(tmp_path):
     from src.agents.chain import define_agents, read_templates
     from src.runtime import EdgeFailed
     from fast_agent import FastAgent
 
     config = make_config(tmp_path)
+    config = replace(config, model="generic.scripted")
     broken = dict(SCRIPTS)
     broken["spec"] = [{"round_id": "round-01", "goal": "no knobs at all"}]
-    fast = define_agents(FastAgent("bread-oven"), read_templates(config))
+    fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
 
-    with pytest.raises(Exception) as caught:
-        asyncio.run(run_round(fast, config, model_factory=lambda node: ScriptedModel(node, broken[node], {})))
-    assert "spec" in str(caught.value)
-    assert (config.records_root / "round-01" / "edge-failure.json").exists()
+    outcome = asyncio.run(
+        run_round(fast, config, model_factory=lambda node: ScriptedModel(node, broken[node], {}))
+    )
+    # The round is recorded as failed at the spec edge, and the summary keeps it.
+    assert outcome["failed"].startswith("EdgeFailed")
+    assert "spec" in outcome["failed"]
+    assert outcome["reached"] == ["observe", "proposer", "grill"]
+    round_file = config.records_root / "round-01" / "round.json"
+    assert json.loads(round_file.read_text())["failed"]
+    summary = json.loads((config.records_root / "summary.json").read_text())
+    assert summary["rounds"][0]["failed"]

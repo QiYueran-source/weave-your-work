@@ -128,7 +128,7 @@ class Plan(BaseModel):
 
 
 class BakeResult(BaseModel):
-    """What the bake produced, and what it was asked to do."""
+    """What the bake produced. The machine writes this file; nobody restates it."""
 
     round_id: str
     knobs: dict[str, float]

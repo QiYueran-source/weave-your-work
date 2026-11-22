@@ -26,6 +26,22 @@ from src.agents.chain import build_fast_agent, run_round  # noqa: E402
 from src.config import RunConfig  # noqa: E402
 
 
+def load_env() -> None:
+    """Read `.env` from this directory, then from where the round was started.
+
+    fast-agent does not read `.env` itself in this version: it takes the file's
+    keys as settings it does not recognise. The round reads the file here and
+    the provider reads the environment, so the two agree.
+    """
+
+    from dotenv import load_dotenv
+
+    candidates = [HERE / ".env", Path.cwd() / ".env"]
+    for candidate in candidates:
+        if candidate.exists():
+            load_dotenv(candidate, override=False)
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run one round of the bread machine.")
     parser.add_argument("--rounds", type=int, default=1, help="how many rounds to run, one process each")
@@ -76,6 +92,7 @@ def check(config: RunConfig) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    load_env()
     args = parse_args(argv)
     config = config_from_args(args)
     problems = check(config)
@@ -100,9 +117,14 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
 
+    failed = 0
     for _ in range(max(1, args.rounds)):
         fast = build_fast_agent(config)
         outcome = asyncio.run(run_round(fast, config))
+        if outcome.get("failed"):
+            failed += 1
+            print(json.dumps({"round": outcome["round_id"], "failed": outcome["failed"]}, indent=2))
+            continue
         print(
             json.dumps(
                 {
@@ -117,6 +139,8 @@ def main(argv: list[str] | None = None) -> int:
                 indent=2,
             )
         )
+    if failed:
+        print(f"{failed} of {max(1, args.rounds)} rounds failed; see runs/summary.json", file=sys.stderr)
     return 0
 
 

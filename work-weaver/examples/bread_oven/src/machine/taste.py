@@ -19,20 +19,24 @@ from src.config import FEATURES, KNOBS
 
 # Where each knob's curve peaks, and how fast the feature falls away from it.
 # Every peak sits inside the knob's range, so the chain can reach it by adjusting.
+# The peaks are spread out on purpose: knobs that peak near the whole range's
+# middle leave a bake that sits mid-range looking good at every feature, and then
+# nothing is left to learn. Each knob's working range runs from raw or slack to
+# raw or scorched, and only part of it is good.
 _PEAKS: dict[str, float] = {
-    "oven_temperature": 215.0,
-    "bake_time": 45.0,
-    "proofing_time": 75.0,
-    "water_amount": 70.0,
-    "sugar_amount": 8.0,
+    "oven_temperature": 222.0,
+    "bake_time": 51.0,
+    "proofing_time": 34.0,
+    "water_amount": 78.0,
+    "sugar_amount": 9.5,
 }
 
 _HALF_WIDTH: dict[str, float] = {
-    "oven_temperature": 28.0,
-    "bake_time": 14.0,
-    "proofing_time": 30.0,
-    "water_amount": 12.0,
-    "sugar_amount": 4.5,
+    "oven_temperature": 20.0,
+    "bake_time": 9.0,
+    "proofing_time": 25.0,
+    "water_amount": 7.0,
+    "sugar_amount": 3.0,
 }
 
 _DOMINANT: dict[str, str] = {
@@ -43,17 +47,27 @@ _DOMINANT: dict[str, str] = {
     "sugar_amount": "sweetness",
 }
 
+# A knob leads its own feature and touches the other four. Each effect is read
+# through the same curve, against the knob's own half-width: a step toward a
+# knob's peak helps the feature it leads and its neighbours together, and a bake
+# that is off at every knob reads poorly at every feature.
 _DOMINANT_WEIGHT = 1.0
 _CROSS_WEIGHT = 0.3
 
-# The handbook's floors: outside these the loaf is raw or scorched and the
-# feature the knob drives collapses.
+# The stretch of each knob's range where the loaf is bread at all. Outside it the
+# bake still happens and still scores, but the feature the knob leads collapses:
+# too short or too cool is raw, too long or too hot is scorched, and the same
+# shape of failure sits at both ends of every knob.
 _FLOORS: dict[str, tuple[float, float]] = {
-    "bake_time": (23.0, 62.0),
-    "oven_temperature": (165.0, 240.0),
+    "bake_time": (30.0, 62.0),
+    "oven_temperature": (195.0, 240.0),
+    "proofing_time": (20.0, 46.0),
+    "water_amount": (56.0, 88.0),
+    "sugar_amount": (3.0, 14.0),
 }
 
 _FEATURE_FLOOR = 0.05
+_OFF_RANGE = 0.15
 _PERTURBATION = 0.05
 
 
@@ -62,6 +76,8 @@ def dominant_feature(knob: str) -> str:
 
 
 def _bell(knob: str, value: float) -> float:
+    """How well a knob serves each feature, from 0 at its worst to 1 at its peak."""
+
     peak = _PEAKS[knob]
     half_width = _HALF_WIDTH[knob]
     return math.exp(-0.5 * ((value - peak) / half_width) ** 2)
@@ -95,24 +111,26 @@ def compute_features(knobs: dict[str, float], seed: int, round_index: int) -> di
     """Score every feature for one bake, then perturb each by about five percent."""
 
     rng = random.Random(f"features-{seed}-{round_index}")
-    lift: dict[str, float] = {}
+    # Each feature is read on its own scale: what the five knobs do to it,
+    # divided by the most those same knobs could ever do to it. A feature is a
+    # 1.0 only when every knob sits where that feature wants it, so one knob at
+    # its peak lifts nothing else to the top and nothing competes for the ceiling.
+    features: dict[str, float] = {}
     for feature in FEATURES:
-        total = 0.0
+        lift = 0.0
+        ceiling = 0.0
         for knob in KNOBS:
             weight = _DOMINANT_WEIGHT if _DOMINANT[knob] == feature else _CROSS_WEIGHT
-            total += weight * _bell(knob, knobs[knob])
-        lift[feature] = total
+            ceiling += weight
+            lift += weight * _bell(knob, knobs[knob])
+        features[feature] = _FEATURE_FLOOR + (1.0 - _FEATURE_FLOOR) * (lift / ceiling)
 
-    lowest, highest = min(lift.values()), max(lift.values())
-    span = highest - lowest or 1.0
-    features = {
-        name: (value - lowest) / span * (1.0 - _FEATURE_FLOOR) + _FEATURE_FLOOR
-        for name, value in lift.items()
-    }
-
+    # Past a knob's working range the loaf is raw or scorched, and every feature
+    # suffers, not only the one the knob leads: a rebaked raw loaf is not a
+    # loaf with one weak quality.
     for knob, (low, high) in _FLOORS.items():
         if not low <= knobs[knob] <= high:
-            features[_DOMINANT[knob]] *= 0.1
+            features = {name: value * _OFF_RANGE for name, value in features.items()}
 
     for name in features:
         features[name] = min(

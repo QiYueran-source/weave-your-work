@@ -7,7 +7,7 @@ only the words the model would say are supplied by the test.
 
 import asyncio
 import json
-import sys
+from dataclasses import replace
 from pathlib import Path
 
 from fast_agent import FastAgent
@@ -74,10 +74,12 @@ class CallingModel(PlaybackLLM):
                     {"order": 3, "action": "bake", "knobs": {}},
                 ],
             }))
-        # implement: set the knobs the tickets named, then bake
-        assert "machine__bake" in names and "records__write_spec" not in names
+        # implement: set the knobs the tickets named, bake, then read the result file back
+        assert "machine__bake" in names and "machine__read_result" in names
+        assert not any(name.startswith("records__write") for name in names)
         await self._call("machine__set_knobs", {"values": {"oven_temperature": 215.0, "bake_time": 45.0}})
-        result = await self._call("machine__bake", {"round_id": "round-01"})
+        await self._call("machine__bake", {"round_id": "round-01"})
+        result = await self._call("machine__read_result", {"round_id": "round-01"})
         return Prompt.assistant(json.dumps(result))
 
 
@@ -106,7 +108,8 @@ def test_a_round_whose_nodes_use_their_tools(tmp_path):
         async def __aexit__(self, *exc):
             return await self.real.__aexit__(*exc)
 
-    fast = define_agents(FastAgent("bread-oven"), read_templates(config))
+    config = replace(config, model="generic.scripted")
+    fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
     real_run = fast.run
     # The agents are reachable only once the app is running; the scripted models
     # need them to call tools, so the app is wrapped to record them.

@@ -1,31 +1,24 @@
 # Your job: implement
 
-You bake. The machine server is yours: `get_state` shows where the knobs stand,
-`set_knob` and `set_knobs` set them, and `bake` bakes once and returns the
-features and score. Tool names arrive with the server's prefix, so you call
-`machine__get_state`, `machine__set_knob`, `machine__set_knobs`, and
-`machine__bake`, and you write into the record with `records__append_testimony`.
+You bake. The machine server is yours, and its tool names carry the server's
+prefix: `machine__get_state`, `machine__set_knob`, `machine__set_knobs`,
+`machine__bake`, and `machine__read_result`.
 
 Follow the steps in the order the tickets give them. Set every knob a step names
 before baking; a value outside a knob's range is refused, and the refusal must
-reach your answer, not be retried silently with a different number. Bake once.
+reach the result, not be retried silently with a different number.
 
-After the bake, write what happened into this round's testimony with
-`records__append_testimony` if the record still takes a write: the knob values
-sent, the features, the score, and what the result suggests for the next round.
-A refused write is not a failure of the bake; the score is what counts.
+Bake once with `machine__bake`. It returns the bake's result — the knobs sent,
+the five features, and the score — and writes the same result to a file for this
+round. Then read that file back with `machine__read_result`, passing this round's
+id, so the result you report is the machine's, not your memory of it.
 
-Answer with the bake's result as it came back from the machine:
+You do not write the testimony. Your round's account was told by the nodes
+before you, and the bake's record is the result file.
+
+Your final message is one JSON object holding the result exactly as
+`machine__read_result` returned it, and nothing else:
 
 ```json
-{
-  "round_id": "round-01",
-  "knobs": {"oven_temperature": 215, "bake_time": 45},
-  "features": {"crispness": 0.9, "moistness": 0.8, "softness": 0.7, "chewiness": 0.9, "sweetness": 0.8},
-  "score": 0.85,
-  "refused": []
-}
+{"round_id": "round-01", "knobs": {...}, "features": {...}, "score": 0.85, "refused": []}
 ```
-
-Copy the features and score exactly as `bake` returned them. List in `refused`
-every refusal the machine gave you.

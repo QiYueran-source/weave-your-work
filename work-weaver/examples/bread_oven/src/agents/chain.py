@@ -78,12 +78,7 @@ def read_templates(config: RunConfig) -> dict[str, str]:
     }
 
 
-# A run replaces every agent's model before the first turn (`--model`, or a test's
-# scripted model). This name only satisfies FastAgent's start-time check.
-STARTUP_MODEL = "playback"
-
-
-def define_agents(fast: FastAgent, templates=None) -> FastAgent:
+def define_agents(fast: FastAgent, templates=None, model: str | None = None) -> FastAgent:
     """Define the six nodes on an existing FastAgent. No model is named here.
 
     The steps of a round build their FastAgent with `build_fast_agent`; a
@@ -96,7 +91,7 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
         name="observe",
         instruction=templates.get("observe", "observe"),
         servers=[],
-        model=STARTUP_MODEL,
+        model=model,
         tools={"records": ["append_testimony", "read_testimony", "list_testimony",
                            "read_base_handbook", "read_evolving_handbook"]},
     )
@@ -107,7 +102,7 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
         name="proposer",
         instruction=templates.get("proposer", "proposer"),
         servers=[],
-        model=STARTUP_MODEL,
+        model=model,
         tools={"records": ["append_testimony", "write_evolving_handbook", "read_testimony",
                            "list_testimony", "read_base_handbook", "read_evolving_handbook"]},
     )
@@ -118,7 +113,7 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
         name="grill",
         instruction=templates.get("grill", "grill"),
         servers=[],
-        model=STARTUP_MODEL,
+        model=model,
         tools={"records": ["read_testimony", "list_testimony", "read_base_handbook",
                            "read_evolving_handbook"]},
     )
@@ -129,7 +124,7 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
         name="spec",
         instruction=templates.get("spec", "spec"),
         servers=[],
-        model=STARTUP_MODEL,
+        model=model,
         tools={"records": ["write_spec", "read_testimony", "list_testimony",
                            "read_base_handbook", "read_evolving_handbook"]},
     )
@@ -140,7 +135,7 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
         name="tickets",
         instruction=templates.get("tickets", "tickets"),
         servers=[],
-        model=STARTUP_MODEL,
+        model=model,
         tools={"records": ["write_tickets", "read_spec", "read_testimony", "list_testimony",
                            "read_base_handbook", "read_evolving_handbook"]},
     )
@@ -151,7 +146,7 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
         name="implement",
         instruction=templates.get("implement", "implement"),
         servers=[],
-        model=STARTUP_MODEL,
+        model=model,
         tools={"machine": ["get_state", "set_knob", "set_knobs", "bake"]},
     )
     async def implement_node(topic: str = "") -> str:
@@ -161,12 +156,15 @@ def define_agents(fast: FastAgent, templates=None) -> FastAgent:
 
 
 def build_fast_agent(config: RunConfig, templates: dict[str, str] | None = None) -> FastAgent:
-    """The six nodes.
+    """The six nodes, each on the run's model.
 
-    The nodes name no servers: a run attaches its own server objects for each
-    node's turn, so the same definitions serve a YAML-free run and a test.
+    The nodes name no servers: the run attaches its own server for each node's
+    turn, so the same definitions serve a YAML-free run and a test. A test that
+    replaces the model does so after this, and its answers replace the model's.
     """
-    return define_agents(FastAgent("bread-oven"), templates or read_templates(config))
+    if not config.model:
+        raise ValueError("a run needs a model: set BREAD_MODEL or pass --model")
+    return define_agents(FastAgent("bread-oven"), templates or read_templates(config), model=config.model)
 
 
 def start_servers(config: RunConfig, round_index: int) -> dict:
@@ -191,6 +189,8 @@ def start_servers(config: RunConfig, round_index: int) -> dict:
         seed=config.taste_seed,
         log_path=config.log_root / f"round-{round_index:02d}.jsonl",
     )
+    # Each bake writes its result here; the implement node reads that file.
+    matrix.result_dir = config.records_root / "results"
 
     records_http = HttpServer(
         "records", as_fastmcp("records", build_records_server(store, RoundCursor(round_index)))
@@ -258,10 +258,22 @@ async def play(state: dict, node: str, topic: str, controls: dict | None) -> Bas
             if fast is None or state["app"] is None:
                 raise NodeFailure("the round has no running app")
             text = await node_turn(fast, node, topic, model)
-            value = model.model_validate(json.loads(text))
-    except (ValidationError, json.JSONDecodeError, EdgeFailed) as exc:
+            try:
+                value = model.model_validate(json.loads(text))
+            except (ValidationError, json.JSONDecodeError):
+                if node != "implement":
+                    raise
+                # The bake's result is a file the machine wrote. Whatever the
+                # model says after its last tool call, the edge carries what
+                # the machine recorded, not a restatement of it.
+                round_id = f"round-{state['round_index']:02d}"
+                result_path = state["config"].records_root / "results" / f"{round_id}.json"
+                if not result_path.exists():
+                    raise
+                value = model.model_validate(json.loads(result_path.read_text(encoding="utf-8")))
+    except (ValidationError, json.JSONDecodeError) as exc:
         _fail(state, node, model, topic, exc)
-        raise
+        raise EdgeFailed(f"{node} did not return {model.__name__}: {exc}") from exc
     state["edges"].append({"node": node, "input": topic, "output": value.model_dump()})
     return value
 
@@ -380,6 +392,46 @@ async def run_round(
     state = prepare(config)
     state["fast"] = fast
     round_id = f"round-{state['round_index']:02d}"
+    try:
+        outcome = await _run_in_app(fast, state, round_id, controls, model_factory)
+    except Exception as exc:
+        # A round that dies part way still leaves a record of where it stopped,
+        # so the summary shows the failure instead of losing the round.
+        outcome = _record_failure(config, state, round_id, exc)
+        write_summary(config, state["store"])
+        write_logs(config, state)
+        outcome["summary"] = str(config.records_root / "summary.json")
+        return outcome
+    summary = write_summary(config, state["store"])
+    support = write_logs(config, state)
+    outcome["summary"] = str(summary)
+    outcome["support"] = support
+    return outcome
+
+
+def _record_failure(config: RunConfig, state: dict, round_id: str, exc: Exception) -> dict:
+    directory = state["store"].round_dir(state["round_index"])
+    directory.mkdir(parents=True, exist_ok=True)
+    outcome = {
+        "round_id": round_id,
+        "round_index": state["round_index"],
+        "failed": f"{type(exc).__name__}: {exc}",
+        "reached": [edge["node"] for edge in state["edges"]],
+        "knobs": None,
+        "features": None,
+        "score": None,
+    }
+    (directory / "round.json").write_text(json.dumps(outcome, indent=2) + "\n", encoding="utf-8")
+    return outcome
+
+
+async def _run_in_app(
+    fast: FastAgent,
+    state: dict,
+    round_id: str,
+    controls: dict | None,
+    model_factory,
+) -> dict:
     async with fast.run() as app:
         state["app"] = app
         attach(fast, state)
@@ -387,14 +439,9 @@ async def run_round(
             for node in NODES:
                 app.get_agent(node)._llm = model_factory(node)
         try:
-            outcome = await run_chain(state, Intent(round_id=round_id), controls)
+            return await run_chain(state, Intent(round_id=round_id), controls)
         finally:
             detach(fast)
-    summary = write_summary(config, state["store"])
-    support = write_logs(config, state)
-    outcome["summary"] = str(summary)
-    outcome["support"] = support
-    return outcome
 
 
 def write_logs(config: RunConfig, state: dict) -> dict:
@@ -408,6 +455,8 @@ def write_logs(config: RunConfig, state: dict) -> dict:
         encoding="utf-8",
     )
     lines = [f"# Round {round_index:02d}", ""]
+    if not state["edges"]:
+        lines.append("- (the round stopped before any edge was recorded)")
     for edge in state["edges"]:
         node = edge["node"]
         output = edge["output"]

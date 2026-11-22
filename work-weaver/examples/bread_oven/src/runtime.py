@@ -62,11 +62,13 @@ def tools_for(node: str) -> dict[str, list[str]]:
         "grill": [],
         "spec": ["write_spec"],
         "tickets": ["write_tickets"],
-        "implement": ["append_testimony"],
+        # implement writes no record: its account of the round is the bake's
+        # own result file, which the machine server writes.
+        "implement": [],
     }
     filters: dict[str, list[str]] = {"records": reads + writes[node]}
     if node == "implement":
-        filters["machine"] = ["get_state", "set_knob", "set_knobs", "bake"]
+        filters["machine"] = ["get_state", "set_knob", "set_knobs", "bake", "read_result"]
     return filters
 
 
@@ -127,17 +129,24 @@ async def node_turn(fast, node: str, topic: str, model, request_params: RequestP
         agent.config.tools = saved_tools
     text = (reply.last_text() or "").strip()
     if not text:
-        raise NodeFailure(f"{node} returned nothing; the model call did not answer")
+        # An empty answer is the provider ending the turn with nothing; try once
+        # more before the round is called dead, and never retry past that.
+        retry = await agent.generate(
+            topic or f"Round {state['round_index']}",
+            request_params=request_params or RequestParams(use_history=False, max_iterations=8),
+        )
+        text = (retry.last_text() or "").strip()
+        state["trace"].append({"node": node, "kind": "retry", "text": text[:200]})
+    if not text:
+        raise NodeFailure(f"{node} returned nothing twice; the model call did not answer")
     if text.startswith("```"):
         # A model may wrap its JSON in a fence despite the instruction; the fence
         # is not the model's answer, so it comes off before validation.
         text = text.split("\n", 1)[1] if "\n" in text else text
         text = text.rsplit("```", 1)[0].strip()
     state["trace"].append({"node": node, "kind": "reply", "text": text})
-    try:
-        model.model_validate(json.loads(text))
-    except (ValidationError, json.JSONDecodeError) as exc:
-        raise EdgeFailed(f"{node} did not return {model.__name__}: {exc}") from exc
+    # The chain validates the value against the edge's model, because only the
+    # chain knows whether a node may answer with something other than its words.
     return text
 
 

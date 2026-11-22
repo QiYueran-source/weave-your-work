@@ -67,12 +67,15 @@ class RunConfig:
     @classmethod
     def from_env(cls) -> RunConfig:
         def path(name: str, default: Path) -> Path:
-            return Path(os.environ.get(name, default)).expanduser().resolve()
+            # A relative path in .env means "beside the example", wherever the
+            # round was started from.
+            raw = Path(os.environ.get(name, default)).expanduser()
+            return (raw if raw.is_absolute() else EXAMPLE_ROOT / raw).resolve()
 
         return cls(
-            records_root=path("BREAD_RECORDS", EXAMPLE_ROOT / "runs"),
-            log_root=path("BREAD_LOGS", EXAMPLE_ROOT / "logs"),
-            handbooks_root=path("BREAD_HANDBOOKS", EXAMPLE_ROOT / "handbooks"),
+            records_root=path("BREAD_RECORDS", Path("runs")),
+            log_root=path("BREAD_LOGS", Path("logs")),
+            handbooks_root=path("BREAD_HANDBOOKS", Path("handbooks")),
             templates_root=path("BREAD_TEMPLATES", EXAMPLE_ROOT / "templates"),
             model=os.environ.get("BREAD_MODEL", "generic.gpt-4.1"),
             grill_max_rounds=int(os.environ.get("BREAD_GRILL_ROUNDS", "3")),

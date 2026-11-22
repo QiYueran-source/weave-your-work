@@ -42,7 +42,7 @@ def make_config(tmp_path: Path) -> RunConfig:
 async def tools_for_node(tmp_path: Path, node: str) -> list[str]:
     config = make_config(tmp_path)
     state = prepare(config)
-    fast = define_agents(FastAgent("bread-oven"), read_templates(config))
+    fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
     async with fast.run() as app:
         agent = app.get_agent(node)
         spy = SpyModel()
@@ -84,14 +84,14 @@ def test_the_grill_only_reads(tmp_path):
     )
 
 
-def test_implement_holds_the_machine_and_its_own_write(tmp_path):
+def test_implement_holds_the_machine_and_no_record_write(tmp_path):
     names = asyncio.run(tools_for_node(tmp_path, "implement"))
     assert names == [
         "machine__bake",
         "machine__get_state",
+        "machine__read_result",
         "machine__set_knob",
         "machine__set_knobs",
-        "records__append_testimony",
         "records__list_testimony",
         "records__read_base_handbook",
         "records__read_evolving_handbook",
@@ -99,8 +99,7 @@ def test_implement_holds_the_machine_and_its_own_write(tmp_path):
         "records__read_testimony",
         "records__read_tickets",
     ]
-    assert "records__write_spec" not in names
-    assert "records__write_evolving_handbook" not in names
+    assert not any(name.startswith("records__write") or name == "records__append_testimony" for name in names)
 
 
 def test_a_node_cannot_reach_a_server_it_was_not_given(tmp_path):
@@ -109,7 +108,7 @@ def test_a_node_cannot_reach_a_server_it_was_not_given(tmp_path):
     async def run():
         config = make_config(tmp_path)
         state = prepare(config)
-        fast = define_agents(FastAgent("bread-oven"), read_templates(config))
+        fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
         async with fast.run() as app:
             agent = app.get_agent("grill")
             attached = await bind_tools(agent, state)

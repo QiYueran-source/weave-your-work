@@ -32,6 +32,8 @@ class Machine:
     last: BakeResult | None = None
     log_path: Path | None = None
     state_path: Path | None = None
+    result_dir: Path | None = None
+    """Where each bake's result is written, one file per round, for a reader."""
 
     def save(self) -> None:
         """Write the knobs and the bake count, so the next round starts where this one ended."""
@@ -86,6 +88,13 @@ class Machine:
         self.save()
         result = BakeResult(round_id=round_id, knobs=dict(self.knobs), features=features, score=score)
         self.last = result
+        if self.result_dir is not None:
+            # The bake's own record, written where a reader can open it. The
+            # implement node reads this file rather than restating its contents.
+            self.result_dir.mkdir(parents=True, exist_ok=True)
+            (self.result_dir / f"{round_id}.json").write_text(
+                result.model_dump_json(indent=2) + "\n", encoding="utf-8"
+            )
         if self.log_path is not None:
             self.log_path.parent.mkdir(parents=True, exist_ok=True)
             with self.log_path.open("a", encoding="utf-8") as handle:
@@ -151,5 +160,15 @@ def build_server(machine: Machine):
             return machine.bake(round_id).model_dump()
         except ValidationError as exc:  # a taste-program bug, not a chain decision
             return {"error": str(exc), "round_id": round_id}
+
+    @server.tool(name="read_result")
+    def read_result(round_id: str) -> dict:
+        """Read a bake's result file: the knobs sent, the features, and the score."""
+        if machine.result_dir is None:
+            return {"error": "results are not kept on disk in this run"}
+        path = machine.result_dir / f"{round_id}.json"
+        if not path.exists():
+            return {"error": f"no result file for {round_id}", "path": str(path)}
+        return json.loads(path.read_text(encoding="utf-8"))
 
     return server

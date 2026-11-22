@@ -39,6 +39,12 @@ The evolving handbook is yours: keep at most 30 entries, tag each with the round
 that produced it, and delete what later rounds disprove. Everything earlier
 rounds wrote is readable.
 
+Each record takes writes only while the node that owns it stands: the
+testimony's pen closes when the grill ends, then the spec's when spec ends, then
+the tickets' when tickets ends. A write after that is refused, and the refusal
+is expected, not a failure; the tools each node holds already tell you which
+writes it may make.
+
 ## How to answer
 
 Return one JSON object and nothing else, with no surrounding prose and no code

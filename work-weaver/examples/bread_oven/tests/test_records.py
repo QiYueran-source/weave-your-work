@@ -97,13 +97,16 @@ def test_the_handbook_says_the_machine_bakes_a_bad_run_anyway(tmp_path):
     assert "will bake a run this short or this" in handbook
 
     machine = Machine(seed=7)
-    # Just inside the range, in the stretch the handbook calls raw: accepted and baked.
+    # Inside the range but in the stretch the handbook calls raw: accepted, baked,
+    # and scored far below a loaf that is merely untuned.
+    from src.config import DEFAULT_KNOBS
+    from src.machine.taste import bake as taste_bake
+
     machine.set_knob("bake_time", KNOBS["bake_time"].low)
     result = machine.bake("round-01")
     assert result.score is not None
-    assert result.features["chewiness"] < max(
-        score for name, score in result.features.items() if name != "chewiness"
-    )
+    untuned, untuned_score = taste_bake(DEFAULT_KNOBS, seed=7, round_index=1)
+    assert result.score < untuned_score
 
     # Outside the range: refused, and the knob keeps its value.
     kept = machine.knobs["bake_time"]

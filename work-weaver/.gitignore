@@ -1,4 +1,18 @@
+# A local interpreter.
 .venv/
+
+# fast-agent's own session store and log, written where a round starts.
 .fast-agent/
+
+# A filled-in copy of examples/bread_oven/.env.example: the endpoint and its
+# key. The round starts here, so this is where fast-agent reads it from.
+.env
+.env.*
+!.env.example
+
+# pytest's cache.
+.pytest_cache/
+
+# Python bytecode.
 __pycache__/
 *.pyc

@@ -17,9 +17,10 @@ A bake that has not been tuned yet:
 | `water_amount` | 65 % of the flour weight |
 | `sugar_amount` | 5 % of the flour weight |
 
-This is a workable loaf, not a good one. None of these values is the best
-setting for its knob; each sits somewhere in the middle of what the feature it
-drives responds to.
+This is a mediocre loaf, not a good one. None of these values is the best
+setting for its knob, and several of them are plainly off: a bake is scored on
+each feature from 0 to 1 against what that feature could reach, so a start like
+this one scores low and leaves a lot of room to climb.
 
 ## What each knob does
 
@@ -50,11 +51,11 @@ Two things follow from this table and matter more than any single row:
 - A bake much shorter than bread needs, or an oven much lower, leaves the loaf
   raw. Much above, it scorches. **The machine will bake a run this short or this
   hot anyway**: it refuses only values outside the range in the table above. A
-  bake inside the range but inside a bad stretch still bakes, and scores badly:
-  the feature that knob leads comes out far lower than the others would. Treat a
-  poor score near an end of a range as the boundary showing itself, not as bad
-  luck, and a feature ruined at one end cannot be rescued by raising another
-  knob.
+  bake inside the range but off in that stretch still bakes and comes out a
+  failed loaf: when any knob is off its working stretch the whole bake scores
+  near zero, not just the feature that knob leads. Treat a score near zero as
+  the boundary showing itself, not as bad luck, and a loaf ruined that way
+  cannot be rescued by raising another knob.
 - These five knobs are all there is. A bake sets their values; it cannot add a
   knob, change a range, or reshape the schedule.
 - Each bake is judged by a taste that differs a little from the last one. One
