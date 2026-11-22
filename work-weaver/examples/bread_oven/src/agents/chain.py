@@ -226,7 +226,6 @@ def prepare(config: RunConfig) -> dict:
             "fast": None,
             "app": None,
             "cursor": RoundCursor(round_index),
-            "machine_calls": _MachineCalls(state["machine"], round_index),
             "edges": [],
             "trace": [],
         }
@@ -471,17 +470,3 @@ def write_logs(config: RunConfig, state: dict) -> dict:
     return {"trace": str(directory / f"round-{round_index:02d}.trace.json"), "log": str(path)}
 
 
-class _MachineCalls:
-    """The machine's tools as plain calls, for a scripted implement model."""
-
-    def __init__(self, machine: Machine, round_index: int) -> None:
-        self.machine = machine
-        self.round_index = round_index
-
-    def bake(self) -> dict:
-        return self.machine.bake(f"round-{self.round_index:02d}").model_dump()
-
-    def set_knobs(self, values: dict[str, float]) -> dict:
-        for name, value in values.items():
-            self.machine.set_knob(name, float(value))
-        return {"knobs": dict(self.machine.knobs)}

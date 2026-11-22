@@ -70,7 +70,21 @@ class Machine:
             "last_score": self.last.score if self.last else None,
             "last_round_id": self.last.round_id if self.last else None,
             "bake_count": self.round_index,
+            "results_on_disk": len(self.history()),
         }
+
+    def history(self) -> list[dict]:
+        """Every bake whose result is on disk, oldest first."""
+
+        if self.result_dir is None or not self.result_dir.exists():
+            return []
+        entries: list[dict] = []
+        for path in sorted(self.result_dir.glob("*.json")):
+            try:
+                entries.append(json.loads(path.read_text(encoding="utf-8")))
+            except (OSError, ValueError):
+                continue
+        return entries
 
     def set_knob(self, name: str, value: float) -> dict:
         if name not in KNOBS:
@@ -163,12 +177,22 @@ def build_server(machine: Machine):
 
     @server.tool(name="read_result")
     def read_result(round_id: str) -> dict:
-        """Read a bake's result file: the knobs sent, the features, and the score."""
+        """Read one bake's result: the knobs sent, the five features, and the score."""
         if machine.result_dir is None:
             return {"error": "results are not kept on disk in this run"}
         path = machine.result_dir / f"{round_id}.json"
         if not path.exists():
             return {"error": f"no result file for {round_id}", "path": str(path)}
         return json.loads(path.read_text(encoding="utf-8"))
+
+    @server.tool(name="list_results")
+    def list_results() -> dict:
+        """List every bake already made, oldest first: its round, knobs, features, and score."""
+        history = machine.history()
+        return {
+            "bakes": history,
+            "count": len(history),
+            "best": max(history, key=lambda entry: entry.get("score") or 0.0) if history else None,
+        }
 
     return server

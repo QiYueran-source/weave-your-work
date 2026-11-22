@@ -103,6 +103,23 @@ After a run, open:
 | `BREAD_SEED` | `7` | the seed for each bake's taste |
 | `BREAD_VERBOSE` | off | show the agents' conversation |
 
+## Continuing a run
+
+A run leaves everything the next one needs on disk: the knobs and the bake
+count in `runs/machine-state.json`, each bake's result in `runs/results/`, each
+round's records in `runs/round-NN/`, and what the chain learned in
+`handbooks/evolving.md`. Starting another process in the same directory carries
+on from there — that is the checkpoint.
+
+```sh
+./run_bread_oven.sh --rounds 5 --continue     # next five rounds of the same run
+```
+
+`--continue` is a statement of intent, not a switch: the round number always
+comes from what is on disk, so a plain `--rounds 5` continues the same run. A
+failed round keeps its number, because its bake still happened. To start over,
+point `BREAD_RECORDS` at a fresh directory.
+
 ## The handbooks
 
 `templates/base.md` is the person's handbook: the five-starting values, what each

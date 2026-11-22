@@ -17,6 +17,7 @@ last one stopped without keeping anything in memory:
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -64,8 +65,29 @@ class RecordStore:
         return sorted(found)
 
     def next_round_index(self) -> int:
-        found = self.round_dirs()
-        return found[-1][0] + 1 if found else 1
+        """The next number, counted over everything the run left behind.
+
+        A round that died before writing its records still has a bake, and a
+        bake counts: the number comes from the machine's bake count and the
+        result files as well as the round directories, so a failed round is
+        never reused by mistake.
+        """
+
+        seen = [index for index, _ in self.round_dirs()]
+        results = self.config.records_root / "results"
+        if results.exists():
+            for path in results.glob("round-*.json"):
+                try:
+                    seen.append(int(path.stem.split("-")[1]))
+                except (IndexError, ValueError):
+                    continue
+        state = self.config.records_root / "machine-state.json"
+        if state.exists():
+            try:
+                seen.append(int(json.loads(state.read_text(encoding="utf-8")).get("round_index", 0)))
+            except (OSError, ValueError, TypeError):
+                pass
+        return max(seen, default=0) + 1
 
     def round_dir(self, round_index: int) -> Path:
         return self.config.records_root / f"round-{round_index:02d}"

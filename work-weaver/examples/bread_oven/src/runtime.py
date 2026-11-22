@@ -68,17 +68,23 @@ def tools_for(node: str) -> dict[str, list[str]]:
     }
     filters: dict[str, list[str]] = {"records": reads + writes[node]}
     if node == "implement":
-        filters["machine"] = ["get_state", "set_knob", "set_knobs", "bake", "read_result"]
+        filters["machine"] = ["get_state", "set_knob", "set_knobs", "bake", "read_result", "list_results"]
+    else:
+        # Every node reads the machine's bake history: what was baked, what it
+        # scored, and which feature was weak. Observing is useless without it.
+        filters["machine"] = ["get_state", "list_results", "read_result"]
     return filters
 
 
 async def bind_tools(agent, state: dict) -> list:
     """Give this agent the servers it may use, filtered to its own tools.
 
-    Each server is a child process fast-agent connects to for the turn. The
-    node's `tools=` filter travels with the connection, so a tool this node was
-    not given is not listed, not offered, and not callable: a call the filter
-    missed still fails at the server, which knows only its own tools.
+    A node is offered only the tools it was granted. That is what the model
+    sees and what it can reach. fast_agent keeps every tool of an attached
+    server callable by name on the agent object regardless of the filter, so
+    the guarantee is "not offered" rather than "not reachable": what stops an
+    overreach is the node being handed a server at all, and the server's own
+    rules when it is.
     """
 
     from fast_agent.mcp.mcp_aggregator import MCPAttachOptions

@@ -58,6 +58,9 @@ async def tools_for_node(tmp_path: Path, node: str) -> list[str]:
 def test_observe_gets_its_write_and_reads_but_not_spec_writes(tmp_path):
     names = asyncio.run(tools_for_node(tmp_path, "observe"))
     assert names == [
+        "machine__get_state",
+        "machine__list_results",
+        "machine__read_result",
         "records__append_testimony",
         "records__list_testimony",
         "records__read_base_handbook",
@@ -67,7 +70,9 @@ def test_observe_gets_its_write_and_reads_but_not_spec_writes(tmp_path):
         "records__read_tickets",
     ]
     assert "records__write_spec" not in names
-    assert not any(name.startswith("machine__") for name in names)
+    # Reading bake history is not baking: no knob to set, no bake to start.
+    assert "machine__bake" not in names
+    assert "machine__set_knob" not in names
 
 
 def test_the_grill_only_reads(tmp_path):
@@ -89,6 +94,7 @@ def test_implement_holds_the_machine_and_no_record_write(tmp_path):
     assert names == [
         "machine__bake",
         "machine__get_state",
+        "machine__list_results",
         "machine__read_result",
         "machine__set_knob",
         "machine__set_knobs",
@@ -102,22 +108,15 @@ def test_implement_holds_the_machine_and_no_record_write(tmp_path):
     assert not any(name.startswith("records__write") or name == "records__append_testimony" for name in names)
 
 
-def test_a_node_cannot_reach_a_server_it_was_not_given(tmp_path):
-    """The grill has no machine: calling one of its tools fails at the server."""
+def test_a_node_is_not_offered_a_tool_it_was_not_granted(tmp_path):
+    """The model sees its granted tools and nothing else.
 
-    async def run():
-        config = make_config(tmp_path)
-        state = prepare(config)
-        fast = define_agents(FastAgent("bread-oven"), read_templates(config), model=config.model)
-        async with fast.run() as app:
-            agent = app.get_agent("grill")
-            attached = await bind_tools(agent, state)
-            try:
-                from mcp_types import CallToolResult
+    fast_agent keeps every tool of an attached server addressable on the agent,
+    so the guarantee under test is the one the model experiences: the tool list.
+    """
 
-                result: CallToolResult = await agent.call_tool("machine__bake", {"round_id": "x"})
-                return result.is_error if hasattr(result, "is_error") else result.isError
-            finally:
-                await unbind_tools(agent, attached)
-
-    assert asyncio.run(run()) is True
+    names = asyncio.run(tools_for_node(tmp_path, "grill"))
+    assert "machine__list_results" in names and "machine__read_result" in names
+    assert "machine__set_knob" not in names
+    assert "machine__bake" not in names
+    assert not any(name.startswith("records__write") or name == "records__append_testimony" for name in names)

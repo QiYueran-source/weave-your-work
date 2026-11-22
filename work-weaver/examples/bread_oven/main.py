@@ -45,6 +45,18 @@ def load_env() -> None:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run one round of the bread machine.")
     parser.add_argument("--rounds", type=int, default=1, help="how many rounds to run, one process each")
+    parser.add_argument(
+        "--continue",
+        dest="continue_run",
+        action="store_true",
+        help="continue the run already in the records directory instead of starting a new one",
+    )
+    parser.add_argument(
+        "--from-round",
+        type=int,
+        default=None,
+        help="start numbering at this round, continuing the run (default: the next free number)",
+    )
     parser.add_argument("--model", default=None, help="model for every node, e.g. generic.gpt-4.1")
     parser.add_argument("--records", default=None, help="where round records are written")
     parser.add_argument("--logs", default=None, help="where the run's logs are written")
@@ -72,6 +84,21 @@ def config_from_args(args: argparse.Namespace) -> RunConfig:
     if args.verbose:
         os.environ["BREAD_VERBOSE"] = "1"
     return RunConfig.from_env()
+
+
+def resume_point(config: RunConfig) -> int:
+    """The round number the records directory is ready for.
+
+    Everything a round needs to carry on is already on disk: the machine's knobs
+    and bake count in machine-state.json, each bake's result in results/, each
+    round's records in round-NN/, and what the chain learned in the evolving
+    handbook. Continuing means starting from this number in the same directory.
+    """
+
+    from src.machine.records import RecordStore
+
+    store = RecordStore(config)
+    return store.next_round_index()
 
 
 def check(config: RunConfig) -> list[str]:
@@ -117,6 +144,14 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
 
+    if args.continue_run or args.from_round is not None:
+        resume = resume_point(config)
+        print(
+            json.dumps(
+                {"continuing": True, "next_round": resume, "records": str(config.records_root)}
+            ),
+            file=sys.stderr,
+        )
     failed = 0
     for _ in range(max(1, args.rounds)):
         fast = build_fast_agent(config)
@@ -124,6 +159,13 @@ def main(argv: list[str] | None = None) -> int:
         if outcome.get("failed"):
             failed += 1
             print(json.dumps({"round": outcome["round_id"], "failed": outcome["failed"]}, indent=2))
+            # A failed round keeps its number: the next one continues after it.
+            try:
+                from src.machine.records import RecordStore
+
+                RecordStore(config)
+            except Exception:
+                pass
             continue
         print(
             json.dumps(
