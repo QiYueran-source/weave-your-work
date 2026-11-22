@@ -113,6 +113,26 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
   - Answer: 先不做，先用固定旋钮把「调参」验证清楚.
   - Parent: Q12
 
+### Round 5
+
+- **Q16** What the knowledge gives
+  - Question: The base knowledge is a pair of human-written handbooks: one on the fixed target, the bake's quality features and the knobs; one on the chain's own constraints. Should it hold qualitative priors only, the simulator's real parameters, or nothing?
+  - Recommended: Qualitative priors only, with no numeric optimum and no simulator parameter.
+  - Answer: 不能给仿真器参数，因为现实世界没有一个确切的面包建模，是不可计算的，不能给 ai。提供的知识可看作人类面包师的经验，如每个旋钮会影响哪些特征，每个特征的变化和某个旋钮之间的关系（如 温度升高，酥度先变大后变小），一些底线（如至少要烤制 3min，不然是生的，最多烤制 5min，不然就糊了，可对应先增后减函数的两个零点）。
+  - Parent: Q13
+
+- **Q17** What the proof can see
+  - Question: Beside the three rounds of records, should the proof keep the knob values and the per-round score table?
+  - Recommended: Keep both, so a reader can see whether the third round adjusts near the second instead of moving at random.
+  - Answer: spec 和 tickets 会记录 agent 的操作，testimony 会记录 agent 的思考，知识手册沉淀他的知识。还有系统提示词（不可变）用来规定目标和 RSI 约束，最后是可调用的接口信息。其他不可见。
+  - Parent: Q15
+
+- **Q18** How the chain is orchestrated
+  - Question: fast-agent's declarative workflows (chain, evaluator-optimizer, orchestrator, router) send a message to the next agent and keep no state; none of them chooses the next node by the event a node produced. Should the chain be a code state machine over fast-agent nodes, a fast-agent workflow graph, or does the shape not matter as long as it runs?
+  - Recommended: A code state machine whose nodes are fast-agent agents.
+  - Answer: 这个我要研究一下，这是重点。
+  - Parent: Q12
+
 ## Settled
 
 - This design starts again: the earlier testimony and draft spec are input only and do not constrain it (from Q1)
@@ -127,6 +147,9 @@ How Work Weaver should let a single-button bread machine improve its own bakes: 
 - Randomness is a small perturbation on each feature's output; there is no hidden environment parameter, no observation noise layer, and no drift between rounds (from Q13)
 - The taste weights are drawn once per bake and read as that bake's user's average taste (from Q14)
 - The action set is fixed for this proof: the chain adjusts knob values and does not add, remove, or restructure the bake (from Q15)
+- The base knowledge is a baker's handbook: which knobs move which features, the shape of each knob-to-feature relation such as crispness rising then falling as temperature rises, and hard limits such as a bake shorter than three minutes being raw and one longer than five burning; it never holds the simulator's parameters (from Q16)
+- What the chain reads: its two handbooks (the fixed target with its features and knobs, the chain's own constraints), an immutable system prompt stating the goal and the self-evolution limits, and the callable interface; what it writes: spec and tickets for its actions, testimony for its reasoning, and its learned knowledge in the handbook it is allowed to edit (from Q17)
+- The simulator's parameters, the score's internals, and the records of the current round are not visible to the chain (from Q17)
 
 ## Open
 
