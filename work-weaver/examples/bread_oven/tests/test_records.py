@@ -87,6 +87,31 @@ class pytest_raises:
         return exc_type is not None and issubclass(exc_type, self.exc)
 
 
+def test_the_handbook_says_the_machine_bakes_a_bad_run_anyway(tmp_path):
+    """The handbook's limit is a score, not a refusal: the machine takes any value in range."""
+
+    from src.config import KNOBS
+    from src.machine.server import Machine
+
+    handbook = (Path(__file__).resolve().parents[1] / "templates" / "base.md").read_text(encoding="utf-8")
+    assert "will bake a run this short or this" in handbook
+
+    machine = Machine(seed=7)
+    # Just inside the range, in the stretch the handbook calls raw: accepted and baked.
+    machine.set_knob("bake_time", KNOBS["bake_time"].low)
+    result = machine.bake("round-01")
+    assert result.score is not None
+    assert result.features["chewiness"] < max(
+        score for name, score in result.features.items() if name != "chewiness"
+    )
+
+    # Outside the range: refused, and the knob keeps its value.
+    kept = machine.knobs["bake_time"]
+    with pytest_raises(Exception):
+        machine.set_knob("bake_time", KNOBS["bake_time"].high + 50)
+    assert machine.knobs["bake_time"] == kept
+
+
 def test_the_handbook_gives_starting_values_and_no_optimum(tmp_path):
     handbook = (Path(__file__).resolve().parents[1] / "templates" / "base.md").read_text(encoding="utf-8")
     from src.config import DEFAULT_KNOBS

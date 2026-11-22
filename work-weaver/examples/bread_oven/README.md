@@ -94,8 +94,12 @@ there.
 during the grill: at most thirty entries, each tagged with the round that
 produced it, and it may delete entries that later rounds disprove.
 
-The tests check that the base handbook carries the starting values and leaks
-none of the taste program's parameters.
+A knob's range is hard: `set_knob` refuses a value outside it. The stretch
+inside the range where a bake comes out raw or scorched is not hard: the machine
+bakes it and the score drops. The handbook says so, and a test pins both halves.
+
+The tests also check that the base handbook carries the starting values and
+leaks none of the taste program's parameters.
 
 ## The taste program
 

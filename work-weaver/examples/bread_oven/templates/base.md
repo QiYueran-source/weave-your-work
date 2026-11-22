@@ -48,8 +48,13 @@ Two things follow from this table and matter more than any single row:
 ## Limits
 
 - A bake much shorter than bread needs, or an oven much lower, leaves the loaf
-  raw. Much above, it scorches. Both ends of a range are failures, not choices,
-  and a feature ruined at one end cannot be rescued by raising another knob.
+  raw. Much above, it scorches. **The machine will bake a run this short or this
+  hot anyway**: it refuses only values outside the range in the table above. A
+  bake inside the range but inside a bad stretch still bakes, and scores badly:
+  the feature that knob leads comes out far lower than the others would. Treat a
+  poor score near an end of a range as the boundary showing itself, not as bad
+  luck, and a feature ruined at one end cannot be rescued by raising another
+  knob.
 - These five knobs are all there is. A bake sets their values; it cannot add a
   knob, change a range, or reshape the schedule.
 - Each bake is judged by a taste that differs a little from the last one. One
