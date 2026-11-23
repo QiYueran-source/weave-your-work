@@ -29,22 +29,27 @@ class KnobRange(BaseModel):
 # The five knobs, fixed for this version. Each dominates one feature:
 # temperature -> crispness, bake time -> chewiness, proofing time -> softness,
 # water amount -> moistness, sugar amount -> sweetness.
+#
+# The range is the machine's own limit: a value outside it is refused, so the
+# rounds never bake a loaf that is raw or scorched at the ends. Inside the range
+# every bake is a real loaf, and the score moves continuously with the knobs.
+# Every peak sits inside its range, so each best value stays reachable.
 KNOBS: dict[str, KnobRange] = {
-    "oven_temperature": KnobRange(name="oven_temperature", unit="degC", low=150.0, high=250.0),
-    "bake_time": KnobRange(name="bake_time", unit="min", low=20.0, high=70.0),
-    "proofing_time": KnobRange(name="proofing_time", unit="min", low=20.0, high=120.0),
-    "water_amount": KnobRange(name="water_amount", unit="pct_of_flour", low=50.0, high=90.0),
-    "sugar_amount": KnobRange(name="sugar_amount", unit="pct_of_flour", low=0.0, high=15.0),
+    "oven_temperature": KnobRange(name="oven_temperature", unit="degC", low=195.0, high=240.0),
+    "bake_time": KnobRange(name="bake_time", unit="min", low=30.0, high=62.0),
+    "proofing_time": KnobRange(name="proofing_time", unit="min", low=20.0, high=46.0),
+    "water_amount": KnobRange(name="water_amount", unit="pct_of_flour", low=56.0, high=88.0),
+    "sugar_amount": KnobRange(name="sugar_amount", unit="pct_of_flour", low=3.0, high=14.0),
 }
 
 FEATURES: tuple[str, ...] = ("crispness", "moistness", "softness", "chewiness", "sweetness")
 
-# A bland starting point: not the worst a bake can be, and not near the optimum
-# of any knob, so the first round has something to learn.
+# The recipe a person would try before tuning anything: inside every range, far
+# from every peak, and worth about 0.5 on the scale. The first round starts here.
 DEFAULT_KNOBS: dict[str, float] = {
     "oven_temperature": 200.0,
     "bake_time": 40.0,
-    "proofing_time": 60.0,
+    "proofing_time": 20.0,
     "water_amount": 65.0,
     "sugar_amount": 5.0,
 }

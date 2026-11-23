@@ -33,3 +33,6 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# A second run set, kept beside the first for comparison.
+smooth/

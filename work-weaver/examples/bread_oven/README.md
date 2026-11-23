@@ -122,19 +122,20 @@ point `BREAD_RECORDS` at a fresh directory.
 
 ## The handbooks
 
-`templates/base.md` is the person's handbook: the five-starting values, what each
-knob does to its feature, the range of each knob, and the two ends where the
-loaf stops being bread. It never says where a knob's best value is. The records
-server copies it into `handbooks/base.md` on first use, and no tool can write
-there.
+`templates/base.md` is the person's handbook: the five starting values, what each
+knob does to its feature, and the range of each knob. It never says where a
+knob's best value is. The records server copies it into `handbooks/base.md` on
+first use, and no tool can write there.
 
 `handbooks/evolving.md` is the chain's own handbook. The proposer writes it
 during the grill: at most thirty entries, each tagged with the round that
 produced it, and it may delete entries that later rounds disprove.
 
-A knob's range is hard: `set_knob` refuses a value outside it. The stretch
-inside the range where a bake comes out raw or scorched is not hard: the machine
-bakes it and the score drops. The handbook says so, and a test pins both halves.
+A knob's range is the machine's own limit: `set_knob` refuses a value outside it
+and changes nothing. Inside the range every bake is a real loaf, and the score
+falls away smoothly as a knob leaves the stretch its feature likes, so a round
+never has to guess whether a bad score meant a broken knob or a bad loaf. A test
+pins the refusal and the smooth fall.
 
 The tests also check that the base handbook carries the starting values and
 leaks none of the taste program's parameters.
@@ -143,8 +144,10 @@ leaks none of the taste program's parameters.
 
 `src/machine/taste.py` follows the outline the spec records: five features from
 0 to 1, each dominated by one knob along a single-peaked curve, no interaction,
-a five-percent perturbation, and one taste draw per bake. The exact formulas are
-still to be supplied by the spec's author; they replace that one file.
+a three-percent perturbation on each feature, one taste draw per bake, and a
+score that is the weighted mean of the features with no offset. The exact
+formulas are still to be supplied by the spec's author; they replace that one
+file.
 
 ## Tests
 

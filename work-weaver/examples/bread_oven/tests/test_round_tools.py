@@ -20,7 +20,7 @@ from src.config import RunConfig
 KNOBS = {
     "oven_temperature": 215.0,
     "bake_time": 45.0,
-    "proofing_time": 75.0,
+    "proofing_time": 40.0,
     "water_amount": 70.0,
     "sugar_amount": 8.0,
 }

@@ -87,18 +87,17 @@ class pytest_raises:
         return exc_type is not None and issubclass(exc_type, self.exc)
 
 
-def test_the_handbook_says_the_machine_bakes_a_bad_run_anyway(tmp_path):
-    """The handbook's limit is a score, not a refusal: the machine takes any value in range."""
+def test_the_handbook_says_the_range_is_the_machines_limit(tmp_path):
+    """The handbook's limit is the range itself: outside it the machine refuses."""
 
     from src.config import KNOBS
-    from src.machine.server import Machine
 
     handbook = (Path(__file__).resolve().parents[1] / "templates" / "base.md").read_text(encoding="utf-8")
-    assert "will bake a run this short or this" in handbook
+    assert "the machine's limit" in handbook
 
     machine = Machine(seed=7)
-    # Inside the range but in the stretch the handbook calls raw: accepted, baked,
-    # and scored far below a loaf that is merely untuned.
+    # Inside the range but at the end the handbook calls raw: accepted, baked, and
+    # scored below a loaf that is merely untuned.
     from src.config import DEFAULT_KNOBS
     from src.machine.taste import bake as taste_bake
 
