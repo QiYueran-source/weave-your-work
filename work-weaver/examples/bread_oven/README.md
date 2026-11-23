@@ -128,8 +128,8 @@ happened. To start over, just run without `--continue`.
 
 ## The handbooks
 
-`templates/base.md` is the person's handbook: the five starting values, what each
-knob does to its feature, and the range of each knob. It never says where a
+`templates/base.md` is the person's handbook: the five starting values, the two or
+three features each knob leads, and the range of each knob. It never says where a
 knob's best value is. The records server copies it into the experiment's
 `handbooks/base.md` on first use, and no tool can write there.
 
@@ -141,7 +141,7 @@ learning never leaks into the next.
 
 A knob's range is the machine's own limit: `set_knob` refuses a value outside it
 and changes nothing. Inside the range every bake is a real loaf, and the score
-falls away smoothly as a knob leaves the stretch its feature likes, so a round
+falls away smoothly as a knob leaves the stretch its features like, so a round
 never has to guess whether a bad score meant a broken knob or a bad loaf. A test
 pins the refusal and the smooth fall.
 
@@ -151,7 +151,7 @@ leaks none of the taste program's parameters.
 ## The taste program
 
 `src/machine/taste.py` follows the outline the spec records: five features from
-0 to 1, each dominated by one knob along a single-peaked curve, no interaction,
+0 to 1, each led by two or three knobs along a single-peaked curve, no interaction,
 a three-percent perturbation on each feature, one taste draw per bake, and a
 score that is the weighted mean of the features with no offset. The exact
 formulas are still to be supplied by the spec's author; they replace that one

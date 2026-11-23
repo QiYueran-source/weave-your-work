@@ -2,11 +2,11 @@
 
 The design is the outline the spec records while its author supplies the exact
 formulas: five features from 0 to 1, each moved by every knob along a
-single-peaked curve and dominated by one knob, no interaction between knobs, a
-small perturbation on each feature, and one taste draw per bake. The score is
-the features under that bake's taste, weighted and averaged: no offset, so a
-loaf that is right nowhere reads near 0 and a loaf that is right everywhere
-reads near 1.
+single-peaked curve, with two or three knobs leading each feature, no
+interaction between knobs, a small perturbation on each feature, and one taste
+draw per bake. The score is the features under that bake's taste, weighted and
+averaged: no offset, so a loaf that is right nowhere reads near 0 and a loaf
+that is right everywhere reads near 1.
 
 Nothing here is visible to the chain. The machine server calls it and returns
 only the features, the score, and refusals.
@@ -41,19 +41,23 @@ _HALF_WIDTH: dict[str, float] = {
     "sugar_amount": 3.0,
 }
 
-_DOMINANT: dict[str, str] = {
-    "oven_temperature": "crispness",
-    "bake_time": "chewiness",
-    "proofing_time": "softness",
-    "water_amount": "moistness",
-    "sugar_amount": "sweetness",
+# Each knob leads two or three features and only nudges the rest. One feature can
+# be led by more than one knob, so a step shows up as a pattern across several
+# features instead of a single reading, and telling two knobs apart takes more
+# than one move.
+_LEADS: dict[str, frozenset[str]] = {
+    "oven_temperature": frozenset({"crispness", "moistness", "sweetness"}),
+    "bake_time": frozenset({"chewiness", "moistness"}),
+    "proofing_time": frozenset({"softness", "chewiness", "sweetness"}),
+    "water_amount": frozenset({"moistness", "softness", "chewiness"}),
+    "sugar_amount": frozenset({"sweetness", "crispness"}),
 }
 
-# A knob leads its own feature and touches the other four. Each effect is read
-# through the same curve, against the knob's own half-width: a step toward a
-# knob's peak helps the feature it leads and its neighbours together.
-_DOMINANT_WEIGHT = 1.0
-_CROSS_WEIGHT = 0.3
+# A feature a knob leads moves with the full weight; one it only nudges moves
+# with a fifth of it. Each effect is read through the same curve, against the
+# knob's own half-width.
+_LEAD_WEIGHT = 1.0
+_NUDGE_WEIGHT = 0.2
 
 _FEATURE_FLOOR = 0.05
 
@@ -62,8 +66,8 @@ _FEATURE_FLOOR = 0.05
 _PERTURBATION = 0.03
 
 
-def dominant_feature(knob: str) -> str:
-    return _DOMINANT[knob]
+def leading_features(knob: str) -> frozenset[str]:
+    return _LEADS[knob]
 
 
 def _bell(knob: str, value: float) -> float:
@@ -111,7 +115,7 @@ def compute_features(knobs: dict[str, float], seed: int, round_index: int) -> di
         lift = 0.0
         ceiling = 0.0
         for knob in KNOBS:
-            weight = _DOMINANT_WEIGHT if _DOMINANT[knob] == feature else _CROSS_WEIGHT
+            weight = _LEAD_WEIGHT if feature in _LEADS[knob] else _NUDGE_WEIGHT
             ceiling += weight
             lift += weight * _bell(knob, knobs[knob])
         features[feature] = _FEATURE_FLOOR + (1.0 - _FEATURE_FLOOR) * (lift / ceiling)
