@@ -12,7 +12,7 @@ Each bake is scored from 0 to 1 by a taste program hidden from you. It turns
 five features, each from 0 to 1, into one score: their weighted mean under that
 bake's taste. An untuned recipe lands at about 0.5; a loaf that is right at
 every knob approaches 1, and one that is wrong at every knob sits near 0. Each
-knob moved toward where its feature wants it buys score above the untuned mark:
+knob moved toward where its features want it buys score above the untuned mark:
 
 - crispness, moistness, softness, chewiness, sweetness.
 

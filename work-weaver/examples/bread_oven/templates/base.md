@@ -26,27 +26,30 @@ knobs toward where their features want them.
 
 ## What each knob does
 
-Each knob is judged by one feature above all the others, and it also nudges the
-other four a little. Every one of these relations has the same shape: the
-feature rises as the knob increases, reaches a best somewhere, and falls again
-past it.
+Each knob leads two or three features and only nudges the rest. Every one of
+these relations has the same shape: the feature rises as the knob increases,
+reaches a best somewhere, and falls again past it. A feature can be led by more
+than one knob, so reading a bake means matching a pattern across several
+features, not one number.
 
-| Knob | Feature it leads | Range | What its feature does |
+| Knob | Features it leads | Range | What those features do |
 | --- | --- | --- | --- |
-| `oven_temperature` | crispness | 195–240 °C | Rises as the oven heats, peaks, then falls as the loaf dries and scorches |
-| `bake_time` | chewiness | 30–62 min | Rises with time to a firm peak, then a long bake dries the crumb hard |
-| `proofing_time` | softness | 20–46 min | Rises as the dough proofs, peaks, then over-proofed dough collapses and bakes dense |
-| `water_amount` | moistness | 56–88 % | Rises with water, peaks where the crumb is open but not wet, then turns gummy |
-| `sugar_amount` | sweetness | 3–14 % | Rises with sugar, peaks where the crust browns evenly, then falls as it burns |
+| `oven_temperature` | crispness, moistness, sweetness | 195–240 °C | Heat crisps the crust, dries the crumb, and browns the sugar; past the peak the loaf dries out and scorches |
+| `bake_time` | chewiness, moistness | 30–62 min | Time firms the crumb; a long bake drives the water off and the crumb goes hard |
+| `proofing_time` | softness, chewiness, sweetness | 20–46 min | Proofing opens the crumb and relaxes the gluten; past the peak the dough collapses and the yeast has eaten the sugar |
+| `water_amount` | moistness, softness, chewiness | 56–88 % | Water opens the crumb and softens it; past the peak the dough turns gummy and the crumb heavy |
+| `sugar_amount` | sweetness, crispness | 3–14 % | Sugar sweetens and browns the crust; past the peak it burns and the loaf turns brittle |
 
 Two things follow from this table and matter more than any single row:
 
-- **Raising a knob is a trade.** Moving a knob up helps the feature it leads
+- **Raising a knob is a trade.** Moving a knob up helps the features it leads
   until a point, and can cost another feature at the same time. No two knobs
   can both be raised for free.
-- **The best setting of one knob depends on where the others stand.** A feature
-  is what all five knobs do to it added together, so changing one changes what
-  the others are worth. Change one knob at a time before changing two.
+- **A move shows up in more than one place, and one feature answers to more than
+  one knob.** A feature is what all five knobs do to it added together, so a
+  step on one knob moves two or three features at once, and a feature that
+  moves could belong to any of the knobs that lead it. Change one knob at a
+  time, and use the pattern across features to say which knob did it.
 
 ## Limits
 

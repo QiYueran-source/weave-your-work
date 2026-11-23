@@ -47,3 +47,30 @@ def test_the_perturbation_is_a_fraction_of_each_feature():
     for name in FEATURES:
         ratio = other[name] / one[name]
         assert 0.94 <= ratio <= 1.06
+
+
+def test_every_knob_leads_two_or_three_features():
+    from src.machine.taste import _LEADS
+
+    for knob, leads in _LEADS.items():
+        assert 2 <= len(leads) <= 3, knob
+        assert leads <= set(FEATURES), knob
+
+
+def test_every_feature_is_led_by_at_least_two_knobs():
+    from src.machine.taste import _LEADS
+
+    for feature in FEATURES:
+        leaders = [knob for knob, leads in _LEADS.items() if feature in leads]
+        assert len(leaders) >= 2, feature
+
+
+def test_a_step_on_one_knob_moves_several_features():
+    from src.machine.taste import _PEAKS
+
+    start = compute_features(DEFAULT_KNOBS, seed=7, round_index=1)
+    moved = compute_features(
+        {**DEFAULT_KNOBS, "oven_temperature": _PEAKS["oven_temperature"]}, seed=7, round_index=1
+    )
+    lifted = [name for name in FEATURES if moved[name] - start[name] > 0.05]
+    assert len(lifted) >= 3
