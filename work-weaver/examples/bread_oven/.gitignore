@@ -11,15 +11,9 @@
 
 # ── what a round writes ─────────────────────────────────────────────────────
 
-# One directory per round: testimony, spec, tickets, round.json, trace.json.
+# One directory per experiment: exp1, exp2, and so on. Each holds that run's
+# rounds, its results, its logs, and the two handbooks.
 runs/
-
-# The run's own log, kept for reading after the fact. The folder stays.
-logs/*
-!logs/.gitkeep
-
-# The handbook the chain rewrites. The person's base.md is source and stays.
-handbooks/evolving.md
 
 # ── what the tools leave behind ─────────────────────────────────────────────
 
@@ -33,6 +27,3 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
-
-# A second run set, kept beside the first for comparison.
-smooth/

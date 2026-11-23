@@ -77,10 +77,14 @@ class RunConfig:
             raw = Path(os.environ.get(name, default)).expanduser()
             return (raw if raw.is_absolute() else EXAMPLE_ROOT / raw).resolve()
 
+        # The run's own locations come from the experiment directory main.py
+        # resolves; these defaults only stand in when a caller builds a config
+        # without one.
+        records = path("BREAD_RUNS", Path("runs"))
         return cls(
-            records_root=path("BREAD_RECORDS", Path("runs")),
-            log_root=path("BREAD_LOGS", Path("logs")),
-            handbooks_root=path("BREAD_HANDBOOKS", Path("handbooks")),
+            records_root=records,
+            log_root=records / "logs",
+            handbooks_root=records / "handbooks",
             templates_root=path("BREAD_TEMPLATES", EXAMPLE_ROOT / "templates"),
             model=os.environ.get("BREAD_MODEL", "generic.gpt-4.1"),
             grill_max_rounds=int(os.environ.get("BREAD_GRILL_ROUNDS", "3")),

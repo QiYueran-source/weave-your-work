@@ -1,17 +1,24 @@
 # Work Weaver
 
-Work Weaver is a prototype for running `weave-your-work` methods as a composable fast-agent workflow for edge-like environments.
+One example lives here: `examples/bread_oven/`, a self-evolving bread machine
+where each round is a chain of fast-agent nodes reading what earlier rounds
+wrote. The design is spec `wm-ax0pdz4cwxaw`; the discussion behind it is
+testimony `wm-wgs66p03g76p`.
 
-The first slice is intentionally small. It explores three roles:
+`weave-your-work/` is the source of the interactive skills; this directory is
+the runtime prototype that puts one of those chains on disk and runs it.
 
-- `observe`: turn device and work context into structured observations;
-- `propose`: draft a verifiable improvement proposal;
-- `grill`: challenge the proposal and either accept it, request revision, or escalate to a human.
+## Run it
 
-The prototype uses a bread-oven-shaped example to exercise the workflow contract. It does not yet provide persistent records, HTTP, MCP, real device control, Docker simulation, or autonomous code changes.
+From this directory:
 
-`weave-your-work/` remains the source of interactive skills. This directory is a separate runtime prototype that will eventually host adapters and workflow definitions built around those skills.
+```sh
+uv venv --python 3.12 .venv
+uv pip install "fast-agent-mcp>=0.10,<0.11" pydantic "fastmcp>=4.0" python-dotenv pytest
+cp examples/bread_oven/.env.example .env      # fill in the model and its key
+./run_bread_oven.sh --rounds 5                # five rounds in a new experiment
+```
 
-## Development
-
-The project targets Python 3.11 or newer. Install the package and development dependencies with your preferred environment manager after the dependency choices are finalized.
+The launcher runs `examples/bread_oven/main.py` from this directory, so
+fast-agent reads `.env` from here. `examples/bread_oven/README.md` covers the
+round, the knobs, the scoring, and where each experiment's records land.

@@ -10,15 +10,6 @@
 .env.*
 !.env.example
 
-# What a round writes when it is started from this directory rather than from
-# the example's own. These are run output, never source: the round resolves
-# them beside the example, but an older run may have left copies here.
-runs/
-handbooks/
-logs/*.jsonl
-logs/*.md
-logs/*.trace.json
-
 # pytest's cache.
 .pytest_cache/
 
