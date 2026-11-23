@@ -8,10 +8,11 @@ to answer.
 
 ## The score
 
-Each bake is scored from 0.5 to 1 by a taste program hidden from you. It turns
-five features, each from 0 to 1, into one score. The floor is what an untuned
-recipe is worth; a bake that is off at every knob sits there. Each knob moved
-toward where its feature wants it buys score above that floor:
+Each bake is scored from 0 to 1 by a taste program hidden from you. It turns
+five features, each from 0 to 1, into one score: their weighted mean under that
+bake's taste. An untuned recipe lands at about 0.5; a loaf that is right at
+every knob approaches 1, and one that is wrong at every knob sits near 0. Each
+knob moved toward where its feature wants it buys score above the untuned mark:
 
 - crispness, moistness, softness, chewiness, sweetness.
 
@@ -23,11 +24,11 @@ would weigh the same loaf.
 
 The machine has five knobs, and only their values:
 
-- `oven_temperature` (degC, 150-250)
-- `bake_time` (min, 20-70)
-- `proofing_time` (min, 20-120)
-- `water_amount` (percent of flour, 50-90)
-- `sugar_amount` (percent of flour, 0-15)
+- `oven_temperature` (degC, 195-240)
+- `bake_time` (min, 30-62)
+- `proofing_time` (min, 20-46)
+- `water_amount` (percent of flour, 56-88)
+- `sugar_amount` (percent of flour, 3-14)
 
 The knob set, the ranges, and the node order are fixed. You never add a knob,
 remove one, or propose a different schedule shape. A value outside its range is

@@ -3,7 +3,10 @@
 The design is the outline the spec records while its author supplies the exact
 formulas: five features from 0 to 1, each moved by every knob along a
 single-peaked curve and dominated by one knob, no interaction between knobs, a
-small perturbation on each feature, and one taste draw per bake.
+small perturbation on each feature, and one taste draw per bake. The score is
+the features under that bake's taste, weighted and averaged: no offset, so a
+loaf that is right nowhere reads near 0 and a loaf that is right everywhere
+reads near 1.
 
 Nothing here is visible to the chain. The machine server calls it and returns
 only the features, the score, and refusals.
@@ -21,8 +24,7 @@ from src.config import FEATURES, KNOBS
 # Every peak sits inside the knob's range, so the chain can reach it by adjusting.
 # The peaks are spread out on purpose: knobs that peak near the whole range's
 # middle leave a bake that sits mid-range looking good at every feature, and then
-# nothing is left to learn. Each knob's working range runs from raw or slack to
-# raw or scorched, and only part of it is good.
+# nothing is left to learn.
 _PEAKS: dict[str, float] = {
     "oven_temperature": 222.0,
     "bake_time": 51.0,
@@ -49,30 +51,15 @@ _DOMINANT: dict[str, str] = {
 
 # A knob leads its own feature and touches the other four. Each effect is read
 # through the same curve, against the knob's own half-width: a step toward a
-# knob's peak helps the feature it leads and its neighbours together, and a bake
-# that is off at every knob reads poorly at every feature.
+# knob's peak helps the feature it leads and its neighbours together.
 _DOMINANT_WEIGHT = 1.0
 _CROSS_WEIGHT = 0.3
 
-# The stretch of each knob's range where the loaf is bread at all. Outside it the
-# bake still happens and still scores, but the feature the knob leads collapses:
-# too short or too cool is raw, too long or too hot is scorched, and the same
-# shape of failure sits at both ends of every knob.
-_FLOORS: dict[str, tuple[float, float]] = {
-    "bake_time": (30.0, 62.0),
-    "oven_temperature": (195.0, 240.0),
-    "proofing_time": (20.0, 46.0),
-    "water_amount": (56.0, 88.0),
-    "sugar_amount": (3.0, 14.0),
-}
-
 _FEATURE_FLOOR = 0.05
-_OFF_RANGE = 0.15
 
-# What a bake scores when nothing about it is right: the floor a person's scale
-# starts at. An untuned recipe lands a little above it.
-_SCORE_BASE = 0.5
-_PERTURBATION = 0.05
+# Each feature's reading carries a perturbation of about this fraction of its
+# own size, so a low feature keeps the same relative noise a high one has.
+_PERTURBATION = 0.03
 
 
 def dominant_feature(knob: str) -> str:
@@ -112,7 +99,7 @@ def draw_taste(seed: int, round_index: int) -> Taste:
 
 
 def compute_features(knobs: dict[str, float], seed: int, round_index: int) -> dict[str, float]:
-    """Score every feature for one bake, then perturb each by about five percent."""
+    """Score every feature for one bake, then perturb each by about three percent."""
 
     rng = random.Random(f"features-{seed}-{round_index}")
     # Each feature is read on its own scale: what the five knobs do to it,
@@ -129,31 +116,21 @@ def compute_features(knobs: dict[str, float], seed: int, round_index: int) -> di
             lift += weight * _bell(knob, knobs[knob])
         features[feature] = _FEATURE_FLOOR + (1.0 - _FEATURE_FLOOR) * (lift / ceiling)
 
-    # Past a knob's working range the loaf is raw or scorched, and every feature
-    # suffers, not only the one the knob leads: a rebaked raw loaf is not a
-    # loaf with one weak quality.
-    for knob, (low, high) in _FLOORS.items():
-        if not low <= knobs[knob] <= high:
-            features = {name: value * _OFF_RANGE for name, value in features.items()}
-
     for name in features:
-        features[name] = min(
-            1.0, max(0.0, features[name] + rng.uniform(-_PERTURBATION, _PERTURBATION))
-        )
+        scale = 1.0 + rng.uniform(-_PERTURBATION, _PERTURBATION)
+        features[name] = min(1.0, max(0.0, features[name] * scale))
     return features
 
 
 def score(features: dict[str, float], taste: Taste) -> float:
-    """The features under one bake's taste, on the scale a person reads.
+    """The features under one bake's taste: their weighted mean, from 0 to 1.
 
-    The scale runs from _SCORE_BASE to 1. A loaf where every knob sits at its
-    worst is not worth nothing; it is worth what an untuned recipe is worth,
-    which is the base. Every point above the base has to be earned by moving a
+    There is no offset. A loaf that is right nowhere reads near 0, a loaf that is
+    right everywhere reads near 1, and every point between is earned by moving a
     knob toward where its feature wants it.
     """
 
-    raw = sum(features[name] * taste.weights[name] for name in FEATURES)
-    return round(_SCORE_BASE + (1.0 - _SCORE_BASE) * raw, 4)
+    return round(sum(features[name] * taste.weights[name] for name in FEATURES), 4)
 
 
 def bake(knobs: dict[str, float], seed: int, round_index: int) -> tuple[dict[str, float], float]:

@@ -19,7 +19,7 @@ TEMPLATES = Path(__file__).resolve().parents[1] / "templates"
 KNOBS = {
     "oven_temperature": 210.0,
     "bake_time": 44.0,
-    "proofing_time": 72.0,
+    "proofing_time": 40.0,
     "water_amount": 69.0,
     "sugar_amount": 7.5,
 }

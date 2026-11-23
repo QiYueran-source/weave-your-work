@@ -1,9 +1,10 @@
 # The baker's handbook
 
 Written by a person. You read it and you never change it. It says what each
-knob does, in what direction, and where the loaf stops being bread. It gives
-one known-good starting point and the limits you must stay inside. It does not
-say where any knob's best value lies: that is what baking and scoring are for.
+knob does, in what direction, and how far the machine will let a knob go. It
+gives one known-good starting point and the limits you must stay inside. It does
+not say where any knob's best value lies: that is what baking and scoring are
+for.
 
 ## Start here
 
@@ -13,15 +14,15 @@ A bake that has not been tuned yet:
 | --- | --- |
 | `oven_temperature` | 200 °C |
 | `bake_time` | 40 min |
-| `proofing_time` | 60 min |
+| `proofing_time` | 20 min |
 | `water_amount` | 65 % of the flour weight |
 | `sugar_amount` | 5 % of the flour weight |
 
 This is a mediocre loaf, not a good one. None of these values is the best
-setting for its knob, and several of them are plainly off. A bake is scored
-from 0.5 to 1: a loaf with every knob at its worst still scrapes the floor, and
-an untuned start like this one lands just above it. Everything from there to 1
-has to be earned by moving knobs toward where their features want them.
+setting for its knob. Every bake is scored from 0 to 1: a recipe this untuned
+lands at about 0.5, a loaf that is right at every knob approaches 1, and a loaf
+that is wrong at every knob sits near 0. Everything between is earned by moving
+knobs toward where their features want them.
 
 ## What each knob does
 
@@ -32,11 +33,11 @@ past it.
 
 | Knob | Feature it leads | Range | What its feature does |
 | --- | --- | --- | --- |
-| `oven_temperature` | crispness | 150–250 °C | Rises as the oven heats, peaks, then falls as the loaf dries and scorches |
-| `bake_time` | chewiness | 20–70 min | Rises with time to a firm peak, then a long bake dries the crumb hard |
-| `proofing_time` | softness | 20–120 min | Rises as the dough proofs, peaks, then over-proofed dough collapses and bakes dense |
-| `water_amount` | moistness | 50–90 % | Rises with water, peaks where the crumb is open but not wet, then turns gummy |
-| `sugar_amount` | sweetness | 0–15 % | Rises with sugar, peaks where the crust browns evenly, then falls as it burns |
+| `oven_temperature` | crispness | 195–240 °C | Rises as the oven heats, peaks, then falls as the loaf dries and scorches |
+| `bake_time` | chewiness | 30–62 min | Rises with time to a firm peak, then a long bake dries the crumb hard |
+| `proofing_time` | softness | 20–46 min | Rises as the dough proofs, peaks, then over-proofed dough collapses and bakes dense |
+| `water_amount` | moistness | 56–88 % | Rises with water, peaks where the crumb is open but not wet, then turns gummy |
+| `sugar_amount` | sweetness | 3–14 % | Rises with sugar, peaks where the crust browns evenly, then falls as it burns |
 
 Two things follow from this table and matter more than any single row:
 
@@ -49,14 +50,11 @@ Two things follow from this table and matter more than any single row:
 
 ## Limits
 
-- A bake much shorter than bread needs, or an oven much lower, leaves the loaf
-  raw. Much above, it scorches. **The machine will bake a run this short or this
-  hot anyway**: it refuses only values outside the range in the table above. A
-  bake inside the range but off in that stretch still bakes and comes out a
-  failed loaf: when any knob is off its working stretch the whole bake drops
-  back to the floor of the scale, not just the feature that knob leads. Treat a
-  score at the floor as the boundary showing itself, not as bad luck, and a loaf
-  ruined that way cannot be rescued by raising another knob.
+- **The range in the table is the machine's limit.** It refuses a value outside
+  it and changes nothing, so a bake never comes out raw or scorched. Inside the
+  range every bake is a real loaf, and the score falls away smoothly as a knob
+  leaves the stretch its feature likes: the feature that knob leads drops first,
+  the other four follow it a little.
 - These five knobs are all there is. A bake sets their values; it cannot add a
   knob, change a range, or reshape the schedule.
 - Each bake is judged by a taste that differs a little from the last one. One

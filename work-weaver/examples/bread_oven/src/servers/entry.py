@@ -14,7 +14,15 @@ from pathlib import Path
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Start one MCP server for the bread machine.")
     parser.add_argument("which", choices=["records", "machine"])
-    parser.add_argument("--records", default=None, help="round records directory")
+    parser.add_argument("--runs", default=None, help="root directory holding the experiments")
+    parser.add_argument("--experiment", default=None, help="experiment directory name under the runs root")
+    parser.add_argument(
+        "--continue",
+        dest="continue_run",
+        action="store_true",
+        help="use the latest experiment instead of the next free one",
+    )
+    parser.add_argument("--records", default=None, help="round records directory, overrides the experiment")
     parser.add_argument("--handbooks", default=None, help="directory holding base.md and evolving.md")
     parser.add_argument("--templates", default=None, help="directory holding the instruction templates")
     parser.add_argument("--logs", default=None, help="log directory")
@@ -27,13 +35,20 @@ def main(argv: list[str] | None = None) -> int:
     sys.path.insert(0, str(here))
 
     from src.config import EXAMPLE_ROOT, RunConfig
+    from src.experiments import resolve_experiment
     from src.machine.records import RecordStore, RoundCursor, build_server as build_records
     from src.machine.server import Machine, build_server as build_machine
 
+    root = Path(args.runs) if args.runs else EXAMPLE_ROOT / "runs"
+    experiment = (
+        Path(args.records)
+        if args.records
+        else resolve_experiment(root, args.experiment, args.continue_run)
+    )
     config = RunConfig(
-        records_root=Path(args.records or EXAMPLE_ROOT / "runs"),
-        log_root=Path(args.logs or EXAMPLE_ROOT / "logs"),
-        handbooks_root=Path(args.handbooks or EXAMPLE_ROOT / "handbooks"),
+        records_root=experiment,
+        log_root=Path(args.logs) if args.logs else experiment / "logs",
+        handbooks_root=Path(args.handbooks) if args.handbooks else experiment / "handbooks",
         templates_root=Path(args.templates or EXAMPLE_ROOT / "templates"),
         model="unused",
         grill_max_rounds=3,

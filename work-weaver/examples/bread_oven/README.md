@@ -27,10 +27,11 @@ gateway -> observe -> grill (proposer | grill, bounded) -> spec -> tickets -> im
 
 ```
 bread_oven/
-├── main.py              start one round (or several, one process each)
+├── main.py              start rounds, one experiment at a time
 ├── pyproject.toml       dependencies and pytest settings
 ├── src/
 │   ├── config.py        knobs, ranges, defaults, and the run's paths
+│   ├── experiments.py   runs/exp1, runs/exp2: which one a batch writes into
 │   ├── models.py        the value each edge carries
 │   ├── runtime.py       one node's turn: bind its tools, ask, validate
 │   ├── agents/chain.py  the six nodes and the round they run
@@ -40,8 +41,9 @@ bread_oven/
 │   │   └── records.py   the records MCP server, and the pens
 │   └── servers/entry.py run either server as a stdio process
 ├── templates/           the system prompts: goal + one file per node
-├── handbooks/           base.md (yours, read-only) and evolving.md (the chain's)
-├── logs/                one log per round
+├── runs/                one directory per experiment, ignored by Git
+│   ├── exp1/            round-NN/, results/, logs/, handbooks/, summary.json
+│   └── exp2/
 └── tests/               the round without a model
 ```
 
@@ -51,9 +53,14 @@ bread_oven/
 # from the work-weaver/ directory: one venv, one launcher
 uv venv && uv pip install "fast-agent-mcp>=0.10,<0.11" pytest
 ./run_bread_oven.sh --dry-run                 # check paths and templates only
-BREAD_MODEL=generic.gpt-4.1 ./run_bread_oven.sh          # one round
-BREAD_MODEL=generic.gpt-4.1 ./run_bread_oven.sh --rounds 3   # three rounds, one process each
+BREAD_MODEL=generic.gpt-4.1 ./run_bread_oven.sh            # one round, new experiment
+BREAD_MODEL=generic.gpt-4.1 ./run_bread_oven.sh --rounds 3 # three rounds, new experiment
 ```
+
+Each batch of rounds is an experiment: `--rounds 3` writes `runs/exp1/`, the
+next batch writes `runs/exp2/`, and `--continue` carries on inside the latest
+one instead of starting a new one. `--experiment exp2` names the directory
+yourself.
 
 ### Choosing a model
 
@@ -83,10 +90,10 @@ The model is any OpenAI-compatible endpoint fast-agent knows
 fast-agent's native providers. Every node uses the same model unless a
 `BREAD_MODEL` value says otherwise.
 
-After a run, open:
+After a run, open the experiment directory (`runs/exp1/` in the first batch):
 
-- `runs/summary.json` — each round's knobs, features, and score side by side
-- `runs/round-NN/` — the round's testimony, spec, tickets, `round.json`, and
+- `summary.json` — each round's knobs, features, and score side by side
+- `round-NN/` — the round's testimony, spec, tickets, `round.json`, and
   `trace.json` (the value on every edge)
 - `logs/round-NN.md` — the round in a few lines
 - `handbooks/evolving.md` — what the chain has learned so far
@@ -96,45 +103,47 @@ After a run, open:
 | Variable | Default | What it moves |
 | --- | --- | --- |
 | `BREAD_MODEL` | `generic.gpt-4.1` | the model every node uses |
-| `BREAD_RECORDS` | `runs/` | where rounds are written |
-| `BREAD_LOGS` | `logs/` | where the run's logs are written |
-| `BREAD_HANDBOOKS` | `handbooks/` | where `base.md` and `evolving.md` live |
+| `BREAD_RUNS` | `runs` | the root holding one directory per experiment |
 | `BREAD_GRILL_ROUNDS` | `3` | most grill exchanges per round |
 | `BREAD_SEED` | `7` | the seed for each bake's taste |
 | `BREAD_VERBOSE` | off | show the agents' conversation |
 
 ## Continuing a run
 
-A run leaves everything the next one needs on disk: the knobs and the bake
-count in `runs/machine-state.json`, each bake's result in `runs/results/`, each
-round's records in `runs/round-NN/`, and what the chain learned in
-`handbooks/evolving.md`. Starting another process in the same directory carries
-on from there — that is the checkpoint.
+An experiment leaves everything the next round needs inside its own directory:
+the knobs and the bake count in `machine-state.json`, each bake's result in
+`results/`, each round's records in `round-NN/`, the logs in `logs/`, and what
+the chain learned in `handbooks/evolving.md`. Starting another process in the
+same experiment carries on from there — that is the checkpoint.
 
 ```sh
-./run_bread_oven.sh --rounds 5 --continue     # next five rounds of the same run
+./run_bread_oven.sh --continue --rounds 5     # next five rounds of the latest experiment
+./run_bread_oven.sh --experiment exp2 --rounds 3   # a named experiment
 ```
 
-`--continue` is a statement of intent, not a switch: the round number always
-comes from what is on disk, so a plain `--rounds 5` continues the same run. A
-failed round keeps its number, because its bake still happened. To start over,
-point `BREAD_RECORDS` at a fresh directory.
+`--continue` picks the latest experiment; without it, a batch starts a new one,
+so two runs never share a record directory. The round number always comes from
+what is on disk, and a failed round keeps its number, because its bake still
+happened. To start over, just run without `--continue`.
 
 ## The handbooks
 
-`templates/base.md` is the person's handbook: the five-starting values, what each
-knob does to its feature, the range of each knob, and the two ends where the
-loaf stops being bread. It never says where a knob's best value is. The records
-server copies it into `handbooks/base.md` on first use, and no tool can write
-there.
+`templates/base.md` is the person's handbook: the five starting values, what each
+knob does to its feature, and the range of each knob. It never says where a
+knob's best value is. The records server copies it into the experiment's
+`handbooks/base.md` on first use, and no tool can write there.
 
-`handbooks/evolving.md` is the chain's own handbook. The proposer writes it
-during the grill: at most thirty entries, each tagged with the round that
-produced it, and it may delete entries that later rounds disprove.
+The experiment's `handbooks/evolving.md` is the chain's own handbook. The
+proposer writes it during the grill: at most thirty entries, each tagged with
+the round that produced it, and it may delete entries that later rounds
+disprove. Because every experiment starts with a fresh copy, one experiment's
+learning never leaks into the next.
 
-A knob's range is hard: `set_knob` refuses a value outside it. The stretch
-inside the range where a bake comes out raw or scorched is not hard: the machine
-bakes it and the score drops. The handbook says so, and a test pins both halves.
+A knob's range is the machine's own limit: `set_knob` refuses a value outside it
+and changes nothing. Inside the range every bake is a real loaf, and the score
+falls away smoothly as a knob leaves the stretch its feature likes, so a round
+never has to guess whether a bad score meant a broken knob or a bad loaf. A test
+pins the refusal and the smooth fall.
 
 The tests also check that the base handbook carries the starting values and
 leaks none of the taste program's parameters.
@@ -143,8 +152,10 @@ leaks none of the taste program's parameters.
 
 `src/machine/taste.py` follows the outline the spec records: five features from
 0 to 1, each dominated by one knob along a single-peaked curve, no interaction,
-a five-percent perturbation, and one taste draw per bake. The exact formulas are
-still to be supplied by the spec's author; they replace that one file.
+a three-percent perturbation on each feature, one taste draw per bake, and a
+score that is the weighted mean of the features with no offset. The exact
+formulas are still to be supplied by the spec's author; they replace that one
+file.
 
 ## Tests
 

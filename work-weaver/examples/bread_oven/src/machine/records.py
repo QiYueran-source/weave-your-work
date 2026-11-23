@@ -7,12 +7,12 @@ given a write tool for a record cannot overreach. Two rules the server owns:
   standing, and it stays closed once any node closes it;
 - the person's handbook is readable and never writable.
 
-Rounds are read from the runs directory, so a new process continues where the
-last one stopped without keeping anything in memory:
+Rounds are read from the experiment's directory, so a new process continues where
+the last one stopped without keeping anything in memory:
 
-    <runs>/round-01/testimony.md   <runs>/round-01/spec.md
-    <runs>/round-01/tickets.md     <runs>/round-01/round.json
-    <handbooks>/base.md            <handbooks>/evolving.md
+    runs/exp1/round-01/testimony.md   runs/exp1/round-01/spec.md
+    runs/exp1/round-01/tickets.md     runs/exp1/round-01/round.json
+    runs/exp1/handbooks/base.md       runs/exp1/handbooks/evolving.md
 """
 
 from __future__ import annotations
@@ -28,6 +28,39 @@ ROUND_DIR = re.compile(r"^round-(\d+)$")
 MAX_HANDBOOK_ENTRIES = 30
 BASE_HANDBOOK = "base.md"
 EVOLVING_HANDBOOK = "evolving.md"
+
+
+def next_round_index(config: RunConfig) -> int:
+    """The next number, counted over everything the run left behind.
+
+    A round that died before writing its records still has a bake, and a bake
+    counts: the number comes from the machine's bake count and the result files
+    as well as the round directories, so a failed round is never reused by
+    mistake. This reads only; a missing directory counts as an empty run, so a
+    dry run can ask without creating anything.
+    """
+
+    root = config.records_root
+    seen: list[int] = []
+    if root.exists():
+        for entry in root.iterdir():
+            match = ROUND_DIR.match(entry.name) if entry.is_dir() else None
+            if match:
+                seen.append(int(match.group(1)))
+    results = root / "results"
+    if results.exists():
+        for path in results.glob("round-*.json"):
+            try:
+                seen.append(int(path.stem.split("-")[1]))
+            except (IndexError, ValueError):
+                continue
+    state = root / "machine-state.json"
+    if state.exists():
+        try:
+            seen.append(int(json.loads(state.read_text(encoding="utf-8")).get("round_index", 0)))
+        except (OSError, ValueError, TypeError):
+            pass
+    return max(seen, default=0) + 1
 
 
 class RecordError(Exception):
@@ -58,6 +91,8 @@ class RecordStore:
 
     def round_dirs(self) -> list[tuple[int, Path]]:
         found: list[tuple[int, Path]] = []
+        if not self.config.records_root.exists():
+            return found
         for entry in self.config.records_root.iterdir():
             match = ROUND_DIR.match(entry.name) if entry.is_dir() else None
             if match:
@@ -65,29 +100,7 @@ class RecordStore:
         return sorted(found)
 
     def next_round_index(self) -> int:
-        """The next number, counted over everything the run left behind.
-
-        A round that died before writing its records still has a bake, and a
-        bake counts: the number comes from the machine's bake count and the
-        result files as well as the round directories, so a failed round is
-        never reused by mistake.
-        """
-
-        seen = [index for index, _ in self.round_dirs()]
-        results = self.config.records_root / "results"
-        if results.exists():
-            for path in results.glob("round-*.json"):
-                try:
-                    seen.append(int(path.stem.split("-")[1]))
-                except (IndexError, ValueError):
-                    continue
-        state = self.config.records_root / "machine-state.json"
-        if state.exists():
-            try:
-                seen.append(int(json.loads(state.read_text(encoding="utf-8")).get("round_index", 0)))
-            except (OSError, ValueError, TypeError):
-                pass
-        return max(seen, default=0) + 1
+        return next_round_index(self.config)
 
     def round_dir(self, round_index: int) -> Path:
         return self.config.records_root / f"round-{round_index:02d}"

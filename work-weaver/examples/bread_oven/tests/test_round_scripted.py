@@ -35,7 +35,7 @@ SCRIPTS = {
             "knobs": {
                 "oven_temperature": 215,
                 "bake_time": 45,
-                "proofing_time": 75,
+                "proofing_time": 40,
                 "water_amount": 70,
                 "sugar_amount": 8,
             },
